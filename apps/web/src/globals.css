@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+/* ─── Mistral warm color palette ─── */
+
+@theme {
+  --color-bg: #fffaeb;
+  --color-surface: #fff0c2;
+  --color-accent: #fa520f;
+  --color-accent-light: #ffa110;
+  --color-accent-gradient: linear-gradient(180deg, #ffd900, #ffe295, #ffa110, #ff8105, #fb6424, #fa520f);
+  --color-text-primary: #1f1f1f;
+  --color-text-secondary: #767d88;
+  --color-dark: #1f1f1f;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* ─── Base styles ─── */
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Typography ─── */
+
+.display-hero {
+  font-size: 56px;
+  line-height: 1.0;
+  letter-spacing: -1.4px;
+  font-weight: 400;
+}
+
+.section-title {
+  font-size: 36px;
+  line-height: 1.1;
+  letter-spacing: -0.9px;
+  font-weight: 400;
+}
+
+.card-title {
+  font-size: 24px;
+  line-height: 1.3;
+  font-weight: 500;
+}
+
+.body-text {
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.label-text {
+  font-size: 14px;
+  line-height: 1.4;
+  letter-spacing: 0.35px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* ─── Responsive typography ─── */
+
+@media (max-width: 768px) {
+  .display-hero {
+    font-size: 36px;
+    letter-spacing: -0.9px;
+  }
+  .section-title {
+    font-size: 28px;
+  }
+}

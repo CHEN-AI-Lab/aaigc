@@ -1,0 +1,23 @@
+{
+  "name": "aaigc",
+  "private": true,
+  "packageManager": "pnpm@10.28.0",
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "build": "pnpm --filter web build",
+    "lint": "pnpm --filter web lint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:shared": "pnpm --filter shared test",
+    "typecheck": "pnpm --filter web exec -- tsc --noEmit && pnpm --filter shared exec -- tsc --noEmit",
+    "check": "bash scripts/check.sh",
+    "setup": "pnpm install"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^22.19.19",
+    "typescript": "^5.7.0",
+    "vitest": "^3.2.4"
+  }
+}

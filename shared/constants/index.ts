@@ -1,0 +1,1 @@
+export { locales, defaultLocale, isLocale, localeNames } from './locales'
