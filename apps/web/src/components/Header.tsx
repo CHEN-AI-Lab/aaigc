@@ -1,7 +1,7 @@
 import { Link } from '@/i18n/navigation'
 import LanguageSwitcher from './LanguageSwitcher'
 
-export default function Header({ locale }: { locale: string }) {
+export default function Header() {
   return (
     <header className="border-b border-[rgba(127,99,21,0.1)] bg-bg/95 backdrop-blur-sm sticky top-0 z-50">
       <div className="max-w-6xl mx-auto flex items-center justify-between px-6 h-16">

@@ -4,7 +4,6 @@ import { useLocale } from 'next-intl'
 import { usePathname, useRouter } from '@/i18n/navigation'
 import { locales, localeNames } from 'shared/constants/locales'
 import { useCallback, useRef, useState, useEffect } from 'react'
-import Link from 'next/link'
 
 export default function LanguageSwitcher() {
   const locale = useLocale()

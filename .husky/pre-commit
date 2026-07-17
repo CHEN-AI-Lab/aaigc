@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "=== Pre-commit checks ==="
+bash scripts/check-structure.sh
+python3 scripts/check-translations.py
+pnpm test

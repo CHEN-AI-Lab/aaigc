@@ -8,7 +8,6 @@ export default async function ToolsPage({ params }: Props) {
   const { locale } = await params
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'tools' })
-  const tt = await getTranslations({ locale, namespace: 'tool' })
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-16">

@@ -1,5 +1,4 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
-import { Link } from '@/i18n/navigation'
 import { products } from 'data/products'
 
 type Props = { params: Promise<{ locale: string }> }

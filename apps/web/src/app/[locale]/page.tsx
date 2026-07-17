@@ -31,7 +31,7 @@ export default async function HomePage({ params }: Props) {
           {products.map((p) => (
             <Link
               key={p.id}
-              href={p.url as any}
+              href={p.url as unknown as string}
               className="block bg-surface rounded-sm p-6 shadow-warm-sm hover:shadow-warm transition-shadow group"
             >
               <div className="text-4xl mb-4">{p.icon}</div>
