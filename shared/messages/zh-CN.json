@@ -1,0 +1,70 @@
+{
+  "common": {
+    "appName": "AAIGC",
+    "tagline": "让 AI 赋能你的工作与生活",
+    "taglineZh": "让 AI 赋能你的工作与生活",
+    "products": "产品",
+    "tools": "工具",
+    "about": "关于",
+    "viewAll": "查看全部",
+    "comingSoon": "即将上线",
+    "live": "已上线",
+    "inDevelopment": "开发中"
+  },
+  "home": {
+    "heroTitle": "AI 驱动工具集",
+    "heroSubtitle": "AI 应用与在线工具的集合",
+    "productsTitle": "我们的产品",
+    "toolsTitle": "在线工具",
+    "toolsDesc": "免费在线工具，无需注册",
+    "devTools": "开发工具",
+    "textTools": "文本工具",
+    "timeTools": "时间工具",
+    "imageTools": "图像工具",
+    "convertTools": "格式转换"
+  },
+  "products": {
+    "title": "我们的产品",
+    "subtitle": "探索 AAIGC 产品矩阵",
+    "status": "状态",
+    "techStack": "技术栈",
+    "features": "功能特性",
+    "visit": "前往",
+    "learnMore": "了解更多"
+  },
+  "tools": {
+    "title": "在线工具",
+    "subtitle": "面向开发者和日常使用的免费工具",
+    "search": "搜索工具...",
+    "noResults": "未找到相关工具",
+    "category": "分类"
+  },
+  "about": {
+    "title": "关于 AAIGC",
+    "description": "AAIGC 是由独立开发者 CHEN 创建的一系列 AI 驱动工具和应用集合。",
+    "description2": "我们的使命是让 AI 对每个人都触手可及、实用有效 — 从智能食谱规划到 AI 驱动的创作工具。",
+    "contact": "联系方式",
+    "github": "GitHub"
+  },
+  "errors": {
+    "notFound": "页面未找到",
+    "notFoundDesc": "您访问的页面不存在。",
+    "backHome": "返回首页",
+    "requestFailed": "请求失败，请稍后重试"
+  },
+  "tool": {
+    "input": "输入",
+    "output": "输出",
+    "copy": "复制",
+    "copied": "已复制！",
+    "clear": "清空",
+    "format": "格式化",
+    "validate": "校验",
+    "convert": "转换",
+    "encode": "编码",
+    "decode": "解码",
+    "generate": "生成",
+    "placeholder": "在此输入...",
+    "invalidInput": "输入无效"
+  }
+}

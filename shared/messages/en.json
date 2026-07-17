@@ -1,0 +1,70 @@
+{
+  "common": {
+    "appName": "AAIGC",
+    "tagline": "Empowering your work and life with AI",
+    "taglineZh": "让 AI 赋能你的工作与生活",
+    "products": "Products",
+    "tools": "Tools",
+    "about": "About",
+    "viewAll": "View All",
+    "comingSoon": "Coming Soon",
+    "live": "Live",
+    "inDevelopment": "In Development"
+  },
+  "home": {
+    "heroTitle": "AI-Powered Tools",
+    "heroSubtitle": "A collection of AI-driven applications and online utilities",
+    "productsTitle": "Our Products",
+    "toolsTitle": "Online Tools",
+    "toolsDesc": "Free online utilities — no sign-up required",
+    "devTools": "Developer Tools",
+    "textTools": "Text Tools",
+    "timeTools": "Time Tools",
+    "imageTools": "Image Tools",
+    "convertTools": "Converters"
+  },
+  "products": {
+    "title": "Our Products",
+    "subtitle": "Explore the AAIGC product suite",
+    "status": "Status",
+    "techStack": "Tech Stack",
+    "features": "Features",
+    "visit": "Visit",
+    "learnMore": "Learn More"
+  },
+  "tools": {
+    "title": "Online Tools",
+    "subtitle": "Free utilities for developers and everyday use",
+    "search": "Search tools...",
+    "noResults": "No tools found",
+    "category": "Category"
+  },
+  "about": {
+    "title": "About AAIGC",
+    "description": "AAIGC is a collection of AI-powered tools and applications built by independent developer CHEN.",
+    "description2": "Our mission is to make AI accessible and useful for everyone — from smart recipe planning to AI-powered content creation.",
+    "contact": "Contact",
+    "github": "GitHub"
+  },
+  "errors": {
+    "notFound": "Page not found",
+    "notFoundDesc": "The page you're looking for doesn't exist.",
+    "backHome": "Back to Home",
+    "requestFailed": "Request failed, please try again later"
+  },
+  "tool": {
+    "input": "Input",
+    "output": "Output",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "clear": "Clear",
+    "format": "Format",
+    "validate": "Validate",
+    "convert": "Convert",
+    "encode": "Encode",
+    "decode": "Decode",
+    "generate": "Generate",
+    "placeholder": "Enter text here...",
+    "invalidInput": "Invalid input"
+  }
+}
