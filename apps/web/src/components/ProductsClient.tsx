@@ -1,12 +1,12 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { useLocale } from 'next-intl'
+import { useTranslations } from 'next-intl'
 import type { Product } from 'shared/types'
 import ProductCard from './ProductCard'
 
 export default function ProductsClient({ products }: { products: Product[] }) {
-  const locale = useLocale()
+  const t = useTranslations('common')
   const [filter, setFilter] = useState<'all' | 'live' | 'wip'>('all')
 
   const filtered = useMemo(() => {
@@ -25,9 +25,9 @@ export default function ProductsClient({ products }: { products: Product[] }) {
               filter === f ? 'bg-accent text-white' : 'bg-surface text-text-primary hover:bg-accent/10'
             }`}
           >
-            {f === 'all' ? (locale === 'en' ? 'All' : '全部') :
-             f === 'live' ? (locale === 'en' ? 'Live' : '已上线') :
-             (locale === 'en' ? 'In Development' : '开发中')}
+            {f === 'all' ? t('all') :
+             f === 'live' ? t('live') :
+             t('inDevelopment')}
           </button>
         ))}
       </div>

@@ -9,7 +9,8 @@
     "viewAll": "查看全部",
     "comingSoon": "即将上线",
     "live": "已上线",
-    "inDevelopment": "开发中"
+    "inDevelopment": "开发中",
+    "aboutLink": "关于 AAIGC →"
   },
   "home": {
     "heroTitle": "AI 驱动工具集",
@@ -38,6 +39,7 @@
     "search": "搜索工具...",
     "noResults": "未找到相关工具",
     "category": "分类",
+    "foundTools": "找到 {count} 个工具",
     "encode": "编码",
     "decode": "解码",
     "convert": "转换",
@@ -122,7 +124,8 @@
     "modifiedText": "修改后文本",
     "hex": "HEX",
     "rgb": "RGB",
-    "hsl": "HSL"
+    "hsl": "HSL",
+    "today": "今天"
   },
   "tool": {
     "input": "输入",

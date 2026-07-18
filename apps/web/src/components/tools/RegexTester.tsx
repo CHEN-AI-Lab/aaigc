@@ -1,10 +1,10 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { useLocale } from 'next-intl'
+import { useTranslations } from 'next-intl'
 
 export default function RegexTester() {
-  const locale = useLocale()
+  const t = useTranslations('tools')
   const [pattern, setPattern] = useState('')
   const [flags, setFlags] = useState('gm')
   const [text, setText] = useState('')
@@ -31,13 +31,13 @@ export default function RegexTester() {
   return (
     <div className="mt-6 space-y-4">
       <div className="flex gap-2">
-        <input value={pattern} onChange={e => setPattern(e.target.value)} placeholder={locale === 'en' ? 'Regular expression...' : '正则表达式...'} className="flex-1 p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/30" />
+        <input value={pattern} onChange={e => setPattern(e.target.value)} placeholder={t('regularExpression')} className="flex-1 p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/30" />
         <input value={flags} onChange={e => setFlags(e.target.value)} placeholder="gm" className="w-16 p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary text-center focus:outline-none focus:border-accent/30" />
       </div>
-      <textarea value={text} onChange={e => setText(e.target.value)} placeholder={locale === 'en' ? 'Test text...' : '测试文本...'} className="w-full h-36 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
+      <textarea value={text} onChange={e => setText(e.target.value)} placeholder={t('testText')} className="w-full h-36 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <div className="text-xs text-text-secondary">
-        {locale === 'en' ? 'Matches' : '匹配结果'}: {matches.length}
+        {t('matches')}: {matches.length}
       </div>
       {matches.length > 0 && (
         <div className="max-h-48 overflow-y-auto space-y-1">

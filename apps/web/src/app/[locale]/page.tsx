@@ -86,7 +86,7 @@ export default async function HomePage({ params }: Props) {
           href="/about"
           className="inline-flex items-center gap-2 px-8 py-3 bg-dark text-white text-sm font-medium rounded-sm hover:opacity-90 transition-opacity"
         >
-          {locale === 'en' ? 'About AAIGC →' : '关于 AAIGC →'}
+          {tc('aboutLink')}
         </Link>
       </section>
     </div>

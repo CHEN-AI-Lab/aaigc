@@ -1,7 +1,8 @@
 'use client'
 
 import { lazy, Suspense } from 'react'
-import { useLocale } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+import { Link } from '@/i18n/navigation'
 
 type Props = {
   slug: string
@@ -27,15 +28,16 @@ const toolModules: Record<string, React.LazyExoticComponent<React.ComponentType>
 }
 
 export default function ToolPageClient({ slug, name, nameEn }: Props) {
+  const t = useTranslations('ui')
   const locale = useLocale()
   const Component = toolModules[slug]
 
   return (
     <div>
       <div className="max-w-6xl mx-auto px-6 pt-6 text-xs text-text-secondary">
-        <a href={`/${locale}/tools`} className="hover:text-accent transition-colors">
-          {locale === 'en' ? 'Tools' : '工具'}
-        </a>
+        <Link href="/tools" className="hover:text-accent transition-colors">
+          {t('tools')}
+        </Link>
         <span className="mx-2">/</span>
         <span className="text-text-primary">{locale === 'en' ? nameEn : name}</span>
       </div>
@@ -47,7 +49,7 @@ export default function ToolPageClient({ slug, name, nameEn }: Props) {
         <div className="min-h-[400px]">
           <Suspense fallback={
             <div className="flex items-center justify-center h-64 text-text-secondary">
-              {locale === 'en' ? 'Loading...' : '加载中...'}
+              {t('loading')}
             </div>
           }>
             {Component && <Component />}

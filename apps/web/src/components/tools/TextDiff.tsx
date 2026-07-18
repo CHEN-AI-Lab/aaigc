@@ -1,11 +1,11 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { useLocale } from 'next-intl'
+import { useTranslations } from 'next-intl'
 import { diffLines } from 'diff'
 
 export default function TextDiff() {
-  const locale = useLocale()
+  const t = useTranslations('tools')
   const [left, setLeft] = useState('')
   const [right, setRight] = useState('')
 
@@ -17,8 +17,8 @@ export default function TextDiff() {
   return (
     <div className="mt-6 space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <textarea value={left} onChange={e => setLeft(e.target.value)} placeholder={locale === 'en' ? 'Original text' : '原始文本'} className="w-full h-48 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
-        <textarea value={right} onChange={e => setRight(e.target.value)} placeholder={locale === 'en' ? 'Modified text' : '修改后文本'} className="w-full h-48 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
+        <textarea value={left} onChange={e => setLeft(e.target.value)} placeholder={t('originalText')} className="w-full h-48 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
+        <textarea value={right} onChange={e => setRight(e.target.value)} placeholder={t('modifiedText')} className="w-full h-48 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
       </div>
       {diffResult && (
         <div className="border border-[rgba(127,99,21,0.15)] rounded-sm overflow-hidden">
@@ -42,9 +42,9 @@ export default function TextDiff() {
         </div>
       )}
       <div className="flex gap-4 text-xs text-text-secondary">
-        <span>{locale === 'en' ? 'Lines' : '行数'}: {Math.max(left.split('\n').length, right.split('\n').length)}</span>
+        <span>{t('lines')}: {Math.max(left.split('\n').length, right.split('\n').length)}</span>
         <button onClick={() => { setLeft(''); setRight('') }} className="hover:text-accent transition-colors">
-          {locale === 'en' ? 'Clear' : '清空'}
+          {t('clear')}
         </button>
       </div>
     </div>

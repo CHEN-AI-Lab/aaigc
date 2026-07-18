@@ -1,10 +1,10 @@
 'use client'
 
 import { useState, useCallback, useRef, useEffect } from 'react'
-import { useLocale } from 'next-intl'
+import { useTranslations } from 'next-intl'
 
 export default function UrlEncoder() {
-  const locale = useLocale()
+  const t = useTranslations('tools')
   const [input, setInput] = useState('')
   const [mode, setMode] = useState<'encode' | 'decode'>('encode')
   const [output, setOutput] = useState('')
@@ -27,9 +27,9 @@ export default function UrlEncoder() {
     try {
       setOutput(mode === 'encode' ? encodeURIComponent(input) : decodeURIComponent(input))
     } catch {
-      setError(locale === 'en' ? 'Invalid input' : '输入无效')
+      setError(t('invalidInput'))
     }
-  }, [input, mode, locale])
+  }, [input, mode, t])
 
   const handleCopy = useCallback(() => {
     navigator.clipboard.writeText(output)
@@ -42,15 +42,15 @@ export default function UrlEncoder() {
     <div className="mt-6 space-y-4">
       <div className="flex gap-2">
         <button onClick={() => setMode('encode')} className={`px-4 py-1.5 text-sm rounded-sm transition-colors ${mode === 'encode' ? 'bg-accent text-white' : 'bg-surface text-text-primary'}`}>
-          {locale === 'en' ? 'Encode' : '编码'}
+          {t('encode')}
         </button>
         <button onClick={() => setMode('decode')} className={`px-4 py-1.5 text-sm rounded-sm transition-colors ${mode === 'decode' ? 'bg-accent text-white' : 'bg-surface text-text-primary'}`}>
-          {locale === 'en' ? 'Decode' : '解码'}
+          {t('decode')}
         </button>
       </div>
-      <textarea value={input} onChange={e => setInput(e.target.value)} placeholder={locale === 'en' ? 'Enter URL...' : '输入 URL...'} className="w-full h-28 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
+      <textarea value={input} onChange={e => setInput(e.target.value)} placeholder={t('enterUrl')} className="w-full h-28 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
       {error && <p className="text-red-500 text-sm">{error}</p>}
-      <button onClick={convert} className="px-6 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90 transition-opacity">{locale === 'en' ? 'Convert' : '转换'}</button>
+      <button onClick={convert} className="px-6 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90 transition-opacity">{t('convert')}</button>
       {output && (
         <div className="relative">
           <textarea
@@ -63,7 +63,7 @@ export default function UrlEncoder() {
             onClick={handleCopy}
             className={`absolute top-2 right-6 text-xs px-2.5 py-1.5 bg-accent text-white rounded-sm hover:opacity-90 transition-all ${animating ? 'scale-110 opacity-70' : 'opacity-100'}`}
           >
-            {locale === 'en' ? 'Copy' : '复制'}
+            {t('copy')}
           </button>
         </div>
       )}

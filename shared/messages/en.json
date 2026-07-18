@@ -9,7 +9,8 @@
     "viewAll": "View All",
     "comingSoon": "Coming Soon",
     "live": "Live",
-    "inDevelopment": "In Development"
+    "inDevelopment": "In Development",
+    "aboutLink": "About AAIGC →"
   },
   "home": {
     "heroTitle": "AI-Powered Tools",
@@ -38,6 +39,7 @@
     "search": "Search tools...",
     "noResults": "No tools found",
     "category": "Category",
+    "foundTools": "Found {count} tools",
     "encode": "Encode",
     "decode": "Decode",
     "convert": "Convert",
@@ -122,7 +124,8 @@
     "modifiedText": "Modified text",
     "hex": "HEX",
     "rgb": "RGB",
-    "hsl": "HSL"
+    "hsl": "HSL",
+    "today": "Today"
   },
   "tool": {
     "input": "Input",
