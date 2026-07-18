@@ -67,5 +67,16 @@
     "generate": "Generate",
     "placeholder": "Enter text here...",
     "invalidInput": "Invalid input"
+  },
+  "footer": {
+    "tagline": "AI-powered tools and applications",
+    "products": "Products",
+    "tools": "Tools",
+    "connect": "Connect",
+    "toolJson": "JSON Formatter",
+    "toolTimestamp": "Timestamp",
+    "toolQrcode": "QR Code",
+    "more": "More...",
+    "copyright": "AAIGC. All rights reserved."
   }
 }

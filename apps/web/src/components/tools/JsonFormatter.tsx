@@ -103,7 +103,7 @@ export default function JsonFormatter() {
             ref={outputRef}
             readOnly
             value={output}
-            className="w-full min-h-[200px] p-3 pr-16 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary resize-none overflow-hidden"
+            className="w-full min-h-[200px] max-h-[60vh] p-3 pr-16 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary resize-none overflow-y-auto"
           />
           <button
             onClick={handleCopy}

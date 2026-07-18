@@ -67,5 +67,16 @@
     "generate": "生成",
     "placeholder": "在此输入...",
     "invalidInput": "输入无效"
+  },
+  "footer": {
+    "tagline": "AI 驱动工具与应用的集合",
+    "products": "产品",
+    "tools": "工具",
+    "connect": "联系",
+    "toolJson": "JSON 格式化",
+    "toolTimestamp": "时间戳",
+    "toolQrcode": "二维码",
+    "more": "更多...",
+    "copyright": "AAIGC。保留所有权利。"
   }
 }
