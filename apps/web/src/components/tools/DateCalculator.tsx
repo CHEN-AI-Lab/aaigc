@@ -113,7 +113,7 @@ export default function DateCalculator() {
     const n = parseInt(trimmed, 10)
     if (isNaN(n)) { setter(''); return }
     if (n > max) {
-      showHint(field, `${label} ${locale === 'en' ? 'max' : '最大'} ${max}`)
+      showHint(field, `${label} ${t('max')} ${max}`)
       setter(String(max))
     } else {
       setter(trimmed)
@@ -125,7 +125,7 @@ export default function DateCalculator() {
     const dt1 = new Date(parseInt(d1y), parseInt(d1m) - 1, parseInt(d1d), parseInt(d1h) || 0, parseInt(d1min) || 0, parseInt(d1s) || 0)
     const dt2 = new Date(parseInt(d2y), parseInt(d2m) - 1, parseInt(d2d), parseInt(d2h) || 0, parseInt(d2min) || 0, parseInt(d2s) || 0)
     if (isNaN(dt1.getTime()) || isNaN(dt2.getTime())) {
-      setError(locale === 'en' ? 'Please select both dates' : '请选择两个日期')
+      setError(t('pleaseSelectBothDates'))
       return
     }
     const ms = dt2.getTime() - dt1.getTime()
@@ -134,15 +134,15 @@ export default function DateCalculator() {
     const d = Math.floor(abs / 86400000)
     const h = Math.floor((abs % 86400000) / 3600000)
     const m = Math.floor((abs % 3600000) / 60000)
-    setDiff(`${prefix}${d} ${locale === 'en' ? 'days' : '天'}, ${h} ${locale === 'en' ? 'hours' : '小时'}, ${m} ${locale === 'en' ? 'minutes' : '分钟'}`)
+    setDiff(`${prefix}${d} ${t('days')}, ${h} ${t('hours')}, ${m} ${t('minutes')}`)
   }, [d1y, d1m, d1d, d1h, d1min, d1s, d2y, d2m, d2d, d2h, d2min, d2s, locale])
 
   const calcAdd = useCallback(() => {
     setError('')
     const d = new Date(parseInt(addY), parseInt(addM) - 1, parseInt(addD))
-    if (isNaN(d.getTime())) { setError(locale === 'en' ? 'Invalid date' : '无效的日期'); return }
+    if (isNaN(d.getTime())) { setError(t('invalidDate')); return }
     const n = parseInt(addDays, 10)
-        if (isNaN(n)) { setError(locale === 'en' ? 'Enter a number of days' : '请输入天数'); return }
+        if (isNaN(n)) { setError(t('enterNumberOfDays')); return }
     d.setDate(d.getDate() + n)
     setAddResult(d.toLocaleDateString(locale === 'en' ? 'en-US' : 'zh-CN'))
   }, [addY, addM, addD, addDays, locale])
@@ -160,14 +160,14 @@ export default function DateCalculator() {
   return (
     <div className="mt-6 space-y-6">
       <div className="p-4 bg-surface rounded-sm border border-[rgba(127,99,21,0.15)]">
-        <h3 className="text-sm font-medium text-text-primary mb-1">{locale === 'en' ? 'Date Difference' : '日期间隔'}</h3>
-        <p className="text-xs text-text-secondary mb-3">{locale === 'en' ? 'Calculate the time difference between two dates' : '计算两个日期之间的时间差'}</p>
+        <h3 className="text-sm font-medium text-text-primary mb-1">{t('dateDifference')}</h3>
+        <p className="text-xs text-text-secondary mb-3">{t('calculateDiffDesc')}</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3">
           {/* Start date — all on one row */}
           <div>
             <label className="block text-xs text-text-secondary mb-1">
-              {locale === 'en' ? 'Start' : '开始'}
+              {t('startDate')}
               <button onClick={() => { todayBtn({ y: setD1y, m: setD1m, d: setD1d, h: setD1h, min: setD1min, s: setD1s }); setDiff('') }} className="ml-1.5 text-[10px] text-accent hover:underline">Today</button>
             </label>
             <div className="flex items-center gap-1.5 flex-wrap">
@@ -181,7 +181,7 @@ export default function DateCalculator() {
                   <ClampInput value={d1min} onChange={v => clampNow(v, 0, 59, 'd1m', 'MM', setD1min)} min={0} max={59} label="MM" field="d1m" hint={hint} />
                 </div>
                 <div className="w-12">
-                  <ClampInput value={d1s} onChange={v => clampNow(v, 0, 59, 'd1s', locale === 'en' ? 'Sec' : '秒', setD1s)} min={0} max={59} label={locale === 'en' ? 'Sec' : '秒'} field="d1s" hint={hint} />
+                  <ClampInput value={d1s} onChange={v => clampNow(v, 0, 59, 'd1s', t('seconds'), setD1s)} min={0} max={59} label={t('seconds')} field="d1s" hint={hint} />
                 </div>
               </div>
             </div>
@@ -190,7 +190,7 @@ export default function DateCalculator() {
           {/* End date — all on one row */}
           <div>
             <label className="block text-xs text-text-secondary mb-1">
-              {locale === 'en' ? 'End' : '结束'}
+              {t('endDate')}
               <button onClick={() => { todayBtn({ y: setD2y, m: setD2m, d: setD2d, h: setD2h, min: setD2min, s: setD2s }); setDiff('') }} className="ml-1.5 text-[10px] text-accent hover:underline">Today</button>
             </label>
             <div className="flex items-center gap-1.5 flex-wrap">
@@ -204,14 +204,14 @@ export default function DateCalculator() {
                   <ClampInput value={d2min} onChange={v => clampNow(v, 0, 59, 'd2m', 'MM', setD2min)} min={0} max={59} label="MM" field="d2m" hint={hint} />
                 </div>
                 <div className="w-12">
-                  <ClampInput value={d2s} onChange={v => clampNow(v, 0, 59, 'd2s', locale === 'en' ? 'Sec' : '秒', setD2s)} min={0} max={59} label={locale === 'en' ? 'Sec' : '秒'} field="d2s" hint={hint} />
+                  <ClampInput value={d2s} onChange={v => clampNow(v, 0, 59, 'd2s', t('seconds'), setD2s)} min={0} max={59} label={t('seconds')} field="d2s" hint={hint} />
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <button onClick={calcDiff} className="px-4 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{locale === 'en' ? 'Calculate' : '计算'}</button>
+        <button onClick={calcDiff} className="px-4 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{t('calculate')}</button>
 
         {diff && (
           <div className="mt-2 p-2 bg-bg rounded-sm border border-[rgba(127,99,21,0.1)]">
@@ -221,25 +221,25 @@ export default function DateCalculator() {
       </div>
 
       <div className="p-4 bg-surface rounded-sm border border-[rgba(127,99,21,0.15)]">
-        <h3 className="text-sm font-medium text-text-primary mb-1">{locale === 'en' ? 'Add / Subtract Days' : '日期加减'}</h3>
-        <p className="text-xs text-text-secondary mb-3">{locale === 'en' ? 'Add or subtract days from a date' : '在指定日期上加减天数'}</p>
+        <h3 className="text-sm font-medium text-text-primary mb-1">{t('addSubtractDays')}</h3>
+        <p className="text-xs text-text-secondary mb-3">{t('addDaysDesc')}</p>
         <div className="flex flex-wrap gap-2 mb-3 items-end">
           <div>
-            <label className="block text-[10px] text-text-secondary mb-0.5">{locale === 'en' ? 'Date' : '日期'}</label>
+            <label className="block text-[10px] text-text-secondary mb-0.5">{t('date')}</label>
             <div className="flex items-center gap-1.5">
               <DateSelect year={addY} month={addM} day={addD} onYear={setAddY} onMonth={setAddM} onDay={setAddD} years={years} months={months} days={Array.from({ length: addDaysMax }, (_, i) => i + 1)} />
               <button onClick={() => { const d = new Date(); setAddY(String(d.getFullYear())); setAddM(String(d.getMonth() + 1)); setAddD(String(d.getDate())); setAddResult('') }} className="text-[10px] text-accent hover:underline shrink-0">Today</button>
             </div>
           </div>
           <div className="w-24">
-            <label className="block text-[10px] text-text-secondary mb-0.5">{locale === 'en' ? 'Days' : '天数'}</label>
-            <input type="number" value={addDays} onChange={e => setAddDays(e.target.value)} placeholder={locale === 'en' ? 'Days' : '天数'} className="w-full p-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary text-center focus:outline-none focus:border-accent/30 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
+            <label className="block text-[10px] text-text-secondary mb-0.5">{t('days')}</label>
+            <input type="number" value={addDays} onChange={e => setAddDays(e.target.value)} placeholder={t('days')} className="w-full p-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary text-center focus:outline-none focus:border-accent/30 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
           </div>
         </div>
-        <button onClick={calcAdd} className="px-4 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{locale === 'en' ? 'Calculate' : '计算'}</button>
+        <button onClick={calcAdd} className="px-4 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{t('calculate')}</button>
         {addResult && (
           <div className="mt-2 p-2 bg-bg rounded-sm border border-[rgba(127,99,21,0.1)]">
-            <p className="text-sm text-text-primary">{locale === 'en' ? 'Result' : '结果'}: {addResult}</p>
+            <p className="text-sm text-text-primary">{t('result')}: {addResult}</p>
           </div>
         )}
       </div>
