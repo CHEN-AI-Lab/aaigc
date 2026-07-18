@@ -34,12 +34,10 @@ export default function LanguageSwitcher() {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="label-text flex items-center gap-1.5 px-3 py-1.5 rounded-sm hover:bg-[#fff0c2] transition-colors text-text-secondary"
+        className="flex items-center justify-center w-8 h-8 rounded-sm hover:bg-[#fff0c2] transition-colors text-text-secondary text-lg"
+        title={current}
       >
-        <span>{current}</span>
-        <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
-          <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        </svg>
+        <span>🌐</span>
       </button>
       {open && (
         <div className="absolute right-0 top-full mt-1 bg-white border border-[rgba(127,99,21,0.12)] shadow-warm-sm rounded-sm min-w-[120px] z-50">
