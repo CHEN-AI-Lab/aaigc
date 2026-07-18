@@ -15,7 +15,33 @@ function daysInMonth(y: number, m: number) {
   return new Date(y, m, 0).getDate()
 }
 
-type Hint = { field: string; msg: string } | null
+// ─── ClampInput — module-level, stable component ───
+function ClampInput({ value, onChange, min, max, label, field, hint }: {
+  value: string; onChange: (v: string) => void; min: number; max: number; label: string; field: string; hint: { field: string; msg: string } | null
+}) {
+  const hintFor = (f: string) => hint?.field === f ? hint.msg : null
+  return (
+    <div className="relative">
+      <input type="number" min={min} max={max} value={value}
+        onChange={e => {
+          const v = e.target.value
+          onChange(v)
+        }}
+        onBlur={() => {
+          if (value === '') { onChange('0'); return }
+          const trimmed = value.replace(/^0+/, '') || '0'
+          const n = parseInt(trimmed, 10)
+          if (n > max) { onChange(String(max)) }
+          else if (n < min) { onChange(String(min)) }
+          else { onChange(trimmed) }
+        }}
+        className="w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary text-center focus:outline-none focus:border-accent/30 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
+      {hintFor(field) && (
+        <div className="absolute -bottom-4 left-0 right-0 text-[10px] text-red-500 text-center whitespace-nowrap">{hintFor(field)}</div>
+      )}
+    </div>
+  )
+}
 
 export default function TimestampConverter() {
   const locale = useLocale()
@@ -24,10 +50,9 @@ export default function TimestampConverter() {
   const [tsResultSec, setTsResultSec] = useState('')
   const [tsResultMs, setTsResultMs] = useState('')
   const [error, setError] = useState('')
-  const [hint, setHint] = useState<Hint>(null)
+  const [hint, setHint] = useState<{ field: string; msg: string } | null>(null)
   const hintTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Date → Timestamp inputs
   const now = new Date()
   const [year, setYear] = useState(String(now.getFullYear()))
   const [month, setMonth] = useState(String(now.getMonth() + 1))
@@ -43,15 +68,15 @@ export default function TimestampConverter() {
     hintTimer.current = setTimeout(() => setHint(null), 2000)
   }, [])
 
-  const clampField = useCallback((val: string, min: number, max: number, field: string, label: string, setter: (v: string) => void) => {
-    const trimmed = val.replace(/^0+/, '') || '0'
+  const clampNow = useCallback((v: string, min: number, max: number, field: string, label: string, setter: (v: string) => void) => {
+    // Allow empty string while editing
+    if (v === '') { setter(''); return }
+    const trimmed = v.replace(/^0+/, '') || '0'
     const n = parseInt(trimmed, 10)
-    if (isNaN(n)) { setter('0'); return }
+    if (isNaN(n)) { setter(''); return }
     if (n > max) {
       showHint(field, `${label} ${locale === 'en' ? 'max' : '最大'} ${max}`)
       setter(String(max))
-    } else if (n < min) {
-      setter(String(min))
     } else {
       setter(trimmed)
     }
@@ -80,26 +105,10 @@ export default function TimestampConverter() {
     setTsResultMs(String(dt.getTime()))
   }, [year, month, day, hh, mm, ss, ms, locale])
 
-  const years = Array.from({ length: 69 }, (_, i) => 1970 + i) // 1970-2038
+  const years = Array.from({ length: 69 }, (_, i) => 1970 + i)
   const months = Array.from({ length: 12 }, (_, i) => i + 1)
   const maxDays = daysInMonth(parseInt(year) || 1970, parseInt(month) || 1)
   const days = Array.from({ length: maxDays }, (_, i) => i + 1)
-
-  const hintFor = (field: string) => hint?.field === field ? hint.msg : null
-
-  const ClampInput = ({ value, onChange, onClamp, min, max, label, field, className }: {
-    value: string; onChange: (v: string) => void; onClamp: (v: string) => void; min: number; max: number; label: string; field: string; className?: string
-  }) => (
-    <div className="relative">
-      <input type="number" min={min} max={max} value={value}
-        onChange={e => onChange(e.target.value)}
-        onBlur={() => onClamp(value)}
-        className={`w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary text-center focus:outline-none focus:border-accent/30 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${className || ''}`} />
-      {hintFor(field) && (
-        <div className="absolute -bottom-4 left-0 right-0 text-[10px] text-red-500 text-center whitespace-nowrap">{hintFor(field)}</div>
-      )}
-    </div>
-  )
 
   return (
     <div className="mt-6 space-y-6">
@@ -128,42 +137,52 @@ export default function TimestampConverter() {
         <h3 className="text-sm font-medium text-text-primary mb-2">{locale === 'en' ? 'Date → Timestamp' : '日期 → 时间戳'}</h3>
         <p className="text-xs text-text-secondary mb-3">{locale === 'en' ? 'Select date, time and milliseconds (local timezone)' : '选择日期、时间和毫秒（本地时区）'}</p>
 
-        {/* Date row: Year / Month / Day selects */}
-        <div className="flex flex-wrap gap-2 mb-2">
-          <div className="flex-1 min-w-[80px]">
+        {/* All fields in one row */}
+        <div className="flex flex-wrap items-end gap-2 mb-3">
+          {/* Year */}
+          <div className="w-20">
             <label className="block text-[10px] text-text-secondary mb-0.5">{locale === 'en' ? 'Year' : '年'}</label>
-            <select value={year} onChange={e => setYear(e.target.value)} className="w-full p-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
+            <select value={year} onChange={e => setYear(e.target.value)} className="w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-sm text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
               {years.map(y => <option key={y} value={y}>{y}</option>)}
             </select>
           </div>
-          <div className="flex-1 min-w-[70px]">
-            <label className="block text-[10px] text-text-secondary mb-0.5">{locale === 'en' ? 'Month' : '月'}</label>
-            <select value={month} onChange={e => setMonth(e.target.value)} className="w-full p-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
+          {/* Month */}
+          <div className="w-16">
+            <label className="block text-[10px] text-text-secondary mb-0.5">{locale === 'en' ? 'Mon' : '月'}</label>
+            <select value={month} onChange={e => setMonth(e.target.value)} className="w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-sm text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
               {months.map(m => <option key={m} value={m}>{pad(m, 2)}</option>)}
             </select>
           </div>
-          <div className="flex-1 min-w-[70px]">
+          {/* Day */}
+          <div className="w-16">
             <label className="block text-[10px] text-text-secondary mb-0.5">{locale === 'en' ? 'Day' : '日'}</label>
-            <select value={day} onChange={e => setDay(e.target.value)} className="w-full p-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
+            <select value={day} onChange={e => setDay(e.target.value)} className="w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-sm text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
               {days.map(d => <option key={d} value={d}>{pad(d, 2)}</option>)}
             </select>
           </div>
 
-          <div className="w-16">
+          {/* Spacer */}
+          <div className="w-px h-8 bg-[rgba(127,99,21,0.15)] self-center" />
+
+          {/* HH */}
+          <div className="w-14">
             <label className="block text-[10px] text-text-secondary mb-0.5">HH</label>
-            <ClampInput value={hh} onChange={setHh} onClamp={v => clampField(v, 0, 23, 'hh', 'HH', setHh)} min={0} max={23} label="HH" field="hh" />
+            <ClampInput value={hh} onChange={v => clampNow(v, 0, 23, 'hh', 'HH', setHh)} min={0} max={23} label="HH" field="hh" hint={hint} />
           </div>
-          <div className="w-16">
+          {/* MM */}
+          <div className="w-14">
             <label className="block text-[10px] text-text-secondary mb-0.5">MM</label>
-            <ClampInput value={mm} onChange={setMm} onClamp={v => clampField(v, 0, 59, 'mm', 'MM', setMm)} min={0} max={59} label="MM" field="mm" />
+            <ClampInput value={mm} onChange={v => clampNow(v, 0, 59, 'mm', 'MM', setMm)} min={0} max={59} label="MM" field="mm" hint={hint} />
           </div>
-          <div className="w-16">
+          {/* SS */}
+          <div className="w-14">
             <label className="block text-[10px] text-text-secondary mb-0.5">{locale === 'en' ? 'SS' : '秒'}</label>
-            <ClampInput value={ss} onChange={setSs} onClamp={v => clampField(v, 0, 59, 'ss', locale === 'en' ? 'Seconds' : '秒', setSs)} min={0} max={59} label={locale === 'en' ? 'Seconds' : '秒'} field="ss" />
+            <ClampInput value={ss} onChange={v => clampNow(v, 0, 59, 'ss', locale === 'en' ? 'Sec' : '秒', setSs)} min={0} max={59} label={locale === 'en' ? 'Sec' : '秒'} field="ss" hint={hint} />
           </div>
+          {/* MS */}
           <div className="w-16">
             <label className="block text-[10px] text-text-secondary mb-0.5">{locale === 'en' ? 'MS' : '毫秒'}</label>
-            <ClampInput value={ms} onChange={setMs} onClamp={v => clampField(v, 0, 999, 'ms', locale === 'en' ? 'Milliseconds' : '毫秒', setMs)} min={0} max={999} label={locale === 'en' ? 'Milliseconds' : '毫秒'} field="ms" />
+            <ClampInput value={ms} onChange={v => clampNow(v, 0, 999, 'ms', locale === 'en' ? 'MS' : '毫秒', setMs)} min={0} max={999} label={locale === 'en' ? 'MS' : '毫秒'} field="ms" hint={hint} />
           </div>
         </div>
 
