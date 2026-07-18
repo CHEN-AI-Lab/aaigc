@@ -8,6 +8,7 @@ export default function HtmlEntities() {
   const [input, setInput] = useState('')
   const [mode, setMode] = useState<'escape' | 'unescape'>('escape')
   const [output, setOutput] = useState('')
+  const [error, setError] = useState('')
   const [animating, setAnimating] = useState(false)
   const animTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const outputRef = useRef<HTMLTextAreaElement>(null)
@@ -22,13 +23,21 @@ export default function HtmlEntities() {
   useEffect(() => { autoResize() }, [output, autoResize])
 
   const convert = useCallback(() => {
-    if (mode === 'escape') {
-      setOutput(input.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'))
-    } else {
-      const txt = new DOMParser().parseFromString(input, 'text/html')
-      setOutput(txt.body.textContent || '')
+    setError('')
+    if (!input) { setOutput(''); return }
+    try {
+      if (mode === 'escape') {
+        setOutput(input.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'))
+      } else {
+        const txt = new DOMParser().parseFromString(input, 'text/html')
+        const text = txt.body.textContent
+        if (text === null) throw new Error('Parse failed')
+        setOutput(text)
+      }
+    } catch {
+      setError(locale === 'en' ? 'Failed to unescape HTML' : 'HTML 反转义失败')
     }
-  }, [input, mode])
+  }, [input, mode, locale])
 
   const handleCopy = useCallback(() => {
     navigator.clipboard.writeText(output)
@@ -45,6 +54,7 @@ export default function HtmlEntities() {
       </div>
       <textarea value={input} onChange={e => setInput(e.target.value)} placeholder={locale === 'en' ? 'Enter HTML...' : '输入 HTML...'} className="w-full h-28 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
       <button onClick={convert} className="px-6 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90 transition-opacity">{locale === 'en' ? 'Convert' : '转换'}</button>
+      {error && <p className="text-red-500 text-sm">{error}</p>}
       {output && (
         <div className="relative">
           <textarea

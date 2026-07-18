@@ -24,14 +24,22 @@ export default function YamlJsonConverter() {
 
   const convert = useCallback(async () => {
     setError('')
-    if (!input.trim()) return
+    setOutput('')
+    if (!input.trim()) {
+      setError(locale === 'en' ? 'Please enter content' : '请输入内容')
+      return
+    }
     try {
+      const yaml = await import('js-yaml')
       if (mode === 'yaml2json') {
-        const yaml = await import('js-yaml')
         const obj = yaml.load(input)
+        // yaml.load() can return undefined for empty/null documents
+        if (obj === undefined || obj === null) {
+          setError(locale === 'en' ? 'Empty or invalid YAML content' : 'YAML 内容为空或无效')
+          return
+        }
         setOutput(JSON.stringify(obj, null, 2))
       } else {
-        const yaml = await import('js-yaml')
         const obj = JSON.parse(input)
         setOutput(yaml.dump(obj, { indent: 2 }))
       }

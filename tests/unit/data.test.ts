@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeAll } from 'vitest'
 import { products } from '../../data/products'
+import type { CategoryInfo, ToolCategoryId } from '../../shared/types'
 
 describe('products', () => {
   it('has 4 products', () => {
@@ -9,6 +10,7 @@ describe('products', () => {
   it('each product has required fields', () => {
     for (const p of products) {
       expect(p.id).toBeTruthy()
+      expect(typeof p.id).toBe('string')
       expect(p.name).toBeTruthy()
       expect(p.nameEn).toBeTruthy()
       expect(p.description).toBeTruthy()
@@ -18,23 +20,142 @@ describe('products', () => {
       expect(['live', 'beta', 'wip', 'planned']).toContain(p.status)
       expect(Array.isArray(p.features)).toBe(true)
       expect(Array.isArray(p.featuresEn)).toBe(true)
+      expect(p.features.length).toBeGreaterThanOrEqual(1)
+      expect(p.features.length).toBe(p.featuresEn.length)
+    }
+  })
+
+  it('each product has unique id', () => {
+    const ids = products.map(p => p.id)
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+
+  it('each product has a valid URL', () => {
+    for (const p of products) {
+      expect(p.url).toMatch(/^https?:\/\//)
     }
   })
 })
 
 describe('tools', () => {
-  it('has 14 tools', async () => {
-    const { tools } = await import('../../data/tools')
+  let tools: import('../../data/tools').ToolMeta[]
+
+  beforeAll(async () => {
+    const mod = await import('../../data/tools')
+    tools = mod.tools
+  })
+
+  it('has 14 tools', () => {
     expect(tools.length).toBe(14)
   })
 
-  it('each tool has valid category', async () => {
-    const { tools } = await import('../../data/tools')
-    const validCats = ['dev', 'text', 'time', 'image', 'convert']
+  it('each tool has valid category', () => {
+    const validCats: ToolCategoryId[] = ['dev', 'text', 'time', 'image', 'convert']
     for (const t of tools) {
       expect(validCats).toContain(t.category)
       expect(t.id).toBeTruthy()
+      expect(typeof t.id).toBe('string')
       expect(t.component).toBeTruthy()
+      expect(typeof t.component).toBe('string')
     }
+  })
+
+  it('each tool has bilingual names', () => {
+    for (const t of tools) {
+      expect(t.name).toBeTruthy()
+      expect(t.nameEn).toBeTruthy()
+      expect(t.description).toBeTruthy()
+      expect(t.descriptionEn).toBeTruthy()
+      expect(t.name).not.toBe(t.nameEn) // bilingual names should differ
+    }
+  })
+
+  it('each tool has unique id', () => {
+    const ids = tools.map(t => t.id)
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+
+  it('each tool id matches its component slug pattern', () => {
+    const slugToComponent: Record<string, string> = {
+      'json-formatter': 'JsonFormatter',
+      'regex-tester': 'RegexTester',
+      'base64': 'Base64Codec',
+      'url-encode': 'UrlEncoder',
+      'jwt-decoder': 'JwtDecoder',
+      'markdown-preview': 'MarkdownPreview',
+      'word-counter': 'WordCounter',
+      'text-diff': 'TextDiff',
+      'timestamp': 'TimestampConverter',
+      'date-calculator': 'DateCalculator',
+      'qrcode': 'QrCodeGenerator',
+      'color-picker': 'ColorPicker',
+      'yaml-json': 'YamlJsonConverter',
+      'html-entities': 'HtmlEntities',
+    }
+    for (const t of tools) {
+      expect(slugToComponent[t.id]).toBe(t.component)
+    }
+  })
+
+  it('each tool component can be dynamically imported', async () => {
+    const componentMap: Record<string, () => Promise<{ default: unknown }>> = {
+      JsonFormatter: () => import('../../apps/web/src/components/tools/JsonFormatter'),
+      Base64Codec: () => import('../../apps/web/src/components/tools/Base64Codec'),
+      HtmlEntities: () => import('../../apps/web/src/components/tools/HtmlEntities'),
+      UrlEncoder: () => import('../../apps/web/src/components/tools/UrlEncoder'),
+      YamlJsonConverter: () => import('../../apps/web/src/components/tools/YamlJsonConverter'),
+      JwtDecoder: () => import('../../apps/web/src/components/tools/JwtDecoder'),
+      WordCounter: () => import('../../apps/web/src/components/tools/WordCounter'),
+      ColorPicker: () => import('../../apps/web/src/components/tools/ColorPicker'),
+      RegexTester: () => import('../../apps/web/src/components/tools/RegexTester'),
+      TextDiff: () => import('../../apps/web/src/components/tools/TextDiff'),
+      TimestampConverter: () => import('../../apps/web/src/components/tools/TimestampConverter'),
+      DateCalculator: () => import('../../apps/web/src/components/tools/DateCalculator'),
+      QrCodeGenerator: () => import('../../apps/web/src/components/tools/QrCodeGenerator'),
+      MarkdownPreview: () => import('../../apps/web/src/components/tools/MarkdownPreview'),
+    }
+    for (const t of tools) {
+      const loader = componentMap[t.component]
+      expect(loader).toBeDefined()
+      const mod = await loader()
+      expect(mod.default).toBeDefined()
+      expect(typeof mod.default).toBe('function')
+    }
+  })
+})
+
+describe('tool categories', () => {
+  let categories: CategoryInfo[]
+  let tools: import('../../data/tools').ToolMeta[]
+
+  beforeAll(async () => {
+    const mod = await import('../../data/tools')
+    categories = mod.toolCategories
+    tools = mod.tools
+  })
+
+  it('has 5 categories', () => {
+    expect(categories.length).toBe(5)
+  })
+
+  it('each category has bilingual names', () => {
+    for (const c of categories) {
+      expect(c.name).toBeTruthy()
+      expect(c.nameEn).toBeTruthy()
+      expect(c.icon).toBeTruthy()
+      expect(typeof c.order).toBe('number')
+    }
+  })
+
+  it('every tool belongs to a valid category', () => {
+    const catIds = categories.map(c => c.id)
+    for (const t of tools) {
+      expect(catIds).toContain(t.category)
+    }
+  })
+
+  it('categories have unique orders', () => {
+    const orders = categories.map(c => c.order)
+    expect(new Set(orders).size).toBe(orders.length)
   })
 })

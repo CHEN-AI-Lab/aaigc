@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { useLocale } from 'next-intl'
+import { diffLines } from 'diff'
 
 export default function TextDiff() {
   const locale = useLocale()
@@ -10,22 +11,7 @@ export default function TextDiff() {
 
   const diffResult = useMemo(() => {
     if (!left && !right) return null
-    const leftLines = left.split('\n')
-    const rightLines = right.split('\n')
-    const maxLen = Math.max(leftLines.length, rightLines.length)
-    const result: { type: 'same' | 'added' | 'removed'; text: string; line: number }[] = []
-
-    for (let i = 0; i < maxLen; i++) {
-      const l = leftLines[i] ?? ''
-      const r = rightLines[i] ?? ''
-      if (l === r) {
-        if (l !== '') result.push({ type: 'same', text: l, line: i + 1 })
-      } else {
-        if (l !== '') result.push({ type: 'removed', text: l, line: i + 1 })
-        if (r !== '') result.push({ type: 'added', text: r, line: i + 1 })
-      }
-    }
-    return result
+    return diffLines(left, right)
   }, [left, right])
 
   return (
@@ -37,16 +23,21 @@ export default function TextDiff() {
       {diffResult && (
         <div className="border border-[rgba(127,99,21,0.15)] rounded-sm overflow-hidden">
           <div className="text-xs font-mono">
-            {diffResult.map((item, i) => (
-              <div key={i} className={`flex px-3 py-1 ${
-                item.type === 'removed' ? 'bg-red-50 text-red-700' :
-                item.type === 'added' ? 'bg-green-50 text-green-700' :
-                'text-text-secondary'
-              }`}>
-                <span className="w-8 shrink-0 text-right mr-3 opacity-50">{item.line}</span>
-                <span className={`${item.type === 'removed' ? 'line-through' : ''}`}>{item.text || ' '}</span>
-              </div>
-            ))}
+            {diffResult.map((part, i) => {
+              const lines = part.value.split('\n')
+              // Remove trailing empty line from split
+              if (lines[lines.length - 1] === '') lines.pop()
+              if (lines.length === 0) return null
+              return lines.map((line, j) => {
+                if (part.added) {
+                  return <div key={`${i}-${j}`} className="flex px-3 py-0.5 bg-green-50 text-green-700"><span className="w-6 shrink-0 text-green-500">+</span><span className="break-all">{line}</span></div>
+                }
+                if (part.removed) {
+                  return <div key={`${i}-${j}`} className="flex px-3 py-0.5 bg-red-50 text-red-700"><span className="w-6 shrink-0 text-red-500">-</span><span className="break-all">{line}</span></div>
+                }
+                return <div key={`${i}-${j}`} className="flex px-3 py-0.5 text-text-secondary"><span className="w-6 shrink-0 opacity-50">{' '}</span><span className="break-all">{line}</span></div>
+              })
+            })}
           </div>
         </div>
       )}

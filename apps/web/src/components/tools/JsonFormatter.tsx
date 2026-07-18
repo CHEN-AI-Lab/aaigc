@@ -20,9 +20,33 @@ export default function JsonFormatter() {
     el.style.height = `${el.scrollHeight}px`
   }, [])
 
+  useEffect(() => { autoResize() }, [output, autoResize])
+
+  // Revoke previous blob URL before creating a new one, and on unmount
+  const revokeUrl = useCallback((url: string) => {
+    if (url) URL.revokeObjectURL(url)
+  }, [])
+
   useEffect(() => {
-    autoResize()
-  }, [output, autoResize])
+    return () => {
+      if (downloadUrl) URL.revokeObjectURL(downloadUrl)
+    }
+  }, [downloadUrl])
+
+  const generateDownloadUrl = useCallback((content: string) => {
+    if (downloadUrl) revokeUrl(downloadUrl)
+    const blob = new Blob([content], { type: 'application/json' })
+    setDownloadUrl(URL.createObjectURL(blob))
+  }, [downloadUrl, revokeUrl])
+
+  const clearState = useCallback(() => {
+    setOutput('')
+    setError('')
+    if (downloadUrl) {
+      revokeUrl(downloadUrl)
+      setDownloadUrl('')
+    }
+  }, [downloadUrl, revokeUrl])
 
   const format = useCallback(() => {
     setError('')
@@ -30,27 +54,31 @@ export default function JsonFormatter() {
       const parsed = JSON.parse(input)
       const formatted = JSON.stringify(parsed, null, 2)
       setOutput(formatted)
-      const blob = new Blob([formatted], { type: 'application/json' })
-      setDownloadUrl(URL.createObjectURL(blob))
+      generateDownloadUrl(formatted)
     } catch (e) {
       setError(`${locale === 'en' ? 'Invalid JSON' : '无效的 JSON'}: ${(e as Error).message}`)
       setOutput('')
-      setDownloadUrl('')
+      if (downloadUrl) {
+        revokeUrl(downloadUrl)
+        setDownloadUrl('')
+      }
     }
-  }, [input, locale])
+  }, [input, locale, generateDownloadUrl, downloadUrl, revokeUrl])
 
   const validate = useCallback(() => {
     setError('')
     try {
       JSON.parse(input)
       setOutput(locale === 'en' ? '✅ Valid JSON' : '✅ JSON 格式正确')
-      setDownloadUrl('')
     } catch (e) {
       setError(`${locale === 'en' ? 'Invalid JSON' : '无效的 JSON'}: ${(e as Error).message}`)
       setOutput('')
+    }
+    if (downloadUrl) {
+      revokeUrl(downloadUrl)
       setDownloadUrl('')
     }
-  }, [input, locale])
+  }, [input, locale, downloadUrl, revokeUrl])
 
   const minify = useCallback(() => {
     setError('')
@@ -58,14 +86,12 @@ export default function JsonFormatter() {
       const parsed = JSON.parse(input)
       const minified = JSON.stringify(parsed)
       setOutput(minified)
-      const blob = new Blob([minified], { type: 'application/json' })
-      setDownloadUrl(URL.createObjectURL(blob))
+      generateDownloadUrl(minified)
     } catch (e) {
       setError(`${locale === 'en' ? 'Invalid JSON' : '无效的 JSON'}: ${(e as Error).message}`)
-      setOutput('')
-      setDownloadUrl('')
+      clearState()
     }
-  }, [input, locale])
+  }, [input, locale, generateDownloadUrl, clearState])
 
   const handleCopy = useCallback(() => {
     navigator.clipboard.writeText(output)

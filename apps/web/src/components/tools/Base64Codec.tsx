@@ -24,11 +24,13 @@ export default function Base64Codec() {
 
   const convert = useCallback(() => {
     setError('')
+    if (!input) { setOutput(''); return }
     try {
       if (mode === 'encode') {
-        setOutput(btoa(input))
+        // Unicode-safe Base64 encoding
+        setOutput(btoa(encodeURIComponent(input).replace(/%([0-9A-F]{2})/g, (_, p1) => String.fromCharCode(parseInt(p1, 16)))))
       } else {
-        setOutput(atob(input))
+        setOutput(decodeURIComponent(atob(input).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')))
       }
     } catch {
       setError(locale === 'en' ? 'Invalid Base64 input' : 'Base64 输入无效')
