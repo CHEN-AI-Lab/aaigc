@@ -78,5 +78,16 @@
     "toolQrcode": "二维码",
     "more": "更多...",
     "copyright": "AAIGC。保留所有权利。"
+  },
+  "privacy": {
+    "title": "隐私政策",
+    "infoTitle": "我们收集的信息",
+    "infoDesc": "AAIGC 是一个静态网站。我们不会收集、存储或处理任何个人信息。所有工具均在您的浏览器中运行 — 不会有数据发送到我们的服务器。",
+    "cookiesTitle": "Cookie",
+    "cookiesDesc": "我们使用一个功能性 Cookie（NEXT_LOCALE）来记住您的语言偏好。不使用任何跟踪 Cookie、分析 Cookie 或第三方 Cookie。",
+    "thirdTitle": "第三方服务",
+    "thirdDesc": "本站托管于 Vercel。Vercel 可能会收集标准服务器日志（IP 地址、请求时间等）作为托管服务的一部分。我们不使用任何分析、跟踪或广告服务。",
+    "contactTitle": "联系方式",
+    "contactDesc": "如果您对本隐私政策有任何疑问，请通过 chen@aaigc.online 联系我们。"
   }
 }

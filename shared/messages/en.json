@@ -78,5 +78,16 @@
     "toolQrcode": "QR Code",
     "more": "More...",
     "copyright": "AAIGC. All rights reserved."
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "infoTitle": "Information We Collect",
+    "infoDesc": "AAIGC is a static website. We do not collect, store, or process any personal information. All tools run entirely in your browser — no data is sent to our servers.",
+    "cookiesTitle": "Cookies",
+    "cookiesDesc": "We use a single functional cookie (NEXT_LOCALE) to remember your language preference. No tracking cookies, analytics cookies, or third-party cookies are used.",
+    "thirdTitle": "Third-Party Services",
+    "thirdDesc": "This site is hosted on Vercel. Vercel may collect standard server logs (IP address, request time, etc.) as part of their hosting service. We do not use any analytics, tracking, or advertising services.",
+    "contactTitle": "Contact",
+    "contactDesc": "If you have any questions about this privacy policy, please contact us at chen@aaigc.online."
   }
 }
