@@ -90,11 +90,11 @@ export default function JsonFormatter() {
           <textarea
             readOnly
             value={output}
-            className="w-full h-64 p-3 pr-12 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary resize-none"
+            className="w-full h-64 p-3 pr-16 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary resize-none"
           />
           <button
             onClick={handleCopy}
-            className={`absolute top-2 right-2 text-xs px-2.5 py-1.5 bg-dark text-white rounded-sm hover:opacity-90 transition-all ${animating ? 'scale-110 opacity-70' : 'opacity-100'}`}
+            className={`absolute top-2 right-6 text-xs px-2.5 py-1.5 bg-dark text-white rounded-sm hover:opacity-90 transition-all ${animating ? 'scale-110 opacity-70' : 'opacity-100'}`}
           >
             {locale === 'en' ? 'Copy' : '复制'}
           </button>
