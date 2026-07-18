@@ -74,13 +74,22 @@ export default async function HomePage({ params }: Props) {
 
           {/* Quick tool links */}
           <div className="mt-10 flex flex-wrap justify-center gap-3">
-            {['JSON Formatter', 'Timestamp', 'QR Code', 'Base64', 'Regex Tester', 'Markdown', 'Color Picker', 'Text Diff'].map((tool) => (
+            {[
+              { id: 'json-formatter', label: 'JSON Formatter', labelZh: 'JSON 格式化' },
+              { id: 'timestamp', label: 'Timestamp', labelZh: '时间戳' },
+              { id: 'qrcode', label: 'QR Code', labelZh: '二维码' },
+              { id: 'base64', label: 'Base64', labelZh: 'Base64' },
+              { id: 'regex-tester', label: 'Regex Tester', labelZh: '正则测试' },
+              { id: 'markdown-preview', label: 'Markdown', labelZh: 'Markdown' },
+              { id: 'color-picker', label: 'Color Picker', labelZh: '颜色选择' },
+              { id: 'text-diff', label: 'Text Diff', labelZh: '文本对比' },
+            ].map((tool) => (
               <Link
-                key={tool}
-                href="/tools"
+                key={tool.id}
+                href={`/tools/${tool.id}`}
                 className="text-sm px-4 py-2 bg-bg text-text-secondary hover:text-accent rounded-sm transition-colors border border-[rgba(127,99,21,0.1)]"
               >
-                {tool}
+                {locale === 'en' ? tool.label : tool.labelZh}
               </Link>
             ))}
           </div>
