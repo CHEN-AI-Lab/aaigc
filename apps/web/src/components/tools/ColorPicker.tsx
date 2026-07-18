@@ -6,7 +6,7 @@ import { useLocale } from 'next-intl'
 export default function ColorPicker() {
   const locale = useLocale()
   const [color, setColor] = useState('#fa520f')
-  const [animKey, setAnimKey] = useState(0)
+  const [animIndex, setAnimIndex] = useState<number | null>(null)
   const animTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const hex = color
@@ -32,12 +32,18 @@ export default function ColorPicker() {
 
   const presets = ['#fa520f','#ffa110','#ffd900','#ff8a00','#fb6424','#1f1f1f','#767d88','#fffaeb','#fff0c2','#3ecf8e','#4a90d9','#9b59b6','#e74c3c','#2ecc71','#f39c12']
 
-  const handleCopy = useCallback((text: string) => {
+  const handleCopy = useCallback((text: string, index: number) => {
     navigator.clipboard.writeText(text)
-    setAnimKey(prev => prev + 1)
+    setAnimIndex(index)
     if (animTimer.current) clearTimeout(animTimer.current)
-    animTimer.current = setTimeout(() => setAnimKey(prev => prev + 1), 400)
+    animTimer.current = setTimeout(() => setAnimIndex(null), 400)
   }, [])
+
+  const values = [
+    { label: 'HEX', value: hex },
+    { label: 'RGB', value: `rgb(${rgb})` },
+    { label: 'HSL', value: hsl },
+  ]
 
   return (
     <div className="mt-6 space-y-6">
@@ -47,17 +53,13 @@ export default function ColorPicker() {
           <span className="text-xs text-text-secondary">{locale === 'en' ? 'Pick' : '选取'}</span>
         </div>
         <div className="flex-1 space-y-2">
-          {[
-            { label: 'HEX', value: hex },
-            { label: 'RGB', value: `rgb(${rgb})` },
-            { label: 'HSL', value: hsl },
-          ].map(({ label, value }) => (
+          {values.map(({ label, value }, i) => (
             <div key={label} className="flex items-center gap-2">
               <span className="text-xs font-mono text-text-secondary w-10 shrink-0">{label}</span>
               <code className="text-sm text-text-primary font-mono flex-1 truncate">{value}</code>
               <button
-                onClick={() => handleCopy(value)}
-                className="text-xs px-2 py-0.5 bg-accent text-white rounded-sm hover:opacity-90 transition-all active:scale-110"
+                onClick={() => handleCopy(value, i)}
+                className={`text-xs px-2 py-0.5 bg-accent text-white rounded-sm transition-all ${animIndex === i ? 'scale-110 opacity-70' : 'hover:opacity-90'}`}
               >
                 {locale === 'en' ? 'Copy' : '复制'}
               </button>
