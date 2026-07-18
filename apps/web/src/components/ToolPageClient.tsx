@@ -32,7 +32,7 @@ export default function ToolPageClient({ slug, name, nameEn }: Props) {
 
   return (
     <div>
-      <div className="max-w-4xl mx-auto px-6 pt-6 text-xs text-text-secondary">
+      <div className="max-w-6xl mx-auto px-6 pt-6 text-xs text-text-secondary">
         <a href={`/${locale}/tools`} className="hover:text-accent transition-colors">
           {locale === 'en' ? 'Tools' : '工具'}
         </a>
@@ -40,7 +40,7 @@ export default function ToolPageClient({ slug, name, nameEn }: Props) {
         <span className="text-text-primary">{locale === 'en' ? nameEn : name}</span>
       </div>
 
-      <div className="max-w-4xl mx-auto px-6 py-12">
+      <div className="max-w-6xl mx-auto px-6 py-12">
         <h1 className="text-2xl font-semibold text-text-primary mb-1">
           {locale === 'en' ? nameEn : name}
         </h1>
