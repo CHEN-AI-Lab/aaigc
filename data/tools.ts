@@ -31,6 +31,7 @@ export const tools: ToolMeta[] = [
   { id: 'jwt-decoder', name: 'JWT 解码器', nameEn: 'JWT Decoder', description: '解析 JWT Token 的 Payload', descriptionEn: 'Decode JWT token payloads', category: 'dev', icon: '🛡️', component: 'JwtDecoder' },
   { id: 'uuid-generator', name: 'UUID 生成器', nameEn: 'UUID Generator', description: '生成 UUID v4 标识符', descriptionEn: 'Generate UUID v4 identifiers', category: 'dev', icon: '🆔', component: 'UuidGenerator' },
   { id: 'html-preview', name: 'HTML 预览', nameEn: 'HTML Preview', description: '实时渲染 HTML 代码', descriptionEn: 'Live HTML rendering', category: 'dev', icon: '🌐', component: 'HtmlPreview' },
+  { id: 'css-minifier', name: 'CSS 压缩/格式化', nameEn: 'CSS Minifier', description: '压缩与格式化 CSS 代码', descriptionEn: 'Minify and format CSS code', category: 'dev', icon: '🎨', component: 'CssMinifier' },
 
   // ─── Text Tools ───
   { id: 'markdown-preview', name: 'Markdown 预览', nameEn: 'Markdown Preview', description: '实时渲染 Markdown 内容', descriptionEn: 'Live Markdown rendering', category: 'text', icon: '📄', component: 'MarkdownPreview', npmDeps: ['react-markdown'] },
@@ -38,6 +39,8 @@ export const tools: ToolMeta[] = [
   { id: 'text-diff', name: '文本对比', nameEn: 'Text Diff', description: '比较两段文本的差异', descriptionEn: 'Compare differences between two texts', category: 'text', icon: '📑', component: 'TextDiff', npmDeps: ['diff'] },
   { id: 'case-converter', name: '大小写转换', nameEn: 'Case Converter', description: '文本大小写转换：大写、小写、首字母大写', descriptionEn: 'Convert text case: upper, lower, title', category: 'text', icon: '🔤', component: 'CaseConverter' },
   { id: 'lorem-ipsum', name: 'Lorem Ipsum', nameEn: 'Lorem Ipsum', description: '生成占位文本', descriptionEn: 'Generate placeholder text', category: 'text', icon: '📜', component: 'LoremIpsum' },
+  { id: 'text-to-slug', name: '文本转 Slug', nameEn: 'Text to Slug', description: '将文本转换为 URL 友好的 Slug', descriptionEn: 'Convert text to URL-friendly slug', category: 'text', icon: '🔗', component: 'TextToSlug' },
+  { id: 'list-sorter', name: '列表排序', nameEn: 'List Sorter', description: '排序、去重和打乱列表', descriptionEn: 'Sort, deduplicate and shuffle lists', category: 'text', icon: '📋', component: 'ListSorter' },
 
   // ─── Security Tools ───
   { id: 'password-generator', name: '密码生成器', nameEn: 'Password Generator', description: '生成安全随机密码', descriptionEn: 'Generate secure random passwords', category: 'security', icon: '🔑', component: 'PasswordGenerator' },
@@ -57,4 +60,5 @@ export const tools: ToolMeta[] = [
   // ─── Converters ───
   { id: 'yaml-json', name: 'YAML ↔ JSON', nameEn: 'YAML to JSON', description: 'YAML 与 JSON 格式互转', descriptionEn: 'Convert between YAML and JSON formats', category: 'convert', icon: '🔄', component: 'YamlJsonConverter', npmDeps: ['js-yaml'] },
   { id: 'html-entities', name: 'HTML 实体编码', nameEn: 'HTML Entities', description: 'HTML 特殊字符转义与反转义', descriptionEn: 'Escape and unescape HTML special characters', category: 'convert', icon: '🔣', component: 'HtmlEntities' },
+  { id: 'json-to-csv', name: 'JSON → CSV', nameEn: 'JSON to CSV', description: 'JSON 数据转换为 CSV 格式', descriptionEn: 'Convert JSON data to CSV format', category: 'convert', icon: '📊', component: 'JsonToCsv' },
 ]

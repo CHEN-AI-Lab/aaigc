@@ -32,6 +32,10 @@ const toolModules: Record<string, React.LazyExoticComponent<React.ComponentType>
   'password-generator': lazy(() => import('./tools/PasswordGenerator')),
   'image-to-base64': lazy(() => import('./tools/ImageToBase64')),
   'number-base': lazy(() => import('./tools/NumberBaseConverter')),
+  'css-minifier': lazy(() => import('./tools/CssMinifier')),
+  'json-to-csv': lazy(() => import('./tools/JsonToCsv')),
+  'text-to-slug': lazy(() => import('./tools/TextToSlug')),
+  'list-sorter': lazy(() => import('./tools/ListSorter')),
 }
 
 export default function ToolPageClient({ slug, name, nameEn }: Props) {
