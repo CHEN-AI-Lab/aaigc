@@ -23,7 +23,8 @@
     "textTools": "Text Tools",
     "timeTools": "Time Tools",
     "imageTools": "Image Tools",
-    "convertTools": "Converters"
+    "convertTools": "Converters",
+    "toolCount": "{count} tools"
   },
   "products": {
     "title": "Our Products",

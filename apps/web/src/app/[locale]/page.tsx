@@ -1,7 +1,7 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import { products } from 'data/products'
-import { toolCategories } from 'data/tools'
+import { tools, toolCategories } from 'data/tools'
 import ProductCard from '../../components/ProductCard'
 
 type Props = { params: Promise<{ locale: string }> }
@@ -42,7 +42,9 @@ export default async function HomePage({ params }: Props) {
           <p className="text-text-secondary text-center mb-10">{t('toolsDesc')}</p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {toolCategories.map((cat) => (
+            {toolCategories.map((cat) => {
+              const count = tools.filter((t) => t.category === cat.id).length
+              return (
               <Link
                 key={cat.id}
                 href="/tools"
@@ -52,8 +54,9 @@ export default async function HomePage({ params }: Props) {
                 <h3 className="text-sm font-semibold text-text-primary">
                   {locale === 'en' ? cat.nameEn : cat.name}
                 </h3>
+                <p className="text-xs text-text-secondary mt-1">{t('toolCount', { count })}</p>
               </Link>
-            ))}
+            )})}
           </div>
 
           {/* Quick tool links */}

@@ -23,7 +23,8 @@
     "textTools": "文本工具",
     "timeTools": "时间工具",
     "imageTools": "图像工具",
-    "convertTools": "格式转换"
+    "convertTools": "格式转换",
+    "toolCount": "{count} 个工具"
   },
   "products": {
     "title": "我们的产品",
