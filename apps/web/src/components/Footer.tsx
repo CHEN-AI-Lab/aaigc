@@ -38,7 +38,7 @@ export default function Footer() {
             <h3 className="text-sm font-semibold text-text-primary mb-3">{t('connect')}</h3>
             <ul className="space-y-2 text-xs text-text-secondary">
               <li><a href="https://github.com/CHEN-AI-Lab" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">GitHub</a></li>
-              <li><a href="mailto:admin@aaigc.online" className="hover:text-accent transition-colors">Email</a></li>
+              <li><a href="mailto:hello@aaigc.online" className="hover:text-accent transition-colors">Email</a></li>
             </ul>
           </div>
         </div>

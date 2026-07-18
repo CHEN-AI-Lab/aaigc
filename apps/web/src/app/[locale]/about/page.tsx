@@ -18,8 +18,8 @@ export default async function AboutPage({ params }: Props) {
       <div className="mt-12 p-6 bg-surface rounded-sm shadow-warm-sm">
         <h2 className="text-sm font-semibold text-text-primary mb-3 uppercase tracking-wider">{t('contact')}</h2>
         <div className="space-y-2 text-sm">
-          <a href="mailto:admin@aaigc.online" className="block text-accent hover:underline">
-            admin@aaigc.online
+          <a href="mailto:hello@aaigc.online" className="block text-accent hover:underline">
+            hello@aaigc.online
           </a>
           <a href="https://github.com/CHEN-AI-Lab" target="_blank" rel="noopener noreferrer" className="block text-accent hover:underline">
             {t('github')}: CHEN-AI-Lab
