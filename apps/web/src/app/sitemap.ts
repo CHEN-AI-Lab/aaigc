@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { products } from 'data/products'
 import { tools } from 'data/tools'
 
-const locales = ['zh-CN', 'en']
+const locales = ['zh-CN', 'en', 'ja']
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = []

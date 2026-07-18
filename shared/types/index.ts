@@ -1,6 +1,6 @@
 // ─── Locale ────────────────────────────────────
 
-export type Locale = 'zh-CN' | 'en'
+export type Locale = 'zh-CN' | 'en' | 'ja'
 
 // ─── Product status ────────────────────────────
 
