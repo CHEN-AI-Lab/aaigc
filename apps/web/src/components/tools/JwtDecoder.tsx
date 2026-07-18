@@ -1,10 +1,10 @@
 'use client'
 
 import { useState, useCallback, useRef, useEffect } from 'react'
-import { useLocale } from 'next-intl'
+import { useTranslations } from 'next-intl'
 
 export default function JwtDecoder() {
-  const locale = useLocale()
+  const t = useTranslations('tools')
   const [input, setInput] = useState('')
   const [header, setHeader] = useState('')
   const [payload, setPayload] = useState('')
@@ -39,7 +39,7 @@ export default function JwtDecoder() {
     setPayload('')
     const parts = input.trim().split('.')
     if (parts.length !== 3) {
-      setError(locale === 'en' ? 'Invalid JWT: expected 3 parts' : '无效的 JWT：需要 3 段')
+      setError(t('invalidJwtParts'))
       return
     }
     try {
@@ -48,9 +48,9 @@ export default function JwtDecoder() {
       setHeader(JSON.stringify(h, null, 2))
       setPayload(JSON.stringify(p, null, 2))
     } catch {
-      setError(locale === 'en' ? 'Invalid JWT: failed to decode' : '无效的 JWT：解码失败')
+      setError(t('invalidJwt'))
     }
-  }, [input, locale])
+  }, [input, t])
 
   const handleCopyHeader = useCallback(() => {
     navigator.clipboard.writeText(header)
@@ -69,7 +69,7 @@ export default function JwtDecoder() {
   return (
     <div className="mt-6 space-y-4">
       <textarea value={input} onChange={e => setInput(e.target.value)} placeholder="eyJhbG...NiIs..." className="w-full h-24 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
-      <button onClick={decode} className="px-6 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{locale === 'en' ? 'Decode' : '解码'}</button>
+      <button onClick={decode} className="px-6 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{t('decode')}</button>
       {error && <p className="text-red-500 text-sm">{error}</p>}
       {header && (
         <div className="space-y-3">
@@ -86,7 +86,7 @@ export default function JwtDecoder() {
                 onClick={handleCopyHeader}
                 className={`absolute top-2 right-6 text-xs px-2.5 py-1.5 bg-accent text-white rounded-sm hover:opacity-90 transition-all ${animatingHeader ? 'scale-110 opacity-70' : 'opacity-100'}`}
               >
-                {locale === 'en' ? 'Copy' : '复制'}
+                {t('copy')}
               </button>
             </div>
           </div>
@@ -103,7 +103,7 @@ export default function JwtDecoder() {
                 onClick={handleCopyPayload}
                 className={`absolute top-2 right-6 text-xs px-2.5 py-1.5 bg-accent text-white rounded-sm hover:opacity-90 transition-all ${animatingPayload ? 'scale-110 opacity-70' : 'opacity-100'}`}
               >
-                {locale === 'en' ? 'Copy' : '复制'}
+                {t('copy')}
               </button>
             </div>
           </div>

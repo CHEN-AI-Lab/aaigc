@@ -1,10 +1,10 @@
 'use client'
 
 import { useState, useRef, useCallback } from 'react'
-import { useLocale } from 'next-intl'
+import { useTranslations } from 'next-intl'
 
 export default function ColorPicker() {
-  const locale = useLocale()
+  const t = useTranslations('tools')
   const [color, setColor] = useState('#fa520f')
   const [animIndex, setAnimIndex] = useState<number | null>(null)
   const animTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -40,7 +40,7 @@ export default function ColorPicker() {
   }, [])
 
   const values = [
-    { label: 'HEX', value: hex },
+    { label: t('hex'), value: hex },
     { label: 'RGB', value: `rgb(${rgb})` },
     { label: 'HSL', value: hsl },
   ]
@@ -50,7 +50,7 @@ export default function ColorPicker() {
       <div className="flex items-center gap-6 p-4 bg-surface rounded-sm border border-[rgba(127,99,21,0.15)]">
         <div className="flex flex-col items-center gap-2">
           <input type="color" value={color} onChange={e => setColor(e.target.value)} className="w-16 h-16 rounded-sm cursor-pointer border border-[rgba(127,99,21,0.15)]" />
-          <span className="text-xs text-text-secondary">{locale === 'en' ? 'Pick' : '选取'}</span>
+          <span className="text-xs text-text-secondary">{t('pick')}</span>
         </div>
         <div className="flex-1 space-y-2">
           {values.map(({ label, value }, i) => (
@@ -61,14 +61,14 @@ export default function ColorPicker() {
                 onClick={() => handleCopy(value, i)}
                 className={`text-xs px-2 py-0.5 bg-accent text-white rounded-sm transition-all ${animIndex === i ? 'scale-110 opacity-70' : 'hover:opacity-90'}`}
               >
-                {locale === 'en' ? 'Copy' : '复制'}
+                {t('copy')}
               </button>
             </div>
           ))}
         </div>
       </div>
       <div>
-        <p className="text-xs text-text-secondary mb-2">{locale === 'en' ? 'Preset colors' : '预设颜色'}</p>
+        <p className="text-xs text-text-secondary mb-2">{t('presetColors')}</p>
         <div className="grid grid-cols-10 sm:grid-cols-15 gap-1.5">
           {presets.map(c => (
             <button key={c} onClick={() => setColor(c)} className="h-8 rounded-sm border border-[rgba(127,99,21,0.1)] cursor-pointer hover:scale-110 transition-transform" style={{ backgroundColor: c }} title={c} />

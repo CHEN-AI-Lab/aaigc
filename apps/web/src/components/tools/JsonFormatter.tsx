@@ -1,10 +1,10 @@
 'use client'
 
 import { useState, useCallback, useRef, useEffect } from 'react'
-import { useLocale } from 'next-intl'
+import { useTranslations } from 'next-intl'
 
 export default function JsonFormatter() {
-  const locale = useLocale()
+  const t = useTranslations('tools')
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
   const [error, setError] = useState('')
@@ -56,29 +56,29 @@ export default function JsonFormatter() {
       setOutput(formatted)
       generateDownloadUrl(formatted)
     } catch (e) {
-      setError(`${locale === 'en' ? 'Invalid JSON' : '无效的 JSON'}: ${(e as Error).message}`)
+      setError(`${t('invalidJson')}: ${(e as Error).message}`)
       setOutput('')
       if (downloadUrl) {
         revokeUrl(downloadUrl)
         setDownloadUrl('')
       }
     }
-  }, [input, locale, generateDownloadUrl, downloadUrl, revokeUrl])
+  }, [input, t, generateDownloadUrl, downloadUrl, revokeUrl])
 
   const validate = useCallback(() => {
     setError('')
     try {
       JSON.parse(input)
-      setOutput(locale === 'en' ? '✅ Valid JSON' : '✅ JSON 格式正确')
+      setOutput(t('validJson'))
     } catch (e) {
-      setError(`${locale === 'en' ? 'Invalid JSON' : '无效的 JSON'}: ${(e as Error).message}`)
+      setError(`${t('invalidJson')}: ${(e as Error).message}`)
       setOutput('')
     }
     if (downloadUrl) {
       revokeUrl(downloadUrl)
       setDownloadUrl('')
     }
-  }, [input, locale, downloadUrl, revokeUrl])
+  }, [input, t, downloadUrl, revokeUrl])
 
   const minify = useCallback(() => {
     setError('')
@@ -88,10 +88,10 @@ export default function JsonFormatter() {
       setOutput(minified)
       generateDownloadUrl(minified)
     } catch (e) {
-      setError(`${locale === 'en' ? 'Invalid JSON' : '无效的 JSON'}: ${(e as Error).message}`)
+      setError(`${t('invalidJson')}: ${(e as Error).message}`)
       clearState()
     }
-  }, [input, locale, generateDownloadUrl, clearState])
+  }, [input, t, generateDownloadUrl, clearState])
 
   const handleCopy = useCallback(() => {
     navigator.clipboard.writeText(output)
@@ -109,16 +109,16 @@ export default function JsonFormatter() {
         className="w-full h-36 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30"
       />
       <div className="flex gap-2 flex-wrap items-center">
-        <button onClick={format} className="px-4 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{locale === 'en' ? 'Format' : '格式化'}</button>
-        <button onClick={validate} className="px-4 py-2 bg-surface text-text-primary text-sm rounded-sm hover:bg-accent/10 border border-[rgba(127,99,21,0.15)]">{locale === 'en' ? 'Validate' : '校验'}</button>
-        <button onClick={minify} className="px-4 py-2 bg-surface text-text-primary text-sm rounded-sm hover:bg-accent/10 border border-[rgba(127,99,21,0.15)]">{locale === 'en' ? 'Minify' : '压缩'}</button>
+        <button onClick={format} className="px-4 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{t('format')}</button>
+        <button onClick={validate} className="px-4 py-2 bg-surface text-text-primary text-sm rounded-sm hover:bg-accent/10 border border-[rgba(127,99,21,0.15)]">{t('validate')}</button>
+        <button onClick={minify} className="px-4 py-2 bg-surface text-text-primary text-sm rounded-sm hover:bg-accent/10 border border-[rgba(127,99,21,0.15)]">{t('minify')}</button>
         {downloadUrl && (
           <a
             href={downloadUrl}
             download="formatted.json"
             className="px-4 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90 transition-opacity"
           >
-            {locale === 'en' ? 'Download JSON' : '下载 JSON'}
+            {t('downloadJson')}
           </a>
         )}
       </div>
@@ -135,7 +135,7 @@ export default function JsonFormatter() {
             onClick={handleCopy}
             className={`absolute top-2 right-6 text-xs px-2.5 py-1.5 bg-accent text-white rounded-sm hover:opacity-90 transition-all ${animating ? 'scale-110 opacity-70' : 'opacity-100'}`}
           >
-            {locale === 'en' ? 'Copy' : '复制'}
+            {t('copy')}
           </button>
         </div>
       )}

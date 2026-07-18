@@ -1,10 +1,10 @@
 'use client'
 
 import { useState, useCallback, useRef, useEffect } from 'react'
-import { useLocale } from 'next-intl'
+import { useTranslations } from 'next-intl'
 
 export default function HtmlEntities() {
-  const locale = useLocale()
+  const t = useTranslations('tools')
   const [input, setInput] = useState('')
   const [mode, setMode] = useState<'escape' | 'unescape'>('escape')
   const [output, setOutput] = useState('')
@@ -27,7 +27,7 @@ export default function HtmlEntities() {
     if (!input) { setOutput(''); return }
     try {
       if (mode === 'escape') {
-        setOutput(input.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'))
+        setOutput(input.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;').replace(/'/g, '&#39;'))
       } else {
         const txt = new DOMParser().parseFromString(input, 'text/html')
         const text = txt.body.textContent
@@ -35,9 +35,9 @@ export default function HtmlEntities() {
         setOutput(text)
       }
     } catch {
-      setError(locale === 'en' ? 'Failed to unescape HTML' : 'HTML 反转义失败')
+      setError(t('failedToUnescape'))
     }
-  }, [input, mode, locale])
+  }, [input, mode, t])
 
   const handleCopy = useCallback(() => {
     navigator.clipboard.writeText(output)
@@ -49,11 +49,11 @@ export default function HtmlEntities() {
   return (
     <div className="mt-6 space-y-4">
       <div className="flex gap-2">
-        <button onClick={() => setMode('escape')} className={`px-4 py-1.5 text-sm rounded-sm transition-colors ${mode === 'escape' ? 'bg-accent text-white' : 'bg-surface text-text-primary'}`}>{locale === 'en' ? 'Escape' : '转义'}</button>
-        <button onClick={() => setMode('unescape')} className={`px-4 py-1.5 text-sm rounded-sm transition-colors ${mode === 'unescape' ? 'bg-accent text-white' : 'bg-surface text-text-primary'}`}>{locale === 'en' ? 'Unescape' : '反转义'}</button>
+        <button onClick={() => setMode('escape')} className={`px-4 py-1.5 text-sm rounded-sm transition-colors ${mode === 'escape' ? 'bg-accent text-white' : 'bg-surface text-text-primary'}`}>{t('escape')}</button>
+        <button onClick={() => setMode('unescape')} className={`px-4 py-1.5 text-sm rounded-sm transition-colors ${mode === 'unescape' ? 'bg-accent text-white' : 'bg-surface text-text-primary'}`}>{t('unescape')}</button>
       </div>
-      <textarea value={input} onChange={e => setInput(e.target.value)} placeholder={locale === 'en' ? 'Enter HTML...' : '输入 HTML...'} className="w-full h-28 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
-      <button onClick={convert} className="px-6 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90 transition-opacity">{locale === 'en' ? 'Convert' : '转换'}</button>
+      <textarea value={input} onChange={e => setInput(e.target.value)} placeholder={t('enterHtml')} className="w-full h-28 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
+      <button onClick={convert} className="px-6 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90 transition-opacity">{t('convert')}</button>
       {error && <p className="text-red-500 text-sm">{error}</p>}
       {output && (
         <div className="relative">
@@ -67,7 +67,7 @@ export default function HtmlEntities() {
             onClick={handleCopy}
             className={`absolute top-2 right-6 text-xs px-2.5 py-1.5 bg-accent text-white rounded-sm hover:opacity-90 transition-all ${animating ? 'scale-110 opacity-70' : 'opacity-100'}`}
           >
-            {locale === 'en' ? 'Copy' : '复制'}
+            {t('copy')}
           </button>
         </div>
       )}
