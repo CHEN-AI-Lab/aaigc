@@ -2,7 +2,7 @@ import createMiddleware from 'next-intl/middleware'
 import type { NextRequest } from 'next/server'
 import { routing } from './i18n/routing'
 
-export function proxy(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const intlMiddleware = createMiddleware(routing)
   return intlMiddleware(request)
 }
