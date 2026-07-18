@@ -134,7 +134,7 @@ export default function DateCalculator() {
     const d = Math.floor(abs / 86400000)
     const h = Math.floor((abs % 86400000) / 3600000)
     const m = Math.floor((abs % 3600000) / 60000)
-    setDiff(`${diffTime}${d} ${locale === 'en' ? 'days' : '天'}, ${h} ${locale === 'en' ? 'hours' : '小时'}, ${m} ${locale === 'en' ? 'minutes' : '分钟'}`)
+    setDiff(`${prefix}${d} ${locale === 'en' ? 'days' : '天'}, ${h} ${locale === 'en' ? 'hours' : '小时'}, ${m} ${locale === 'en' ? 'minutes' : '分钟'}`)
   }, [d1y, d1m, d1d, d1h, d1min, d1s, d2y, d2m, d2d, d2h, d2min, d2s, locale])
 
   const calcAdd = useCallback(() => {
