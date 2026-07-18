@@ -15,7 +15,15 @@ export const metadata: Metadata = {
     description: 'AI-powered tools and applications for everyone.',
     type: 'website',
     locale: 'en_US',
+    siteName: 'AAIGC',
+    url: 'https://aaigc.online',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AAIGC — AI-Powered Tools',
+    description: 'AI-powered tools and applications for everyone.',
+  },
+  keywords: ['AI tools', 'online tools', 'JSON formatter', 'QR code generator', 'developer tools'],
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

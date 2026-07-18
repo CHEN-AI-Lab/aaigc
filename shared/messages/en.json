@@ -77,6 +77,8 @@
     "toolTimestamp": "Timestamp",
     "toolQrcode": "QR Code",
     "more": "More...",
+    "updates": "Updates",
+    "privacy": "Privacy",
     "copyright": "AAIGC. All rights reserved."
   },
   "privacy": {
@@ -89,5 +91,10 @@
     "thirdDesc": "This site is hosted on Vercel. Vercel may collect standard server logs (IP address, request time, etc.) as part of their hosting service. We do not use any analytics, tracking, or advertising services.",
     "contactTitle": "Contact",
     "contactDesc": "If you have any questions about this privacy policy, please contact us at chen@aaigc.online."
+  },
+  "updates": {
+    "title": "Updates",
+    "subtitle": "Recent changes and new features",
+    "back": "Back to Home"
   }
 }
