@@ -83,14 +83,8 @@
   },
   "privacy": {
     "title": "Privacy Policy",
-    "infoTitle": "Information We Collect",
-    "infoDesc": "AAIGC is a static website. All tools run entirely in your browser — no data is sent to our servers.",
-    "cookiesTitle": "Cookies",
-    "cookiesDesc": "We use a single functional cookie to remember your language preference. No tracking or analytics cookies are used.",
-    "thirdTitle": "Third-Party Services",
-    "thirdDesc": "This site may use standard hosting and infrastructure services. These services may collect standard server logs as part of normal operation.",
-    "contactTitle": "Contact",
-    "contactDesc": "For questions, contact chen@aaigc.online."
+    "desc": "AAIGC is a static website. We do not collect, store, or process any personal data. All tools run entirely in your browser — nothing is sent to our servers. We use a functional cookie to remember your language preference. No tracking or analytics are used.",
+    "contact": "For questions, contact chen@aaigc.online."
   },
   "updates": {
     "title": "Updates",

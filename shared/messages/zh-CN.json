@@ -83,14 +83,8 @@
   },
   "privacy": {
     "title": "隐私政策",
-    "infoTitle": "我们收集的信息",
-    "infoDesc": "AAIGC 是一个静态网站。所有工具均在您的浏览器中运行 — 不会有数据发送到我们的服务器。",
-    "cookiesTitle": "Cookie",
-    "cookiesDesc": "我们使用一个功能性 Cookie 来记住您的语言偏好。不使用任何跟踪或分析 Cookie。",
-    "thirdTitle": "第三方服务",
-    "thirdDesc": "本站可能使用标准托管和基础设施服务。这些服务可能会收集标准服务器日志作为正常运营的一部分。",
-    "contactTitle": "联系方式",
-    "contactDesc": "如有疑问，请联系 chen@aaigc.online。"
+    "desc": "AAIGC 是一个静态网站。我们不收集、存储或处理任何个人数据。所有工具均在您的浏览器中运行 — 不会有数据发送到我们的服务器。我们使用一个功能性 Cookie 来记住您的语言偏好。不使用任何跟踪或分析工具。",
+    "contact": "如有疑问，请联系 chen@aaigc.online。"
   },
   "updates": {
     "title": "更新日志",
