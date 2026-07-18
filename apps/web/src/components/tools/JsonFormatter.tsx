@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import { useLocale } from 'next-intl'
 
 export default function JsonFormatter() {
@@ -11,6 +11,18 @@ export default function JsonFormatter() {
   const [animating, setAnimating] = useState(false)
   const [downloadUrl, setDownloadUrl] = useState('')
   const animTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const outputRef = useRef<HTMLTextAreaElement>(null)
+
+  const autoResize = useCallback(() => {
+    const el = outputRef.current
+    if (!el) return
+    el.style.height = '0'
+    el.style.height = `${el.scrollHeight}px`
+  }, [])
+
+  useEffect(() => {
+    autoResize()
+  }, [output, autoResize])
 
   const format = useCallback(() => {
     setError('')
@@ -88,9 +100,10 @@ export default function JsonFormatter() {
       {output && (
         <div className="relative">
           <textarea
+            ref={outputRef}
             readOnly
             value={output}
-            className="w-full h-64 p-3 pr-16 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary resize-none"
+            className="w-full min-h-[200px] p-3 pr-16 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary resize-none overflow-hidden"
           />
           <button
             onClick={handleCopy}
