@@ -29,9 +29,11 @@ export default async function HomePage({ params }: Props) {
         <h2 className="section-title text-text-primary text-center mb-10">{t('productsTitle')}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {products.map((p) => (
-            <Link
+            <a
               key={p.id}
-              href={p.url as unknown as string}
+              href={p.url}
+              target="_blank"
+              rel="noopener noreferrer"
               className="block bg-surface rounded-sm p-6 shadow-warm-sm hover:shadow-warm transition-shadow group"
             >
               <div className="text-4xl mb-4">{p.icon}</div>
@@ -46,7 +48,7 @@ export default async function HomePage({ params }: Props) {
               }`}>
                 {p.status === 'live' ? tc('live') : tc('inDevelopment')}
               </span>
-            </Link>
+            </a>
           ))}
         </div>
       </section>
