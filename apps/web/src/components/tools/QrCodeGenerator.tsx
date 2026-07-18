@@ -24,7 +24,7 @@ export default function QrCodeGenerator() {
   return (
     <div className="mt-6 space-y-4">
       <textarea value={text} onChange={e => setText(e.target.value)} placeholder={locale === 'en' ? 'Enter text or URL...' : '输入文本或 URL...'} className="w-full h-24 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
-      <button onClick={generate} className="px-6 py-2 bg-dark text-white text-sm rounded-sm hover:opacity-90">{locale === 'en' ? 'Generate QR Code' : '生成二维码'}</button>
+      <button onClick={generate} className="px-6 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{locale === 'en' ? 'Generate QR Code' : '生成二维码'}</button>
       {error && <p className="text-red-500 text-sm">{error}</p>}
       {qrDataUrl && (
         <div className="flex flex-col items-center gap-3 p-6 bg-white rounded-sm shadow-warm-sm">

@@ -32,7 +32,7 @@ export default function TimestampConverter() {
         <h3 className="text-sm font-medium text-text-primary mb-2">{locale === 'en' ? 'Timestamp → Date' : '时间戳 → 日期'}</h3>
         <div className="flex gap-2">
           <input value={ts} onChange={e => setTs(e.target.value)} placeholder="1700000000" className="flex-1 p-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/30" />
-          <button onClick={toDate} className="px-4 py-2 bg-dark text-white text-sm rounded-sm hover:opacity-90">{locale === 'en' ? 'Convert' : '转换'}</button>
+          <button onClick={toDate} className="px-4 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{locale === 'en' ? 'Convert' : '转换'}</button>
         </div>
         {dateResult && <p className="mt-2 text-sm text-text-primary">{dateResult}</p>}
       </div>
@@ -41,7 +41,7 @@ export default function TimestampConverter() {
         <h3 className="text-sm font-medium text-text-primary mb-2">{locale === 'en' ? 'Date → Timestamp' : '日期 → 时间戳'}</h3>
         <div className="flex gap-2">
           <input value={date} onChange={e => setDate(e.target.value)} placeholder="2024-01-01" className="flex-1 p-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/30" />
-          <button onClick={toTs} className="px-4 py-2 bg-dark text-white text-sm rounded-sm hover:opacity-90">{locale === 'en' ? 'Convert' : '转换'}</button>
+          <button onClick={toTs} className="px-4 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{locale === 'en' ? 'Convert' : '转换'}</button>
         </div>
         {tsResult && <p className="mt-2 text-sm text-text-primary font-mono">{tsResult}</p>}
       </div>

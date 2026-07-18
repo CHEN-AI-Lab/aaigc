@@ -45,7 +45,7 @@ export default function DateCalculator() {
           <input type="date" value={date1} onChange={e => setDate1(e.target.value)} className="p-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30" />
           <input type="date" value={date2} onChange={e => setDate2(e.target.value)} className="p-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30" />
         </div>
-        <button onClick={calcDiff} className="px-4 py-2 bg-dark text-white text-sm rounded-sm hover:opacity-90">{locale === 'en' ? 'Calculate' : '计算'}</button>
+        <button onClick={calcDiff} className="px-4 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{locale === 'en' ? 'Calculate' : '计算'}</button>
         {diff && <p className="mt-2 text-sm text-text-primary">{diff}</p>}
       </div>
 
@@ -55,7 +55,7 @@ export default function DateCalculator() {
           <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="flex-1 p-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30" />
           <input type="number" value={days} onChange={e => setDays(e.target.value)} placeholder={locale === 'en' ? 'Days' : '天数'} className="w-24 p-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary text-center focus:outline-none focus:border-accent/30" />
         </div>
-        <button onClick={calcAdd} className="px-4 py-2 bg-dark text-white text-sm rounded-sm hover:opacity-90">{locale === 'en' ? 'Calculate' : '计算'}</button>
+        <button onClick={calcAdd} className="px-4 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{locale === 'en' ? 'Calculate' : '计算'}</button>
         {addResult && <p className="mt-2 text-sm text-text-primary">{addResult}</p>}
       </div>
       {error && <p className="text-red-500 text-sm">{error}</p>}

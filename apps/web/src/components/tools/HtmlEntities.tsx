@@ -44,7 +44,7 @@ export default function HtmlEntities() {
         <button onClick={() => setMode('unescape')} className={`px-4 py-1.5 text-sm rounded-sm transition-colors ${mode === 'unescape' ? 'bg-accent text-white' : 'bg-surface text-text-primary'}`}>{locale === 'en' ? 'Unescape' : '反转义'}</button>
       </div>
       <textarea value={input} onChange={e => setInput(e.target.value)} placeholder={locale === 'en' ? 'Enter HTML...' : '输入 HTML...'} className="w-full h-28 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
-      <button onClick={convert} className="px-6 py-2 bg-dark text-white text-sm rounded-sm hover:opacity-90 transition-opacity">{locale === 'en' ? 'Convert' : '转换'}</button>
+      <button onClick={convert} className="px-6 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90 transition-opacity">{locale === 'en' ? 'Convert' : '转换'}</button>
       {output && (
         <div className="relative">
           <textarea
@@ -55,7 +55,7 @@ export default function HtmlEntities() {
           />
           <button
             onClick={handleCopy}
-            className={`absolute top-2 right-6 text-xs px-2.5 py-1.5 bg-dark text-white rounded-sm hover:opacity-90 transition-all ${animating ? 'scale-110 opacity-70' : 'opacity-100'}`}
+            className={`absolute top-2 right-6 text-xs px-2.5 py-1.5 bg-accent text-white rounded-sm hover:opacity-90 transition-all ${animating ? 'scale-110 opacity-70' : 'opacity-100'}`}
           >
             {locale === 'en' ? 'Copy' : '复制'}
           </button>
