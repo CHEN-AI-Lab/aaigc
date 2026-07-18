@@ -168,7 +168,7 @@ export default function DateCalculator() {
           <div>
             <label className="block text-xs text-text-secondary mb-1">
               {t('startDate')}
-              <button onClick={() => { todayBtn({ y: setD1y, m: setD1m, d: setD1d, h: setD1h, min: setD1min, s: setD1s }); setDiff('') }} className="ml-1.5 text-[10px] text-accent hover:underline">{locale === 'en' ? 'Today' : '今天'}</button>
+              <button onClick={() => { todayBtn({ y: setD1y, m: setD1m, d: setD1d, h: setD1h, min: setD1min, s: setD1s }); setDiff('') }} className="ml-1.5 text-[10px] text-accent hover:underline">{t('today')}</button>
             </label>
             <div className="flex items-center gap-1.5 flex-wrap">
               <DateSelect year={d1y} month={d1m} day={d1d} onYear={setD1y} onMonth={setD1m} onDay={setD1d} years={years} months={months} days={Array.from({ length: d1days }, (_, i) => i + 1)} />
@@ -191,7 +191,7 @@ export default function DateCalculator() {
           <div>
             <label className="block text-xs text-text-secondary mb-1">
               {t('endDate')}
-              <button onClick={() => { todayBtn({ y: setD2y, m: setD2m, d: setD2d, h: setD2h, min: setD2min, s: setD2s }); setDiff('') }} className="ml-1.5 text-[10px] text-accent hover:underline">{locale === 'en' ? 'Today' : '今天'}</button>
+              <button onClick={() => { todayBtn({ y: setD2y, m: setD2m, d: setD2d, h: setD2h, min: setD2min, s: setD2s }); setDiff('') }} className="ml-1.5 text-[10px] text-accent hover:underline">{t('today')}</button>
             </label>
             <div className="flex items-center gap-1.5 flex-wrap">
               <DateSelect year={d2y} month={d2m} day={d2d} onYear={setD2y} onMonth={setD2m} onDay={setD2d} years={years} months={months} days={Array.from({ length: d2days }, (_, i) => i + 1)} />
@@ -226,8 +226,8 @@ export default function DateCalculator() {
         <div className="flex flex-wrap gap-2 mb-3 items-end">
           <div>
             <label className="block text-[10px] text-text-secondary mb-0.5">
-              {locale === 'en' ? 'Date' : '日期'}
-              <button onClick={() => { const d = new Date(); setAddY(String(d.getFullYear())); setAddM(String(d.getMonth() + 1)); setAddD(String(d.getDate())); setAddResult('') }} className="ml-1.5 text-[10px] text-accent hover:underline">{locale === 'en' ? 'Today' : '今天'}</button>
+              {t('date')}
+              <button onClick={() => { const d = new Date(); setAddY(String(d.getFullYear())); setAddM(String(d.getMonth() + 1)); setAddD(String(d.getDate())); setAddResult('') }} className="ml-1.5 text-[10px] text-accent hover:underline">{t('today')}</button>
             </label>
             <div className="flex items-center gap-1.5">
               <DateSelect year={addY} month={addM} day={addD} onYear={setAddY} onMonth={setAddM} onDay={setAddD} years={years} months={months} days={Array.from({ length: addDaysMax }, (_, i) => i + 1)} />
