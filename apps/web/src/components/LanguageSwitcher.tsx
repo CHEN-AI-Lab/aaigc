@@ -37,7 +37,11 @@ export default function LanguageSwitcher() {
         className="flex items-center justify-center w-8 h-8 rounded-sm hover:bg-[#fff0c2] transition-colors text-text-secondary text-lg"
         title={current}
       >
-        <span>🌐</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="2" y1="12" x2="22" y2="12"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
       </button>
       {open && (
         <div className="absolute right-0 top-full mt-1 bg-white border border-[rgba(127,99,21,0.12)] shadow-warm-sm rounded-sm min-w-[120px] z-50">
