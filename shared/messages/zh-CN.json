@@ -92,6 +92,8 @@
     "maxSize": "最大 5MB",
     "fileTooLarge": "文件过大，最大 5MB",
     "failedToRead": "文件读取失败",
+    "loremDesc": "生成用于设计和布局草稿的占位文本。选择段落、句子或单词模式，设置数量后点击生成。",
+    "baseDesc": "输入一个数字并选择其当前进制。转换器将显示该数字在所有其他进制下的值。",
     "dateDifference": "日期间隔",
     "addSubtractDays": "日期加减",
     "calculateDiffDesc": "计算两个日期之间的时间差",

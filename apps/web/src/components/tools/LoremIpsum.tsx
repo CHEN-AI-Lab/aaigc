@@ -9,7 +9,7 @@ export default function LoremIpsum() {
   const t = useTranslations('tools')
   const [output, setOutput] = useState('')
   const [count, setCount] = useState(5)
-  const [type, setType] = useState<'paragraphs' | 'words' | 'sentences'>('paragraphs')
+  const [type, setType] = useState<'paragraphs' | 'sentences' | 'words'>('paragraphs')
 
   const generate = useCallback(() => {
     const n = Math.min(100, Math.max(1, count))
@@ -39,14 +39,22 @@ export default function LoremIpsum() {
 
   return (
     <div className="mt-6 space-y-4">
+      <div className="p-3 bg-surface rounded-sm text-xs text-text-secondary leading-relaxed">
+        {t('loremDesc')}
+      </div>
       <div className="flex items-center gap-3 flex-wrap">
-        {(['paragraphs', 'sentences', 'words'] as const).map((t) => (
-          <button key={t} onClick={() => setType(t)} className={`px-4 py-1.5 text-sm rounded-sm transition-colors ${type === t ? 'bg-accent text-white' : 'bg-surface text-text-primary'}`}>
-            {t === 'paragraphs' ? 'Paragraphs' : t === 'sentences' ? 'Sentences' : 'Words'}
-          </button>
-        ))}
+        <div className="flex gap-1">
+          {(['paragraphs', 'sentences', 'words'] as const).map((t) => (
+            <button key={t} onClick={() => setType(t)} className={`px-3 py-1.5 text-sm rounded-sm transition-colors ${
+              type === t ? 'bg-accent text-white' : 'bg-surface text-text-primary hover:bg-accent/10'
+            }`}>
+              {t === 'paragraphs' ? '段落' : t === 'sentences' ? '句子' : '单词'}
+            </button>
+          ))}
+        </div>
         <input type="number" min={1} max={100} value={count} onChange={e => setCount(Math.min(100, Math.max(1, parseInt(e.target.value) || 1)))}
           className="w-20 p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary text-center focus:outline-none focus:border-accent/30" />
+        <span className="text-xs text-text-secondary">{t('count')}</span>
         <button onClick={generate} className="px-6 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{t('generate')}</button>
       </div>
       {output && (

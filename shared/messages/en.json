@@ -92,6 +92,8 @@
     "maxSize": "Max 5MB",
     "fileTooLarge": "File too large. Max 5MB",
     "failedToRead": "Failed to read file",
+    "loremDesc": "Generate placeholder text for design and layout mockups. Choose paragraph, sentence, or word mode and set the quantity.",
+    "baseDesc": "Enter a number and select its current base. The converter will show the value in all other bases.",
     "dateDifference": "Date Difference",
     "addSubtractDays": "Add / Subtract Days",
     "calculateDiffDesc": "Calculate the time difference between two dates",
