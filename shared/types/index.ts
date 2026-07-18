@@ -25,7 +25,7 @@ export interface Product {
 
 // ─── Tool category ─────────────────────────────
 
-export type ToolCategoryId = 'dev' | 'text' | 'time' | 'image' | 'convert'
+export type ToolCategoryId = 'dev' | 'text' | 'time' | 'image' | 'convert' | 'security' | 'math'
 
 export interface CategoryInfo {
   id: ToolCategoryId

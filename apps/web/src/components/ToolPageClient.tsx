@@ -25,6 +25,13 @@ const toolModules: Record<string, React.LazyExoticComponent<React.ComponentType>
   'markdown-preview': lazy(() => import('./tools/MarkdownPreview')),
   'yaml-json': lazy(() => import('./tools/YamlJsonConverter')),
   'text-diff': lazy(() => import('./tools/TextDiff')),
+  'uuid-generator': lazy(() => import('./tools/UuidGenerator')),
+  'html-preview': lazy(() => import('./tools/HtmlPreview')),
+  'case-converter': lazy(() => import('./tools/CaseConverter')),
+  'lorem-ipsum': lazy(() => import('./tools/LoremIpsum')),
+  'password-generator': lazy(() => import('./tools/PasswordGenerator')),
+  'image-to-base64': lazy(() => import('./tools/ImageToBase64')),
+  'number-base': lazy(() => import('./tools/NumberBaseConverter')),
 }
 
 export default function ToolPageClient({ slug, name, nameEn }: Props) {
