@@ -9,10 +9,7 @@ export default function JwtDecoder() {
   const [header, setHeader] = useState('')
   const [payload, setPayload] = useState('')
   const [error, setError] = useState('')
-  const [animatingHeader, setAnimatingHeader] = useState(false)
-  const [animatingPayload, setAnimatingPayload] = useState(false)
-  const headerTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const payloadTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [copied, setCopied] = useState('')
   const headerRef = useRef<HTMLTextAreaElement>(null)
   const payloadRef = useRef<HTMLTextAreaElement>(null)
 
@@ -52,18 +49,20 @@ export default function JwtDecoder() {
     }
   }, [input, t])
 
-  const handleCopyHeader = useCallback(() => {
-    navigator.clipboard.writeText(header)
-    setAnimatingHeader(true)
-    if (headerTimer.current) clearTimeout(headerTimer.current)
-    headerTimer.current = setTimeout(() => setAnimatingHeader(false), 400)
+  const handleCopyHeader = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(header)
+      setCopied('header')
+      setTimeout(() => setCopied(''), 2000)
+    } catch { /* ignore */ }
   }, [header])
 
-  const handleCopyPayload = useCallback(() => {
-    navigator.clipboard.writeText(payload)
-    setAnimatingPayload(true)
-    if (payloadTimer.current) clearTimeout(payloadTimer.current)
-    payloadTimer.current = setTimeout(() => setAnimatingPayload(false), 400)
+  const handleCopyPayload = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(payload)
+      setCopied('payload')
+      setTimeout(() => setCopied(''), 2000)
+    } catch { /* ignore */ }
   }, [payload])
 
   return (
@@ -84,9 +83,13 @@ export default function JwtDecoder() {
               />
               <button
                 onClick={handleCopyHeader}
-                className={`absolute top-2 right-6 text-xs px-2.5 py-1.5 bg-accent text-white rounded-sm hover:opacity-90 transition-all ${animatingHeader ? 'scale-110 opacity-70' : 'opacity-100'}`}
+                className={`absolute top-2 right-6 text-xs px-2.5 py-1.5 rounded-sm transition-all duration-200 ${
+                  copied === 'header'
+                    ? 'bg-green-500 text-white scale-105'
+                    : 'bg-accent text-white hover:opacity-90'
+                }`}
               >
-                {t('copy')}
+                {copied === 'header' ? t('copied') : t('copy')}
               </button>
             </div>
           </div>
@@ -101,9 +104,13 @@ export default function JwtDecoder() {
               />
               <button
                 onClick={handleCopyPayload}
-                className={`absolute top-2 right-6 text-xs px-2.5 py-1.5 bg-accent text-white rounded-sm hover:opacity-90 transition-all ${animatingPayload ? 'scale-110 opacity-70' : 'opacity-100'}`}
+                className={`absolute top-2 right-6 text-xs px-2.5 py-1.5 rounded-sm transition-all duration-200 ${
+                  copied === 'payload'
+                    ? 'bg-green-500 text-white scale-105'
+                    : 'bg-accent text-white hover:opacity-90'
+                }`}
               >
-                {t('copy')}
+                {copied === 'payload' ? t('copied') : t('copy')}
               </button>
             </div>
           </div>

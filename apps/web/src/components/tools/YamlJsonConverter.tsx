@@ -10,6 +10,7 @@ export default function YamlJsonConverter() {
   const [mode, setMode] = useState<'yaml2json' | 'json2yaml'>('yaml2json')
   const [output, setOutput] = useState('')
   const [error, setError] = useState('')
+  const [copied, setCopied] = useState(false)
 
   const convert = useCallback(async () => {
     setError('')
@@ -30,6 +31,14 @@ export default function YamlJsonConverter() {
     }
   }, [input, mode, t])
 
+  const handleCopy = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(output)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch { /* ignore */ }
+  }, [output])
+
   return (
     <div className="mt-6 space-y-4">
       <div className="flex gap-2">
@@ -42,7 +51,14 @@ export default function YamlJsonConverter() {
       {output && (
         <div className="relative">
           <textarea readOnly value={output} className="w-full h-36 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary resize-none" />
-          <button onClick={() => navigator.clipboard.writeText(output)} className="absolute top-2 right-2 text-xs px-2 py-1 bg-accent text-white rounded-sm hover:opacity-90">{t('copy')}</button>
+          <button onClick={handleCopy}
+            className={`text-xs px-2 py-1 rounded-sm transition-all duration-200 absolute top-2 right-2 ${
+              copied
+                ? 'bg-green-500 text-white scale-105'
+                : 'bg-accent text-white hover:opacity-90'
+            }`}>
+            {copied ? t('copied') : t('copy')}
+          </button>
         </div>
       )}
     </div>

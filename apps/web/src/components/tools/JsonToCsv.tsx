@@ -8,6 +8,7 @@ export default function JsonToCsv() {
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
   const [error, setError] = useState('')
+  const [copied, setCopied] = useState(false)
 
   const convert = useCallback(() => {
     setError('')
@@ -35,6 +36,14 @@ export default function JsonToCsv() {
     }
   }, [input, t])
 
+  const handleCopy = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(output)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch { /* ignore */ }
+  }, [output])
+
   return (
     <div className="mt-6 space-y-4">
       <textarea value={input} onChange={e => setInput(e.target.value)} placeholder='[{"name":"Alice","age":30}]' className="w-full h-32 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
@@ -43,7 +52,14 @@ export default function JsonToCsv() {
       {output && (
         <div className="relative">
           <textarea readOnly value={output} className="w-full h-32 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary resize-none" />
-          <button onClick={() => navigator.clipboard.writeText(output)} className="absolute top-2 right-2 text-xs px-2 py-1 bg-accent text-white rounded-sm hover:opacity-90">{t('copy')}</button>
+          <button onClick={handleCopy}
+            className={`text-xs px-2 py-1 rounded-sm transition-all duration-200 absolute top-2 right-2 ${
+              copied
+                ? 'bg-green-500 text-white scale-105'
+                : 'bg-accent text-white hover:opacity-90'
+            }`}>
+            {copied ? t('copied') : t('copy')}
+          </button>
         </div>
       )}
     </div>

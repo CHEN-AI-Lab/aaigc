@@ -17,6 +17,7 @@ export default function CaseConverter() {
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
   const [active, setActive] = useState<string | null>(null)
+  const [copied, setCopied] = useState(false)
 
   const convert = useCallback((type: 'upper' | 'lower' | 'title' | 'camel' | 'snake') => {
     setActive(type)
@@ -29,6 +30,14 @@ export default function CaseConverter() {
       case 'snake': setOutput(input.replace(/\s+/g, '_').toLowerCase()); break
     }
   }, [input])
+
+  const handleCopy = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(output)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch { /* ignore */ }
+  }, [output])
 
   return (
     <div className="mt-6 space-y-4">
@@ -55,7 +64,14 @@ export default function CaseConverter() {
       {output && (
         <div className="relative">
           <textarea readOnly value={output} className="w-full h-28 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary resize-none" />
-          <button onClick={() => navigator.clipboard.writeText(output)} className="absolute top-2 right-2 text-xs px-2 py-1 bg-accent text-white rounded-sm hover:opacity-90">{t('copy')}</button>
+          <button onClick={handleCopy}
+            className={`text-xs px-2 py-1 rounded-sm transition-all duration-200 absolute top-2 right-2 ${
+              copied
+                ? 'bg-green-500 text-white scale-105'
+                : 'bg-accent text-white hover:opacity-90'
+            }`}>
+            {copied ? t('copied') : t('copy')}
+          </button>
         </div>
       )}
     </div>

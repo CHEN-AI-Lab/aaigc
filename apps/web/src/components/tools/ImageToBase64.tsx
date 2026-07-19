@@ -8,6 +8,7 @@ export default function ImageToBase64() {
   const [base64, setBase64] = useState('')
   const [fileName, setFileName] = useState('')
   const [error, setError] = useState('')
+  const [copied, setCopied] = useState(false)
 
   const handleFile = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setError('')
@@ -20,6 +21,14 @@ export default function ImageToBase64() {
     reader.onerror = () => setError(t('failedToRead'))
     reader.readAsDataURL(file)
   }, [t])
+
+  const handleCopy = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(base64)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch { /* ignore */ }
+  }, [base64])
 
   return (
     <div className="mt-6 space-y-4">
@@ -40,7 +49,14 @@ export default function ImageToBase64() {
           </div>
           <div className="relative">
             <textarea readOnly value={base64} className="w-full h-36 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary resize-none text-[11px]" />
-            <button onClick={() => navigator.clipboard.writeText(base64)} className="absolute top-2 right-2 text-xs px-2 py-1 bg-accent text-white rounded-sm hover:opacity-90">{t('copy')}</button>
+            <button onClick={handleCopy}
+              className={`text-xs px-2 py-1 rounded-sm transition-all duration-200 absolute top-2 right-2 ${
+                copied
+                  ? 'bg-green-500 text-white scale-105'
+                  : 'bg-accent text-white hover:opacity-90'
+              }`}>
+              {copied ? t('copied') : t('copy')}
+            </button>
           </div>
         </div>
       )}

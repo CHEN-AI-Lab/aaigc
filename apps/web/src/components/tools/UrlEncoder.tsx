@@ -9,8 +9,7 @@ export default function UrlEncoder() {
   const [mode, setMode] = useState<'encode' | 'decode'>('encode')
   const [output, setOutput] = useState('')
   const [error, setError] = useState('')
-  const [animating, setAnimating] = useState(false)
-  const animTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [copied, setCopied] = useState(false)
   const outputRef = useRef<HTMLTextAreaElement>(null)
 
   const autoResize = useCallback(() => {
@@ -31,11 +30,12 @@ export default function UrlEncoder() {
     }
   }, [input, mode, t])
 
-  const handleCopy = useCallback(() => {
-    navigator.clipboard.writeText(output)
-    setAnimating(true)
-    if (animTimer.current) clearTimeout(animTimer.current)
-    animTimer.current = setTimeout(() => setAnimating(false), 400)
+  const handleCopy = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(output)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch { /* ignore */ }
   }, [output])
 
   return (
@@ -61,9 +61,13 @@ export default function UrlEncoder() {
           />
           <button
             onClick={handleCopy}
-            className={`absolute top-2 right-6 text-xs px-2.5 py-1.5 bg-accent text-white rounded-sm hover:opacity-90 transition-all ${animating ? 'scale-110 opacity-70' : 'opacity-100'}`}
+            className={`absolute top-2 right-6 text-xs px-2.5 py-1.5 rounded-sm transition-all duration-200 ${
+              copied
+                ? 'bg-green-500 text-white scale-105'
+                : 'bg-accent text-white hover:opacity-90'
+            }`}
           >
-            {t('copy')}
+            {copied ? t('copied') : t('copy')}
           </button>
         </div>
       )}
