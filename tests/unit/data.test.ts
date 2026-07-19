@@ -3,8 +3,8 @@ import { products } from '../../data/products'
 import type { CategoryInfo, ToolCategoryId } from '../../shared/types'
 
 describe('products', () => {
-  it('has 4 products', () => {
-    expect(products.length).toBe(4)
+  it('has 11 products', () => {
+    expect(products.length).toBe(11)
   })
 
   it('each product has required fields', () => {
@@ -23,9 +23,11 @@ describe('products', () => {
     expect(new Set(ids).size).toBe(ids.length)
   })
 
-  it('each product has a valid URL', () => {
+  it('each product has a valid URL when deployed', () => {
     for (const p of products) {
-      expect(p.url).toMatch(/^https?:\/\//)
+      if (p.url) {
+        expect(p.url).toMatch(/^https?:\/\//)
+      }
     }
   })
 })

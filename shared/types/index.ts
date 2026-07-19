@@ -11,10 +11,9 @@ export type ProductStatus = 'live' | 'beta' | 'wip' | 'planned'
 export interface Product {
   id: string
   icon: string
-  screenshot?: string
   tags: string[]
   status: ProductStatus
-  url: string
+  url?: string
 }
 
 // ─── Tool category ─────────────────────────────

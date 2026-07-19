@@ -71,6 +71,34 @@
         "Targeted optimization for specific roles",
         "Multiple resume templates"
       ]
+    },
+    "copycraft": {
+      "name": "CopyCraft",
+      "description": "AI-powered copywriting tool. Generate marketing copy, product descriptions, and ad content."
+    },
+    "contentforge": {
+      "name": "ContentForge",
+      "description": "AI content generation platform for blogs, articles, and social media."
+    },
+    "postforge": {
+      "name": "PostForge",
+      "description": "Social media post generator and scheduler with AI-powered content creation."
+    },
+    "maestro": {
+      "name": "Maestro",
+      "description": "AI music composition and audio processing tool."
+    },
+    "ai-portfolio-studio": {
+      "name": "AI Portfolio Studio",
+      "description": "AI-powered portfolio website builder for creators."
+    },
+    "ai-toolbox": {
+      "name": "AI Toolbox",
+      "description": "Collection of AI-powered utilities and tools."
+    },
+    "content-ai-site": {
+      "name": "Content AI Site",
+      "description": "AI-driven content management and publishing platform."
     }
   },
   "tools": {

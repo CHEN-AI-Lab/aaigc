@@ -71,6 +71,34 @@
         "针对目标岗位定制优化建议",
         "多种简历模板"
       ]
+    },
+    "copycraft": {
+      "name": "CopyCraft",
+      "description": "AI 驱动的文案创作工具。生成营销文案、产品描述和广告内容。"
+    },
+    "contentforge": {
+      "name": "ContentForge",
+      "description": "AI 内容生成平台，支持博客、文章和社交媒体内容。"
+    },
+    "postforge": {
+      "name": "PostForge",
+      "description": "社交媒体帖子生成与调度工具，AI 驱动内容创作。"
+    },
+    "maestro": {
+      "name": "Maestro",
+      "description": "AI 音乐创作与音频处理工具。"
+    },
+    "ai-portfolio-studio": {
+      "name": "AI Portfolio Studio",
+      "description": "AI 驱动的作品集网站构建器。"
+    },
+    "ai-toolbox": {
+      "name": "AI Toolbox",
+      "description": "AI 实用工具和功能集合。"
+    },
+    "content-ai-site": {
+      "name": "Content AI Site",
+      "description": "AI 驱动的内容管理与发布平台。"
     }
   },
   "tools": {

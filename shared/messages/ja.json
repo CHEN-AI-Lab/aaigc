@@ -71,6 +71,34 @@
         "対象職種に特化した最適化提案",
         "複数の履歴書テンプレート"
       ]
+    },
+    "copycraft": {
+      "name": "CopyCraft",
+      "description": "AI駆動のコピーライティングツール。マーケティングコピー、商品説明、広告コンテンツを生成。"
+    },
+    "contentforge": {
+      "name": "ContentForge",
+      "description": "ブログ、記事、ソーシャルメディア向けのAIコンテンツ生成プラットフォーム。"
+    },
+    "postforge": {
+      "name": "PostForge",
+      "description": "AI搭載のソーシャルメディア投稿生成・スケジュール管理ツール。"
+    },
+    "maestro": {
+      "name": "Maestro",
+      "description": "AI音楽作曲・オーディオ処理ツール。"
+    },
+    "ai-portfolio-studio": {
+      "name": "AI Portfolio Studio",
+      "description": "クリエイター向けのAIポートフォリオサイトビルダー。"
+    },
+    "ai-toolbox": {
+      "name": "AI Toolbox",
+      "description": "AI搭載ユーティリティとツールのコレクション。"
+    },
+    "content-ai-site": {
+      "name": "Content AI Site",
+      "description": "AI駆動のコンテンツ管理・公開プラットフォーム。"
     }
   },
   "tools": {
