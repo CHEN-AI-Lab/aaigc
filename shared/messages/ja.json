@@ -313,7 +313,22 @@
     "password-generator": {
       "name": "パスワード生成",
       "description": "安全なランダムパスワードを生成"
-    }
+    },
+    "base2": "2進数",
+    "base8": "8進数",
+    "base10": "10進数",
+    "base16": "16進数",
+    "caseupper": "すべて大文字",
+    "caselower": "すべて小文字",
+    "casetitle": "先頭大文字",
+    "casecamel": "キャメルケース",
+    "casesnake": "スネークケース",
+    "loremParagraphs": "段落",
+    "loremSentences": "文",
+    "loremWords": "単語",
+    "weak": "弱",
+    "medium": "中",
+    "strong": "強"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

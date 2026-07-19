@@ -313,7 +313,22 @@
     "password-generator": {
       "name": "Password Generator",
       "description": "Generate secure random passwords"
-    }
+    },
+    "base2": "Binary",
+    "base8": "Octal",
+    "base10": "Decimal",
+    "base16": "Hexadecimal",
+    "caseupper": "全部大写",
+    "caselower": "全部小写",
+    "casetitle": "首字母大写",
+    "casecamel": "驼峰式",
+    "casesnake": "下划线式",
+    "loremParagraphs": "段落",
+    "loremSentences": "句子",
+    "loremWords": "单词",
+    "weak": "Weak",
+    "medium": "Medium",
+    "strong": "Strong"
   },
   "ui": {
     "aboutLink": "About AAIGC →",

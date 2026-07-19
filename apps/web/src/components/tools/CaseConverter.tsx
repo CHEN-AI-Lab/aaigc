@@ -4,16 +4,15 @@ import { useState, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
 
 const CASES = [
-  { id: 'upper' as const, label: 'UPPERCASE', labelZh: '全部大写', desc: 'HELLO WORLD' },
-  { id: 'lower' as const, label: 'lowercase', labelZh: '全部小写', desc: 'hello world' },
-  { id: 'title' as const, label: 'Title Case', labelZh: '首字母大写', desc: 'Hello World' },
-  { id: 'camel' as const, label: 'camelCase', labelZh: '驼峰式', desc: 'helloWorld' },
-  { id: 'snake' as const, label: 'snake_case', labelZh: '下划线式', desc: 'hello_world' },
+  { id: 'upper' as const, label: 'UPPERCASE', desc: 'HELLO WORLD' },
+  { id: 'lower' as const, label: 'lowercase', desc: 'hello world' },
+  { id: 'title' as const, label: 'Title Case', desc: 'Hello World' },
+  { id: 'camel' as const, label: 'camelCase', desc: 'helloWorld' },
+  { id: 'snake' as const, label: 'snake_case', desc: 'hello_world' },
 ]
 
 export default function CaseConverter() {
   const t = useTranslations('tools')
-  const locale = typeof window !== 'undefined' ? navigator.language : 'en'
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
   const [active, setActive] = useState<string | null>(null)
@@ -45,7 +44,7 @@ export default function CaseConverter() {
             }`}
           >
             <div className="text-xs font-semibold">{c.label}</div>
-            <div className="text-[10px] opacity-70 mt-0.5">{c.labelZh}</div>
+            <div className="text-[10px] opacity-70 mt-0.5">{t(`case${c.id}`)}</div>
             <div className="text-[10px] font-mono mt-1 opacity-50">{c.desc}</div>
           </button>
         ))}

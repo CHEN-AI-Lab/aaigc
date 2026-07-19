@@ -214,31 +214,121 @@
     "input": "输入",
     "output": "输出",
     "placeholder": "在此输入...",
-    "json-formatter": {"name": "JSON 格式化", "description": "格式化与校验 JSON 数据"},
-    "regex-tester": {"name": "正则测试器", "description": "实时测试正则表达式"},
-    "base64": {"name": "Base64 编解码", "description": "文本与 Base64 互相转换"},
-    "url-encode": {"name": "URL 编解码", "description": "URL 编码与解码"},
-    "jwt-decoder": {"name": "JWT 解码器", "description": "解析 JWT Token 的 Payload"},
-    "uuid-generator": {"name": "UUID 生成器", "description": "生成 UUID v4 标识符"},
-    "html-preview": {"name": "HTML 预览", "description": "实时渲染 HTML 代码"},
-    "css-minifier": {"name": "CSS 压缩/格式化", "description": "压缩与格式化 CSS 代码"},
-    "markdown-preview": {"name": "Markdown 预览", "description": "实时渲染 Markdown 内容"},
-    "word-counter": {"name": "字数统计", "description": "统计字符数、单词数、行数"},
-    "text-diff": {"name": "文本对比", "description": "比较两段文本的差异"},
-    "case-converter": {"name": "大小写转换", "description": "文本大小写转换：大写、小写、首字母大写"},
-    "lorem-ipsum": {"name": "Lorem Ipsum", "description": "生成占位文本"},
-    "text-to-slug": {"name": "文本转 Slug", "description": "将文本转换为 URL 友好的 Slug"},
-    "list-sorter": {"name": "列表排序", "description": "排序、去重和打乱列表"},
-    "timestamp": {"name": "时间戳转换", "description": "Unix 时间戳与日期互转"},
-    "date-calculator": {"name": "日期计算器", "description": "日期间隔计算与日期加减"},
-    "qrcode": {"name": "二维码生成", "description": "输入文字生成二维码图片"},
-    "color-picker": {"name": "颜色选择器", "description": "选色并生成 HEX/RGB/HSL"},
-    "image-to-base64": {"name": "图片转 Base64", "description": "将图片文件转换为 Base64 编码"},
-    "number-base": {"name": "进制转换", "description": "十进制、二进制、八进制、十六进制互转"},
-    "yaml-json": {"name": "YAML ↔ JSON", "description": "YAML 与 JSON 格式互转"},
-    "html-entities": {"name": "HTML 实体编码", "description": "HTML 特殊字符转义与反转义"},
-    "json-to-csv": {"name": "JSON → CSV", "description": "JSON 数据转换为 CSV 格式"},
-    "password-generator": {"name": "密码生成器", "description": "生成安全随机密码"}
+    "json-formatter": {
+      "name": "JSON 格式化",
+      "description": "格式化与校验 JSON 数据"
+    },
+    "regex-tester": {
+      "name": "正则测试器",
+      "description": "实时测试正则表达式"
+    },
+    "base64": {
+      "name": "Base64 编解码",
+      "description": "文本与 Base64 互相转换"
+    },
+    "url-encode": {
+      "name": "URL 编解码",
+      "description": "URL 编码与解码"
+    },
+    "jwt-decoder": {
+      "name": "JWT 解码器",
+      "description": "解析 JWT Token 的 Payload"
+    },
+    "uuid-generator": {
+      "name": "UUID 生成器",
+      "description": "生成 UUID v4 标识符"
+    },
+    "html-preview": {
+      "name": "HTML 预览",
+      "description": "实时渲染 HTML 代码"
+    },
+    "css-minifier": {
+      "name": "CSS 压缩/格式化",
+      "description": "压缩与格式化 CSS 代码"
+    },
+    "markdown-preview": {
+      "name": "Markdown 预览",
+      "description": "实时渲染 Markdown 内容"
+    },
+    "word-counter": {
+      "name": "字数统计",
+      "description": "统计字符数、单词数、行数"
+    },
+    "text-diff": {
+      "name": "文本对比",
+      "description": "比较两段文本的差异"
+    },
+    "case-converter": {
+      "name": "大小写转换",
+      "description": "文本大小写转换：大写、小写、首字母大写"
+    },
+    "lorem-ipsum": {
+      "name": "Lorem Ipsum",
+      "description": "生成占位文本"
+    },
+    "text-to-slug": {
+      "name": "文本转 Slug",
+      "description": "将文本转换为 URL 友好的 Slug"
+    },
+    "list-sorter": {
+      "name": "列表排序",
+      "description": "排序、去重和打乱列表"
+    },
+    "timestamp": {
+      "name": "时间戳转换",
+      "description": "Unix 时间戳与日期互转"
+    },
+    "date-calculator": {
+      "name": "日期计算器",
+      "description": "日期间隔计算与日期加减"
+    },
+    "qrcode": {
+      "name": "二维码生成",
+      "description": "输入文字生成二维码图片"
+    },
+    "color-picker": {
+      "name": "颜色选择器",
+      "description": "选色并生成 HEX/RGB/HSL"
+    },
+    "image-to-base64": {
+      "name": "图片转 Base64",
+      "description": "将图片文件转换为 Base64 编码"
+    },
+    "number-base": {
+      "name": "进制转换",
+      "description": "十进制、二进制、八进制、十六进制互转"
+    },
+    "yaml-json": {
+      "name": "YAML ↔ JSON",
+      "description": "YAML 与 JSON 格式互转"
+    },
+    "html-entities": {
+      "name": "HTML 实体编码",
+      "description": "HTML 特殊字符转义与反转义"
+    },
+    "json-to-csv": {
+      "name": "JSON → CSV",
+      "description": "JSON 数据转换为 CSV 格式"
+    },
+    "password-generator": {
+      "name": "密码生成器",
+      "description": "生成安全随机密码"
+    },
+    "base2": "二进制",
+    "base8": "八进制",
+    "base10": "十进制",
+    "base16": "十六进制",
+    "caseupper": "全部大写",
+    "caselower": "全部小写",
+    "casetitle": "首字母大写",
+    "casecamel": "驼峰式",
+    "casesnake": "下划线式",
+    "loremParagraphs": "段落",
+    "loremSentences": "句子",
+    "loremWords": "单词",
+    "weak": "弱",
+    "medium": "中",
+    "strong": "强"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",

@@ -44,11 +44,11 @@ export default function LoremIpsum() {
       </div>
       <div className="flex items-center gap-3 flex-wrap">
         <div className="flex gap-1">
-          {(['paragraphs', 'sentences', 'words'] as const).map((t) => (
-            <button key={t} onClick={() => setType(t)} className={`px-3 py-1.5 text-sm rounded-sm transition-colors ${
-              type === t ? 'bg-accent text-white' : 'bg-surface text-text-primary hover:bg-accent/10'
+          {(['paragraphs', 'sentences', 'words'] as const).map((mode) => (
+            <button key={mode} onClick={() => setType(mode)} className={`px-3 py-1.5 text-sm rounded-sm transition-colors ${
+              type === mode ? 'bg-accent text-white' : 'bg-surface text-text-primary hover:bg-accent/10'
             }`}>
-              {t === 'paragraphs' ? '段落' : t === 'sentences' ? '句子' : '单词'}
+              {t(`lorem${mode.charAt(0).toUpperCase() + mode.slice(1)}`)}
             </button>
           ))}
         </div>

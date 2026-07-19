@@ -38,7 +38,7 @@ export default function PasswordGenerator() {
   }, [length, upper, lower, digits, symbols])
 
   const strengthColor = strength < 40 ? 'bg-red-400' : strength < 70 ? 'bg-amber-400' : 'bg-green-400'
-  const strengthLabel = strength < 40 ? 'Weak' : strength < 70 ? 'Medium' : 'Strong'
+  const strengthLabel = strength < 40 ? t('weak') : strength < 70 ? t('medium') : t('strong')
 
   return (
     <div className="mt-6 space-y-4">
