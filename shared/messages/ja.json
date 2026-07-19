@@ -123,7 +123,7 @@
     "format": "フォーマット",
     "validate": "検証",
     "minify": "圧縮",
-    "generate": "生成",
+    "generate": "生成する",
     "sortAsc": "昇順 A→Z",
     "sortDesc": "降順 Z→A",
     "dedup": "重複削除",
