@@ -46,24 +46,26 @@ export default function NumberBaseConverter() {
       </div>
 
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-5">
-        <div className="flex flex-col sm:flex-row gap-3">
-          <div className="flex-1">
+        <div className="space-y-3">
+          <div>
             <label className="block text-xs text-text-secondary mb-1.5">{t('enterNumber')}</label>
             <input value={input} onChange={e => setInput(e.target.value)} placeholder="e.g. 255, FF, 11111111"
               className="w-full p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/30" />
           </div>
-          <div className="sm:w-40">
-            <label className="block text-xs text-text-secondary mb-1.5">{t('fromBase')}</label>
-            <select value={fromBase} onChange={e => setFromBase(parseInt(e.target.value))}
-              className="w-full p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary focus:outline-none">
-              {BASES.map(({ base, label }) => (
-                <option key={base} value={base}>{label} ({t(`base${base}`)})</option>
-              ))}
-            </select>
+          <div className="flex items-end gap-3">
+            <div className="flex-1 sm:max-w-[200px]">
+              <label className="block text-xs text-text-secondary mb-1.5">{t('fromBase')}</label>
+              <select value={fromBase} onChange={e => setFromBase(parseInt(e.target.value))}
+                className="w-full p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary focus:outline-none">
+                {BASES.map(({ base, label }) => (
+                  <option key={base} value={base}>{label} ({t(`base${base}`)})</option>
+                ))}
+              </select>
+            </div>
+            <button onClick={convert} className="px-8 py-3 bg-accent text-white text-sm font-medium rounded-sm hover:opacity-90 transition-opacity shrink-0">
+              {t('convert')}
+            </button>
           </div>
-          <button onClick={convert} className="sm:self-end px-8 py-3 bg-accent text-white text-sm font-medium rounded-sm hover:opacity-90 transition-opacity shrink-0">
-            {t('convert')}
-          </button>
         </div>
       </div>
 
