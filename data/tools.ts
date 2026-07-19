@@ -57,4 +57,5 @@ export const tools: ToolMeta[] = [
   { id: 'yaml-json', category: 'convert', icon: '🔄', component: 'YamlJsonConverter', npmDeps: ['js-yaml'] },
   { id: 'html-entities', category: 'convert', icon: '🔣', component: 'HtmlEntities' },
   { id: 'json-to-csv', category: 'convert', icon: '📊', component: 'JsonToCsv' },
+  { id: 'calculator', category: 'math', icon: '🧮', component: 'Calculator' },
 ]

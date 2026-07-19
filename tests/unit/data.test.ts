@@ -41,8 +41,8 @@ describe('tools', () => {
     categories = mod.toolCategories
   })
 
-  it('has 25 tools', () => {
-    expect(tools.length).toBe(25)
+  it('has 26 tools', () => {
+    expect(tools.length).toBe(26)
   })
 
   it('each tool has valid category', () => {
