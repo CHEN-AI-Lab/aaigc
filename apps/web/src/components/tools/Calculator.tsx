@@ -173,29 +173,9 @@ function CalcPanel() {
     </div>
   )
 
-  // Scientific sidebar - 5 items to match number pad height
-  const sciSidebar = (
-    <div className="flex flex-col gap-[3px] w-[56px] shrink-0">
-      {sciFuncs.slice(0, 5).map(f => sbtn(f.l, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => apply(f.f, f.l)))}
-      {sbtn('π', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => { setDisplay(String(Math.PI)); setExpr('π') })}
-      {sbtn('e', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => { setDisplay(String(Math.E)); setExpr('e') })}
-      {sbtn(rad ? 'RAD' : 'DEG', rad ? 'bg-accent text-white' : 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => setRad(!rad))}
-      {sbtn('MC', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => setMem(null))}
-    </div>
-  )
-
-  // Top bar: remaining sci functions above the numpad
-  const sciTop = (
-    <div className="flex gap-1 mb-2">
-      {sciFuncs.slice(5).map(f => sbtn(f.l, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => apply(f.f, f.l)))}
-      {sbtn('MR', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => { if (mem !== null) { setDisplay(String(mem)); setExpr('MR') } })}
-      {sbtn('M+', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => { setMem(parseFloat(display)); setExpr('M+') })}
-      {sbtn('M-', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => { setMem(parseFloat(display)); setExpr('M-') })}
-    </div>
-  )
-
+  // Number pad grid (shared between basic and sci modes)
   return (
-    <div className="mx-auto" style={{ maxWidth: sci ? '420px' : '260px' }}>
+    <div className="mx-auto" style={{ maxWidth: '260px' }}>
       <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm p-3 mb-3 min-h-[4rem]">
         <div className="flex items-center justify-between text-xs text-text-secondary/60 min-h-[1rem] leading-tight">
           <span>{sci ? (rad ? 'RAD' : 'DEG') : ''}</span>
@@ -204,15 +184,20 @@ function CalcPanel() {
         <div className="text-2xl font-mono text-text-primary text-right leading-loose overflow-hidden">{display}</div>
       </div>
 
-      {sci ? (
-        <div>
-          {sciTop}
-          <div className="flex gap-2">
-            {sciSidebar}
-            <div className="flex-1 min-w-0">{numpad}</div>
-          </div>
+      {sci && (
+        <div className="grid grid-cols-4 gap-1 mb-2">
+          {sciFuncs.map(f => sbtn(f.l, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => apply(f.f, f.l)))}
+          {sbtn('π', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => { setDisplay(String(Math.PI)); setExpr('π') })}
+          {sbtn('e', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => { setDisplay(String(Math.E)); setExpr('e') })}
+          {sbtn(rad ? 'RAD' : 'DEG', rad ? 'bg-accent text-white' : 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => setRad(!rad))}
+          {sbtn('MC', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => setMem(null))}
+          {sbtn('MR', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => { if (mem !== null) { setDisplay(String(mem)); setExpr('MR') } })}
+          {sbtn('M+', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => { setMem(parseFloat(display)); setExpr('M+') })}
+          {sbtn('M-', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => { setMem(parseFloat(display)); setExpr('M-') })}
         </div>
-      ) : numpad}
+      )}
+
+      {numpad}
     </div>
   )
 }
