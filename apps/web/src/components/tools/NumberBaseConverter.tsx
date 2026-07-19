@@ -80,7 +80,7 @@ export default function NumberBaseConverter() {
                 </div>
                 <code className="text-sm text-text-primary font-mono flex-1 break-all bg-surface px-2 py-1.5 rounded-sm border border-[rgba(127,99,21,0.08)]">{r.value}</code>
                 <button onClick={() => copy(r.value)}
-                  className={`text-xs px-2.5 py-1.5 rounded-sm transition-all duration-200 shrink-0 ${
+                  className={`text-xs px-2.5 py-1.5 rounded-sm transition-all duration-200 shrink-0 min-w-[4.5rem] text-center ${
                     copied === r.value.slice(0, 20)
                       ? 'bg-green-500 text-white'
                       : 'bg-accent text-white hover:opacity-90'
