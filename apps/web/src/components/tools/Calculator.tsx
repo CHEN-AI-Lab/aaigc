@@ -303,7 +303,7 @@ function UnitTable({ units, title }: { units: Unit[]; title: string }) {
             {units.filter(u => u.label !== from).map(u => (
               <div key={u.label} className="flex justify-between p-1.5 bg-white rounded-sm text-xs">
                 <span className="text-text-secondary">{u.label}</span>
-                <span className="text-text-primary font-mono">{u.fromBase(u.toBase(n)).toFixed(6)}</span>
+                <span className="text-text-primary font-mono">{u.fromBase(uFrom.toBase(n)).toFixed(6)}</span>
               </div>
             ))}
           </div>
@@ -313,21 +313,39 @@ function UnitTable({ units, title }: { units: Unit[]; title: string }) {
   )
 }
 
-// ─── Improved Temperature ────────────────────────────
+// ─── Improved Temperature (all units inputtable) ─────
 function TempCalc() {
   const [val, setVal] = useState('100')
+  const [unit, setUnit] = useState<'C' | 'F' | 'K'>('C')
   const n = parseFloat(val)
-  const c = isNaN(n) ? null : n
+  const toC = (v: number, u: string) => {
+    if (u === 'C') return v; if (u === 'F') return (v - 32) / 1.8; return v - 273.15
+  }
+  const c = isNaN(n) ? null : toC(n, unit)
   const f = c !== null ? c * 1.8 + 32 : null
   const k = c !== null ? c + 273.15 : null
 
   return (
     <div className="max-w-sm mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
-        <label className="block text-xs text-text-secondary mb-1">°C (摄氏度)</label>
-        <input value={val} onChange={e => setVal(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary mb-3" />
+        <div className="flex gap-2 items-end mb-3">
+          <div className="flex-1">
+            <label className="block text-xs text-text-secondary mb-1">温度值</label>
+            <input value={val} onChange={e => setVal(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+          </div>
+          <div className="w-24">
+            <label className="block text-xs text-text-secondary mb-1">单位</label>
+            <select value={unit} onChange={e => setUnit(e.target.value as 'C' | 'F' | 'K')} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
+              <option value="C">°C</option><option value="F">°F</option><option value="K">K</option>
+            </select>
+          </div>
+        </div>
         {c !== null && (
           <div className="space-y-2">
+            <div className="flex justify-between p-2 bg-white rounded-sm text-sm">
+              <span className="text-text-secondary">°C (摄氏度)</span>
+              <span className="text-text-primary font-mono font-bold">{c!.toFixed(2)}</span>
+            </div>
             <div className="flex justify-between p-2 bg-white rounded-sm text-sm">
               <span className="text-text-secondary">°F (华氏度)</span>
               <span className="text-text-primary font-mono font-bold">{f!.toFixed(2)}</span>
@@ -402,12 +420,13 @@ function BmiCalc() {
   )
 }
 
-// ─── Improved Tax Calculator ─────────────────────────
+// ─── Improved Tax Calculator (monthly + yearly) ──────
 function TaxCalc() {
   const [salary, setSalary] = useState('15000')
+  const [mode, setMode] = useState<'monthly' | 'yearly'>('monthly')
   const s = parseFloat(salary)
-  const threshold = 5000
-  const brackets = [
+  const threshold = mode === 'monthly' ? 5000 : 60000
+  const brackets = mode === 'monthly' ? [
     { low: 0, high: 3000, rate: 0.03, deduct: 0, label: '不超过 3000 元' },
     { low: 3000, high: 12000, rate: 0.1, deduct: 210, label: '3000 - 12000 元' },
     { low: 12000, high: 25000, rate: 0.2, deduct: 1410, label: '12000 - 25000 元' },
@@ -415,6 +434,14 @@ function TaxCalc() {
     { low: 35000, high: 55000, rate: 0.3, deduct: 4410, label: '35000 - 55000 元' },
     { low: 55000, high: 80000, rate: 0.35, deduct: 7160, label: '55000 - 80000 元' },
     { low: 80000, high: Infinity, rate: 0.45, deduct: 15160, label: '超过 80000 元' },
+  ] : [
+    { low: 0, high: 36000, rate: 0.03, deduct: 0, label: '不超过 36000 元' },
+    { low: 36000, high: 144000, rate: 0.1, deduct: 2520, label: '36000 - 144000 元' },
+    { low: 144000, high: 300000, rate: 0.2, deduct: 16920, label: '144000 - 300000 元' },
+    { low: 300000, high: 420000, rate: 0.25, deduct: 31920, label: '300000 - 420000 元' },
+    { low: 420000, high: 660000, rate: 0.3, deduct: 52920, label: '420000 - 660000 元' },
+    { low: 660000, high: 960000, rate: 0.35, deduct: 85920, label: '660000 - 960000 元' },
+    { low: 960000, high: Infinity, rate: 0.45, deduct: 181920, label: '超过 960000 元' },
   ]
 
   const result = (() => {
@@ -428,7 +455,11 @@ function TaxCalc() {
   return (
     <div className="max-w-sm mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
-        <label className="block text-xs text-text-secondary mb-1">税前月薪 (元)</label>
+        <div className="flex gap-1 mb-3">
+          <button onClick={() => setMode('monthly')} className={`px-3 py-1 text-xs rounded-sm ${mode === 'monthly' ? 'bg-accent text-white' : 'bg-white text-text-secondary'}`}>月薪</button>
+          <button onClick={() => setMode('yearly')} className={`px-3 py-1 text-xs rounded-sm ${mode === 'yearly' ? 'bg-accent text-white' : 'bg-white text-text-secondary'}`}>年薪</button>
+        </div>
+        <label className="block text-xs text-text-secondary mb-1">{mode === 'monthly' ? '税前月薪' : '税前年薪'} (元)</label>
         <input value={salary} onChange={e => setSalary(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
         {result && (
           <div className="mt-3 space-y-2">
@@ -578,7 +609,7 @@ function TimeCalc() {
   const [from, setFrom] = useState('seconds')
   const n = parseFloat(val)
   const toSeconds = (v: number, u: string) => {
-    switch (u) { case 'seconds': return v; case 'minutes': return v * 60; case 'hours': return v * 3600; case 'days': return v * 86400; case 'weeks': return v * 604800; default: return v }
+    switch (u) { case 'seconds': return v; case 'minutes': return v * 60; case 'hours': return v * 3600; case 'days': return v * 86400; case 'weeks': return v * 604800; case 'months': return v * 2592000; case 'years': return v * 31536000; default: return v }
   }
   const units = [
     { label: 'seconds', labelZh: '秒' }, { label: 'minutes', labelZh: '分钟' },
@@ -620,21 +651,22 @@ function TimeCalc() {
   )
 }
 
-// ─── Chinese Title Calculator ────────────────────────
+// ─── Chinese Family Title Calculator ────────────────
 function TitleCalc() {
   const [name, setName] = useState('')
   const [gender, setGender] = useState<'male' | 'female'>('male')
   const [age, setAge] = useState('30')
-  const [relation, setRelation] = useState('general')
+  const [side, setSide] = useState('self')
   const a = parseInt(age)
 
   const title = (() => {
     if (!name.trim() || isNaN(a)) return null
-    if (a < 12) return gender === 'male' ? '小朋友' : '小朋友'
-    if (a < 18) return gender === 'male' ? '同学' : '同学'
-    if (relation === 'business') return gender === 'male' ? '先生' : '女士'
-    if (relation === 'academic') return gender === 'male' ? '教授/老师' : '教授/老师'
-    return gender === 'male' ? '先生' : '女士'
+    if (a < 18) return gender === 'male' ? '小弟弟' : '小妹妹'
+    if (a < 30) return gender === 'male' ? '弟弟' : '妹妹'
+    if (a < 40) return gender === 'male' ? '兄弟' : '姐妹'
+    if (a < 55) return gender === 'male' ? '大哥' : '大姐'
+    if (a < 70) return gender === 'male' ? '叔叔' : '阿姨'
+    return gender === 'male' ? '爷爷' : '奶奶'
   })()
 
   return (
@@ -642,7 +674,7 @@ function TitleCalc() {
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
         <div className="grid grid-cols-2 gap-3">
           <div className="col-span-2">
-            <label className="block text-xs text-text-secondary mb-1">姓名</label>
+            <label className="block text-xs text-text-secondary mb-1">称呼对象</label>
             <input value={name} onChange={e => setName(e.target.value)} placeholder="请输入姓名" className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
           <div>
@@ -656,21 +688,11 @@ function TitleCalc() {
             <label className="block text-xs text-text-secondary mb-1">年龄</label>
             <input value={age} onChange={e => setAge(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
-          <div className="col-span-2">
-            <label className="block text-xs text-text-secondary mb-1">场合</label>
-            <div className="flex gap-1">
-              {['general', 'business', 'academic'].map(r => (
-                <button key={r} onClick={() => setRelation(r)} className={`flex-1 p-2 text-xs rounded-sm ${relation === r ? 'bg-accent text-white' : 'bg-white text-text-secondary border border-[rgba(127,99,21,0.1)]'}`}>
-                  {r === 'general' ? '通用' : r === 'business' ? '商务' : '学术'}
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
         {title && (
           <div className="mt-3 p-3 bg-white rounded-sm border border-[rgba(127,99,21,0.08)] text-center">
             <p className="text-lg text-text-primary">{name}{title}</p>
-            <p className="text-xs text-text-secondary mt-1">邮件/信函开头称呼</p>
+            <p className="text-xs text-text-secondary mt-1">适用于日常社交称呼</p>
           </div>
         )}
       </div>
