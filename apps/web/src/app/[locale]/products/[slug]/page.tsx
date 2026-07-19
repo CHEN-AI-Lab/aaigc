@@ -68,7 +68,7 @@ export default async function ProductDetailPage({ params }: Props) {
         <div className="border-t border-[rgba(127,99,21,0.1)] pt-6">
           <h2 className="text-sm font-semibold text-text-primary mb-4 uppercase tracking-wider">{t('features')}</h2>
           <ul className="space-y-2">
-            {(t(`${slug}.features`) as unknown as string[]).map((f, i) => (
+            {(t.raw(`${slug}.features`) as string[]).map((f, i) => (
               <li key={i} className="flex items-start gap-2 text-sm text-text-secondary">
                 <span className="text-accent mt-0.5">•</span>
                 {f}
