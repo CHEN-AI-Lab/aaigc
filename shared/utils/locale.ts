@@ -1,9 +1,11 @@
 /**
- * Get locale-aware display text from bilingual data.
- * Falls back to English for unsupported locales (e.g. Japanese).
+ * Get locale-aware display text from bilingual/trilingual data.
+ * Falls back: ja → en → zh-CN
  */
-export function displayText(locale: string, en: string, zh: string): string {
-  return locale === 'zh-CN' ? zh : en
+export function dt(locale: string, en: string, zh: string, ja?: string): string {
+  if (locale === 'ja' && ja) return ja
+  if (locale === 'zh-CN') return zh
+  return en
 }
 
 /**

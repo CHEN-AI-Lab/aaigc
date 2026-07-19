@@ -3,6 +3,7 @@ import { Link } from '@/i18n/navigation'
 import { products } from 'data/products'
 import { tools, toolCategories } from 'data/tools'
 import ProductCard from '../../components/ProductCard'
+import { dt } from 'shared/utils/locale'
 
 type Props = { params: Promise<{ locale: string }> }
 
@@ -52,7 +53,7 @@ export default async function HomePage({ params }: Props) {
               >
                 <div className="text-3xl mb-2">{cat.icon}</div>
                 <h3 className="text-sm font-semibold text-text-primary">
-                  {locale === 'zh-CN' ? cat.name : cat.nameEn}
+                  {dt(locale, cat.nameEn, cat.name)}
                 </h3>
                 <p className="text-xs text-text-secondary mt-1">{t('toolCount', { count })}</p>
               </Link>

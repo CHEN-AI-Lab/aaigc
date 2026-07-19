@@ -3,6 +3,7 @@
 import { lazy, Suspense } from 'react'
 import { useTranslations, useLocale } from 'next-intl'
 import { Link } from '@/i18n/navigation'
+import { dt } from 'shared/utils/locale'
 
 type Props = {
   slug: string
@@ -50,12 +51,12 @@ export default function ToolPageClient({ slug, name, nameEn }: Props) {
           {t('tools')}
         </Link>
         <span className="mx-2">/</span>
-        <span className="text-text-primary">{locale === 'en' ? nameEn : name}</span>
+        <span className="text-text-primary">{dt(locale, nameEn, name)}</span>
       </div>
 
       <div className="max-w-6xl mx-auto px-6 py-12">
         <h1 className="text-2xl font-semibold text-text-primary mb-1">
-          {locale === 'en' ? nameEn : name}
+          {dt(locale, nameEn, name)}
         </h1>
         <div className="min-h-[400px]">
           <Suspense fallback={

@@ -12,8 +12,10 @@ export interface Product {
   id: string
   name: string
   nameEn: string
+  nameJa?: string
   description: string
   descriptionEn: string
+  descriptionJa?: string
   icon: string
   screenshot?: string
   tags: string[]
@@ -21,6 +23,7 @@ export interface Product {
   url: string
   features: string[]
   featuresEn: string[]
+  featuresJa?: string[]
 }
 
 // ─── Tool category ─────────────────────────────
@@ -31,6 +34,7 @@ export interface CategoryInfo {
   id: ToolCategoryId
   name: string
   nameEn: string
+  nameJa?: string
   icon: string
   order: number
 }

@@ -1,13 +1,13 @@
 import type { ToolCategoryId, CategoryInfo } from '../shared/types'
 
 export const toolCategories: CategoryInfo[] = [
-  { id: 'dev', name: '开发工具', nameEn: 'Developer Tools', icon: '🛠️', order: 1 },
-  { id: 'text', name: '文本工具', nameEn: 'Text Tools', icon: '📝', order: 2 },
-  { id: 'security', name: '安全工具', nameEn: 'Security Tools', icon: '🔒', order: 3 },
-  { id: 'time', name: '时间工具', nameEn: 'Time Tools', icon: '⏰', order: 4 },
-  { id: 'image', name: '图像工具', nameEn: 'Image Tools', icon: '🎨', order: 5 },
-  { id: 'math', name: '数学工具', nameEn: 'Math Tools', icon: '🧮', order: 6 },
-  { id: 'convert', name: '格式转换', nameEn: 'Converters', icon: '🔄', order: 7 },
+  { id: 'dev', name: '开发工具', nameEn: 'Developer Tools', nameJa: '開発ツール', icon: '🛠️', order: 1 },
+  { id: 'text', name: '文本工具', nameEn: 'Text Tools', nameJa: 'テキストツール', icon: '📝', order: 2 },
+  { id: 'security', name: '安全工具', nameEn: 'Security Tools', nameJa: 'セキュリティツール', icon: '🔒', order: 3 },
+  { id: 'time', name: '时间工具', nameEn: 'Time Tools', nameJa: '時間ツール', icon: '⏰', order: 4 },
+  { id: 'image', name: '图像工具', nameEn: 'Image Tools', nameJa: '画像ツール', icon: '🎨', order: 5 },
+  { id: 'math', name: '数学工具', nameEn: 'Math Tools', nameJa: '数学ツール', icon: '🧮', order: 6 },
+  { id: 'convert', name: '格式转换', nameEn: 'Converters', nameJa: '変換ツール', icon: '🔄', order: 7 },
 ]
 
 export interface ToolMeta {

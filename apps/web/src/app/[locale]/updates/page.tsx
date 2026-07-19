@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
+import { dt } from 'shared/utils/locale'
 
 type Props = { params: Promise<{ locale: string }> }
 
@@ -24,7 +25,7 @@ export default async function UpdatesPage({ params }: Props) {
           <div key={i} className="flex gap-4">
             <div className="text-xs text-text-secondary font-mono w-24 shrink-0 pt-0.5">{u.date}</div>
             <div className="flex-1 pb-6 border-b border-[rgba(127,99,21,0.1)]">
-              <p className="text-sm text-text-primary">{locale === 'zh-CN' ? u.zh : u.en}</p>
+              <p className="text-sm text-text-primary">{dt(locale, u.en, u.zh)}</p>
             </div>
           </div>
         ))}
