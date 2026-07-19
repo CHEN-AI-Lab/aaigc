@@ -20,7 +20,7 @@ const btn = (label: string, base: string, onClick: () => void) => (
 )
 
 // ─── Main Calculator ─────────────────────────────────
-type Tab = 'calc' | 'currency' | 'length' | 'weight' | 'area' | 'volume' | 'temp' | 'speed' | 'bmi' | 'tax' | 'mortgage' | 'chinese' | 'time'
+type Tab = 'calc' | 'currency' | 'length' | 'weight' | 'area' | 'volume' | 'temp' | 'speed' | 'bmi' | 'tax' | 'mortgage' | 'chinese' | 'time' | 'title' | 'base'
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'calc', label: '计算器' },
@@ -36,6 +36,8 @@ const TABS: { id: Tab; label: string }[] = [
   { id: 'mortgage', label: '房贷' },
   { id: 'chinese', label: '大写' },
   { id: 'time', label: '时间' },
+  { id: 'title', label: '称呼' },
+  { id: 'base', label: '进制' },
 ]
 
 export default function Calculator() {
@@ -64,6 +66,8 @@ export default function Calculator() {
       {tab === 'mortgage' && <MortgageCalc />}
       {tab === 'chinese' && <ChineseNumCalc />}
       {tab === 'time' && <TimeCalc />}
+      {tab === 'title' && <TitleCalc />}
+      {tab === 'base' && <BaseCalc />}
     </div>
   )
 }
@@ -187,7 +191,7 @@ function CalcPanel() {
         {btn('−', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('-'))}
         {['1','2','3'].map(n => btn(n, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input(n)))}
         {btn('+', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('+'))}
-        {btn(sci ? '▼SCI' : 'SCI▶', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 text-xs', () => setSci(!sci))}
+        {btn(sci ? '▼科学' : '科学▶', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 text-xs', () => setSci(!sci))}
         {btn('0', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input('0'))}
         {btn('.', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input('.'))}
         {btn('=', 'bg-accent text-white font-bold hover:opacity-90', equals)}
@@ -589,6 +593,99 @@ function TimeCalc() {
         <div className="p-3 bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] text-center">
           <p className="text-2xl font-bold text-accent">{result.toFixed(4)}</p>
           <p className="text-xs text-text-secondary mt-1">{val} {from} = {result.toFixed(4)} {to}</p>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ─── Chinese Title / Address Form of Address ─────────
+function TitleCalc() {
+  const [name, setName] = useState('')
+  const [gender, setGender] = useState<'male' | 'female'>('male')
+  const [age, setAge] = useState('30')
+  const a = parseInt(age)
+
+  const title = (() => {
+    if (!name.trim()) return null
+    if (isNaN(a)) return null
+    if (a < 12) return '小朋友'
+    if (a < 18) return '同学'
+    return gender === 'male' ? '先生' : '女士'
+  })()
+
+  return (
+    <div className="max-w-sm mx-auto space-y-3">
+      <div className="grid grid-cols-2 gap-3">
+        <div className="col-span-2">
+          <label className="block text-xs text-text-secondary mb-1">姓名</label>
+          <input value={name} onChange={e => setName(e.target.value)} placeholder="请输入姓名" className="w-full p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+        </div>
+        <div>
+          <label className="block text-xs text-text-secondary mb-1">性别</label>
+          <div className="flex gap-1">
+            <button onClick={() => setGender('male')} className={`flex-1 p-2 text-xs rounded-sm ${gender === 'male' ? 'bg-accent text-white' : 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]'}`}>男</button>
+            <button onClick={() => setGender('female')} className={`flex-1 p-2 text-xs rounded-sm ${gender === 'female' ? 'bg-accent text-white' : 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]'}`}>女</button>
+          </div>
+        </div>
+        <div>
+          <label className="block text-xs text-text-secondary mb-1">年龄</label>
+          <input value={age} onChange={e => setAge(e.target.value)} className="w-full p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+        </div>
+      </div>
+      {title && (
+        <div className="p-3 bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] text-center">
+          <p className="text-lg text-text-primary">{name}{title}</p>
+          <p className="text-xs text-text-secondary mt-1">例如：邮件、信函开头称呼</p>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ─── Number Base Converter ───────────────────────────
+function BaseCalc() {
+  const [input, setInput] = useState('')
+  const [fromBase, setFromBase] = useState(10)
+  const [results, setResults] = useState<{ base: number; label: string; value: string }[]>([])
+  const [error, setError] = useState('')
+
+  const BASES = [
+    { base: 2, label: 'BIN' }, { base: 8, label: 'OCT' },
+    { base: 10, label: 'DEC' }, { base: 16, label: 'HEX' },
+  ]
+
+  const convert = () => {
+    setError('')
+    if (!input.trim()) { setResults([]); return }
+    const decimal = parseInt(input, fromBase)
+    if (isNaN(decimal)) { setError('输入无效'); return }
+    setResults(BASES.map(({ base, label }) => ({
+      base, label,
+      value: decimal.toString(base).toUpperCase(),
+    })))
+  }
+
+  return (
+    <div className="max-w-sm mx-auto space-y-3">
+      <div className="flex gap-2">
+        <input value={input} onChange={e => setInput(e.target.value)} placeholder="输入数字"
+          className="flex-1 p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary" />
+        <select value={fromBase} onChange={e => setFromBase(parseInt(e.target.value))}
+          className="p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
+          {BASES.map(b => <option key={b.base} value={b.base}>{b.label}</option>)}
+        </select>
+        <button onClick={convert} className="px-4 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">转换</button>
+      </div>
+      {error && <p className="text-red-500 text-xs">{error}</p>}
+      {results.length > 0 && (
+        <div className="space-y-1">
+          {results.map(r => (
+            <div key={r.base} className="flex items-center gap-2 p-2 bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] text-sm">
+              <span className="w-12 text-accent font-mono text-xs font-bold">{r.label}</span>
+              <code className="flex-1 font-mono text-text-primary">{r.value}</code>
+            </div>
+          ))}
         </div>
       )}
     </div>
