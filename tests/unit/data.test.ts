@@ -12,7 +12,6 @@ describe('products', () => {
       expect(p.id).toBeTruthy()
       expect(typeof p.id).toBe('string')
       expect(p.icon).toBeTruthy()
-      expect(Array.isArray(p.tags)).toBe(true)
       expect(p.url !== undefined).toBe(true)
       expect(['live', 'beta', 'wip', 'planned']).toContain(p.status)
     }

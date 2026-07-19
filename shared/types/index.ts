@@ -11,7 +11,6 @@ export type ProductStatus = 'live' | 'beta' | 'wip' | 'planned'
 export interface Product {
   id: string
   icon: string
-  tags: string[]
   status: ProductStatus
   url?: string
 }

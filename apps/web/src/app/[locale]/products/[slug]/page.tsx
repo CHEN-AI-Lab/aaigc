@@ -39,13 +39,6 @@ export default async function ProductDetailPage({ params }: Props) {
           <div className="flex-1">
             <h1 className="text-3xl font-semibold text-text-primary mb-2">{name}</h1>
             {desc && <p className="text-text-secondary mb-4">{desc}</p>}
-            <div className="flex flex-wrap gap-2 mb-4">
-              {product.tags.map((tag) => (
-                <span key={tag} className="text-xs px-2 py-1 bg-bg text-text-secondary rounded-sm border border-[rgba(127,99,21,0.1)]">
-                  {tag}
-                </span>
-              ))}
-            </div>
             <div className="flex items-center gap-3">
               <span className={`text-xs px-2 py-1 rounded-sm font-medium ${
                 product.status === 'live' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
