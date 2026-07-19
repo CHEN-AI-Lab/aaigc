@@ -88,18 +88,18 @@ function BasicCalc() {
         {display}
       </div>
       <div className="grid grid-cols-4 gap-1.5">
-        {btn('AC', 'col-span-2 bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', clear)}
+        {btn('AC', 'col-span-2 bg-surface text-red-400 border border-[rgba(127,99,21,0.1)] hover:border-red-300', clear)}
         {btn('⌫', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => setDisplay(d => d.length > 1 ? d.slice(0, -1) : '0'))}
-        {btn('÷', 'bg-accent text-white hover:opacity-90', () => handleOp('/'))}
+        {btn('÷', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('/'))}
         {['7','8','9'].map(n => btn(n, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input(n)))}
-        {btn('×', 'bg-accent text-white hover:opacity-90', () => handleOp('*'))}
+        {btn('×', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('*'))}
         {['4','5','6'].map(n => btn(n, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input(n)))}
-        {btn('−', 'bg-accent text-white hover:opacity-90', () => handleOp('-'))}
+        {btn('−', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('-'))}
         {['1','2','3'].map(n => btn(n, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input(n)))}
-        {btn('+', 'bg-accent text-white hover:opacity-90', () => handleOp('+'))}
+        {btn('+', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('+'))}
         {btn('0', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30 col-span-2', () => input('0'))}
         {btn('.', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input('.'))}
-        {btn('=', 'bg-accent text-white hover:opacity-90', equals)}
+        {btn('=', 'bg-accent text-white font-bold hover:opacity-90', equals)}
       </div>
     </div>
   )
