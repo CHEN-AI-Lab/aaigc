@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useTranslations, useLocale } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { tools, toolCategories } from 'data/tools'
@@ -9,6 +9,28 @@ export default function ToolsClient() {
   const t = useTranslations('tools')
   const locale = useLocale()
   const [query, setQuery] = useState('')
+
+  // Preload all tool components so clicking is instant
+  useEffect(() => {
+    const componentMap: Record<string, string> = {
+      'json-formatter': 'JsonFormatter', 'regex-tester': 'RegexTester',
+      'base64': 'Base64Codec', 'url-encode': 'UrlEncoder', 'jwt-decoder': 'JwtDecoder',
+      'uuid-generator': 'UuidGenerator', 'html-preview': 'HtmlPreview',
+      'css-minifier': 'CssMinifier', 'markdown-preview': 'MarkdownPreview',
+      'word-counter': 'WordCounter', 'text-diff': 'TextDiff',
+      'case-converter': 'CaseConverter', 'lorem-ipsum': 'LoremIpsum',
+      'text-to-slug': 'TextToSlug', 'list-sorter': 'ListSorter',
+      'timestamp': 'TimestampConverter', 'date-calculator': 'DateCalculator',
+      'qrcode': 'QrCodeGenerator', 'color-picker': 'ColorPicker',
+      'image-to-base64': 'ImageToBase64', 'number-base': 'NumberBaseConverter',
+      'yaml-json': 'YamlJsonConverter', 'html-entities': 'HtmlEntities',
+      'password-generator': 'PasswordGenerator',
+    }
+    tools.forEach(tool => {
+      const name = componentMap[tool.id]
+      if (name) import(`./tools/${name}`).catch(() => {})
+    })
+  }, [])
 
   const filtered = useMemo(() => {
     if (!query.trim()) return null
