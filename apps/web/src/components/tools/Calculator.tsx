@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 
 type CalcTab = 'basic' | 'scientific'
@@ -32,6 +32,24 @@ function BasicCalc() {
   const [prev, setPrev] = useState<number | null>(null)
   const [op, setOp] = useState<string | null>(null)
   const [reset, setReset] = useState(false)
+
+  // Keyboard support
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const k = e.key
+      if (k >= '0' && k <= '9') input(k)
+      else if (k === '.') input('.')
+      else if (k === '+') handleOp('+')
+      else if (k === '-') handleOp('-')
+      else if (k === '*') handleOp('*')
+      else if (k === '/') { e.preventDefault(); handleOp('/') }
+      else if (k === 'Enter' || k === '=') { e.preventDefault(); equals() }
+      else if (k === 'Backspace') setDisplay(d => d.length > 1 ? d.slice(0, -1) : '0')
+      else if (k === 'Escape' || k === 'Delete') clear()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  })
 
   const input = (n: string) => {
     if (reset || display === '0') { setDisplay(n); setReset(false) }
