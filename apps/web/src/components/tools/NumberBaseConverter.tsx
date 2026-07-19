@@ -16,7 +16,7 @@ export default function NumberBaseConverter() {
   const [fromBase, setFromBase] = useState(10)
   const [results, setResults] = useState<{ base: number; label: string; value: string }[]>([])
   const [error, setError] = useState('')
-  const [copied, setCopied] = useState('')
+  const [copiedIdx, setCopiedIdx] = useState<number | null>(null)
 
   const convert = useCallback(() => {
     setError('')
@@ -31,11 +31,11 @@ export default function NumberBaseConverter() {
     })))
   }, [input, fromBase, t])
 
-  const copy = useCallback(async (text: string) => {
+  const copy = useCallback(async (text: string, idx: number) => {
     try {
       await navigator.clipboard.writeText(text)
-      setCopied(text.slice(0, 20))
-      setTimeout(() => setCopied(''), 2000)
+      setCopiedIdx(idx)
+      setTimeout(() => setCopiedIdx(null), 2000)
     } catch { /* ignore */ }
   }, [])
 
@@ -79,13 +79,13 @@ export default function NumberBaseConverter() {
                   <span className="text-xs font-mono text-accent font-bold">{r.label}</span>
                 </div>
                 <code className="text-sm text-text-primary font-mono flex-1 break-all bg-surface px-2 py-1.5 rounded-sm border border-[rgba(127,99,21,0.08)]">{r.value}</code>
-                <button onClick={() => copy(r.value)}
+                <button onClick={() => copy(r.value, r.base)}
                   className={`text-xs px-2.5 py-1.5 rounded-sm transition-all duration-200 shrink-0 min-w-[4.5rem] text-center ${
-                    copied === r.value.slice(0, 20)
+                    copiedIdx === r.base
                       ? 'bg-green-500 text-white'
                       : 'bg-accent text-white hover:opacity-90'
                   }`}>
-                  {copied === r.value.slice(0, 20) ? t('copied') : t('copy')}
+                  {copiedIdx === r.base ? t('copied') : t('copy')}
                 </button>
               </div>
             ))}
