@@ -179,31 +179,106 @@
     "input": "入力",
     "output": "出力",
     "placeholder": "ここに入力...",
-    "json-formatter": {"name": "JSON Formatter", "description": "Format and validate JSON data"},
-    "regex-tester": {"name": "Regex Tester", "description": "Test regular expressions in real time"},
-    "base64": {"name": "Base64 Codec", "description": "Encode and decode Base64"},
-    "url-encode": {"name": "URL Encoder", "description": "Encode and decode URLs"},
-    "jwt-decoder": {"name": "JWT Decoder", "description": "Decode JWT token payloads"},
-    "uuid-generator": {"name": "UUID Generator", "description": "Generate UUID v4 identifiers"},
-    "html-preview": {"name": "HTML Preview", "description": "Live HTML rendering"},
-    "css-minifier": {"name": "CSS Minifier", "description": "Minify and format CSS code"},
-    "markdown-preview": {"name": "Markdown Preview", "description": "Live Markdown rendering"},
-    "word-counter": {"name": "Word Counter", "description": "Count characters, words, and lines"},
-    "text-diff": {"name": "Text Diff", "description": "Compare differences between two texts"},
-    "case-converter": {"name": "Case Converter", "description": "Convert text case: upper, lower, title"},
-    "lorem-ipsum": {"name": "Lorem Ipsum", "description": "Generate placeholder text"},
-    "text-to-slug": {"name": "Text to Slug", "description": "Convert text to URL-friendly slug"},
-    "list-sorter": {"name": "List Sorter", "description": "Sort, deduplicate and shuffle lists"},
-    "timestamp": {"name": "Timestamp Converter", "description": "Convert between Unix timestamps and dates"},
-    "date-calculator": {"name": "Date Calculator", "description": "Calculate date differences and add/subtract days"},
-    "qrcode": {"name": "QR Code Generator", "description": "Generate QR codes from text"},
-    "color-picker": {"name": "Color Picker", "description": "Pick colors and generate HEX/RGB/HSL values"},
-    "image-to-base64": {"name": "Image to Base64", "description": "Convert image files to Base64 encoding"},
-    "number-base": {"name": "Number Base Converter", "description": "Convert between decimal, binary, octal, hex"},
-    "yaml-json": {"name": "YAML to JSON", "description": "Convert between YAML and JSON formats"},
-    "html-entities": {"name": "HTML Entities", "description": "Escape and unescape HTML special characters"},
-    "json-to-csv": {"name": "JSON to CSV", "description": "Convert JSON data to CSV format"},
-    "password-generator": {"name": "Password Generator", "description": "Generate secure random passwords"}
+    "json-formatter": {
+      "name": "JSON フォーマッター",
+      "description": "JSONデータのフォーマットと検証"
+    },
+    "regex-tester": {
+      "name": "正規表現テスター",
+      "description": "正規表現をリアルタイムでテスト"
+    },
+    "base64": {
+      "name": "Base64 変換",
+      "description": "テキストとBase64の相互変換"
+    },
+    "url-encode": {
+      "name": "URL 変換",
+      "description": "URLのエンコードとデコード"
+    },
+    "jwt-decoder": {
+      "name": "JWT デコーダー",
+      "description": "JWTトークンのペイロードを解析"
+    },
+    "uuid-generator": {
+      "name": "UUID ジェネレーター",
+      "description": "UUID v4 識別子を生成"
+    },
+    "html-preview": {
+      "name": "HTML プレビュー",
+      "description": "HTMLコードをリアルタイムでレンダリング"
+    },
+    "css-minifier": {
+      "name": "CSS 圧縮/整形",
+      "description": "CSSコードの圧縮と整形"
+    },
+    "markdown-preview": {
+      "name": "Markdown プレビュー",
+      "description": "Markdownをリアルタイムでレンダリング"
+    },
+    "word-counter": {
+      "name": "文字数カウンター",
+      "description": "文字数、単語数、行数をカウント"
+    },
+    "text-diff": {
+      "name": "テキスト差分",
+      "description": "2つのテキストの差分を比較"
+    },
+    "case-converter": {
+      "name": "大文字小文字変換",
+      "description": "テキストの大文字/小文字/タイトルケースを変換"
+    },
+    "lorem-ipsum": {
+      "name": "Lorem Ipsum",
+      "description": "プレースホルダーテキストを生成"
+    },
+    "text-to-slug": {
+      "name": "テキスト→スラグ変換",
+      "description": "テキストをURLフレンドリーなスラグに変換"
+    },
+    "list-sorter": {
+      "name": "リストソーター",
+      "description": "リストの並べ替え、重複削除、シャッフル"
+    },
+    "timestamp": {
+      "name": "タイムスタンプ変換",
+      "description": "Unixタイムスタンプと日付の相互変換"
+    },
+    "date-calculator": {
+      "name": "日付計算機",
+      "description": "日付の差の計算と加算/減算"
+    },
+    "qrcode": {
+      "name": "QRコード生成",
+      "description": "テキストからQRコード画像を生成"
+    },
+    "color-picker": {
+      "name": "カラーピッカー",
+      "description": "色を選択してHEX/RGB/HSL値を生成"
+    },
+    "image-to-base64": {
+      "name": "画像→Base64変換",
+      "description": "画像ファイルをBase64エンコードに変換"
+    },
+    "number-base": {
+      "name": "進数変換",
+      "description": "10進数、2進数、8進数、16進数の相互変換"
+    },
+    "yaml-json": {
+      "name": "YAML ↔ JSON",
+      "description": "YAMLとJSON形式の相互変換"
+    },
+    "html-entities": {
+      "name": "HTML エンティティ変換",
+      "description": "HTML特殊文字のエスケープとアンエスケープ"
+    },
+    "json-to-csv": {
+      "name": "JSON to CSV",
+      "description": "Convert JSON data to CSV format"
+    },
+    "password-generator": {
+      "name": "パスワード生成",
+      "description": "安全なランダムパスワードを生成"
+    }
   },
   "ui": {
     "aboutLink": "AAIGCについて →",
