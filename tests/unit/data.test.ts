@@ -29,6 +29,22 @@ describe('products', () => {
       }
     }
   })
+
+  it('each product has a non-empty icon emoji', () => {
+    for (const p of products) {
+      expect(p.icon.length).toBeGreaterThan(0)
+      // Emoji characters are typically 2 chars in JS strings
+      expect(p.icon.codePointAt(0)).toBeGreaterThanOrEqual(0x2000)
+    }
+  })
+
+  it('has at least one live product', () => {
+    expect(products.some(p => p.status === 'live')).toBe(true)
+  })
+
+  it('has at least one wip product', () => {
+    expect(products.some(p => p.status === 'wip')).toBe(true)
+  })
 })
 
 describe('tools', () => {
@@ -61,6 +77,8 @@ describe('tools', () => {
       expect(t.id).toBeTruthy()
       expect(t.category).toBeTruthy()
       expect(t.component).toBeTruthy()
+      expect(t.icon).toBeTruthy()
+      expect(t.icon.length).toBeGreaterThan(0)
     }
   })
 
@@ -100,6 +118,15 @@ describe('tools', () => {
     }
     for (const t of tools) {
       expect(slugToComponent[t.id]).toBe(t.component)
+    }
+  })
+
+  it('each tool has a valid npmDeps field when present', () => {
+    for (const t of tools) {
+      if (t.npmDeps) {
+        expect(Array.isArray(t.npmDeps)).toBe(true)
+        expect(t.npmDeps.length).toBeGreaterThan(0)
+      }
     }
   })
 
@@ -158,6 +185,7 @@ describe('tool categories', () => {
       expect(c.id).toBeTruthy()
       expect(c.icon).toBeTruthy()
       expect(typeof c.order).toBe('number')
+      expect(c.icon.length).toBeGreaterThan(0)
     }
   })
 
@@ -172,5 +200,11 @@ describe('tool categories', () => {
   it('categories have unique orders', () => {
     const orders = categories.map(c => c.order)
     expect(new Set(orders).size).toBe(orders.length)
+  })
+
+  it('categories are ordered sequentially from 1', () => {
+    const orders = categories.map(c => c.order).sort((a, b) => a - b)
+    expect(orders[0]).toBe(1)
+    expect(orders[orders.length - 1]).toBe(orders.length)
   })
 })
