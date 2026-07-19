@@ -1,32 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
 
-type CalcTab = 'basic' | 'scientific'
-
-export default function Calculator() {
-  const t = useTranslations('tools')
-  const [tab, setTab] = useState<CalcTab>('basic')
-
-  return (
-    <div className="mt-6 space-y-4">
-      <div className="flex gap-1 border-b border-[rgba(127,99,21,0.15)] pb-1">
-        <button onClick={() => setTab('basic')}
-          className={`px-4 py-2 text-sm rounded-t-sm transition-colors ${tab === 'basic' ? 'bg-accent text-white' : 'text-text-secondary hover:text-text-primary hover:bg-surface'}`}>
-          {t('calcBasic')}
-        </button>
-        <button onClick={() => setTab('scientific')}
-          className={`px-4 py-2 text-sm rounded-t-sm transition-colors ${tab === 'scientific' ? 'bg-accent text-white' : 'text-text-secondary hover:text-text-primary hover:bg-surface'}`}>
-          {t('calcScientific')}
-        </button>
-      </div>
-      {tab === 'basic' ? <BasicCalc /> : <ScientificCalc />}
-    </div>
-  )
-}
-
-// ─── Shared helpers ───────────────────────────────────
 function compute(a: number, b: number, op: string): number {
   switch (op) {
     case '+': return a + b
@@ -42,13 +17,15 @@ const btn = (label: string, base: string, onClick: () => void) => (
     className={`p-3 text-sm rounded-sm font-medium transition-colors active:scale-90 duration-100 ${base}`}>{label}</button>
 )
 
-// ─── Basic Calculator ─────────────────────────────────
-function BasicCalc() {
+export default function Calculator() {
   const [display, setDisplay] = useState('0')
   const [expr, setExpr] = useState('')
   const [prev, setPrev] = useState<number | null>(null)
   const [op, setOp] = useState<string | null>(null)
   const [reset, setReset] = useState(false)
+  const [sci, setSci] = useState(false)
+  const [rad, setRad] = useState(false)
+  const [mem, setMem] = useState<number | null>(null)
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -98,84 +75,11 @@ function BasicCalc() {
 
   const clear = () => { setDisplay('0'); setExpr(''); setPrev(null); setOp(null); setReset(false) }
 
-  return (
-    <div className="max-w-[260px] mx-auto">
-      <Display expr={expr} value={display} />
-      <div className="grid grid-cols-4 gap-1.5">
-        {btn('AC', 'col-span-2 bg-surface text-red-400 border border-[rgba(127,99,21,0.1)] hover:border-red-300', clear)}
-        {btn('⌫', 'bg-surface text-red-400 border border-[rgba(127,99,21,0.1)] hover:border-red-300', () => setDisplay(d => d.length > 1 ? d.slice(0, -1) : '0'))}
-        {btn('÷', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('/'))}
-        {['7','8','9'].map(n => btn(n, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input(n)))}
-        {btn('×', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('*'))}
-        {['4','5','6'].map(n => btn(n, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input(n)))}
-        {btn('−', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('-'))}
-        {['1','2','3'].map(n => btn(n, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input(n)))}
-        {btn('+', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('+'))}
-        {btn('0', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30 col-span-2', () => input('0'))}
-        {btn('.', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input('.'))}
-        {btn('=', 'bg-accent text-white font-bold hover:opacity-90', equals)}
-      </div>
-    </div>
-  )
-}
-
-// ─── Shared Display ───────────────────────────────────
-function Display({ expr, value }: { expr: string; value: string }) {
-  return (
-    <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm p-3 mb-3 min-h-[4rem]">
-      <div className="text-xs text-text-secondary/60 text-right min-h-[1rem] leading-tight overflow-hidden text-ellipsis">{expr}&nbsp;</div>
-      <div className="text-2xl font-mono text-text-primary text-right leading-loose overflow-hidden">{value}</div>
-    </div>
-  )
-}
-
-// ─── Scientific Calculator ────────────────────────────
-function ScientificCalc() {
-  const [display, setDisplay] = useState('0')
-  const [expr, setExpr] = useState('')
-  const [prev, setPrev] = useState<number | null>(null)
-  const [op, setOp] = useState<string | null>(null)
-  const [reset, setReset] = useState(false)
-  const [rad, setRad] = useState(false)
-  const [mem, setMem] = useState<number | null>(null)
-
-  const input = (n: string) => {
-    if (reset || display === '0') { setDisplay(n); setReset(false) }
-    else setDisplay(display + n)
-  }
-
-  const handleOp = (next: string) => {
-    const cur = parseFloat(display)
-    if (prev !== null && op && !reset) {
-      const r = compute(prev, cur, op)
-      setExpr(`${prev} ${op} ${cur} =`)
-      setDisplay(String(r))
-      setPrev(r)
-    } else {
-      setExpr(cur + ' ' + next)
-      setPrev(cur)
-    }
-    setOp(next)
-    setReset(true)
-  }
-
-  const equals = () => {
-    if (prev === null || !op) return
-    const cur = parseFloat(display)
-    const r = compute(prev, cur, op)
-    setExpr(`${prev} ${op} ${cur} =`)
-    setDisplay(String(r))
-    setPrev(null); setOp(null); setReset(true)
-  }
-
-  const clear = () => { setDisplay('0'); setExpr(''); setPrev(null); setOp(null); setReset(false) }
-
-  const apply = (fn: (x: number) => number) => {
+  const apply = (fn: (x: number) => number, name: string) => {
     const v = parseFloat(display)
     if (isNaN(v)) return
-    const r = fn(v)
-    setExpr(`${fn.name || 'fn'}(${v}) =`)
-    setDisplay(String(r))
+    setExpr(`${name}(${v}) =`)
+    setDisplay(String(fn(v)))
   }
 
   const toRad = (x: number) => rad ? x : x * Math.PI / 180
@@ -203,34 +107,31 @@ function ScientificCalc() {
   return (
     <div className="max-w-[260px] mx-auto">
       {/* Display */}
-      <div className="flex items-center gap-2 mb-3">
-        <div className="flex-1 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm p-3 min-h-[4rem]">
-          <div className="flex items-center justify-between text-xs text-text-secondary/60 min-h-[1rem] leading-tight">
-            <span className="font-mono">{rad ? 'RAD' : 'DEG'}</span>
-            <span className="overflow-hidden text-ellipsis">{expr}&nbsp;</span>
+      <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm p-3 mb-3 min-h-[4rem]">
+        <div className="text-xs text-text-secondary/60 text-right min-h-[1rem] leading-tight overflow-hidden text-ellipsis">{expr}&nbsp;</div>
+        <div className="text-2xl font-mono text-text-primary text-right leading-loose overflow-hidden">{display}</div>
+      </div>
+
+      {/* Scientific functions (toggle with sci) */}
+      {sci && (
+        <>
+          <div className="grid grid-cols-4 gap-1 mb-2">
+            {funcs.slice(0, 4).map(f => sbtn(f.l, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => apply(f.f, f.l)))}
+            {funcs.slice(4, 8).map(f => sbtn(f.l, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => apply(f.f, f.l)))}
+            {funcs.slice(8, 12).map(f => sbtn(f.l, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => apply(f.f, f.l)))}
           </div>
-          <div className="text-2xl font-mono text-text-primary text-right leading-loose overflow-hidden">{display}</div>
-        </div>
-      </div>
+          <div className="flex gap-1 mb-2 flex-wrap">
+            {sbtn('π', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => { setDisplay(String(Math.PI)); setExpr('π') })}
+            {sbtn('e', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => { setDisplay(String(Math.E)); setExpr('e') })}
+            {sbtn('RAD', rad ? 'bg-accent text-white' : 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => setRad(!rad))}
+            {sbtn('MC', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => setMem(null))}
+            {sbtn('MR', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => { if (mem !== null) { setDisplay(String(mem)); setExpr('MR') } })}
+            {sbtn('M+', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => { setMem(parseFloat(display)); setExpr('M+') })}
+          </div>
+        </>
+      )}
 
-      {/* Scientific functions - 3 rows of 4 */}
-      <div className="grid grid-cols-4 gap-1 mb-2">
-        {funcs.slice(0, 4).map(f => sbtn(f.l, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => apply(f.f)))}
-        {funcs.slice(4, 8).map(f => sbtn(f.l, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => apply(f.f)))}
-        {funcs.slice(8, 12).map(f => sbtn(f.l, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => apply(f.f)))}
-      </div>
-
-      {/* Constants + Memory + Rad toggle */}
-      <div className="flex gap-1 mb-2 flex-wrap">
-        {sbtn('π', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => { setDisplay(String(Math.PI)); setExpr('π') })}
-        {sbtn('e', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => { setDisplay(String(Math.E)); setExpr('e') })}
-        {sbtn('RAD', rad ? 'bg-accent text-white' : 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => setRad(!rad))}
-        {sbtn('MC', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => setMem(null))}
-        {sbtn('MR', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => { if (mem !== null) { setDisplay(String(mem)); setExpr('MR') } })}
-        {sbtn('M+', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => { setMem(parseFloat(display)); setExpr('M+') })}
-      </div>
-
-      {/* Number pad - same as basic */}
+      {/* Number pad */}
       <div className="grid grid-cols-4 gap-1.5">
         {btn('AC', 'col-span-2 bg-surface text-red-400 border border-[rgba(127,99,21,0.1)] hover:border-red-300', clear)}
         {btn('⌫', 'bg-surface text-red-400 border border-[rgba(127,99,21,0.1)] hover:border-red-300', () => setDisplay(d => d.length > 1 ? d.slice(0, -1) : '0'))}
@@ -244,6 +145,8 @@ function ScientificCalc() {
         {btn('0', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30 col-span-2', () => input('0'))}
         {btn('.', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input('.'))}
         {btn('=', 'bg-accent text-white font-bold hover:opacity-90', equals)}
+        {/* SCI toggle - spans 4 columns */}
+        {btn(sci ? '▼ SCI' : 'SCI ▶', 'col-span-4 bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 text-xs', () => setSci(!sci))}
       </div>
     </div>
   )
