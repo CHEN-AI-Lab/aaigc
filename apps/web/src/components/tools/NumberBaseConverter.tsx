@@ -16,6 +16,7 @@ export default function NumberBaseConverter() {
   const [fromBase, setFromBase] = useState(10)
   const [results, setResults] = useState<{ base: number; label: string; value: string }[]>([])
   const [error, setError] = useState('')
+  const [copied, setCopied] = useState('')
 
   const convert = useCallback(() => {
     setError('')
@@ -30,14 +31,20 @@ export default function NumberBaseConverter() {
     })))
   }, [input, fromBase, t])
 
+  const copy = useCallback(async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopied(text.slice(0, 20))
+      setTimeout(() => setCopied(''), 2000)
+    } catch { /* ignore */ }
+  }, [])
+
   return (
     <div className="mt-6 space-y-6">
-      {/* Hint */}
       <div className="p-3 bg-amber-50 border border-amber-200 rounded-sm text-xs text-amber-800 leading-relaxed">
         {t('baseDesc')}
       </div>
 
-      {/* Input Section */}
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-5">
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="flex-1">
@@ -62,7 +69,6 @@ export default function NumberBaseConverter() {
 
       {error && <p className="text-red-500 text-sm">{error}</p>}
 
-      {/* Results */}
       {results.length > 0 && (
         <div>
           <h3 className="text-sm font-semibold text-text-primary mb-3">{t('result')}</h3>
@@ -73,8 +79,14 @@ export default function NumberBaseConverter() {
                   <span className="text-xs font-mono text-accent font-bold">{r.label}</span>
                 </div>
                 <code className="text-sm text-text-primary font-mono flex-1 break-all bg-surface px-3 py-2 rounded-sm border border-[rgba(127,99,21,0.08)]">{r.value}</code>
-                <button onClick={() => navigator.clipboard.writeText(r.value)}
-                  className="text-xs px-3 py-1.5 bg-accent text-white rounded-sm hover:opacity-90 shrink-0">{t('copy')}</button>
+                <button onClick={() => copy(r.value)}
+                  className={`text-xs px-3 py-1.5 rounded-sm transition-all duration-200 shrink-0 ${
+                    copied === r.value.slice(0, 20)
+                      ? 'bg-green-500 text-white scale-105'
+                      : 'bg-accent text-white hover:opacity-90'
+                  }`}>
+                  {copied === r.value.slice(0, 20) ? t('copied') : t('copy')}
+                </button>
               </div>
             ))}
           </div>

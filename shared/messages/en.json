@@ -329,7 +329,8 @@
     "weak": "Weak",
     "medium": "Medium",
     "strong": "Strong",
-    "fromBase": "From Base"
+    "fromBase": "From Base",
+    "copied": "Copied!"
   },
   "ui": {
     "aboutLink": "About AAIGC →",
