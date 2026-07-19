@@ -1,15 +1,18 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
+import { useState, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 
 export default function Footer() {
-  const pathname = usePathname()
   const t = useTranslations('footer')
+  const [hidden, setHidden] = useState(false)
 
-  // Hide footer on tool detail pages
-  if (pathname?.includes('/tools/')) return null
+  useEffect(() => {
+    setHidden(window.location.pathname.includes('/tools/'))
+  }, [])
+
+  if (hidden) return null
 
   return (
     <footer className="border-t border-[rgba(127,99,21,0.1)] bg-bg mt-auto">
