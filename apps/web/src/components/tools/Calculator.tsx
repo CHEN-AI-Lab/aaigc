@@ -29,6 +29,7 @@ export default function Calculator() {
 // ─── Basic Calculator ─────────────────────────────────
 function BasicCalc() {
   const [display, setDisplay] = useState('0')
+  const [expr, setExpr] = useState('')
   const [prev, setPrev] = useState<number | null>(null)
   const [op, setOp] = useState<string | null>(null)
   const [reset, setReset] = useState(false)
@@ -44,7 +45,7 @@ function BasicCalc() {
       else if (k === '*') handleOp('*')
       else if (k === '/') { e.preventDefault(); handleOp('/') }
       else if (k === 'Enter' || k === '=') { e.preventDefault(); equals() }
-      else if (k === 'Backspace') setDisplay(d => d.length > 1 ? d.slice(0, -1) : '0')
+      else if (k === 'Backspace') { setDisplay(d => d.length > 1 ? d.slice(0, -1) : '0') }
       else if (k === 'Escape' || k === 'Delete') clear()
     }
     window.addEventListener('keydown', onKey)
@@ -59,9 +60,12 @@ function BasicCalc() {
   const handleOp = (next: string) => {
     const cur = parseFloat(display)
     if (prev !== null && op && !reset) {
-      setDisplay(String(compute(prev, cur, op)))
-      setPrev(compute(prev, cur, op))
+      const r = compute(prev, cur, op)
+      setExpr(`${prev} ${op} ${cur} =`)
+      setDisplay(String(r))
+      setPrev(r)
     } else {
+      setExpr(cur + ' ' + next)
       setPrev(cur)
     }
     setOp(next)
@@ -71,25 +75,28 @@ function BasicCalc() {
   const equals = () => {
     if (prev === null || !op) return
     const cur = parseFloat(display)
-    setDisplay(String(compute(prev, cur, op)))
+    const r = compute(prev, cur, op)
+    setExpr(`${prev} ${op} ${cur} =`)
+    setDisplay(String(r))
     setPrev(null); setOp(null); setReset(true)
   }
 
-  const clear = () => { setDisplay('0'); setPrev(null); setOp(null); setReset(false) }
+  const clear = () => { setDisplay('0'); setExpr(''); setPrev(null); setOp(null); setReset(false) }
 
-  const btn = (label: string, cls: string, onClick: () => void) => (
+  const btn = (label: string, base: string, onClick: () => void) => (
     <button key={label} onClick={onClick}
-      className={`p-3 text-sm rounded-sm font-medium transition-colors ${cls}`}>{label}</button>
+      className={`p-3 text-sm rounded-sm font-medium transition-colors active:scale-90 duration-100 ${base}`}>{label}</button>
   )
 
   return (
     <div className="max-w-[260px] mx-auto">
-      <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm p-3 mb-3 text-right text-2xl font-mono text-text-primary min-h-[3rem] overflow-hidden leading-loose">
-        {display}
+      <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm p-3 mb-3 min-h-[4rem]">
+        <div className="text-xs text-text-secondary/60 text-right min-h-[1rem] leading-tight">{expr}&nbsp;</div>
+        <div className="text-2xl font-mono text-text-primary text-right leading-loose overflow-hidden">{display}</div>
       </div>
       <div className="grid grid-cols-4 gap-1.5">
         {btn('AC', 'col-span-2 bg-surface text-red-400 border border-[rgba(127,99,21,0.1)] hover:border-red-300', clear)}
-        {btn('⌫', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => setDisplay(d => d.length > 1 ? d.slice(0, -1) : '0'))}
+        {btn('⌫', 'bg-surface text-red-400 border border-[rgba(127,99,21,0.1)] hover:border-red-300', () => setDisplay(d => d.length > 1 ? d.slice(0, -1) : '0'))}
         {btn('÷', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('/'))}
         {['7','8','9'].map(n => btn(n, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input(n)))}
         {btn('×', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('*'))}
