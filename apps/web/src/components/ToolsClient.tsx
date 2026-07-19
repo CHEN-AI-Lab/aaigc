@@ -25,6 +25,7 @@ export default function ToolsClient() {
       'image-to-base64': 'ImageToBase64', 'number-base': 'NumberBaseConverter',
       'yaml-json': 'YamlJsonConverter', 'html-entities': 'HtmlEntities',
       'password-generator': 'PasswordGenerator',
+      'calculator': 'Calculator',
     }
     tools.forEach(tool => {
       const name = componentMap[tool.id]

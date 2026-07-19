@@ -34,6 +34,7 @@ const toolModules: Record<string, React.LazyExoticComponent<React.ComponentType>
   'json-to-csv': lazy(() => import('./tools/JsonToCsv')),
   'text-to-slug': lazy(() => import('./tools/TextToSlug')),
   'list-sorter': lazy(() => import('./tools/ListSorter')),
+  'calculator': lazy(() => import('./tools/Calculator')),
 }
 
 export default function ToolPageClient({ slug }: Props) {

@@ -330,7 +330,11 @@
     "medium": "Medium",
     "strong": "Strong",
     "fromBase": "From Base",
-    "copied": "Copied"
+    "copied": "Copied",
+    "calculator": {
+      "name": "Calculator",
+      "description": "All-in-one calculator: basic, scientific, percentage, BMI, discount, age"
+    }
   },
   "ui": {
     "aboutLink": "About AAIGC →",

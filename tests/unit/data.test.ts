@@ -96,6 +96,7 @@ describe('tools', () => {
       'json-to-csv': 'JsonToCsv',
       'text-to-slug': 'TextToSlug',
       'list-sorter': 'ListSorter',
+      'calculator': 'Calculator',
     }
     for (const t of tools) {
       expect(slugToComponent[t.id]).toBe(t.component)
@@ -129,6 +130,7 @@ describe('tools', () => {
       JsonToCsv: () => import('../../apps/web/src/components/tools/JsonToCsv'),
       TextToSlug: () => import('../../apps/web/src/components/tools/TextToSlug'),
       ListSorter: () => import('../../apps/web/src/components/tools/ListSorter'),
+      Calculator: () => import('../../apps/web/src/components/tools/Calculator'),
     }
     for (const t of tools) {
       const loader = componentMap[t.component]

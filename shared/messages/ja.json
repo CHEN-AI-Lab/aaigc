@@ -330,7 +330,11 @@
     "medium": "中",
     "strong": "強",
     "fromBase": "入力基数",
-    "copied": "コピー完了"
+    "copied": "コピー完了",
+    "calculator": {
+      "name": "計算機",
+      "description": "多機能計算機：基本、科学、パーセント、BMI、割引、年齢"
+    }
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

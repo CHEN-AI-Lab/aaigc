@@ -330,7 +330,11 @@
     "medium": "中",
     "strong": "强",
     "fromBase": "输入进制",
-    "copied": "已复制"
+    "copied": "已复制",
+    "calculator": {
+      "name": "计算器",
+      "description": "多功能计算器：基本计算、科学计算、百分比、BMI、折扣、年龄"
+    }
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",
