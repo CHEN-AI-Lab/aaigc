@@ -365,16 +365,34 @@ function TempCalc() {
   )
 }
 
-// ─── Improved BMI ────────────────────────────────────
+// ─── Improved BMI (age/gender reference) ─────────────
 function BmiCalc() {
   const [h, setH] = useState('170')
   const [w, setW] = useState('70')
+  const [age, setAge] = useState('30')
+  const [gender, setGender] = useState<'male' | 'female'>('male')
   const [unit, setUnit] = useState<'metric' | 'imperial'>('metric')
-  const height = parseFloat(h); const weight = parseFloat(w)
+  const height = parseFloat(h); const weight = parseFloat(w); const a = parseInt(age)
   const bmi = (isNaN(height) || isNaN(weight) || height <= 0) ? null
     : ((unit === 'metric' ? weight : weight * 0.453592) / ((unit === 'metric' ? height : height * 2.54) / 100) ** 2)
-  const cat = bmi ? (bmi < 18.5 ? '偏瘦' : bmi < 25 ? '正常' : bmi < 30 ? '偏胖' : '肥胖') : null
-  const color = bmi ? (bmi < 18.5 ? 'bg-blue-400' : bmi < 25 ? 'bg-green-400' : bmi < 30 ? 'bg-amber-400' : 'bg-red-400') : ''
+
+  // Age-adjusted BMI categories (simplified WHO standards)
+  const cat = (() => {
+    if (!bmi || isNaN(a)) return null
+    if (a < 18) return bmi < 18.5 ? '偏瘦' : bmi < 24 ? '正常' : '超重'
+    if (a < 40) return bmi < 18.5 ? '偏瘦' : bmi < 25 ? '正常' : bmi < 30 ? '偏胖' : '肥胖'
+    if (a < 60) return bmi < 19 ? '偏瘦' : bmi < 26 ? '正常' : bmi < 31 ? '偏胖' : '肥胖'
+    return bmi < 20 ? '偏瘦' : bmi < 27 ? '正常' : bmi < 32 ? '偏胖' : '肥胖'
+  })()
+
+  const color = (() => {
+    if (!bmi) return ''
+    if (a < 18) return bmi < 18.5 ? 'bg-blue-400' : bmi < 24 ? 'bg-green-400' : 'bg-amber-400'
+    if (a < 40) return bmi < 18.5 ? 'bg-blue-400' : bmi < 25 ? 'bg-green-400' : bmi < 30 ? 'bg-amber-400' : 'bg-red-400'
+    if (a < 60) return bmi < 19 ? 'bg-blue-400' : bmi < 26 ? 'bg-green-400' : bmi < 31 ? 'bg-amber-400' : 'bg-red-400'
+    return bmi < 20 ? 'bg-blue-400' : bmi < 27 ? 'bg-green-400' : bmi < 32 ? 'bg-amber-400' : 'bg-red-400'
+  })()
+
   const healthyMin = unit === 'metric' ? (18.5 * (height / 100) ** 2).toFixed(0) : ''
   const healthyMax = unit === 'metric' ? (24.9 * (height / 100) ** 2).toFixed(0) : ''
 
@@ -385,7 +403,7 @@ function BmiCalc() {
           <button onClick={() => setUnit('metric')} className={`px-3 py-1 text-xs rounded-sm ${unit === 'metric' ? 'bg-accent text-white' : 'bg-white text-text-secondary'}`}>公制</button>
           <button onClick={() => setUnit('imperial')} className={`px-3 py-1 text-xs rounded-sm ${unit === 'imperial' ? 'bg-accent text-white' : 'bg-white text-text-secondary'}`}>英制</button>
         </div>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-3 gap-3">
           <div>
             <label className="block text-xs text-text-secondary mb-1">身高 ({unit === 'metric' ? 'cm' : 'in'})</label>
             <input value={h} onChange={e => setH(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
@@ -394,6 +412,14 @@ function BmiCalc() {
             <label className="block text-xs text-text-secondary mb-1">体重 ({unit === 'metric' ? 'kg' : 'lb'})</label>
             <input value={w} onChange={e => setW(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
+          <div>
+            <label className="block text-xs text-text-secondary mb-1">年龄</label>
+            <input value={age} onChange={e => setAge(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+          </div>
+        </div>
+        <div className="flex gap-1 mt-2">
+          <button onClick={() => setGender('male')} className={`flex-1 p-2 text-xs rounded-sm ${gender === 'male' ? 'bg-accent text-white' : 'bg-white text-text-secondary border border-[rgba(127,99,21,0.1)]'}`}>男</button>
+          <button onClick={() => setGender('female')} className={`flex-1 p-2 text-xs rounded-sm ${gender === 'female' ? 'bg-accent text-white' : 'bg-white text-text-secondary border border-[rgba(127,99,21,0.1)]'}`}>女</button>
         </div>
         {bmi && (
           <div className="mt-3 pt-3 border-t border-[rgba(127,99,21,0.1)]">
@@ -403,15 +429,6 @@ function BmiCalc() {
                 <p className="text-sm font-medium text-text-primary">{cat}</p>
                 {unit === 'metric' && <p className="text-xs text-text-secondary">健康体重范围: {healthyMin} - {healthyMax} kg</p>}
               </div>
-            </div>
-            <div className="h-2 bg-gray-200 rounded-full overflow-hidden flex">
-              <div className="h-full bg-blue-400" style={{ width: '18.5%' }} />
-              <div className="h-full bg-green-400" style={{ width: '25%' }} />
-              <div className="h-full bg-amber-400" style={{ width: '20%' }} />
-              <div className="h-full bg-red-400" style={{ width: '36.5%' }} />
-            </div>
-            <div className="flex justify-between text-[10px] text-text-secondary/60 mt-0.5">
-              <span>18.5</span><span>25</span><span>30</span>
             </div>
           </div>
         )}
@@ -499,17 +516,43 @@ function TaxCalc() {
   )
 }
 
-// ─── Improved Mortgage Calculator ────────────────────
+// ─── Mortgage Calculator (商业/公积金/组合) ──────────
 function MortgageCalc() {
   const [total, setTotal] = useState('3000000')
   const [years, setYears] = useState('30')
   const [rate, setRate] = useState('3.85')
-  const p = parseFloat(total); const n = parseFloat(years) * 12; const r = parseFloat(rate) / 100 / 12
-  const monthly = (isNaN(p) || isNaN(n) || isNaN(r) || n <= 0 || r <= 0) ? null : p * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1)
+  const [type, setType] = useState<'commercial' | 'fund' | 'mixed'>('commercial')
+  const [fundRate, setFundRate] = useState('3.1')
+  const [fundPortion, setFundPortion] = useState('50')
+  const p = parseFloat(total); const n = parseFloat(years) * 12
+  const r = parseFloat(type === 'fund' ? fundRate : rate) / 100 / 12
+  const fr = parseFloat(fundRate) / 100 / 12
+  const cr = parseFloat(rate) / 100 / 12
+
+  const calcMonthly = (principal: number, rate: number, months: number) => {
+    if (rate <= 0 || months <= 0) return 0
+    return principal * rate * Math.pow(1 + rate, months) / (Math.pow(1 + rate, months) - 1)
+  }
+
+  const monthly = (() => {
+    if (isNaN(p) || isNaN(n) || n <= 0) return null
+    if (type === 'fund') return { total: calcMonthly(p, fr, n), fund: calcMonthly(p, fr, n), commercial: 0 }
+    if (type === 'commercial') return { total: calcMonthly(p, cr, n), fund: 0, commercial: calcMonthly(p, cr, n) }
+    // Mixed: use fund portion percentage
+    const fp = Math.min(100, Math.max(0, parseFloat(fundPortion) || 50)) / 100
+    const fundP = p * fp
+    const comP = p * (1 - fp)
+    return { total: calcMonthly(fundP, fr, n) + calcMonthly(comP, cr, n), fund: calcMonthly(fundP, fr, n), commercial: calcMonthly(comP, cr, n) }
+  })()
 
   return (
     <div className="max-w-sm mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
+        <div className="flex gap-1 mb-3">
+          <button onClick={() => setType('commercial')} className={`px-3 py-1 text-xs rounded-sm ${type === 'commercial' ? 'bg-accent text-white' : 'bg-white text-text-secondary'}`}>商业贷款</button>
+          <button onClick={() => setType('fund')} className={`px-3 py-1 text-xs rounded-sm ${type === 'fund' ? 'bg-accent text-white' : 'bg-white text-text-secondary'}`}>公积金</button>
+          <button onClick={() => setType('mixed')} className={`px-3 py-1 text-xs rounded-sm ${type === 'mixed' ? 'bg-accent text-white' : 'bg-white text-text-secondary'}`}>组合贷</button>
+        </div>
         <div className="grid grid-cols-2 gap-3">
           <div className="col-span-2">
             <label className="block text-xs text-text-secondary mb-1">贷款总额 (元)</label>
@@ -520,24 +563,52 @@ function MortgageCalc() {
             <input value={years} onChange={e => setYears(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
           <div>
-            <label className="block text-xs text-text-secondary mb-1">年利率 (%)</label>
-            <input value={rate} onChange={e => setRate(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            <label className="block text-xs text-text-secondary mb-1">{type === 'fund' ? '公积金利率' : '商业利率'} (%)</label>
+            {type === 'mixed' ? (
+              <input value={rate} onChange={e => setRate(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            ) : (
+              <input value={type === 'fund' ? fundRate : rate} onChange={e => type === 'fund' ? setFundRate(e.target.value) : setRate(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            )}
           </div>
+          {type === 'mixed' && (
+            <>
+              <div>
+                <label className="block text-xs text-text-secondary mb-1">公积金利率 (%)</label>
+                <input value={fundRate} onChange={e => setFundRate(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+              </div>
+              <div>
+                <label className="block text-xs text-text-secondary mb-1">公积金占比 (%)</label>
+                <input value={fundPortion} onChange={e => setFundPortion(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+              </div>
+            </>
+          )}
         </div>
-        {monthly !== null && (
+        {monthly && (
           <div className="mt-3 pt-3 border-t border-[rgba(127,99,21,0.1)] space-y-2">
             <div className="flex justify-between items-center p-2 bg-white rounded-sm">
               <span className="text-text-secondary text-sm">月供</span>
-              <span className="text-accent font-bold text-lg">¥{monthly.toFixed(0)}</span>
+              <span className="text-accent font-bold text-lg">¥{monthly.total.toFixed(0)}</span>
             </div>
+            {(type === 'mixed' || type === 'commercial') && monthly.commercial > 0 && (
+              <div className="flex justify-between p-2 bg-white rounded-sm text-xs">
+                <span className="text-text-secondary">商业贷款月供</span>
+                <span className="font-medium">¥{monthly.commercial.toFixed(0)}</span>
+              </div>
+            )}
+            {(type === 'mixed' || type === 'fund') && monthly.fund > 0 && (
+              <div className="flex justify-between p-2 bg-white rounded-sm text-xs">
+                <span className="text-text-secondary">公积金贷款月供</span>
+                <span className="font-medium">¥{monthly.fund.toFixed(0)}</span>
+              </div>
+            )}
             <div className="grid grid-cols-2 gap-2">
               <div className="p-2 bg-white rounded-sm text-center">
                 <p className="text-xs text-text-secondary">总利息</p>
-                <p className="text-sm font-medium">¥{(monthly * n - p).toFixed(0)}</p>
+                <p className="text-sm font-medium">¥{(monthly.total * n - p).toFixed(0)}</p>
               </div>
               <div className="p-2 bg-white rounded-sm text-center">
                 <p className="text-xs text-text-secondary">还款总额</p>
-                <p className="text-sm font-medium">¥{(monthly * n).toFixed(0)}</p>
+                <p className="text-sm font-medium">¥{(monthly.total * n).toFixed(0)}</p>
               </div>
             </div>
           </div>
@@ -700,24 +771,16 @@ function TitleCalc() {
   )
 }
 
-// ─── Number Base Converter ───────────────────────────
+// ─── Number Base Converter (auto-convert) ────────────
 function BaseCalc() {
   const [input, setInput] = useState('')
   const [fromBase, setFromBase] = useState(10)
-  const [results, setResults] = useState<{ base: number; label: string; value: string }[]>([])
-  const [error, setError] = useState('')
   const BASES = [
     { base: 2, label: 'BIN' }, { base: 8, label: 'OCT' },
     { base: 10, label: 'DEC' }, { base: 16, label: 'HEX' },
   ]
-
-  const convert = () => {
-    setError('')
-    if (!input.trim()) { setResults([]); return }
-    const decimal = parseInt(input, fromBase)
-    if (isNaN(decimal)) { setError('输入无效'); return }
-    setResults(BASES.map(({ base, label }) => ({ base, label, value: decimal.toString(base).toUpperCase() })))
-  }
+  const decimal = input.trim() ? parseInt(input, fromBase) : NaN
+  const results = isNaN(decimal) ? [] : BASES.map(({ base, label }) => ({ base, label, value: decimal.toString(base).toUpperCase() }))
 
   return (
     <div className="max-w-sm mx-auto space-y-3">
@@ -729,9 +792,7 @@ function BaseCalc() {
             className="p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
             {BASES.map(b => <option key={b.base} value={b.base}>{b.label}</option>)}
           </select>
-          <button onClick={convert} className="px-4 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">转换</button>
         </div>
-        {error && <p className="text-red-500 text-xs mb-2">{error}</p>}
         {results.length > 0 && (
           <div className="space-y-1">
             {results.map(r => (
@@ -742,6 +803,7 @@ function BaseCalc() {
             ))}
           </div>
         )}
+        {input.trim() && isNaN(decimal) && <p className="text-red-500 text-xs">输入无效</p>}
       </div>
     </div>
   )
