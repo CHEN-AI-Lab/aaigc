@@ -74,15 +74,15 @@ export default function NumberBaseConverter() {
           <h3 className="text-sm font-semibold text-text-primary mb-3">{t('result')}</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {results.map((r) => (
-              <div key={r.base} className="flex items-center gap-3 p-4 bg-surface rounded-sm border border-[rgba(127,99,21,0.1)]">
-                <div className="w-28 shrink-0">
+              <div key={r.base} className="flex items-center gap-4 p-4 bg-surface rounded-sm border border-[rgba(127,99,21,0.1)]">
+                <div className="w-24 shrink-0">
                   <span className="text-xs font-mono text-accent font-bold">{r.label}</span>
                 </div>
-                <code className="text-sm text-text-primary font-mono flex-1 break-all bg-surface px-3 py-2 rounded-sm border border-[rgba(127,99,21,0.08)]">{r.value}</code>
+                <code className="text-sm text-text-primary font-mono flex-1 break-all bg-surface px-2 py-1.5 rounded-sm border border-[rgba(127,99,21,0.08)]">{r.value}</code>
                 <button onClick={() => copy(r.value)}
-                  className={`text-xs px-3 py-1.5 rounded-sm transition-all duration-200 shrink-0 ${
+                  className={`text-xs px-2.5 py-1.5 rounded-sm transition-all duration-200 shrink-0 ${
                     copied === r.value.slice(0, 20)
-                      ? 'bg-green-500 text-white scale-105'
+                      ? 'bg-green-500 text-white'
                       : 'bg-accent text-white hover:opacity-90'
                   }`}>
                   {copied === r.value.slice(0, 20) ? t('copied') : t('copy')}
