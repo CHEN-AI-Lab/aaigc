@@ -328,7 +328,8 @@
     "loremWords": "単語",
     "weak": "弱",
     "medium": "中",
-    "strong": "強"
+    "strong": "強",
+    "fromBase": "入力基数"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

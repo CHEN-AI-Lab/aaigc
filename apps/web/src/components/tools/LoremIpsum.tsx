@@ -39,7 +39,7 @@ export default function LoremIpsum() {
 
   return (
     <div className="mt-6 space-y-4">
-      <div className="p-3 bg-surface rounded-sm text-xs text-text-secondary leading-relaxed">
+      <div className="p-3 bg-amber-50 border border-amber-200 rounded-sm text-xs text-amber-800 leading-relaxed">
         {t('loremDesc')}
       </div>
       <div className="flex items-center gap-3 flex-wrap">

@@ -328,7 +328,8 @@
     "loremWords": "单词",
     "weak": "弱",
     "medium": "中",
-    "strong": "强"
+    "strong": "强",
+    "fromBase": "输入进制"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",
