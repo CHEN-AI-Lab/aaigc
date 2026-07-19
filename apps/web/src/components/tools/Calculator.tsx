@@ -173,14 +173,21 @@ function CalcPanel() {
     </div>
   )
 
-  // Scientific sidebar
+  // Scientific sidebar - 5 items to match number pad height
   const sciSidebar = (
     <div className="flex flex-col gap-[3px] w-[56px] shrink-0">
-      {sciFuncs.map(f => sbtn(f.l, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => apply(f.f, f.l)))}
+      {sciFuncs.slice(0, 5).map(f => sbtn(f.l, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => apply(f.f, f.l)))}
       {sbtn('π', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => { setDisplay(String(Math.PI)); setExpr('π') })}
       {sbtn('e', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => { setDisplay(String(Math.E)); setExpr('e') })}
       {sbtn(rad ? 'RAD' : 'DEG', rad ? 'bg-accent text-white' : 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => setRad(!rad))}
       {sbtn('MC', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => setMem(null))}
+    </div>
+  )
+
+  // Top bar: remaining sci functions above the numpad
+  const sciTop = (
+    <div className="flex gap-1 mb-2">
+      {sciFuncs.slice(5).map(f => sbtn(f.l, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => apply(f.f, f.l)))}
       {sbtn('MR', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => { if (mem !== null) { setDisplay(String(mem)); setExpr('MR') } })}
       {sbtn('M+', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => { setMem(parseFloat(display)); setExpr('M+') })}
       {sbtn('M-', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => { setMem(parseFloat(display)); setExpr('M-') })}
@@ -198,9 +205,12 @@ function CalcPanel() {
       </div>
 
       {sci ? (
-        <div className="flex gap-2">
-          {sciSidebar}
-          <div className="flex-1 min-w-0">{numpad}</div>
+        <div>
+          {sciTop}
+          <div className="flex gap-2">
+            {sciSidebar}
+            <div className="flex-1 min-w-0">{numpad}</div>
+          </div>
         </div>
       ) : numpad}
     </div>
