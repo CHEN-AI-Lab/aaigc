@@ -334,7 +334,32 @@
     "calculator": {
       "name": "計算機",
       "description": "多機能計算機：基本、科学、パーセント、BMI、割引、年齢"
-    }
+    },
+    "calcBasic": "基本",
+    "calcScientific": "科学",
+    "calcPercent": "パーセント",
+    "calcBmi": "BMI",
+    "calcDiscount": "割引",
+    "calcAge": "年齢",
+    "calcValueA": "値 A",
+    "calcValueB": "値 B",
+    "calcHeight": "身長",
+    "calcWeight": "体重",
+    "calcMetric": "メートル法",
+    "calcImperial": "ヤード・ポンド法",
+    "calcOriginalPrice": "元値",
+    "calcDiscountPct": "割引 (%)",
+    "calcDateOfBirth": "生年月日",
+    "calcYouSave": "割引額",
+    "calcFinalPrice": "最終価格",
+    "calcYearsOld": "歳",
+    "calcUnderweight": "低体重",
+    "calcNormal": "普通",
+    "calcOverweight": "過体重",
+    "calcObese": "肥満",
+    "calcAisPctOfB": "A は B の {pct}%",
+    "calcPctOfB": "{val} は {a}% の B",
+    "calcChange": "変化: {pct}%"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

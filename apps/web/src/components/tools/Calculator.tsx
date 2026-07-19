@@ -1,33 +1,25 @@
 'use client'
 
 import { useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 
 type CalcTab = 'basic' | 'scientific' | 'percent' | 'bmi' | 'discount' | 'age'
 
-const TABS: { id: CalcTab; label: string; labelZh: string; labelJa: string }[] = [
-  { id: 'basic', label: 'Basic', labelZh: '基本', labelJa: '基本' },
-  { id: 'scientific', label: 'Scientific', labelZh: '科学', labelJa: '科学' },
-  { id: 'percent', label: 'Percentage', labelZh: '百分比', labelJa: 'パーセント' },
-  { id: 'bmi', label: 'BMI', labelZh: 'BMI', labelJa: 'BMI' },
-  { id: 'discount', label: 'Discount', labelZh: '折扣', labelJa: '割引' },
-  { id: 'age', label: 'Age', labelZh: '年龄', labelJa: '年齢' },
-]
+const TABS: CalcTab[] = ['basic', 'scientific', 'percent', 'bmi', 'discount', 'age']
 
 export default function Calculator() {
   const t = useTranslations('tools')
   const [tab, setTab] = useState<CalcTab>('basic')
 
   const tabLabel = (id: CalcTab) => {
-    const tab = TABS.find(t => t.id === id)
-    if (!tab) return id
-    return tab.label
+    const key = `calc${id.charAt(0).toUpperCase() + id.slice(1)}`
+    return t(key)
   }
 
   return (
     <div className="mt-6 space-y-4">
       <div className="flex flex-wrap gap-1 border-b border-[rgba(127,99,21,0.15)] pb-1">
-        {TABS.map(({ id, label }) => (
+        {TABS.map((id) => (
           <button
             key={id}
             onClick={() => setTab(id)}
@@ -37,7 +29,7 @@ export default function Calculator() {
                 : 'text-text-secondary hover:text-text-primary hover:bg-surface'
             }`}
           >
-            {label}
+            {tabLabel(id)}
           </button>
         ))}
       </div>
@@ -144,8 +136,8 @@ function ScientificCalc() {
     { label: '√', fn: Math.sqrt },
     { label: 'x²', fn: (x: number) => x * x },
     { label: '1/x', fn: (x: number) => 1 / x },
-    { label: 'π', fn: (x: number) => Math.PI, isConst: true },
-    { label: 'e', fn: (x: number) => Math.E, isConst: true },
+    { label: 'π', fn: (x: number) => Math.PI },
+    { label: 'e', fn: (x: number) => Math.E },
   ]
 
   return (
@@ -158,7 +150,7 @@ function ScientificCalc() {
       </div>
       <div className="grid grid-cols-5 gap-1.5">
         {btns.map((b) => (
-          <button key={b.label} onClick={() => b.isConst ? setDisplay(String(b.fn(0))) : applyFn(b.fn)}
+          <button key={b.label} onClick={() => applyFn(b.fn)}
             className="p-2 text-xs bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] rounded-sm hover:border-accent/30 font-medium">{b.label}</button>
         ))}
         {['7','8','9','/','4','5','6','*','1','2','3','-','0','.','+'].map((k) => (
@@ -178,9 +170,9 @@ function ScientificCalc() {
 
 // ─── Percentage Calculator ────────────────────────────
 function PercentCalc() {
+  const t = useTranslations('tools')
   const [a, setA] = useState('')
   const [b, setB] = useState('')
-  const mode = 'percent'
 
   const result = (() => {
     const na = parseFloat(a)
@@ -193,19 +185,19 @@ function PercentCalc() {
     <div className="max-w-sm mx-auto space-y-3">
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-xs text-text-secondary mb-1">Value A</label>
+          <label className="block text-xs text-text-secondary mb-1">{t('calcValueA')}</label>
           <input value={a} onChange={e => setA(e.target.value)} placeholder="100" className="w-full p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
         </div>
         <div>
-          <label className="block text-xs text-text-secondary mb-1">Value B</label>
+          <label className="block text-xs text-text-secondary mb-1">{t('calcValueB')}</label>
           <input value={b} onChange={e => setB(e.target.value)} placeholder="200" className="w-full p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
         </div>
       </div>
       {result && (
         <div className="p-3 bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] space-y-1 text-sm">
-          <p>A is <strong>{result.pct}%</strong> of B</p>
-          <p>{result.of} is {a}% of B</p>
-          <p>Change: <strong>{result.change}%</strong></p>
+          <p>{t('calcAisPctOfB', { pct: result.pct })}</p>
+          <p>{t('calcPctOfB', { val: result.of, a })}</p>
+          <p>{t('calcChange', { pct: result.change })}</p>
         </div>
       )}
     </div>
@@ -214,6 +206,7 @@ function PercentCalc() {
 
 // ─── BMI Calculator ───────────────────────────────────
 function BmiCalc() {
+  const t = useTranslations('tools')
   const [height, setHeight] = useState('')
   const [weight, setWeight] = useState('')
   const [unit, setUnit] = useState<'metric' | 'imperial'>('metric')
@@ -228,22 +221,22 @@ function BmiCalc() {
   })()
 
   const category = bmi ? (
-    bmi < 18.5 ? 'Underweight' : bmi < 25 ? 'Normal' : bmi < 30 ? 'Overweight' : 'Obese'
+    bmi < 18.5 ? t('calcUnderweight') : bmi < 25 ? t('calcNormal') : bmi < 30 ? t('calcOverweight') : t('calcObese')
   ) : null
 
   return (
     <div className="max-w-sm mx-auto space-y-3">
       <div className="flex gap-1 mb-2">
-        <button onClick={() => setUnit('metric')} className={`px-3 py-1 text-xs rounded-sm ${unit === 'metric' ? 'bg-accent text-white' : 'bg-surface text-text-secondary'}`}>Metric</button>
-        <button onClick={() => setUnit('imperial')} className={`px-3 py-1 text-xs rounded-sm ${unit === 'imperial' ? 'bg-accent text-white' : 'bg-surface text-text-secondary'}`}>Imperial</button>
+        <button onClick={() => setUnit('metric')} className={`px-3 py-1 text-xs rounded-sm ${unit === 'metric' ? 'bg-accent text-white' : 'bg-surface text-text-secondary'}`}>{t('calcMetric')}</button>
+        <button onClick={() => setUnit('imperial')} className={`px-3 py-1 text-xs rounded-sm ${unit === 'imperial' ? 'bg-accent text-white' : 'bg-surface text-text-secondary'}`}>{t('calcImperial')}</button>
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-xs text-text-secondary mb-1">Height ({unit === 'metric' ? 'cm' : 'in'})</label>
+          <label className="block text-xs text-text-secondary mb-1">{t('calcHeight')} ({unit === 'metric' ? 'cm' : 'in'})</label>
           <input value={height} onChange={e => setHeight(e.target.value)} placeholder="170" className="w-full p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
         </div>
         <div>
-          <label className="block text-xs text-text-secondary mb-1">Weight ({unit === 'metric' ? 'kg' : 'lb'})</label>
+          <label className="block text-xs text-text-secondary mb-1">{t('calcWeight')} ({unit === 'metric' ? 'kg' : 'lb'})</label>
           <input value={weight} onChange={e => setWeight(e.target.value)} placeholder="70" className="w-full p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
         </div>
       </div>
@@ -259,6 +252,7 @@ function BmiCalc() {
 
 // ─── Discount Calculator ──────────────────────────────
 function DiscountCalc() {
+  const t = useTranslations('tools')
   const [price, setPrice] = useState('')
   const [discount, setDiscount] = useState('')
 
@@ -274,18 +268,18 @@ function DiscountCalc() {
     <div className="max-w-sm mx-auto space-y-3">
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-xs text-text-secondary mb-1">Original Price</label>
+          <label className="block text-xs text-text-secondary mb-1">{t('calcOriginalPrice')}</label>
           <input value={price} onChange={e => setPrice(e.target.value)} placeholder="100" className="w-full p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
         </div>
         <div>
-          <label className="block text-xs text-text-secondary mb-1">Discount (%)</label>
+          <label className="block text-xs text-text-secondary mb-1">{t('calcDiscountPct')}</label>
           <input value={discount} onChange={e => setDiscount(e.target.value)} placeholder="20" className="w-full p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
         </div>
       </div>
       {result && (
         <div className="p-3 bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] space-y-1 text-sm">
-          <p>You save: <strong className="text-green-600">${result.saved.toFixed(2)}</strong></p>
-          <p>Final price: <strong className="text-accent">${result.final.toFixed(2)}</strong></p>
+          <p>{t('calcYouSave')}: <strong className="text-green-600">${result.saved.toFixed(2)}</strong></p>
+          <p>{t('calcFinalPrice')}: <strong className="text-accent">${result.final.toFixed(2)}</strong></p>
         </div>
       )}
     </div>
@@ -294,6 +288,7 @@ function DiscountCalc() {
 
 // ─── Age Calculator ───────────────────────────────────
 function AgeCalc() {
+  const t = useTranslations('tools')
   const [birth, setBirth] = useState('')
   const today = new Date()
 
@@ -313,14 +308,14 @@ function AgeCalc() {
   return (
     <div className="max-w-sm mx-auto space-y-3">
       <div>
-        <label className="block text-xs text-text-secondary mb-1">Date of Birth</label>
+        <label className="block text-xs text-text-secondary mb-1">{t('calcDateOfBirth')}</label>
         <input type="date" value={birth} onChange={e => setBirth(e.target.value)}
           className="w-full p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
       </div>
       {age && (
         <div className="p-3 bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] text-center">
           <p className="text-3xl font-bold text-accent">{age.years}</p>
-          <p className="text-sm text-text-secondary">years old</p>
+          <p className="text-sm text-text-secondary">{t('calcYearsOld')}</p>
           <p className="text-xs text-text-secondary mt-1">{age.months} months, {age.days} days</p>
         </div>
       )}

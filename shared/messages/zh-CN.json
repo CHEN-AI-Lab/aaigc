@@ -334,7 +334,32 @@
     "calculator": {
       "name": "计算器",
       "description": "多功能计算器：基本计算、科学计算、百分比、BMI、折扣、年龄"
-    }
+    },
+    "calcBasic": "基本",
+    "calcScientific": "科学",
+    "calcPercent": "百分比",
+    "calcBmi": "BMI",
+    "calcDiscount": "折扣",
+    "calcAge": "年龄",
+    "calcValueA": "值 A",
+    "calcValueB": "值 B",
+    "calcHeight": "身高",
+    "calcWeight": "体重",
+    "calcMetric": "公制",
+    "calcImperial": "英制",
+    "calcOriginalPrice": "原价",
+    "calcDiscountPct": "折扣 (%)",
+    "calcDateOfBirth": "出生日期",
+    "calcYouSave": "节省",
+    "calcFinalPrice": "最终价格",
+    "calcYearsOld": "岁",
+    "calcUnderweight": "偏瘦",
+    "calcNormal": "正常",
+    "calcOverweight": "偏胖",
+    "calcObese": "肥胖",
+    "calcAisPctOfB": "A 是 B 的 {pct}%",
+    "calcPctOfB": "{val} 是 {a}% 的 B",
+    "calcChange": "变化: {pct}%"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",

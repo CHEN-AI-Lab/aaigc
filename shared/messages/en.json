@@ -334,7 +334,32 @@
     "calculator": {
       "name": "Calculator",
       "description": "All-in-one calculator: basic, scientific, percentage, BMI, discount, age"
-    }
+    },
+    "calcBasic": "Basic",
+    "calcScientific": "Scientific",
+    "calcPercent": "Percentage",
+    "calcBmi": "BMI",
+    "calcDiscount": "Discount",
+    "calcAge": "Age",
+    "calcValueA": "Value A",
+    "calcValueB": "Value B",
+    "calcHeight": "Height",
+    "calcWeight": "Weight",
+    "calcMetric": "Metric",
+    "calcImperial": "Imperial",
+    "calcOriginalPrice": "Original Price",
+    "calcDiscountPct": "Discount (%)",
+    "calcDateOfBirth": "Date of Birth",
+    "calcYouSave": "You save",
+    "calcFinalPrice": "Final price",
+    "calcYearsOld": "years old",
+    "calcUnderweight": "Underweight",
+    "calcNormal": "Normal",
+    "calcOverweight": "Overweight",
+    "calcObese": "Obese",
+    "calcAisPctOfB": "A is {pct}% of B",
+    "calcPctOfB": "{val} is {a}% of B",
+    "calcChange": "Change: {pct}%"
   },
   "ui": {
     "aboutLink": "About AAIGC →",
