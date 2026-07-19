@@ -39,7 +39,6 @@ export default function NumberBaseConverter() {
 
       {/* Input Section */}
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-5">
-        <h3 className="text-sm font-semibold text-text-primary mb-4">{t('input')}</h3>
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="flex-1">
             <label className="block text-xs text-text-secondary mb-1.5">{t('enterNumber')}</label>
