@@ -63,7 +63,7 @@ export default function ToolsClient() {
           <div key={cat.id} className="mb-12">
             <h2 className="flex items-center gap-2 text-lg font-semibold text-text-primary mb-4">
               <span>{cat.icon}</span>
-              <span>{locale === 'en' ? cat.nameEn : cat.name}</span>
+              <span>{locale === 'zh-CN' ? cat.name : cat.nameEn}</span>
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
               {catTools.map((tool) => (

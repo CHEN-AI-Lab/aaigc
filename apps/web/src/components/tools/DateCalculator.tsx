@@ -144,7 +144,7 @@ export default function DateCalculator() {
     const n = parseInt(addDays, 10)
         if (isNaN(n)) { setError(t('enterNumberOfDays')); return }
     d.setDate(d.getDate() + n)
-    setAddResult(d.toLocaleDateString(locale === 'en' ? 'en-US' : 'zh-CN'))
+    setAddResult(d.toLocaleDateString(locale === 'ja' ? 'ja-JP' : locale === 'en' ? 'en-US' : 'zh-CN'))
   }, [addY, addM, addD, addDays, locale])
 
   const todayBtn = (setters: { y: (v: string) => void; m: (v: string) => void; d: (v: string) => void; h?: (v: string) => void; min?: (v: string) => void; s?: (v: string) => void }) => {

@@ -18,7 +18,7 @@ describe('locales', () => {
 
   it('isLocale returns false for invalid locales', () => {
     expect(isLocale('fr')).toBe(false)
-    expect(isLocale('ja')).toBe(false)
+    expect(isLocale('ja')).toBe(true)
   })
 })
 

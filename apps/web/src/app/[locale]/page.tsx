@@ -52,7 +52,7 @@ export default async function HomePage({ params }: Props) {
               >
                 <div className="text-3xl mb-2">{cat.icon}</div>
                 <h3 className="text-sm font-semibold text-text-primary">
-                  {locale === 'en' ? cat.nameEn : cat.name}
+                  {locale === 'zh-CN' ? cat.name : cat.nameEn}
                 </h3>
                 <p className="text-xs text-text-secondary mt-1">{t('toolCount', { count })}</p>
               </Link>
@@ -76,7 +76,7 @@ export default async function HomePage({ params }: Props) {
                 href={`/tools/${tool.id}`}
                 className="text-sm px-4 py-2 bg-bg text-text-secondary hover:text-accent rounded-sm transition-colors border border-[rgba(127,99,21,0.1)]"
               >
-                {locale === 'en' ? tool.label : tool.labelZh}
+                {locale === 'zh-CN' ? tool.labelZh : tool.label}
               </Link>
             ))}
           </div>
