@@ -1,10 +1,15 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 
 export default function Footer() {
+  const pathname = usePathname()
   const t = useTranslations('footer')
+
+  // Hide footer on tool detail pages
+  if (pathname?.includes('/tools/')) return null
 
   return (
     <footer className="border-t border-[rgba(127,99,21,0.1)] bg-bg mt-auto">
