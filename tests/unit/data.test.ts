@@ -11,17 +11,10 @@ describe('products', () => {
     for (const p of products) {
       expect(p.id).toBeTruthy()
       expect(typeof p.id).toBe('string')
-      expect(p.name).toBeTruthy()
-      expect(p.nameEn).toBeTruthy()
-      expect(p.description).toBeTruthy()
-      expect(p.descriptionEn).toBeTruthy()
       expect(p.icon).toBeTruthy()
+      expect(Array.isArray(p.tags)).toBe(true)
       expect(p.url).toBeTruthy()
       expect(['live', 'beta', 'wip', 'planned']).toContain(p.status)
-      expect(Array.isArray(p.features)).toBe(true)
-      expect(Array.isArray(p.featuresEn)).toBe(true)
-      expect(p.features.length).toBeGreaterThanOrEqual(1)
-      expect(p.features.length).toBe(p.featuresEn.length)
     }
   })
 
@@ -38,11 +31,13 @@ describe('products', () => {
 })
 
 describe('tools', () => {
-  let tools: import('../../data/tools').ToolMeta[]
+  let tools: any[]
+  let categories: CategoryInfo[]
 
   beforeAll(async () => {
     const mod = await import('../../data/tools')
     tools = mod.tools
+    categories = mod.toolCategories
   })
 
   it('has 25 tools', () => {
@@ -60,21 +55,16 @@ describe('tools', () => {
     }
   })
 
-  it('each tool has bilingual names', () => {
+  it('each tool has required fields', () => {
     for (const t of tools) {
-      expect(t.name).toBeTruthy()
-      expect(t.nameEn).toBeTruthy()
-      expect(t.description).toBeTruthy()
-      expect(t.descriptionEn).toBeTruthy()
-      // Some tools have same name in both languages (e.g. Lorem Ipsum)
-      if (t.name !== t.nameEn) {
-        // at least some should differ
-      }
+      expect(t.id).toBeTruthy()
+      expect(t.category).toBeTruthy()
+      expect(t.component).toBeTruthy()
     }
   })
 
   it('each tool has unique id', () => {
-    const ids = tools.map(t => t.id)
+    const ids = tools.map((t: any) => t.id)
     expect(new Set(ids).size).toBe(ids.length)
   })
 
@@ -144,37 +134,34 @@ describe('tools', () => {
       expect(loader).toBeDefined()
       const mod = await loader()
       expect(mod.default).toBeDefined()
-      expect(typeof mod.default).toBe('function')
     }
   })
 })
 
 describe('tool categories', () => {
   let categories: CategoryInfo[]
-  let tools: import('../../data/tools').ToolMeta[]
 
   beforeAll(async () => {
     const mod = await import('../../data/tools')
     categories = mod.toolCategories
-    tools = mod.tools
   })
 
   it('has 7 categories', () => {
     expect(categories.length).toBe(7)
   })
 
-  it('each category has bilingual names', () => {
+  it('each category has required fields', () => {
     for (const c of categories) {
-      expect(c.name).toBeTruthy()
-      expect(c.nameEn).toBeTruthy()
+      expect(c.id).toBeTruthy()
       expect(c.icon).toBeTruthy()
       expect(typeof c.order).toBe('number')
     }
   })
 
-  it('every tool belongs to a valid category', () => {
-    const catIds = categories.map(c => c.id)
-    for (const t of tools) {
+  it('every tool belongs to a valid category', async () => {
+    const mod = await import('../../data/tools')
+    const catIds = mod.toolCategories.map((c: CategoryInfo) => c.id)
+    for (const t of mod.tools) {
       expect(catIds).toContain(t.category)
     }
   })

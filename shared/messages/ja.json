@@ -24,6 +24,8 @@
     "timeTools": "時間ツール",
     "imageTools": "画像ツール",
     "convertTools": "変換ツール",
+    "securityTools": "セキュリティツール",
+    "mathTools": "数学ツール",
     "toolCount": "{count} ツール"
   },
   "products": {
@@ -33,7 +35,43 @@
     "techStack": "技術スタック",
     "features": "機能",
     "visit": "アクセス",
-    "learnMore": "詳細を見る"
+    "learnMore": "詳細を見る",
+    "cookmate": {
+      "name": "CookMate",
+      "description": "AIを活用したレシピプランニング。食材を入力するだけでAIがレシピを生成、週間計画や買い物リストも自動作成。",
+      "features": [
+        "冷蔵庫の食材を入力するだけでAIがレシピを生成",
+        "スマートな週間計画と買い物リスト",
+        "食事の好みに合わせたカスタマイズ対応"
+      ]
+    },
+    "aihub": {
+      "name": "AIHub",
+      "description": "AIツールのディレクトリ＆レビュープラットフォーム。数百のAIツールを実際のユーザーレビューとともに発見・比較。",
+      "features": [
+        "50以上のカテゴリ、数百のAIツールを収録",
+        "実際のユーザーによる評価とレビュー",
+        "カテゴリ別ブラウズと検索"
+      ]
+    },
+    "short-drama": {
+      "name": "Short Drama",
+      "description": "AI駆動のショートドラマ脚本生成ツール。テーマを入力するだけで、AIがエピソード概要、シーン分解、完全な脚本を自動生成。",
+      "features": [
+        "CEOロマンス、タイムトラベル、仙侠など10+ジャンル",
+        "エピソード概要、シーン分解、完全な脚本",
+        "キャラクターアークの自動生成"
+      ]
+    },
+    "resume-optimizer": {
+      "name": "Resume Optimizer",
+      "description": "AI履歴書最適化ツール。履歴書の内容を分析し、面接通過率を高める最適化提案を提供。",
+      "features": [
+        "AIによる履歴書内容の分析",
+        "対象職種に特化した最適化提案",
+        "複数の履歴書テンプレート"
+      ]
+    }
   },
   "tools": {
     "title": "オンラインツール",
@@ -120,12 +158,52 @@
     "year": "年",
     "month": "月",
     "enterText": "テキストを入力...",
+    "enterUrl": "URLを入力...",
+    "enterHtml": "HTMLを入力...",
+    "enterMarkdown": "Markdownを入力...",
+    "enterTextOrUrl": "テキストまたはURLを入力...",
+    "typeOrPasteText": "入力または貼り付け...",
+    "regularExpression": "正規表現...",
+    "testText": "テストテキスト...",
+    "originalText": "元のテキスト",
+    "modifiedText": "変更後のテキスト",
     "today": "今日",
     "max": "最大",
     "seconds": "秒",
+    "ss": "秒",
+    "ms": "ミリ秒",
+    "day": "日",
+    "supportsTimestamp": "秒（10桁）またはミリ秒（13桁）のタイムスタンプに対応",
+    "selectDateTime": "日付、時刻、ミリ秒を選択（ローカルタイムゾーン）",
+    "hex": "HEX",
     "input": "入力",
     "output": "出力",
-    "placeholder": "ここに入力..."
+    "placeholder": "ここに入力...",
+    "json-formatter": {"name": "JSON Formatter", "description": "Format and validate JSON data"},
+    "regex-tester": {"name": "Regex Tester", "description": "Test regular expressions in real time"},
+    "base64": {"name": "Base64 Codec", "description": "Encode and decode Base64"},
+    "url-encode": {"name": "URL Encoder", "description": "Encode and decode URLs"},
+    "jwt-decoder": {"name": "JWT Decoder", "description": "Decode JWT token payloads"},
+    "uuid-generator": {"name": "UUID Generator", "description": "Generate UUID v4 identifiers"},
+    "html-preview": {"name": "HTML Preview", "description": "Live HTML rendering"},
+    "css-minifier": {"name": "CSS Minifier", "description": "Minify and format CSS code"},
+    "markdown-preview": {"name": "Markdown Preview", "description": "Live Markdown rendering"},
+    "word-counter": {"name": "Word Counter", "description": "Count characters, words, and lines"},
+    "text-diff": {"name": "Text Diff", "description": "Compare differences between two texts"},
+    "case-converter": {"name": "Case Converter", "description": "Convert text case: upper, lower, title"},
+    "lorem-ipsum": {"name": "Lorem Ipsum", "description": "Generate placeholder text"},
+    "text-to-slug": {"name": "Text to Slug", "description": "Convert text to URL-friendly slug"},
+    "list-sorter": {"name": "List Sorter", "description": "Sort, deduplicate and shuffle lists"},
+    "timestamp": {"name": "Timestamp Converter", "description": "Convert between Unix timestamps and dates"},
+    "date-calculator": {"name": "Date Calculator", "description": "Calculate date differences and add/subtract days"},
+    "qrcode": {"name": "QR Code Generator", "description": "Generate QR codes from text"},
+    "color-picker": {"name": "Color Picker", "description": "Pick colors and generate HEX/RGB/HSL values"},
+    "image-to-base64": {"name": "Image to Base64", "description": "Convert image files to Base64 encoding"},
+    "number-base": {"name": "Number Base Converter", "description": "Convert between decimal, binary, octal, hex"},
+    "yaml-json": {"name": "YAML to JSON", "description": "Convert between YAML and JSON formats"},
+    "html-entities": {"name": "HTML Entities", "description": "Escape and unescape HTML special characters"},
+    "json-to-csv": {"name": "JSON to CSV", "description": "Convert JSON data to CSV format"},
+    "password-generator": {"name": "Password Generator", "description": "Generate secure random passwords"}
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

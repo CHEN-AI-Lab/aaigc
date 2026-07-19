@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check that zh-CN.json and en.json have identical key structures."""
+"""Check that zh-CN.json, ja.json and en.json have identical key structures."""
 
 import json
 import sys
@@ -18,32 +18,41 @@ def flatten(obj, prefix=""):
     return keys
 
 
-def main():
-    msgs = Path("shared/messages")
-    zh = json.loads((msgs / "zh-CN.json").read_text())
-    en = json.loads((msgs / "en.json").read_text())
+def check_pair(msgs: Path, path_a: str, path_b: str, name_a: str, name_b: str) -> int:
+    a = json.loads((msgs / path_a).read_text())
+    b = json.loads((msgs / path_b).read_text())
 
-    zh_keys = flatten(zh)
-    en_keys = flatten(en)
+    a_keys = flatten(a)
+    b_keys = flatten(b)
 
-    missing_en = zh_keys - en_keys
-    missing_zh = en_keys - zh_keys
+    missing_b = a_keys - b_keys
+    missing_a = b_keys - a_keys
 
     errors = 0
-    if missing_en:
-        print(f"❌ Keys in zh-CN.json but missing in en.json ({len(missing_en)}):")
-        for k in sorted(missing_en):
+    if missing_b:
+        print(f"❌ Keys in {name_a} but missing in {name_b} ({len(missing_b)}):")
+        for k in sorted(missing_b):
             print(f"   - {k}")
         errors += 1
 
-    if missing_zh:
-        print(f"❌ Keys in en.json but missing in zh-CN.json ({len(missing_zh)}):")
-        for k in sorted(missing_zh):
+    if missing_a:
+        print(f"❌ Keys in {name_b} but missing in {name_a} ({len(missing_a)}):")
+        for k in sorted(missing_a):
             print(f"   - {k}")
         errors += 1
 
     if errors == 0:
-        print(f"✅ All translation keys match between zh-CN and en ({len(zh_keys)} keys)")
+        print(f"✅ All translation keys match between {name_a} and {name_b} ({len(a_keys)} keys)")
+    return errors
+
+
+def main():
+    msgs = Path("shared/messages")
+    errors = 0
+    errors += check_pair(msgs, "zh-CN.json", "en.json", "zh-CN", "en")
+    errors += check_pair(msgs, "ja.json", "en.json", "ja", "en")
+    if errors == 0:
+        print("✅ All translation files have matching key structures!")
         return 0
     return 1
 

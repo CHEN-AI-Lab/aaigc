@@ -3,7 +3,6 @@ import { Link } from '@/i18n/navigation'
 import { products } from 'data/products'
 import { tools, toolCategories } from 'data/tools'
 import ProductCard from '../../components/ProductCard'
-import { dt } from 'shared/utils/locale'
 
 type Props = { params: Promise<{ locale: string }> }
 
@@ -12,6 +11,7 @@ export default async function HomePage({ params }: Props) {
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'home' })
   const tc = await getTranslations({ locale, namespace: 'common' })
+  const tt = await getTranslations({ locale, namespace: 'tools' })
 
   return (
     <div>
@@ -53,7 +53,7 @@ export default async function HomePage({ params }: Props) {
               >
                 <div className="text-3xl mb-2">{cat.icon}</div>
                 <h3 className="text-sm font-semibold text-text-primary">
-                  {dt(locale, cat.nameEn, cat.name)}
+                  {tt(`${cat.id}Tools`)}
                 </h3>
                 <p className="text-xs text-text-secondary mt-1">{t('toolCount', { count })}</p>
               </Link>
@@ -62,22 +62,13 @@ export default async function HomePage({ params }: Props) {
 
           {/* Quick tool links */}
           <div className="mt-10 flex flex-wrap justify-center gap-3">
-            {[
-              { id: 'json-formatter', label: 'JSON Formatter', labelZh: 'JSON 格式化' },
-              { id: 'timestamp', label: 'Timestamp', labelZh: '时间戳' },
-              { id: 'qrcode', label: 'QR Code', labelZh: '二维码' },
-              { id: 'base64', label: 'Base64', labelZh: 'Base64' },
-              { id: 'regex-tester', label: 'Regex Tester', labelZh: '正则测试' },
-              { id: 'markdown-preview', label: 'Markdown', labelZh: 'Markdown' },
-              { id: 'color-picker', label: 'Color Picker', labelZh: '颜色选择' },
-              { id: 'text-diff', label: 'Text Diff', labelZh: '文本对比' },
-            ].map((tool) => (
+            {['json-formatter', 'timestamp', 'qrcode', 'base64', 'regex-tester', 'markdown-preview', 'color-picker', 'text-diff'].map((toolId) => (
               <Link
-                key={tool.id}
-                href={`/tools/${tool.id}`}
+                key={toolId}
+                href={`/tools/${toolId}`}
                 className="text-sm px-4 py-2 bg-bg text-text-secondary hover:text-accent rounded-sm transition-colors border border-[rgba(127,99,21,0.1)]"
               >
-                {locale === 'zh-CN' ? tool.labelZh : tool.label}
+                {tt(`${toolId}.name`)}
               </Link>
             ))}
           </div>

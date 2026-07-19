@@ -24,6 +24,8 @@
     "timeTools": "Time Tools",
     "imageTools": "Image Tools",
     "convertTools": "Converters",
+    "securityTools": "Security Tools",
+    "mathTools": "Math Tools",
     "toolCount": "{count} tools"
   },
   "products": {
@@ -33,7 +35,43 @@
     "techStack": "Tech Stack",
     "features": "Features",
     "visit": "Visit",
-    "learnMore": "Learn More"
+    "learnMore": "Learn More",
+    "cookmate": {
+      "name": "CookMate",
+      "description": "AI-powered recipe planning. Generate recipes from ingredients, plan weekly meals, and create shopping lists.",
+      "features": [
+        "AI recipe generation from any ingredients",
+        "Smart weekly meal planning with shopping lists",
+        "Customizable dietary preferences"
+      ]
+    },
+    "aihub": {
+      "name": "AIHub",
+      "description": "AI tool directory & review platform. Discover and compare hundreds of AI tools with real user reviews.",
+      "features": [
+        "50+ categories, hundreds of AI tools",
+        "Real user ratings and reviews",
+        "Category browsing and search"
+      ]
+    },
+    "short-drama": {
+      "name": "Short Drama",
+      "description": "AI-powered short drama script generator. Create episode outlines, scene breakdowns, and full scripts.",
+      "features": [
+        "10+ genres including CEO romance, time travel, xianxia",
+        "Episode outlines, scene breakdowns, full scripts",
+        "Automatic character arc generation"
+      ]
+    },
+    "resume-optimizer": {
+      "name": "Resume Optimizer",
+      "description": "AI resume optimization tool. Analyze and optimize your resume to increase interview chances.",
+      "features": [
+        "AI-powered resume analysis",
+        "Targeted optimization for specific roles",
+        "Multiple resume templates"
+      ]
+    }
   },
   "tools": {
     "title": "Online Tools",
@@ -119,46 +157,53 @@
     "now": "Now",
     "year": "Year",
     "month": "Month",
-    "day": "Day",
-    "supportsTimestamp": "Supports seconds (10 digits) or milliseconds (13 digits)",
-    "selectDateTime": "Select date, time and milliseconds (local timezone)",
-    "hh": "HH",
-    "mm": "MM",
-    "ss": "SS",
-    "ms": "MS",
-    "max": "max",
-    "seconds": "Seconds",
-    "milliseconds": "Milliseconds",
     "enterText": "Enter text...",
     "enterUrl": "Enter URL...",
     "enterHtml": "Enter HTML...",
     "enterMarkdown": "Enter Markdown...",
     "enterTextOrUrl": "Enter text or URL...",
-    "typeOrPasteText": "Type or paste text here...",
+    "typeOrPasteText": "Type or paste text...",
     "regularExpression": "Regular expression...",
     "testText": "Test text...",
     "originalText": "Original text",
     "modifiedText": "Modified text",
+    "today": "Today",
+    "max": "max",
+    "seconds": "Sec",
+    "ss": "S",
+    "ms": "MS",
+    "day": "Day",
+    "supportsTimestamp": "Supports seconds (10-digit) or milliseconds (13-digit) timestamps",
+    "selectDateTime": "Select date, time, and milliseconds (local timezone)",
     "hex": "HEX",
-    "rgb": "RGB",
-    "hsl": "HSL",
-    "today": "Today"
-  },
-  "tool": {
     "input": "Input",
     "output": "Output",
-    "copy": "Copy",
-    "copied": "Copied!",
-    "download": "Download JSON",
-    "clear": "Clear",
-    "format": "Format",
-    "validate": "Validate",
-    "convert": "Convert",
-    "encode": "Encode",
-    "decode": "Decode",
-    "generate": "Generate",
     "placeholder": "Enter text here...",
-    "invalidInput": "Invalid input"
+    "json-formatter": {"name": "JSON Formatter", "description": "Format and validate JSON data"},
+    "regex-tester": {"name": "Regex Tester", "description": "Test regular expressions in real time"},
+    "base64": {"name": "Base64 Codec", "description": "Encode and decode Base64"},
+    "url-encode": {"name": "URL Encoder", "description": "Encode and decode URLs"},
+    "jwt-decoder": {"name": "JWT Decoder", "description": "Decode JWT token payloads"},
+    "uuid-generator": {"name": "UUID Generator", "description": "Generate UUID v4 identifiers"},
+    "html-preview": {"name": "HTML Preview", "description": "Live HTML rendering"},
+    "css-minifier": {"name": "CSS Minifier", "description": "Minify and format CSS code"},
+    "markdown-preview": {"name": "Markdown Preview", "description": "Live Markdown rendering"},
+    "word-counter": {"name": "Word Counter", "description": "Count characters, words, and lines"},
+    "text-diff": {"name": "Text Diff", "description": "Compare differences between two texts"},
+    "case-converter": {"name": "Case Converter", "description": "Convert text case: upper, lower, title"},
+    "lorem-ipsum": {"name": "Lorem Ipsum", "description": "Generate placeholder text"},
+    "text-to-slug": {"name": "Text to Slug", "description": "Convert text to URL-friendly slug"},
+    "list-sorter": {"name": "List Sorter", "description": "Sort, deduplicate and shuffle lists"},
+    "timestamp": {"name": "Timestamp Converter", "description": "Convert between Unix timestamps and dates"},
+    "date-calculator": {"name": "Date Calculator", "description": "Calculate date differences and add/subtract days"},
+    "qrcode": {"name": "QR Code Generator", "description": "Generate QR codes from text"},
+    "color-picker": {"name": "Color Picker", "description": "Pick colors and generate HEX/RGB/HSL values"},
+    "image-to-base64": {"name": "Image to Base64", "description": "Convert image files to Base64 encoding"},
+    "number-base": {"name": "Number Base Converter", "description": "Convert between decimal, binary, octal, hex"},
+    "yaml-json": {"name": "YAML to JSON", "description": "Convert between YAML and JSON formats"},
+    "html-entities": {"name": "HTML Entities", "description": "Escape and unescape HTML special characters"},
+    "json-to-csv": {"name": "JSON to CSV", "description": "Convert JSON data to CSV format"},
+    "password-generator": {"name": "Password Generator", "description": "Generate secure random passwords"}
   },
   "ui": {
     "aboutLink": "About AAIGC →",

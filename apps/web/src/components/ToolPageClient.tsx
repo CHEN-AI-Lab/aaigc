@@ -1,14 +1,11 @@
 'use client'
 
 import { lazy, Suspense } from 'react'
-import { useTranslations, useLocale } from 'next-intl'
+import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
-import { dt } from 'shared/utils/locale'
 
 type Props = {
   slug: string
-  name: string
-  nameEn: string
 }
 
 const toolModules: Record<string, React.LazyExoticComponent<React.ComponentType>> = {
@@ -39,29 +36,29 @@ const toolModules: Record<string, React.LazyExoticComponent<React.ComponentType>
   'list-sorter': lazy(() => import('./tools/ListSorter')),
 }
 
-export default function ToolPageClient({ slug, name, nameEn }: Props) {
-  const t = useTranslations('ui')
-  const locale = useLocale()
+export default function ToolPageClient({ slug }: Props) {
+  const t = useTranslations('tools')
+  const tu = useTranslations('ui')
   const Component = toolModules[slug]
 
   return (
     <div>
       <div className="max-w-6xl mx-auto px-6 pt-6 text-xs text-text-secondary">
         <Link href="/tools" className="hover:text-accent transition-colors">
-          {t('tools')}
+          {tu('tools')}
         </Link>
         <span className="mx-2">/</span>
-        <span className="text-text-primary">{dt(locale, nameEn, name)}</span>
+        <span className="text-text-primary">{t(`${slug}.name`)}</span>
       </div>
 
       <div className="max-w-6xl mx-auto px-6 py-12">
         <h1 className="text-2xl font-semibold text-text-primary mb-1">
-          {dt(locale, nameEn, name)}
+          {t(`${slug}.name`)}
         </h1>
         <div className="min-h-[400px]">
           <Suspense fallback={
             <div className="flex items-center justify-center h-64 text-text-secondary">
-              {t('loading')}
+              {tu('loading')}
             </div>
           }>
             {Component && <Component />}

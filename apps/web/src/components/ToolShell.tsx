@@ -1,21 +1,19 @@
 'use client'
 
-import { useLocale } from 'next-intl'
-import { dt } from 'shared/utils/locale'
+import { useTranslations } from 'next-intl'
 
 type Props = {
-  title: string
-  titleEn: string
+  slug: string
   children: React.ReactNode
 }
 
-export default function ToolShell({ title, titleEn, children }: Props) {
-  const locale = useLocale()
+export default function ToolShell({ slug, children }: Props) {
+  const t = useTranslations('tools')
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
       <h1 className="text-2xl font-semibold text-text-primary mb-1">
-        {dt(locale, titleEn, title)}
+        {t(`${slug}.name`)}
       </h1>
       <div className="min-h-[400px]">
         {children}

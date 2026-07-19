@@ -1,7 +1,6 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { products } from 'data/products'
-import { dt } from 'shared/utils/locale'
 
 type Props = { params: Promise<{ locale: string; slug: string }> }
 
@@ -36,10 +35,10 @@ export default async function ProductDetailPage({ params }: Props) {
           <div className="text-6xl">{product.icon}</div>
           <div className="flex-1">
             <h1 className="text-3xl font-semibold text-text-primary mb-2">
-              {dt(locale, product.nameEn, product.name, product.nameJa)}
+              {t(`${slug}.name`)}
             </h1>
             <p className="text-text-secondary mb-4">
-              {dt(locale, product.descriptionEn, product.description, product.descriptionJa)}
+              {t(`${slug}.description`)}
             </p>
             <div className="flex flex-wrap gap-2 mb-4">
               {product.tags.map((tag) => (
@@ -69,7 +68,7 @@ export default async function ProductDetailPage({ params }: Props) {
         <div className="border-t border-[rgba(127,99,21,0.1)] pt-6">
           <h2 className="text-sm font-semibold text-text-primary mb-4 uppercase tracking-wider">{t('features')}</h2>
           <ul className="space-y-2">
-            {(locale === 'ja' && product.featuresJa ? product.featuresJa : locale === 'zh-CN' ? product.features : product.featuresEn).map((f, i) => (
+            {(t(`${slug}.features`) as unknown as string[]).map((f, i) => (
               <li key={i} className="flex items-start gap-2 text-sm text-text-secondary">
                 <span className="text-accent mt-0.5">•</span>
                 {f}

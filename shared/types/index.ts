@@ -10,20 +10,11 @@ export type ProductStatus = 'live' | 'beta' | 'wip' | 'planned'
 
 export interface Product {
   id: string
-  name: string
-  nameEn: string
-  nameJa?: string
-  description: string
-  descriptionEn: string
-  descriptionJa?: string
   icon: string
   screenshot?: string
   tags: string[]
   status: ProductStatus
   url: string
-  features: string[]
-  featuresEn: string[]
-  featuresJa?: string[]
 }
 
 // ─── Tool category ─────────────────────────────
@@ -32,9 +23,7 @@ export type ToolCategoryId = 'dev' | 'text' | 'time' | 'image' | 'convert' | 'se
 
 export interface CategoryInfo {
   id: ToolCategoryId
-  name: string
   nameEn: string
-  nameJa?: string
   icon: string
   order: number
 }

@@ -4,7 +4,6 @@ import { useState, useMemo } from 'react'
 import { useTranslations, useLocale } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { tools, toolCategories } from 'data/tools'
-import { dt } from 'shared/utils/locale'
 
 export default function ToolsClient() {
   const t = useTranslations('tools')
@@ -15,11 +14,11 @@ export default function ToolsClient() {
     if (!query.trim()) return null
     const q = query.toLowerCase()
     return tools.filter((tool) => {
-      const name = dt(locale, tool.nameEn, tool.name)
-      const desc = dt(locale, tool.descriptionEn, tool.description)
+      const name = t(`${tool.id}.name`)
+      const desc = t(`${tool.id}.description`)
       return name.toLowerCase().includes(q) || desc.toLowerCase().includes(q)
     })
-  }, [query, locale])
+  }, [query, t])
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-16">
@@ -49,7 +48,7 @@ export default function ToolsClient() {
                 <Link key={tool.id} href={`/tools/${tool.id}`}
                   className="block bg-surface rounded-sm p-4 shadow-warm-sm hover:shadow-warm transition-shadow border border-[rgba(127,99,21,0.05)]">
                   <div className="text-xs font-mono text-accent mb-2">{tool.icon}</div>
-                  <h3 className="text-sm font-medium text-text-primary">{dt(locale, tool.nameEn, tool.name)}</h3>
+                  <h3 className="text-sm font-medium text-text-primary">{t(`${tool.id}.name`)}</h3>
                 </Link>
               ))}
             </div>
@@ -64,16 +63,16 @@ export default function ToolsClient() {
           <div key={cat.id} className="mb-12">
             <h2 className="flex items-center gap-2 text-lg font-semibold text-text-primary mb-4">
               <span>{cat.icon}</span>
-              <span>{dt(locale, cat.nameEn, cat.name)}</span>
+              <span>{t(`${cat.id}Tools`)}</span>
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
               {catTools.map((tool) => (
                 <Link key={tool.id} href={`/tools/${tool.id}`}
                   className="block bg-surface rounded-sm p-4 shadow-warm-sm hover:shadow-warm transition-shadow border border-[rgba(127,99,21,0.05)]">
                   <div className="text-xs font-mono text-accent mb-2">{tool.icon}</div>
-                  <h3 className="text-sm font-medium text-text-primary">{dt(locale, tool.nameEn, tool.name)}</h3>
+                  <h3 className="text-sm font-medium text-text-primary">{t(`${tool.id}.name`)}</h3>
                   <p className="text-xs text-text-secondary mt-1 line-clamp-2">
-                    {dt(locale, tool.descriptionEn, tool.description)}
+                    {t(`${tool.id}.description`)}
                   </p>
                 </Link>
               ))}

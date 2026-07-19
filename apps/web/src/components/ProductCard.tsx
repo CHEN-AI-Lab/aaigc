@@ -2,7 +2,8 @@ import type { Product } from 'shared/types'
 import { useTranslations } from 'next-intl'
 
 export default function ProductCard({ product }: { product: Product }) {
-  const t = useTranslations('common')
+  const t = useTranslations('products')
+  const tc = useTranslations('common')
 
   return (
     <a
@@ -13,10 +14,10 @@ export default function ProductCard({ product }: { product: Product }) {
     >
       <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">{product.icon}</div>
       <h3 className="card-title text-text-primary mb-2 text-center">
-        {product.name}
+        {t(`${product.id}.name`)}
       </h3>
       <p className="text-sm text-text-secondary mb-4 line-clamp-2 text-center">
-        {product.description}
+        {t(`${product.id}.description`)}
       </p>
       <div className="flex flex-wrap gap-2 mb-4 justify-center">
         {product.tags.map((tag) => (
@@ -28,7 +29,7 @@ export default function ProductCard({ product }: { product: Product }) {
       <span className={`inline-block text-xs px-3 py-1 rounded-sm font-medium ${
         product.status === 'live' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
       }`}>
-        {product.status === 'live' ? t('live') : t('inDevelopment')}
+        {product.status === 'live' ? tc('live') : tc('inDevelopment')}
       </span>
     </a>
   )

@@ -24,6 +24,8 @@
     "timeTools": "时间工具",
     "imageTools": "图像工具",
     "convertTools": "格式转换",
+    "securityTools": "安全工具",
+    "mathTools": "数学工具",
     "toolCount": "{count} 个工具"
   },
   "products": {
@@ -33,7 +35,43 @@
     "techStack": "技术栈",
     "features": "功能特性",
     "visit": "前往",
-    "learnMore": "了解更多"
+    "learnMore": "了解更多",
+    "cookmate": {
+      "name": "CookMate",
+      "description": "AI 智能食谱与餐食规划平台。输入食材，AI 自动生成菜谱，支持周计划、购物清单、饮食定制。",
+      "features": [
+        "AI 菜谱生成，输入冰箱里的食材即可",
+        "智能周计划与购物清单",
+        "支持饮食偏好定制"
+      ]
+    },
+    "aihub": {
+      "name": "AIHub",
+      "description": "中文 AI 工具导航与评测平台。收录数百款 AI 工具的真实用户评测。",
+      "features": [
+        "收录 50+ 类别、数百款 AI 工具",
+        "真实用户评分与评测",
+        "分类导航与搜索"
+      ]
+    },
+    "short-drama": {
+      "name": "Short Drama",
+      "description": "AI 短剧脚本生成器。输入题材，AI 自动生成分集大纲、场景拆解和完整剧本。",
+      "features": [
+        "支持霸总、穿越、甜宠等 10+ 题材",
+        "分集大纲 + 场景拆分 + 完整剧本",
+        "人物弧光自动生成"
+      ]
+    },
+    "resume-optimizer": {
+      "name": "Resume Optimizer",
+      "description": "AI 简历优化工具。智能分析简历内容，提供优化建议，提升面试通过率。",
+      "features": [
+        "AI 智能分析简历内容",
+        "针对目标岗位定制优化建议",
+        "多种简历模板"
+      ]
+    }
   },
   "tools": {
     "title": "在线工具",
@@ -119,16 +157,6 @@
     "now": "现在",
     "year": "年",
     "month": "月",
-    "day": "日",
-    "supportsTimestamp": "支持秒级（10位）或毫秒级（13位）时间戳",
-    "selectDateTime": "选择日期、时间和毫秒（本地时区）",
-    "hh": "HH",
-    "mm": "MM",
-    "ss": "秒",
-    "ms": "毫秒",
-    "max": "最大",
-    "seconds": "秒",
-    "milliseconds": "毫秒",
     "enterText": "输入文本...",
     "enterUrl": "输入 URL...",
     "enterHtml": "输入 HTML...",
@@ -139,26 +167,43 @@
     "testText": "测试文本...",
     "originalText": "原始文本",
     "modifiedText": "修改后文本",
+    "today": "今天",
+    "max": "最大",
+    "seconds": "秒",
+    "ss": "秒",
+    "ms": "毫秒",
+    "day": "日",
+    "supportsTimestamp": "支持秒级（10位）或毫秒级（13位）时间戳",
+    "selectDateTime": "选择日期、时间和毫秒（本地时区）",
     "hex": "HEX",
-    "rgb": "RGB",
-    "hsl": "HSL",
-    "today": "今天"
-  },
-  "tool": {
     "input": "输入",
     "output": "输出",
-    "copy": "复制",
-    "copied": "已复制！",
-    "download": "下载 JSON",
-    "clear": "清空",
-    "format": "格式化",
-    "validate": "校验",
-    "convert": "转换",
-    "encode": "编码",
-    "decode": "解码",
-    "generate": "生成",
     "placeholder": "在此输入...",
-    "invalidInput": "输入无效"
+    "json-formatter": {"name": "JSON 格式化", "description": "格式化与校验 JSON 数据"},
+    "regex-tester": {"name": "正则测试器", "description": "实时测试正则表达式"},
+    "base64": {"name": "Base64 编解码", "description": "文本与 Base64 互相转换"},
+    "url-encode": {"name": "URL 编解码", "description": "URL 编码与解码"},
+    "jwt-decoder": {"name": "JWT 解码器", "description": "解析 JWT Token 的 Payload"},
+    "uuid-generator": {"name": "UUID 生成器", "description": "生成 UUID v4 标识符"},
+    "html-preview": {"name": "HTML 预览", "description": "实时渲染 HTML 代码"},
+    "css-minifier": {"name": "CSS 压缩/格式化", "description": "压缩与格式化 CSS 代码"},
+    "markdown-preview": {"name": "Markdown 预览", "description": "实时渲染 Markdown 内容"},
+    "word-counter": {"name": "字数统计", "description": "统计字符数、单词数、行数"},
+    "text-diff": {"name": "文本对比", "description": "比较两段文本的差异"},
+    "case-converter": {"name": "大小写转换", "description": "文本大小写转换：大写、小写、首字母大写"},
+    "lorem-ipsum": {"name": "Lorem Ipsum", "description": "生成占位文本"},
+    "text-to-slug": {"name": "文本转 Slug", "description": "将文本转换为 URL 友好的 Slug"},
+    "list-sorter": {"name": "列表排序", "description": "排序、去重和打乱列表"},
+    "timestamp": {"name": "时间戳转换", "description": "Unix 时间戳与日期互转"},
+    "date-calculator": {"name": "日期计算器", "description": "日期间隔计算与日期加减"},
+    "qrcode": {"name": "二维码生成", "description": "输入文字生成二维码图片"},
+    "color-picker": {"name": "颜色选择器", "description": "选色并生成 HEX/RGB/HSL"},
+    "image-to-base64": {"name": "图片转 Base64", "description": "将图片文件转换为 Base64 编码"},
+    "number-base": {"name": "进制转换", "description": "十进制、二进制、八进制、十六进制互转"},
+    "yaml-json": {"name": "YAML ↔ JSON", "description": "YAML 与 JSON 格式互转"},
+    "html-entities": {"name": "HTML 实体编码", "description": "HTML 特殊字符转义与反转义"},
+    "json-to-csv": {"name": "JSON → CSV", "description": "JSON 数据转换为 CSV 格式"},
+    "password-generator": {"name": "密码生成器", "description": "生成安全随机密码"}
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",

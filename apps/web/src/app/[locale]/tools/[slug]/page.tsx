@@ -21,5 +21,5 @@ export default async function ToolDetailPage({ params }: Props) {
   const tool = tools.find((t) => t.id === slug)
   if (!tool) notFound()
 
-  return <ToolPageClient slug={slug} name={tool.name} nameEn={tool.nameEn} />
+  return <ToolPageClient slug={slug} />
 }
