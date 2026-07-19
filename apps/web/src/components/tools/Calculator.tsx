@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 
 // ─── Helpers ─────────────────────────────────────────
 function compute(a: number, b: number, op: string): number {
@@ -14,10 +15,6 @@ function compute(a: number, b: number, op: string): number {
 const RATES: Record<string, number> = {
   USD: 1, CNY: 7.24, EUR: 0.92, JPY: 149.5, GBP: 0.79, KRW: 1320, HKD: 7.82, TWD: 32.1, SGD: 1.34, AUD: 1.53,
 }
-
-const btn = (label: string, base: string, onClick: () => void) => (
-  <button key={label} onClick={onClick} className={`p-3 text-sm rounded-sm font-medium transition-colors active:scale-90 duration-100 ${base}`}>{label}</button>
-)
 
 // ─── Main Calculator ─────────────────────────────────
 type Tab = 'calc' | 'currency' | 'length' | 'weight' | 'area' | 'volume' | 'temp' | 'speed' | 'bmi' | 'tax' | 'mortgage' | 'chinese' | 'time' | 'title' | 'base'
@@ -134,7 +131,7 @@ function CalcPanel() {
 
   const toRad = (x: number) => rad ? x : x * Math.PI / 180
 
-  const funcs = [
+  const sciFuncs = [
     { l: 'sin', f: (x: number) => Math.sin(toRad(x)) },
     { l: 'cos', f: (x: number) => Math.cos(toRad(x)) },
     { l: 'tan', f: (x: number) => Math.tan(toRad(x)) },
@@ -149,12 +146,49 @@ function CalcPanel() {
     { l: '10ˣ', f: (x: number) => Math.pow(10, x) },
   ]
 
+  const btn = (label: string, base: string, onClick: () => void) => (
+    <button key={label} onClick={onClick} className={`p-3 text-sm rounded-sm font-medium transition-colors active:scale-90 duration-100 ${base}`}>{label}</button>
+  )
+
   const sbtn = (l: string, b: string, onClick: () => void) => (
     <button key={l} onClick={onClick} className={`p-2 text-xs rounded-sm font-medium transition-colors active:scale-90 duration-100 ${b}`}>{l}</button>
   )
 
+  // Number pad grid (shared between basic and sci modes)
+  const numpad = (
+    <div className="grid grid-cols-4 gap-1.5">
+      {btn('AC', 'col-span-2 bg-surface text-red-400 border border-[rgba(127,99,21,0.1)] hover:border-red-300', clear)}
+      {btn('⌫', 'bg-surface text-red-400 border border-[rgba(127,99,21,0.1)] hover:border-red-300', () => setDisplay(d => d.length > 1 ? d.slice(0, -1) : '0'))}
+      {btn('÷', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('/'))}
+      {['7','8','9'].map(n => btn(n, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input(n)))}
+      {btn('×', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('*'))}
+      {['4','5','6'].map(n => btn(n, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input(n)))}
+      {btn('−', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('-'))}
+      {['1','2','3'].map(n => btn(n, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input(n)))}
+      {btn('+', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('+'))}
+      {btn(sci ? '科学' : '基础', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 text-xs', () => setSci(!sci))}
+      {btn('0', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input('0'))}
+      {btn('.', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input('.'))}
+      {btn('=', 'bg-accent text-white font-bold hover:opacity-90', equals)}
+    </div>
+  )
+
+  // Scientific sidebar
+  const sciSidebar = (
+    <div className="flex flex-col gap-[3px] w-[56px] shrink-0">
+      {sciFuncs.map(f => sbtn(f.l, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => apply(f.f, f.l)))}
+      {sbtn('π', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => { setDisplay(String(Math.PI)); setExpr('π') })}
+      {sbtn('e', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => { setDisplay(String(Math.E)); setExpr('e') })}
+      {sbtn(rad ? 'RAD' : 'DEG', rad ? 'bg-accent text-white' : 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => setRad(!rad))}
+      {sbtn('MC', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => setMem(null))}
+      {sbtn('MR', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => { if (mem !== null) { setDisplay(String(mem)); setExpr('MR') } })}
+      {sbtn('M+', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => { setMem(parseFloat(display)); setExpr('M+') })}
+      {sbtn('M-', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => { setMem(parseFloat(display)); setExpr('M-') })}
+    </div>
+  )
+
   return (
-    <div className="mx-auto" style={{ maxWidth: sci ? '380px' : '260px' }}>
+    <div className="mx-auto" style={{ maxWidth: sci ? '420px' : '260px' }}>
       <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm p-3 mb-3 min-h-[4rem]">
         <div className="flex items-center justify-between text-xs text-text-secondary/60 min-h-[1rem] leading-tight">
           <span>{sci ? (rad ? 'RAD' : 'DEG') : ''}</span>
@@ -163,56 +197,12 @@ function CalcPanel() {
         <div className="text-2xl font-mono text-text-primary text-right leading-loose overflow-hidden">{display}</div>
       </div>
 
-      {sci && (
-        <>
-          <div className="border border-[rgba(127,99,21,0.1)] rounded-sm p-2 mb-2 bg-surface/50">
-            <div className="text-[10px] text-text-secondary/50 mb-1.5 px-1">三角函数</div>
-            <div className="grid grid-cols-6 gap-1 mb-2">
-              {['sin', 'cos', 'tan'].map(l => sbtn(l, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => apply(funcs.find(f => f.l === l)!.f, l)))}
-              {sbtn('RAD', rad ? 'bg-accent text-white' : 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => setRad(!rad))}
-              {sbtn('π', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => { setDisplay(String(Math.PI)); setExpr('π') })}
-              {sbtn('e', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => { setDisplay(String(Math.E)); setExpr('e') })}
-            </div>
-            <div className="text-[10px] text-text-secondary/50 mb-1.5 px-1">函数</div>
-            <div className="grid grid-cols-5 gap-1 mb-2">
-              {[
-                { l: 'log', f: Math.log10 }, { l: 'ln', f: Math.log }, { l: '√', f: Math.sqrt },
-                { l: 'x²', f: (x: number) => x * x }, { l: 'x³', f: (x: number) => x * x * x },
-                { l: '1/x', f: (x: number) => 1 / x }, { l: '|x|', f: Math.abs },
-                { l: 'n!', f: (x: number) => { let r = 1; for (let i = 2; i <= x; i++) r *= i; return r } },
-                { l: '10ˣ', f: (x: number) => Math.pow(10, x) },
-                { l: 'sinh', f: (x: number) => Math.sinh(toRad(x)) },
-              ].map(f => sbtn(f.l, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => apply(f.f, f.l)))}
-            </div>
-            <div className="text-[10px] text-text-secondary/50 mb-1.5 px-1">记忆</div>
-            <div className="flex gap-1">
-              {['MC', 'MR', 'M+', 'M-', 'AC'].map(l => {
-                if (l === 'AC') return sbtn('AC', 'bg-surface text-red-400 border border-[rgba(127,99,21,0.1)] hover:border-red-300', () => { setDisplay('0'); setExpr(''); setPrev(null); setOp(null); setReset(false) })
-                if (l === 'MR') return sbtn('MR', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => { if (mem !== null) { setDisplay(String(mem)); setExpr('MR') } })
-                if (l === 'M+') return sbtn('M+', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => { setMem(parseFloat(display)); setExpr('M+') })
-                if (l === 'M-') return sbtn('M-', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => { setMem(parseFloat(display)); setExpr('M-') })
-                return sbtn('MC', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => setMem(null))
-              })}
-            </div>
-          </div>
-        </>
-      )}
-
-      <div className="grid grid-cols-4 gap-1.5">
-        {btn('AC', 'col-span-2 bg-surface text-red-400 border border-[rgba(127,99,21,0.1)] hover:border-red-300', clear)}
-        {btn('⌫', 'bg-surface text-red-400 border border-[rgba(127,99,21,0.1)] hover:border-red-300', () => setDisplay(d => d.length > 1 ? d.slice(0, -1) : '0'))}
-        {btn('÷', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('/'))}
-        {['7','8','9'].map(n => btn(n, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input(n)))}
-        {btn('×', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('*'))}
-        {['4','5','6'].map(n => btn(n, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input(n)))}
-        {btn('−', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('-'))}
-        {['1','2','3'].map(n => btn(n, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input(n)))}
-        {btn('+', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('+'))}
-        {btn(sci ? '▼科学' : '科学▶', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 text-xs', () => setSci(!sci))}
-        {btn('0', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input('0'))}
-        {btn('.', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input('.'))}
-        {btn('=', 'bg-accent text-white font-bold hover:opacity-90', equals)}
-      </div>
+      {sci ? (
+        <div className="flex gap-2">
+          {sciSidebar}
+          <div className="flex-1 min-w-0">{numpad}</div>
+        </div>
+      ) : numpad}
     </div>
   )
 }
