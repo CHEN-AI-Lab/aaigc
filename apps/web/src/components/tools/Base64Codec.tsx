@@ -63,7 +63,7 @@ export default function Base64Codec() {
           />
           <button
             onClick={handleCopy}
-            className={`absolute top-2 right-6 text-xs px-2.5 py-1.5 rounded-sm transition-all duration-200 ${
+            className={`absolute top-2 right-6 text-xs px-2.5 py-1.5 rounded-sm transition-all duration-200 min-w-[4.5rem] text-center ${
               copied
                 ? 'bg-green-500 text-white scale-105'
                 : 'bg-accent text-white hover:opacity-90'

@@ -59,7 +59,7 @@ export default function ColorPicker() {
               <code className="text-sm text-text-primary font-mono flex-1 truncate">{value}</code>
               <button
                 onClick={() => handleCopy(value, i)}
-                className={`text-xs px-2 py-0.5 bg-accent text-white rounded-sm transition-all ${animIndex === i ? 'scale-110 opacity-70' : 'hover:opacity-90'}`}
+                className={`text-xs px-2 py-0.5 bg-accent text-white rounded-sm transition-all min-w-[4.5rem] text-center ${animIndex === i ? 'scale-110 opacity-70' : 'hover:opacity-90'}`}
               >
                 {t('copy')}
               </button>

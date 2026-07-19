@@ -63,7 +63,7 @@ export default function CssMinifier() {
           <textarea readOnly value={output} className="w-full h-32 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary resize-none" />
           {saved > 0 && <p className="text-xs text-green-600 mt-1">{t('saved', { bytes: saved })}</p>}
           <button onClick={handleCopy}
-            className={`text-xs px-2 py-1 rounded-sm transition-all duration-200 absolute top-2 right-2 ${
+            className={`text-xs px-2 py-1 rounded-sm transition-all duration-200 min-w-[4.5rem] text-center absolute top-2 right-2 ${
               copied
                 ? 'bg-green-500 text-white scale-105'
                 : 'bg-accent text-white hover:opacity-90'
