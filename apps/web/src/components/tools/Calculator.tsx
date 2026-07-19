@@ -722,50 +722,72 @@ function TimeCalc() {
   )
 }
 
-// ─── Chinese Family Title Calculator ────────────────
+// ─── Chinese Family Relationship Calculator ──────────
 function TitleCalc() {
-  const [name, setName] = useState('')
-  const [gender, setGender] = useState<'male' | 'female'>('male')
-  const [age, setAge] = useState('30')
-  const [side, setSide] = useState('self')
-  const a = parseInt(age)
+  const relations: Record<string, string> = {
+    '爸爸的爸爸': '爷爷', '爸爸的妈妈': '奶奶',
+    '妈妈的爸爸': '外公', '妈妈的妈妈': '外婆',
+    '爸爸的哥哥': '伯父', '爸爸的弟弟': '叔叔', '爸爸的姐妹': '姑姑',
+    '妈妈的哥哥': '舅舅', '妈妈的弟弟': '舅舅', '妈妈的姐妹': '姨妈',
+    '哥哥': '哥哥', '姐姐': '姐姐', '弟弟': '弟弟', '妹妹': '妹妹',
+    '哥哥的老婆': '嫂子', '弟弟的老婆': '弟媳',
+    '姐姐的老公': '姐夫', '妹妹的老公': '妹夫',
+    '爸爸': '爸爸', '妈妈': '妈妈',
+    '老公': '老公', '老婆': '老婆',
+    '儿子': '儿子', '女儿': '女儿',
+    '爷爷的爸爸': '曾祖父', '爷爷的妈妈': '曾祖母',
+    '外公的爸爸': '曾外祖父', '外公的妈妈': '曾外祖母',
+  }
 
-  const title = (() => {
-    if (!name.trim() || isNaN(a)) return null
-    if (a < 18) return gender === 'male' ? '小弟弟' : '小妹妹'
-    if (a < 30) return gender === 'male' ? '弟弟' : '妹妹'
-    if (a < 40) return gender === 'male' ? '兄弟' : '姐妹'
-    if (a < 55) return gender === 'male' ? '大哥' : '大姐'
-    if (a < 70) return gender === 'male' ? '叔叔' : '阿姨'
-    return gender === 'male' ? '爷爷' : '奶奶'
-  })()
+  const [person, setPerson] = useState('')
+  const [result, setResult] = useState('')
+
+  const lookup = () => {
+    const key = person.trim().replace(/的/g, '的').replace(/\s+/g, '')
+    if (relations[key]) {
+      setResult(`${person} → ${relations[key]}`)
+    } else if (key.includes('的')) {
+      // Try to decompose: 爸爸的哥哥的老婆 → 伯母
+      const parts = key.split('的')
+      if (parts.length === 3) {
+        const first = relations[parts[0] + '的' + parts[1]]
+        if (first) {
+          const combined = first + '的' + parts[2]
+          setResult(`${person} → ${combined}（暂未收录完整关系）`)
+          return
+        }
+      }
+      setResult(`"${person}" 暂未收录，请使用下方常用关系`)
+    } else {
+      setResult('')
+    }
+  }
 
   return (
     <div className="max-w-sm mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
-        <div className="grid grid-cols-2 gap-3">
-          <div className="col-span-2">
-            <label className="block text-xs text-text-secondary mb-1">称呼对象</label>
-            <input value={name} onChange={e => setName(e.target.value)} placeholder="请输入姓名" className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
-          </div>
-          <div>
-            <label className="block text-xs text-text-secondary mb-1">性别</label>
-            <div className="flex gap-1">
-              <button onClick={() => setGender('male')} className={`flex-1 p-2 text-xs rounded-sm ${gender === 'male' ? 'bg-accent text-white' : 'bg-white text-text-secondary border border-[rgba(127,99,21,0.1)]'}`}>男</button>
-              <button onClick={() => setGender('female')} className={`flex-1 p-2 text-xs rounded-sm ${gender === 'female' ? 'bg-accent text-white' : 'bg-white text-text-secondary border border-[rgba(127,99,21,0.1)]'}`}>女</button>
-            </div>
-          </div>
-          <div>
-            <label className="block text-xs text-text-secondary mb-1">年龄</label>
-            <input value={age} onChange={e => setAge(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
-          </div>
+        <label className="block text-xs text-text-secondary mb-1">输入关系（如：姐姐的老公）</label>
+        <div className="flex gap-2">
+          <input value={person} onChange={e => { setPerson(e.target.value); setResult('') }} placeholder="例：姐姐的老公"
+            className="flex-1 p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+          <button onClick={lookup} className="px-4 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">查询</button>
         </div>
-        {title && (
+        {result && (
           <div className="mt-3 p-3 bg-white rounded-sm border border-[rgba(127,99,21,0.08)] text-center">
-            <p className="text-lg text-text-primary">{name}{title}</p>
-            <p className="text-xs text-text-secondary mt-1">适用于日常社交称呼</p>
+            <p className="text-lg text-text-primary">{result}</p>
           </div>
         )}
+      </div>
+      <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-3">
+        <p className="text-xs text-text-secondary/60 mb-2">常用关系查询</p>
+        <div className="grid grid-cols-2 gap-1">
+          {Object.keys(relations).map(k => (
+            <button key={k} onClick={() => { setPerson(k); setResult(`${k} → ${relations[k]}`) }}
+              className="text-left text-xs p-1.5 bg-white rounded-sm hover:bg-accent/5 text-text-primary">
+              {k} → {relations[k]}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   )
