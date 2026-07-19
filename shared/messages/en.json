@@ -108,6 +108,13 @@
     "noResults": "No tools found",
     "category": "Category",
     "foundTools": "Found {count} tools",
+    "devTools": "Developer Tools",
+    "textTools": "Text Tools",
+    "timeTools": "Time Tools",
+    "imageTools": "Image Tools",
+    "convertTools": "Converters",
+    "securityTools": "Security Tools",
+    "mathTools": "Math Tools",
     "encode": "Encode",
     "decode": "Decode",
     "convert": "Convert",
@@ -207,31 +214,106 @@
     "input": "Input",
     "output": "Output",
     "placeholder": "Enter text here...",
-    "json-formatter": {"name": "JSON Formatter", "description": "Format and validate JSON data"},
-    "regex-tester": {"name": "Regex Tester", "description": "Test regular expressions in real time"},
-    "base64": {"name": "Base64 Codec", "description": "Encode and decode Base64"},
-    "url-encode": {"name": "URL Encoder", "description": "Encode and decode URLs"},
-    "jwt-decoder": {"name": "JWT Decoder", "description": "Decode JWT token payloads"},
-    "uuid-generator": {"name": "UUID Generator", "description": "Generate UUID v4 identifiers"},
-    "html-preview": {"name": "HTML Preview", "description": "Live HTML rendering"},
-    "css-minifier": {"name": "CSS Minifier", "description": "Minify and format CSS code"},
-    "markdown-preview": {"name": "Markdown Preview", "description": "Live Markdown rendering"},
-    "word-counter": {"name": "Word Counter", "description": "Count characters, words, and lines"},
-    "text-diff": {"name": "Text Diff", "description": "Compare differences between two texts"},
-    "case-converter": {"name": "Case Converter", "description": "Convert text case: upper, lower, title"},
-    "lorem-ipsum": {"name": "Lorem Ipsum", "description": "Generate placeholder text"},
-    "text-to-slug": {"name": "Text to Slug", "description": "Convert text to URL-friendly slug"},
-    "list-sorter": {"name": "List Sorter", "description": "Sort, deduplicate and shuffle lists"},
-    "timestamp": {"name": "Timestamp Converter", "description": "Convert between Unix timestamps and dates"},
-    "date-calculator": {"name": "Date Calculator", "description": "Calculate date differences and add/subtract days"},
-    "qrcode": {"name": "QR Code Generator", "description": "Generate QR codes from text"},
-    "color-picker": {"name": "Color Picker", "description": "Pick colors and generate HEX/RGB/HSL values"},
-    "image-to-base64": {"name": "Image to Base64", "description": "Convert image files to Base64 encoding"},
-    "number-base": {"name": "Number Base Converter", "description": "Convert between decimal, binary, octal, hex"},
-    "yaml-json": {"name": "YAML to JSON", "description": "Convert between YAML and JSON formats"},
-    "html-entities": {"name": "HTML Entities", "description": "Escape and unescape HTML special characters"},
-    "json-to-csv": {"name": "JSON to CSV", "description": "Convert JSON data to CSV format"},
-    "password-generator": {"name": "Password Generator", "description": "Generate secure random passwords"}
+    "json-formatter": {
+      "name": "JSON Formatter",
+      "description": "Format and validate JSON data"
+    },
+    "regex-tester": {
+      "name": "Regex Tester",
+      "description": "Test regular expressions in real time"
+    },
+    "base64": {
+      "name": "Base64 Codec",
+      "description": "Encode and decode Base64"
+    },
+    "url-encode": {
+      "name": "URL Encoder",
+      "description": "Encode and decode URLs"
+    },
+    "jwt-decoder": {
+      "name": "JWT Decoder",
+      "description": "Decode JWT token payloads"
+    },
+    "uuid-generator": {
+      "name": "UUID Generator",
+      "description": "Generate UUID v4 identifiers"
+    },
+    "html-preview": {
+      "name": "HTML Preview",
+      "description": "Live HTML rendering"
+    },
+    "css-minifier": {
+      "name": "CSS Minifier",
+      "description": "Minify and format CSS code"
+    },
+    "markdown-preview": {
+      "name": "Markdown Preview",
+      "description": "Live Markdown rendering"
+    },
+    "word-counter": {
+      "name": "Word Counter",
+      "description": "Count characters, words, and lines"
+    },
+    "text-diff": {
+      "name": "Text Diff",
+      "description": "Compare differences between two texts"
+    },
+    "case-converter": {
+      "name": "Case Converter",
+      "description": "Convert text case: upper, lower, title"
+    },
+    "lorem-ipsum": {
+      "name": "Lorem Ipsum",
+      "description": "Generate placeholder text"
+    },
+    "text-to-slug": {
+      "name": "Text to Slug",
+      "description": "Convert text to URL-friendly slug"
+    },
+    "list-sorter": {
+      "name": "List Sorter",
+      "description": "Sort, deduplicate and shuffle lists"
+    },
+    "timestamp": {
+      "name": "Timestamp Converter",
+      "description": "Convert between Unix timestamps and dates"
+    },
+    "date-calculator": {
+      "name": "Date Calculator",
+      "description": "Calculate date differences and add/subtract days"
+    },
+    "qrcode": {
+      "name": "QR Code Generator",
+      "description": "Generate QR codes from text"
+    },
+    "color-picker": {
+      "name": "Color Picker",
+      "description": "Pick colors and generate HEX/RGB/HSL values"
+    },
+    "image-to-base64": {
+      "name": "Image to Base64",
+      "description": "Convert image files to Base64 encoding"
+    },
+    "number-base": {
+      "name": "Number Base Converter",
+      "description": "Convert between decimal, binary, octal, hex"
+    },
+    "yaml-json": {
+      "name": "YAML to JSON",
+      "description": "Convert between YAML and JSON formats"
+    },
+    "html-entities": {
+      "name": "HTML Entities",
+      "description": "Escape and unescape HTML special characters"
+    },
+    "json-to-csv": {
+      "name": "JSON to CSV",
+      "description": "Convert JSON data to CSV format"
+    },
+    "password-generator": {
+      "name": "Password Generator",
+      "description": "Generate secure random passwords"
+    }
   },
   "ui": {
     "aboutLink": "About AAIGC →",
