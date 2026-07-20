@@ -1026,7 +1026,7 @@ function TimeCalc() {
       case 'hours': return v * SECONDS_PER_HOUR
       case 'days': return v * SECONDS_PER_DAY
       case 'weeks': return v * SECONDS_PER_WEEK
-      case 'months': return v * SECONDS_PER_MONTH
+      case 'months': return v * SECONDS_PER_YEAR / 12
       case 'quarters': return v * SECONDS_PER_YEAR / 4
       case 'years': return v * SECONDS_PER_YEAR
       default: return v
@@ -1040,7 +1040,7 @@ function TimeCalc() {
       case 'hours': return v / SECONDS_PER_HOUR
       case 'days': return v / SECONDS_PER_DAY
       case 'weeks': return v / SECONDS_PER_WEEK
-      case 'months': return v / SECONDS_PER_MONTH
+      case 'months': return v / SECONDS_PER_YEAR * 12
       case 'quarters': return v / SECONDS_PER_YEAR * 4
       case 'years': return v / SECONDS_PER_YEAR
       default: return v
@@ -1058,6 +1058,18 @@ function TimeCalc() {
     { label: 'minutes', labelZh: '分' },
     { label: 'seconds', labelZh: '秒' },
   ]
+
+  const convertUnit = (value: number, fromUnit: string, targetUnit: string) => {
+    // Direct conversions between years, months, quarters (no seconds)
+    if (fromUnit === 'years' && targetUnit === 'months') return value * 12
+    if (fromUnit === 'months' && targetUnit === 'years') return value / 12
+    if (fromUnit === 'years' && targetUnit === 'quarters') return value * 4
+    if (fromUnit === 'quarters' && targetUnit === 'years') return value / 4
+    if (fromUnit === 'months' && targetUnit === 'quarters') return value / 3
+    if (fromUnit === 'quarters' && targetUnit === 'months') return value * 3
+    // All other conversions: go through seconds
+    return toUnit(toSeconds(value, fromUnit), targetUnit)
+  }
 
   return (
     <div className="max-w-sm mx-auto space-y-3">
@@ -1082,7 +1094,7 @@ function TimeCalc() {
             {units.filter(u => u.label !== from).map(u => (
               <div key={u.label} className="flex justify-between p-1.5 bg-white rounded-sm text-xs">
                 <span className="text-text-secondary">{u.labelZh}</span>
-                <span className="text-text-primary font-mono">{formatNumber(toUnit(toSeconds(n, from), u.label))}</span>
+                <span className="text-text-primary font-mono">{formatNumber(convertUnit(n, from, u.label))}</span>
               </div>
             ))}
           </div>
