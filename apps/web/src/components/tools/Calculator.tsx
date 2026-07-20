@@ -711,7 +711,7 @@ function MortgageCalc() {
   const t = useTranslations('tools')
   const [type, setType] = useState<'commercial' | 'fund' | 'mixed'>('commercial')
   const [repayType, setRepayType] = useState<'equal-payment' | 'equal-principal'>('equal-payment')
-  const [loanAmount, setLoanAmount] = useState('300')
+  const [loanAmount, setLoanAmount] = useState('100')
   const [commercialAmount, setCommercialAmount] = useState('200')
   const [fundAmount, setFundAmount] = useState('100')
   const [lpr, setLpr] = useState('3.5')
@@ -842,7 +842,7 @@ function MortgageCalc() {
           {/* Loan amount */}
           {type !== 'mixed' ? (
             <div className="col-span-2">
-              <label className={labelClass}>{t('calcMortgageAmount')} (万元)</label>
+              <label className={labelClass}>{t('calcMortgageAmount')}</label>
               <input value={loanAmount} onChange={e => setLoanAmount(e.target.value)} maxLength={6} className={inputClass} />
             </div>
           ) : (
@@ -872,13 +872,13 @@ function MortgageCalc() {
           ) : (
             <>
               <div>
-                <label className={labelClass}>{t('calcMortgageCommercial')}年限</label>
+                <label className={labelClass}>{t('calcMortgageCommercialYears')}</label>
                 <select value={commercialYears} onChange={e => setCommercialYears(e.target.value)} className={inputClass}>
                   {YEAR_OPTIONS.map(y => <option key={y} value={y}>{y}年</option>)}
                 </select>
               </div>
               <div>
-                <label className={labelClass}>{t('calcMortgageFund')}年限</label>
+                <label className={labelClass}>{t('calcMortgageFundYears')}</label>
                 <select value={fundYears} onChange={e => setFundYears(e.target.value)} className={inputClass}>
                   {YEAR_OPTIONS.map(y => <option key={y} value={y}>{y}年</option>)}
                 </select>
@@ -890,11 +890,11 @@ function MortgageCalc() {
           {type !== 'fund' && (
             <>
               <div>
-                <label className={labelClass}>LPR (%)</label>
+                <label className={labelClass}>{t('calcMortgageLPR')}</label>
                 <input value={lpr} onChange={e => setLpr(e.target.value)} className={inputClass} />
               </div>
               <div>
-                <label className={labelClass}>{t('calcMortgageBP')} (BP)</label>
+                <label className={labelClass}>{t('calcMortgageBP')}</label>
                 <input value={bp} onChange={e => setBp(e.target.value)} className={inputClass} />
               </div>
             </>
@@ -903,7 +903,7 @@ function MortgageCalc() {
           {/* Fund rate */}
           {type !== 'commercial' && (
             <div>
-              <label className={labelClass}>{t('calcMortgageFundRate')} (%)</label>
+              <label className={labelClass}>{t('calcMortgageFundRate')}</label>
               <input value={fundRate} onChange={e => setFundRate(e.target.value)} className={inputClass} />
             </div>
           )}
@@ -928,7 +928,7 @@ function MortgageCalc() {
         {result && result.monthly > 0 && (
           <div className="mt-3 pt-3 border-t border-[rgba(127,99,21,0.1)] space-y-2">
             {startDate && (
-              <p className="text-xs text-text-secondary/60">{t('calcMortgageFirstPaymentDate')}: {formatDate(startDate)}</p>
+              <p className="text-xs text-text-secondary/60">{t('calcMortgageFirstPaymentDate', { date: formatDate(startDate) })}</p>
             )}
             {effectiveRate !== '' && (
               <p className="text-xs text-text-secondary/60">
@@ -943,7 +943,7 @@ function MortgageCalc() {
             </div>
             {repayType === 'equal-principal' && result.schedule && result.schedule.length > 1 && (
               <p className="text-xs text-text-secondary/60 text-right">
-                首月{t('calcMortgageMonthlyPayment')}, {t('calcMortgageFirstMonthDesc')} <strong>¥{(result.schedule[0].payment - result.schedule[1].payment).toFixed(2)}</strong>
+                {t('calcMortgageFirstMonthDesc', { amount: result.schedule[0].payment - result.schedule[1].payment })}
               </p>
             )}
             {type === 'mixed' && 'commercial' in result && 'fund' in result && (

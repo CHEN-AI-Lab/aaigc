@@ -470,7 +470,7 @@
     "calcMortgageRateInfo": "执行利率: LPR{sign}{bp}BP = {rate}%",
     "calcMortgageFundRateValue": "公积金利率: {rate}%",
     "calcMortgageMonthlyPayment": "月供",
-    "calcMortgageFirstMonthDesc": "首月月供, 每月递减 ¥{amount}",
+    "calcMortgageFirstMonthDesc": "首月, 每月递减 ¥{amount}",
     "calcMortgageDetail": "{amount} 元，月供 {monthly} 元",
     "calcMortgageTotalInterest": "总利息",
     "calcMortgageTotalPayment": "还款总额",
