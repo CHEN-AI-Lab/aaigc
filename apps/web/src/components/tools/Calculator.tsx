@@ -993,6 +993,7 @@ function ChineseNumCalc() {
           seg = Math.floor(seg / 10)
         }
         if (segStr.endsWith('零')) segStr = segStr.slice(0, -1)
+        if (segStr.startsWith('零')) segStr = segStr.slice(1)
         if (segStr) s = segStr + BIG[i] + s
         else if (s) s = '零' + s
         int = Math.floor(int / 10000); i++
