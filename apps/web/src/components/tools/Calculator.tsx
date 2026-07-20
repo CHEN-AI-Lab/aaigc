@@ -18,15 +18,15 @@ const RATES: Record<string, number> = {
 
 type Tab = 'calc' | 'currency' | 'length' | 'weight' | 'area' | 'volume' | 'temp' | 'speed' | 'bmi' | 'tax' | 'mortgage' | 'chinese' | 'time' | 'title' | 'base'
 
-const TABS: { id: Tab; label: string }[] = [
-  { id: 'calc', label: '计算器' }, { id: 'bmi', label: 'BMI' },
-  { id: 'tax', label: '个税' }, { id: 'mortgage', label: '房贷' },
-  { id: 'chinese', label: '大写' }, { id: 'title', label: '称呼' },
-  { id: 'currency', label: '汇率' }, { id: 'base', label: '进制' },
-  { id: 'length', label: '长度' }, { id: 'weight', label: '重量' },
-  { id: 'area', label: '面积' }, { id: 'volume', label: '体积' },
-  { id: 'temp', label: '温度' }, { id: 'speed', label: '速度' },
-  { id: 'time', label: '时间' },
+const TABS: { id: Tab }[] = [
+  { id: 'calc' }, { id: 'bmi' },
+  { id: 'tax' }, { id: 'mortgage' },
+  { id: 'chinese' }, { id: 'title' },
+  { id: 'currency' }, { id: 'base' },
+  { id: 'length' }, { id: 'weight' },
+  { id: 'area' }, { id: 'volume' },
+  { id: 'temp' }, { id: 'speed' },
+  { id: 'time' },
 ]
 
 export default function Calculator() {
