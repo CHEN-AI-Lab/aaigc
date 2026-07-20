@@ -1155,14 +1155,8 @@ function TitleCalc() {
       <div className="max-w-lg mx-auto space-y-3">
         <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-xs text-text-secondary/60">选择关系</p>
-            <div className="flex gap-1">
-              <button onClick={back}
-                className="px-2 py-1 text-xs rounded-sm bg-white text-text-secondary border border-[rgba(127,99,21,0.1)] hover:border-accent/30">回退</button>
-              <button onClick={clear}
-                className="px-2 py-1 text-xs rounded-sm bg-white text-red-400 border border-[rgba(127,99,21,0.1)] hover:border-red-300">清除</button>
-            </div>
-          </div>
+                    <p className="text-xs text-text-secondary/60">选择关系</p>
+                  </div>
           <div className="flex items-center gap-2">
             <div className="grid grid-cols-5 gap-1.5 flex-1">
               {row1.map(name => (
