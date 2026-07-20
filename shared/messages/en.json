@@ -531,10 +531,7 @@
     "title": "About",
     "desc": "AAIGC is a collection of free online tools that run entirely in your browser. No data is sent to any server, no sign-up required, and nothing is tracked.",
     "desc2": "From developer utilities to everyday calculators, each tool is designed to be fast, private, and easy to use.",
-    "contact": "Contact",
-    "statTools": "tools",
-    "statCategories": "categories",
-    "statLanguages": "languages"
+    "contact": "Contact"
   },
   "errors": {
     "notFound": "Page not found",

@@ -531,10 +531,7 @@
     "title": "关于",
     "desc": "AAIGC 是一个免费在线工具集合，所有工具均在浏览器本地运行。无需注册、不收集数据、不追踪用户。",
     "desc2": "从开发工具到日常计算器，每个工具都力求快速、私密、易用。",
-    "contact": "联系方式",
-    "statTools": "个工具",
-    "statCategories": "个分类",
-    "statLanguages": "种语言"
+    "contact": "联系方式"
   },
   "errors": {
     "notFound": "页面未找到",
