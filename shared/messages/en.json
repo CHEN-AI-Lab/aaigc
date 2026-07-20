@@ -494,7 +494,12 @@
     "calcBaseHex": "Hexadecimal",
     "calcEnterNumber": "Enter number",
     "calcDateFormat": "{year} year {month} month",
-    "calcOverweightYoung": "Overweight (Young)"
+    "calcOverweightYoung": "Overweight (Young)",
+    "calcYear": "{y} year",
+    "calcMonth": "{m} month",
+    "calcDay": "{d} day",
+    "calcYearN": "Year {year}",
+    "calcYearRepayment": "Repayment ¥{amount}"
   },
   "ui": {
     "aboutLink": "About AAIGC →",

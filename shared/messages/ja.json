@@ -494,7 +494,12 @@
     "calcBaseHex": "16進数",
     "calcEnterNumber": "数値を入力",
     "calcDateFormat": "{year}年{month}月",
-    "calcOverweightYoung": "やや肥満"
+    "calcOverweightYoung": "やや肥満",
+    "calcYear": "{y}年",
+    "calcMonth": "{m}月",
+    "calcDay": "{d}日",
+    "calcYearN": "{year}年目",
+    "calcYearRepayment": "返済 ¥{amount}"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

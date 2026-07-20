@@ -866,7 +866,7 @@ function MortgageCalc() {
                 if (type === 'commercial') setCommercialYears(e.target.value)
                 else setFundYears(e.target.value)
               }} className={inputClass}>
-                {YEAR_OPTIONS.map(y => <option key={y} value={y}>{y}年</option>)}
+                {YEAR_OPTIONS.map(y => <option key={y} value={y}>{t('calcYear', { y })}</option>)}
               </select>
             </div>
           ) : (
@@ -874,13 +874,13 @@ function MortgageCalc() {
               <div>
                 <label className={labelClass}>{t('calcMortgageCommercialYears')}</label>
                 <select value={commercialYears} onChange={e => setCommercialYears(e.target.value)} className={inputClass}>
-                  {YEAR_OPTIONS.map(y => <option key={y} value={y}>{y}年</option>)}
+                  {YEAR_OPTIONS.map(y => <option key={y} value={y}>{t('calcYear', { y })}</option>)}
                 </select>
               </div>
               <div>
                 <label className={labelClass}>{t('calcMortgageFundYears')}</label>
                 <select value={fundYears} onChange={e => setFundYears(e.target.value)} className={inputClass}>
-                  {YEAR_OPTIONS.map(y => <option key={y} value={y}>{y}年</option>)}
+                  {YEAR_OPTIONS.map(y => <option key={y} value={y}>{t('calcYear', { y })}</option>)}
                 </select>
               </div>
             </>
@@ -913,13 +913,13 @@ function MortgageCalc() {
             <label className={labelClass}>{t('calcMortgageFirstPayment')}</label>
             <div className="grid grid-cols-3 gap-2">
               <select value={startYear} onChange={e => setStartYear(e.target.value)} className={inputClass}>
-                {Array.from({ length: 30 }, (_, i) => String(2025 + i)).map(y => <option key={y} value={y}>{y}年</option>)}
+                {Array.from({ length: 30 }, (_, i) => String(2025 + i)).map(y => <option key={y} value={y}>{t('calcYear', { y })}</option>)}
               </select>
               <select value={startMonth} onChange={e => setStartMonth(e.target.value)} className={inputClass}>
-                {Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0')).map(m => <option key={m} value={m}>{m}月</option>)}
+                {Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0')).map(m => <option key={m} value={m}>{t('calcMonth', { m })}</option>)}
               </select>
               <select value={startDay} onChange={e => setStartDay(e.target.value)} className={inputClass}>
-                {Array.from({ length: daysInMonth }, (_, i) => String(i + 1).padStart(2, '0')).map(d => <option key={d} value={d}>{d}日</option>)}
+                {Array.from({ length: daysInMonth }, (_, i) => String(i + 1).padStart(2, '0')).map(d => <option key={d} value={d}>{t('calcDay', { d })}</option>)}
               </select>
             </div>
           </div>
@@ -987,9 +987,9 @@ function MortgageCalc() {
                     onClick={() => setExpandedYears(prev => ({ ...prev, [year]: !prev[year] }))}
                     className="w-full flex items-center justify-between p-2 bg-white rounded-sm text-xs hover:bg-accent/5 transition-colors"
                   >
-                    <span className="font-medium text-text-primary">第{year}年</span>
+                    <span className="font-medium text-text-primary">{t('calcYearN', { year })}</span>
                     <span className="text-text-secondary">
-                      还款 ¥{yearTotal.toFixed(0)} {isExpanded ? '▲' : '▼'}
+                      {t('calcYearRepayment', { amount: yearTotal.toFixed(0) })} {isExpanded ? '▲' : '▼'}
                     </span>
                   </button>
                   {isExpanded && (
@@ -1039,9 +1039,9 @@ function MortgageCalc() {
                           onClick={() => setExpandedYears(prev => ({ ...prev, [key]: !prev[key] }))}
                           className="w-full flex items-center justify-between p-2 bg-white rounded-sm text-xs hover:bg-accent/5 transition-colors"
                         >
-                          <span className="font-medium text-text-primary">第{year}年</span>
+                          <span className="font-medium text-text-primary">{t('calcYearN', { year })}</span>
                           <span className="text-text-secondary">
-                            还款 ¥{yearTotal.toFixed(0)} {isExpanded ? '▲' : '▼'}
+                            {t('calcYearRepayment', { amount: yearTotal.toFixed(0) })} {isExpanded ? '▲' : '▼'}
                           </span>
                         </button>
                         {isExpanded && (

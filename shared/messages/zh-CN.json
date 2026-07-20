@@ -494,7 +494,12 @@
     "calcBaseHex": "十六进制",
     "calcEnterNumber": "输入数值",
     "calcDateFormat": "{year}年{month}月",
-    "calcOverweightYoung": "偏胖"
+    "calcOverweightYoung": "偏胖",
+    "calcYear": "{y}年",
+    "calcMonth": "{m}月",
+    "calcDay": "{d}日",
+    "calcYearN": "第{year}年",
+    "calcYearRepayment": "还款 ¥{amount}"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",
