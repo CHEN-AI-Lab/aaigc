@@ -462,7 +462,7 @@ function TaxCalc() {
   const [eduDed, setEduDed] = useState('')          // {t('calcTaxChildEdu')}
   const [contEdu, setContEdu] = useState('')        // {t('calcTaxContEdu')}
   const [medicalDed, setMedicalDed] = useState('')  // {t('calcTaxMedicalDed')}
-  const [housingInt, setHousingInt] = useState('')  // 住房贷款{t('calcMortgageInterest')}
+  const [housingInt, setHousingInt] = useState('')  // calcTaxHousingInt
   const [housingRent, setHousingRent] = useState('') // {t('calcTaxHousingRent')}
   const [elderlyCare, setElderlyCare] = useState('') // {t('calcTaxElderlyCare')}
   const [infantCare, setInfantCare] = useState('')   // 3{t('calcTaxInfantCare')}
@@ -599,7 +599,7 @@ function TaxCalc() {
                 <input value={medicalDed} onChange={e => setMedicalDed(e.target.value)} className={inputClass} />
               </div>
               <div>
-                <label className={labelClass}>住房贷款{t('calcMortgageInterest')}</label>
+                <label className={labelClass}>{t('calcTaxHousingInt')}</label>
                 <input value={housingInt} onChange={e => {
                   setHousingInt(e.target.value)
                   if (e.target.value) setHousingRent('')
@@ -667,11 +667,11 @@ function TaxCalc() {
                   <span className="font-medium">{bonusResult.bracket}</span>
                 </div>
                 <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
-                  <span className="text-text-secondary">{t('calcTaxBonus')}适用税率</span>
+                  <span className="text-text-secondary">{t('calcTaxBonusRate')}</span>
                   <span className="font-medium">{(bonusResult.rate * 100).toFixed(0)}%</span>
                 </div>
                 <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
-                  <span className="text-text-secondary">{t('calcTaxBonus')}应缴个税</span>
+                  <span className="text-text-secondary">{t('calcTaxBonusTax')}</span>
                   <span className="font-medium">¥{bonusResult.tax.toFixed(0)}</span>
                 </div>
               </>
@@ -848,11 +848,11 @@ function MortgageCalc() {
           ) : (
             <>
               <div>
-                <label className={labelClass}>金额 (万元)</label>
+                <label className={labelClass}>{t('calcMortgageAmountShort')}</label>
                 <input value={commercialAmount} onChange={e => setCommercialAmount(e.target.value)} maxLength={6} className={inputClass} />
               </div>
               <div>
-                <label className={labelClass}>金额 (万元)</label>
+                <label className={labelClass}>{t('calcMortgageAmountShort')}</label>
                 <input value={fundAmount} onChange={e => setFundAmount(e.target.value)} maxLength={6} className={inputClass} />
               </div>
             </>
@@ -1115,7 +1115,7 @@ function ChineseNumCalc() {
     if (dec === 0) s += '整'
     else {
       if (dec >= 10) s += DIGITS[Math.floor(dec / 10)] + '角'
-      if (dec % 10 !== 0) s += DIGITS[dec % 10] + '分'
+      if (dec % 10 !== 0) s += DIGITS[dec % 10] + t('calcMinutes')
     }
     return s
   })()
@@ -1195,14 +1195,14 @@ function TimeCalc() {
 
   // Fixed display order: 年, 月, 周, 天, 时, 分, 秒
   const units = [
-    { label: 'years', labelZh: '年' },
-    { label: 'quarters', labelZh: '季度' },
-    { label: 'months', labelZh: '月' },
-    { label: 'weeks', labelZh: '周' },
-    { label: 'days', labelZh: '天' },
-    { label: 'hours', labelZh: '时' },
-    { label: 'minutes', labelZh: '分' },
-    { label: 'seconds', labelZh: '秒' },
+    { label: 'years', labelZh: t('calcYears') },
+    { label: 'quarters', labelZh: t('calcQuarters') },
+    { label: 'months', labelZh: t('calcMonths') },
+    { label: 'weeks', labelZh: t('calcWeeks') },
+    { label: 'days', labelZh: t('calcDays') },
+    { label: 'hours', labelZh: t('calcHours') },
+    { label: 'minutes', labelZh: t('calcMinutes') },
+    { label: 'seconds', labelZh: t('calcSeconds') },
   ]
 
   const convertUnit = (value: number, fromUnit: string, targetUnit: string) => {
