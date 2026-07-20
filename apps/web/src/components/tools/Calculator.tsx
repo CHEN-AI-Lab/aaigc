@@ -164,7 +164,7 @@ function CalcPanel() {
 
 // ─── Improved Currency Converter ─────────────────────
 function CurrencyCalc() {
-  const [amount, setAmount] = useState('100')
+  const [amount, setAmount] = useState('')
   const [from, setFrom] = useState('USD')
   const [to, setTo] = useState('CNY')
   const a = parseFloat(amount)
@@ -278,7 +278,7 @@ const SPEED: Unit[] = [
 ]
 
 function UnitTable({ units, title }: { units: Unit[]; title: string }) {
-  const [val, setVal] = useState('1')
+  const [val, setVal] = useState('')
   const [from, setFrom] = useState(units[0]?.label || '')
   const n = parseFloat(val)
   const uFrom = units.find(u => u.label === from)
@@ -315,7 +315,7 @@ function UnitTable({ units, title }: { units: Unit[]; title: string }) {
 
 // ─── Improved Temperature (all units inputtable) ─────
 function TempCalc() {
-  const [val, setVal] = useState('100')
+  const [val, setVal] = useState('')
   const [unit, setUnit] = useState<'C' | 'F' | 'K'>('C')
   const n = parseFloat(val)
   const toC = (v: number, u: string) => {
@@ -367,9 +367,9 @@ function TempCalc() {
 
 // ─── Improved BMI (age/gender reference) ─────────────
 function BmiCalc() {
-  const [h, setH] = useState('170')
-  const [w, setW] = useState('70')
-  const [age, setAge] = useState('30')
+  const [h, setH] = useState('')
+  const [w, setW] = useState('')
+  const [age, setAge] = useState('')
   const [gender, setGender] = useState<'male' | 'female'>('male')
   const [unit, setUnit] = useState<'metric' | 'imperial'>('metric')
   const height = parseFloat(h); const weight = parseFloat(w); const a = parseInt(age)
@@ -437,13 +437,18 @@ function BmiCalc() {
   )
 }
 
-// ─── Improved Tax Calculator (monthly + yearly) ──────
+// ─── Improved Tax Calculator (monthly + yearly + 年终奖) ─
 function TaxCalc() {
-  const [salary, setSalary] = useState('15000')
+  const [salary, setSalary] = useState('')
+  const [bonus, setBonus] = useState('')
+  const [monthsWorked, setMonthsWorked] = useState('')
   const [mode, setMode] = useState<'monthly' | 'yearly'>('monthly')
   const s = parseFloat(salary)
-  const threshold = mode === 'monthly' ? 5000 : 60000
-  const brackets = mode === 'monthly' ? [
+  const b = parseFloat(bonus)
+  const mw = parseInt(monthsWorked)
+  const useMonthsWorked = !isNaN(mw) && mw > 0 && mw <= 12
+
+  const monthlyBrackets = [
     { low: 0, high: 3000, rate: 0.03, deduct: 0, label: '不超过 3000 元' },
     { low: 3000, high: 12000, rate: 0.1, deduct: 210, label: '3000 - 12000 元' },
     { low: 12000, high: 25000, rate: 0.2, deduct: 1410, label: '12000 - 25000 元' },
@@ -451,7 +456,9 @@ function TaxCalc() {
     { low: 35000, high: 55000, rate: 0.3, deduct: 4410, label: '35000 - 55000 元' },
     { low: 55000, high: 80000, rate: 0.35, deduct: 7160, label: '55000 - 80000 元' },
     { low: 80000, high: Infinity, rate: 0.45, deduct: 15160, label: '超过 80000 元' },
-  ] : [
+  ]
+
+  const yearlyBrackets = [
     { low: 0, high: 36000, rate: 0.03, deduct: 0, label: '不超过 36000 元' },
     { low: 36000, high: 144000, rate: 0.1, deduct: 2520, label: '36000 - 144000 元' },
     { low: 144000, high: 300000, rate: 0.2, deduct: 16920, label: '144000 - 300000 元' },
@@ -461,50 +468,126 @@ function TaxCalc() {
     { low: 960000, high: Infinity, rate: 0.45, deduct: 181920, label: '超过 960000 元' },
   ]
 
-  const result = (() => {
-    if (isNaN(s) || s <= threshold) return null
-    const taxable = s - threshold
+  const calcTax = (taxable: number, brackets: typeof monthlyBrackets) => {
+    if (taxable <= 0) return null
     const bracket = brackets.find(b => taxable <= b.high) || brackets[brackets.length - 1]
     const tax = taxable * bracket.rate - bracket.deduct
     return { taxable, tax: Math.max(0, tax), rate: bracket.rate, bracket: bracket.label }
+  }
+
+  // Salary tax calculation
+  const salaryResult = (() => {
+    if (isNaN(s)) return null
+    if (useMonthsWorked) {
+      // Use yearly brackets with adjusted deduction
+      const totalIncome = s * mw
+      const totalDeduction = 5000 * mw
+      const taxable = totalIncome - totalDeduction
+      return calcTax(taxable, yearlyBrackets)
+    }
+    if (mode === 'monthly') {
+      const threshold = 5000
+      if (s <= threshold) return null
+      return calcTax(s - threshold, monthlyBrackets)
+    }
+    // Yearly mode
+    const threshold = 60000
+    if (s <= threshold) return null
+    return calcTax(s - threshold, yearlyBrackets)
   })()
+
+  // Bonus tax calculation (bonus / 12 to find bracket, then bonus * rate - deduct)
+  const bonusResult = (() => {
+    if (isNaN(b) || b <= 0) return null
+    const monthly = b / 12
+    const bracket = monthlyBrackets.find(b => monthly <= b.high) || monthlyBrackets[monthlyBrackets.length - 1]
+    const tax = b * bracket.rate - bracket.deduct
+    return { bonus: b, tax: Math.max(0, tax), rate: bracket.rate, bracket: bracket.label }
+  })()
+
+  const totalTax = (salaryResult?.tax || 0) + (bonusResult?.tax || 0)
+  const totalIncome = (salaryResult ? (useMonthsWorked ? s * mw : s) : 0) + (bonusResult?.bonus || 0)
+  const afterTax = totalIncome - totalTax
+
+  const btnClass = (active: boolean) =>
+    `px-3 py-1 text-xs rounded-sm ${active ? 'bg-accent text-white' : 'bg-white text-text-secondary'}`
 
   return (
     <div className="max-w-sm mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
-        <div className="flex gap-1 mb-3">
-          <button onClick={() => setMode('monthly')} className={`px-3 py-1 text-xs rounded-sm ${mode === 'monthly' ? 'bg-accent text-white' : 'bg-white text-text-secondary'}`}>月薪</button>
-          <button onClick={() => setMode('yearly')} className={`px-3 py-1 text-xs rounded-sm ${mode === 'yearly' ? 'bg-accent text-white' : 'bg-white text-text-secondary'}`}>年薪</button>
+        {!useMonthsWorked && (
+          <div className="flex gap-1 mb-3">
+            <button onClick={() => setMode('monthly')} className={btnClass(mode === 'monthly')}>月薪</button>
+            <button onClick={() => setMode('yearly')} className={btnClass(mode === 'yearly')}>年薪</button>
+          </div>
+        )}
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="block text-xs text-text-secondary mb-1">{mode === 'monthly' ? '税前月薪' : '税前年薪'} (元)</label>
+            <input value={salary} onChange={e => setSalary(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+          </div>
+          <div>
+            <label className="block text-xs text-text-secondary mb-1">年终奖 (元)</label>
+            <input value={bonus} onChange={e => setBonus(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+          </div>
         </div>
-        <label className="block text-xs text-text-secondary mb-1">{mode === 'monthly' ? '税前月薪' : '税前年薪'} (元)</label>
-        <input value={salary} onChange={e => setSalary(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
-        {result && (
+        <div className="mt-2">
+          <label className="block text-xs text-text-secondary mb-1">工作月数 (留空使用标准扣除)</label>
+          <input value={monthsWorked} onChange={e => setMonthsWorked(e.target.value)} placeholder="1-12" className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+        </div>
+        {(salaryResult || bonusResult) && (
           <div className="mt-3 space-y-2">
-            <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
-              <span className="text-text-secondary">应纳税所得额</span>
-              <span className="font-medium">¥{result.taxable.toFixed(0)}</span>
-            </div>
-            <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
-              <span className="text-text-secondary">适用税率档</span>
-              <span className="font-medium">{(result.rate * 100).toFixed(0)}%</span>
-            </div>
-            <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
-              <span className="text-text-secondary">应缴个税</span>
-              <span className="text-accent font-bold">¥{result.tax.toFixed(0)}</span>
-            </div>
+            {salaryResult && (
+              <>
+                <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
+                  <span className="text-text-secondary">工资应纳税所得额</span>
+                  <span className="font-medium">¥{salaryResult.taxable.toFixed(0)}</span>
+                </div>
+                <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
+                  <span className="text-text-secondary">工资适用税率</span>
+                  <span className="font-medium">{(salaryResult.rate * 100).toFixed(0)}%</span>
+                </div>
+                <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
+                  <span className="text-text-secondary">工资应缴个税</span>
+                  <span className="font-medium">¥{salaryResult.tax.toFixed(0)}</span>
+                </div>
+              </>
+            )}
+            {bonusResult && (
+              <>
+                <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
+                  <span className="text-text-secondary">年终奖 (÷12 = ¥{(bonusResult.bonus / 12).toFixed(0)})</span>
+                  <span className="font-medium">{bonusResult.bracket}</span>
+                </div>
+                <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
+                  <span className="text-text-secondary">年终奖适用税率</span>
+                  <span className="font-medium">{(bonusResult.rate * 100).toFixed(0)}%</span>
+                </div>
+                <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
+                  <span className="text-text-secondary">年终奖应缴个税</span>
+                  <span className="font-medium">¥{bonusResult.tax.toFixed(0)}</span>
+                </div>
+              </>
+            )}
+            {salaryResult && bonusResult && (
+              <div className="flex justify-between text-sm p-2 bg-white rounded-sm border-t border-[rgba(127,99,21,0.1)]">
+                <span className="text-text-secondary font-medium">合计个税</span>
+                <span className="text-accent font-bold">¥{totalTax.toFixed(0)}</span>
+              </div>
+            )}
             <div className="flex justify-between text-sm p-2 bg-green-50 rounded-sm border border-green-200">
-              <span className="text-green-700">税后收入</span>
-              <span className="text-green-700 font-bold">¥{(s - result.tax).toFixed(0)}</span>
+              <span className="text-green-700">税后总收入</span>
+              <span className="text-green-700 font-bold">¥{afterTax.toFixed(0)}</span>
             </div>
           </div>
         )}
       </div>
-      {result && (
+      {(salaryResult || bonusResult) && (
         <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-3">
           <p className="text-xs text-text-secondary/60 mb-2">税率表参考</p>
           <div className="space-y-0.5">
-            {brackets.map(b => (
-              <div key={b.low} className={`flex justify-between text-xs p-1.5 rounded-sm ${b.label === result.bracket ? 'bg-accent/10 text-accent font-medium' : 'text-text-secondary'}`}>
+            {(useMonthsWorked || mode === 'yearly' ? yearlyBrackets : monthlyBrackets).map(b => (
+              <div key={b.low} className={`flex justify-between text-xs p-1.5 rounded-sm ${b.label === salaryResult?.bracket ? 'bg-accent/10 text-accent font-medium' : 'text-text-secondary'}`}>
                 <span>{b.label}</span>
                 <span>{(b.rate * 100).toFixed(0)}%</span>
               </div>
@@ -518,109 +601,209 @@ function TaxCalc() {
 
 // ─── Mortgage Calculator (商业/公积金/组合) ──────────
 function MortgageCalc() {
-  const [total, setTotal] = useState('3000000')
-  const [years, setYears] = useState('30')
-  const [rate, setRate] = useState('3.85')
+  const [total, setTotal] = useState('')
+  const [years, setYears] = useState('')
+  const [rate, setRate] = useState('')
   const [type, setType] = useState<'commercial' | 'fund' | 'mixed'>('commercial')
-  const [fundRate, setFundRate] = useState('3.1')
-  const [fundPortion, setFundPortion] = useState('50')
-  const p = parseFloat(total); const n = parseFloat(years) * 12
-  const r = parseFloat(type === 'fund' ? fundRate : rate) / 100 / 12
-  const fr = parseFloat(fundRate) / 100 / 12
-  const cr = parseFloat(rate) / 100 / 12
+  const [fundRate, setFundRate] = useState('')
+  const [repayType, setRepayType] = useState<'equal-payment' | 'equal-principal'>('equal-payment')
+  const [lpr, setLpr] = useState('')
+  const [bp, setBp] = useState('0')
+  const [startDate, setStartDate] = useState('')
+  const [commercialAmount, setCommercialAmount] = useState('')
+  const [fundAmount, setFundAmount] = useState('')
 
-  const calcMonthly = (principal: number, rate: number, months: number) => {
-    if (rate <= 0 || months <= 0) return 0
-    return principal * rate * Math.pow(1 + rate, months) / (Math.pow(1 + rate, months) - 1)
+  const LPR_OPTIONS = [
+    { label: '不使用LPR', value: '' },
+    { label: '1年期 LPR 3.45%', value: '3.45' },
+    { label: '5年期以上 LPR 3.95%', value: '3.95' },
+    { label: '1年期 LPR 3.55%', value: '3.55' },
+    { label: '5年期以上 LPR 4.20%', value: '4.20' },
+  ]
+
+  const finalRate = lpr ? (parseFloat(lpr) + parseFloat(bp || '0') / 100).toFixed(2) : rate
+  const p = parseFloat(total)
+  const n = parseFloat(years) * 12
+  const cr = parseFloat(finalRate || rate) / 100 / 12
+  const fr = parseFloat(fundRate) / 100 / 12
+
+  const calcEqualPayment = (principal: number, monthlyRate: number, months: number) => {
+    if (monthlyRate <= 0 || months <= 0) return { monthly: 0, totalInterest: 0, totalPayment: 0, schedule: [] }
+    const monthly = principal * monthlyRate * Math.pow(1 + monthlyRate, months) / (Math.pow(1 + monthlyRate, months) - 1)
+    const totalPayment = monthly * months
+    const totalInterest = totalPayment - principal
+    // Generate schedule
+    const schedule: { month: number; payment: number; principal: number; interest: number; remaining: number }[] = []
+    let remaining = principal
+    for (let i = 1; i <= months; i++) {
+      const interest = remaining * monthlyRate
+      const principalPaid = monthly - interest
+      remaining -= principalPaid
+      schedule.push({ month: i, payment: monthly, principal: principalPaid, interest, remaining: Math.max(0, remaining) })
+    }
+    return { monthly, totalInterest, totalPayment, schedule }
   }
 
-  const monthly = (() => {
+  const calcEqualPrincipal = (principal: number, monthlyRate: number, months: number) => {
+    if (monthlyRate <= 0 || months <= 0) return { monthly: 0, totalInterest: 0, totalPayment: 0, schedule: [] }
+    const monthlyPrincipal = principal / months
+    let totalPayment = 0
+    let totalInterest = 0
+    const schedule: { month: number; payment: number; principal: number; interest: number; remaining: number }[] = []
+    let remaining = principal
+    for (let i = 1; i <= months; i++) {
+      const interest = remaining * monthlyRate
+      const payment = monthlyPrincipal + interest
+      remaining -= monthlyPrincipal
+      totalPayment += payment
+      totalInterest += interest
+      schedule.push({ month: i, payment, principal: monthlyPrincipal, interest, remaining: Math.max(0, remaining) })
+    }
+    return { monthly: schedule[0]?.payment || 0, totalInterest, totalPayment, schedule }
+  }
+
+  const result = (() => {
     if (isNaN(p) || isNaN(n) || n <= 0) return null
-    if (type === 'fund') return { total: calcMonthly(p, fr, n), fund: calcMonthly(p, fr, n), commercial: 0 }
-    if (type === 'commercial') return { total: calcMonthly(p, cr, n), fund: 0, commercial: calcMonthly(p, cr, n) }
-    // Mixed: use fund portion percentage
-    const fp = Math.min(100, Math.max(0, parseFloat(fundPortion) || 50)) / 100
-    const fundP = p * fp
-    const comP = p * (1 - fp)
-    return { total: calcMonthly(fundP, fr, n) + calcMonthly(comP, cr, n), fund: calcMonthly(fundP, fr, n), commercial: calcMonthly(comP, cr, n) }
+    const calc = repayType === 'equal-payment' ? calcEqualPayment : calcEqualPrincipal
+
+    if (type === 'fund') {
+      return calc(p, fr, n)
+    }
+    if (type === 'commercial') {
+      return calc(p, cr, n)
+    }
+    // Mixed mode: use direct amounts
+    const ca = parseFloat(commercialAmount) || 0
+    const fa = parseFloat(fundAmount) || 0
+    const total = ca + fa
+    if (total <= 0) return null
+    const comResult = calc(ca, cr, n)
+    const fundResult = calc(fa, fr, n)
+    return {
+      monthly: comResult.monthly + fundResult.monthly,
+      totalInterest: comResult.totalInterest + fundResult.totalInterest,
+      totalPayment: comResult.totalPayment + fundResult.totalPayment,
+      schedule: [],
+      commercial: { monthly: comResult.monthly, amount: ca },
+      fund: { monthly: fundResult.monthly, amount: fa },
+    }
   })()
+
+  // Format start date
+  const formatDate = (d: string) => {
+    if (!d) return ''
+    const date = new Date(d)
+    return `${date.getFullYear()}年${date.getMonth() + 1}月`
+  }
+
+  const btnClass = (active: boolean) =>
+    `px-3 py-1 text-xs rounded-sm ${active ? 'bg-accent text-white' : 'bg-white text-text-secondary'}`
 
   return (
     <div className="max-w-sm mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
+        <div className="flex gap-1 mb-3 flex-wrap">
+          <button onClick={() => setType('commercial')} className={btnClass(type === 'commercial')}>商业贷款</button>
+          <button onClick={() => setType('fund')} className={btnClass(type === 'fund')}>公积金</button>
+          <button onClick={() => setType('mixed')} className={btnClass(type === 'mixed')}>组合贷</button>
+        </div>
         <div className="flex gap-1 mb-3">
-          <button onClick={() => setType('commercial')} className={`px-3 py-1 text-xs rounded-sm ${type === 'commercial' ? 'bg-accent text-white' : 'bg-white text-text-secondary'}`}>商业贷款</button>
-          <button onClick={() => setType('fund')} className={`px-3 py-1 text-xs rounded-sm ${type === 'fund' ? 'bg-accent text-white' : 'bg-white text-text-secondary'}`}>公积金</button>
-          <button onClick={() => setType('mixed')} className={`px-3 py-1 text-xs rounded-sm ${type === 'mixed' ? 'bg-accent text-white' : 'bg-white text-text-secondary'}`}>组合贷</button>
+          <button onClick={() => setRepayType('equal-payment')} className={btnClass(repayType === 'equal-payment')}>等额本息</button>
+          <button onClick={() => setRepayType('equal-principal')} className={btnClass(repayType === 'equal-principal')}>等额本金</button>
         </div>
         <div className="grid grid-cols-2 gap-3">
-          <div className="col-span-2">
-            <label className="block text-xs text-text-secondary mb-1">贷款总额 (元)</label>
-            <input value={total} onChange={e => setTotal(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
-          </div>
+          {type !== 'mixed' ? (
+            <div className="col-span-2">
+              <label className="block text-xs text-text-secondary mb-1">贷款总额 (元)</label>
+              <input value={total} onChange={e => setTotal(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            </div>
+          ) : (
+            <>
+              <div>
+                <label className="block text-xs text-text-secondary mb-1">商业贷款金额 (元)</label>
+                <input value={commercialAmount} onChange={e => setCommercialAmount(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+              </div>
+              <div>
+                <label className="block text-xs text-text-secondary mb-1">公积金贷款金额 (元)</label>
+                <input value={fundAmount} onChange={e => setFundAmount(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+              </div>
+            </>
+          )}
           <div>
             <label className="block text-xs text-text-secondary mb-1">年限</label>
             <input value={years} onChange={e => setYears(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
           <div>
-            <label className="block text-xs text-text-secondary mb-1">{type === 'fund' ? '公积金利率' : '商业利率'} (%)</label>
-            {type === 'mixed' ? (
-              <input value={rate} onChange={e => setRate(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
-            ) : (
-              <input value={type === 'fund' ? fundRate : rate} onChange={e => type === 'fund' ? setFundRate(e.target.value) : setRate(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
-            )}
+            <label className="block text-xs text-text-secondary mb-1">LPR</label>
+            <select value={lpr} onChange={e => setLpr(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
+              {LPR_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+            </select>
           </div>
+          {lpr && (
+            <div>
+              <label className="block text-xs text-text-secondary mb-1">基点 (BP)</label>
+              <input value={bp} onChange={e => setBp(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            </div>
+          )}
+          {type !== 'mixed' && (
+            <div>
+              <label className="block text-xs text-text-secondary mb-1">{type === 'fund' ? '公积金利率' : '商业利率'} (%)</label>
+              <input value={type === 'fund' ? fundRate : rate} onChange={e => type === 'fund' ? setFundRate(e.target.value) : setRate(e.target.value)}
+                className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            </div>
+          )}
           {type === 'mixed' && (
             <>
+              <div>
+                <label className="block text-xs text-text-secondary mb-1">商业利率 (%)</label>
+                <input value={rate} onChange={e => setRate(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+              </div>
               <div>
                 <label className="block text-xs text-text-secondary mb-1">公积金利率 (%)</label>
                 <input value={fundRate} onChange={e => setFundRate(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
               </div>
-              <div>
-                <label className="block text-xs text-text-secondary mb-1">公积金占比 (%)</label>
-                <input value={fundPortion} onChange={e => setFundPortion(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
-              </div>
             </>
           )}
+          <div className="col-span-2">
+            <label className="block text-xs text-text-secondary mb-1">首次还款日期</label>
+            <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+          </div>
         </div>
-        {monthly && (
+        {result && result.monthly > 0 && (
           <div className="mt-3 pt-3 border-t border-[rgba(127,99,21,0.1)] space-y-2">
+            {startDate && (
+              <p className="text-xs text-text-secondary/60">首期还款: {formatDate(startDate)}</p>
+            )}
+            {lpr && (
+              <p className="text-xs text-text-secondary/60">执行利率: LPR{parseFloat(bp || '0') >= 0 ? '+' : ''}{bp}BP = {finalRate}%</p>
+            )}
             <div className="flex justify-between items-center p-2 bg-white rounded-sm">
               <span className="text-text-secondary text-sm">月供</span>
-              <span className="text-accent font-bold text-lg">¥{monthly.total.toFixed(0)}</span>
+              <span className="text-accent font-bold text-lg">¥{result.monthly.toFixed(0)}</span>
             </div>
-            {type === 'mixed' && (
+            {repayType === 'equal-principal' && (
+              <p className="text-xs text-text-secondary/60 text-right">首月月供 (每月递减)</p>
+            )}
+            {type === 'mixed' && 'commercial' in result && 'fund' in result && (
               <div className="p-2 bg-white rounded-sm text-xs space-y-1">
                 <div className="flex justify-between">
                   <span className="text-text-secondary">商业贷款</span>
-                  <span className="font-medium">{(p * (1 - Math.min(100, Math.max(0, parseFloat(fundPortion) || 50)) / 100)).toFixed(0)} 元</span>
+                  <span className="font-medium">{(result as any).commercial.amount.toFixed(0)} 元，月供 {(result as any).commercial.monthly.toFixed(0)} 元</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-text-secondary">公积金贷款</span>
-                  <span className="font-medium">{(p * Math.min(100, Math.max(0, parseFloat(fundPortion) || 50)) / 100).toFixed(0)} 元</span>
+                  <span className="font-medium">{(result as any).fund.amount.toFixed(0)} 元，月供 {(result as any).fund.monthly.toFixed(0)} 元</span>
                 </div>
-              </div>
-            )}
-            {(type === 'mixed' || type === 'commercial') && monthly.commercial > 0 && (
-              <div className="flex justify-between p-2 bg-white rounded-sm text-xs">
-                <span className="text-text-secondary">商业贷款月供</span>
-                <span className="font-medium">¥{monthly.commercial.toFixed(0)}</span>
-              </div>
-            )}
-            {(type === 'mixed' || type === 'fund') && monthly.fund > 0 && (
-              <div className="flex justify-between p-2 bg-white rounded-sm text-xs">
-                <span className="text-text-secondary">公积金贷款月供</span>
-                <span className="font-medium">¥{monthly.fund.toFixed(0)}</span>
               </div>
             )}
             <div className="grid grid-cols-2 gap-2">
               <div className="p-2 bg-white rounded-sm text-center">
                 <p className="text-xs text-text-secondary">总利息</p>
-                <p className="text-sm font-medium">¥{(monthly.total * n - p).toFixed(0)}</p>
+                <p className="text-sm font-medium">¥{result.totalInterest.toFixed(0)}</p>
               </div>
               <div className="p-2 bg-white rounded-sm text-center">
                 <p className="text-xs text-text-secondary">还款总额</p>
-                <p className="text-sm font-medium">¥{(monthly.total * n).toFixed(0)}</p>
+                <p className="text-sm font-medium">¥{result.totalPayment.toFixed(0)}</p>
               </div>
             </div>
           </div>
@@ -632,7 +815,7 @@ function MortgageCalc() {
 
 // ─── Chinese Uppercase Number ────────────────────────
 function ChineseNumCalc() {
-  const [num, setNum] = useState('12345.67')
+  const [num, setNum] = useState('')
   const n = parseFloat(num)
   const DIGITS = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖']
   const UNITS = ['', '拾', '佰', '仟']
@@ -688,20 +871,20 @@ function ChineseNumCalc() {
 
 // ─── Time Converter ──────────────────────────────────
 function TimeCalc() {
-  const [val, setVal] = useState('3600')
+  const [val, setVal] = useState('')
   const [from, setFrom] = useState('seconds')
   const n = parseFloat(val)
   const toSeconds = (v: number, u: string) => {
-    switch (u) { case 'seconds': return v; case 'minutes': return v * 60; case 'hours': return v * 3600; case 'days': return v * 86400; case 'weeks': return v * 604800; case 'months': return v * 2592000; case 'years': return v * 31536000; default: return v }
+    switch (u) { case 'seconds': return v; case 'minutes': return v * 60; case 'hours': return v * 3600; case 'days': return v * 86400; case 'weeks': return v * 604800; case 'months': return v * 2629746; case 'years': return v * 31557600; default: return v }
   }
   const units = [
     { label: 'seconds', labelZh: '秒' }, { label: 'minutes', labelZh: '分钟' },
     { label: 'hours', labelZh: '小时' }, { label: 'days', labelZh: '天' },
-    { label: 'weeks', labelZh: '周' }, { label: 'months', labelZh: '月 (30天)' },
-    { label: 'years', labelZh: '年 (365天)' },
+    { label: 'weeks', labelZh: '周' }, { label: 'months', labelZh: '月' },
+    { label: 'years', labelZh: '年' },
   ]
   const toUnit = (v: number, u: string) => {
-    switch (u) { case 'seconds': return v; case 'minutes': return v / 60; case 'hours': return v / 3600; case 'days': return v / 86400; case 'weeks': return v / 604800; case 'months': return v / 2592000; case 'years': return v / 31536000; default: return v }
+    switch (u) { case 'seconds': return v; case 'minutes': return v / 60; case 'hours': return v / 3600; case 'days': return v / 86400; case 'weeks': return v / 604800; case 'months': return v / 2629746; case 'years': return v / 31557600; default: return v }
   }
 
   return (
@@ -751,42 +934,43 @@ function TitleCalc() {
     '外公的爸爸': '曾外祖父', '外公的妈妈': '曾外祖母',
   }
 
-  const [person, setPerson] = useState('')
-  const [result, setResult] = useState('')
+  const row1 = ['爸爸', '妈妈', '哥哥', '姐姐', '弟弟', '妹妹', '爷爷', '奶奶', '外公', '外婆']
+  const row3 = ['爸爸', '妈妈', '哥哥', '姐姐', '弟弟', '妹妹', '老公', '老婆', '儿子', '女儿']
 
-  const lookup = () => {
-    const key = person.trim().replace(/的/g, '的').replace(/\s+/g, '')
-    if (relations[key]) {
-      setResult(`${person} → ${relations[key]}`)
-    } else if (key.includes('的')) {
-      // Try to decompose: 爸爸的哥哥的老婆 → 伯母
-      const parts = key.split('的')
-      if (parts.length === 3) {
-        const first = relations[parts[0] + '的' + parts[1]]
-        if (first) {
-          const combined = first + '的' + parts[2]
-          setResult(`${person} → ${combined}（暂未收录完整关系）`)
-          return
-        }
-      }
-      setResult(`"${person}" 暂未收录，请使用下方常用关系`)
-    } else {
-      setResult('')
-    }
-  }
+  const [selected1, setSelected1] = useState('')
+  const [selected3, setSelected3] = useState('')
+
+  const key = selected1 && selected3 ? `${selected1}的${selected3}` : ''
+  const result = key ? relations[key] || `${key}（暂未收录）` : ''
+
+  const btnClass = (selected: boolean) =>
+    `px-2.5 py-1.5 text-xs rounded-sm transition-colors ${
+      selected ? 'bg-accent text-white' : 'bg-white text-text-secondary border border-[rgba(127,99,21,0.1)] hover:border-accent/30'
+    }`
 
   return (
     <div className="max-w-sm mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
-        <label className="block text-xs text-text-secondary mb-1">输入关系（如：姐姐的老公）</label>
-        <div className="flex gap-2">
-          <input value={person} onChange={e => { setPerson(e.target.value); setResult('') }} placeholder="例：姐姐的老公"
-            className="flex-1 p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
-          <button onClick={lookup} className="px-4 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">查询</button>
+        <p className="text-xs text-text-secondary/60 mb-2">选择关系</p>
+        <div className="flex flex-wrap gap-1.5 mb-2">
+          {row1.map(name => (
+            <button key={name} onClick={() => setSelected1(selected1 === name ? '' : name)}
+              className={btnClass(selected1 === name)}>{name}</button>
+          ))}
         </div>
-        {result && (
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-sm text-text-secondary font-medium">的</span>
+        </div>
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          {row3.map(name => (
+            <button key={name} onClick={() => setSelected3(selected3 === name ? '' : name)}
+              className={btnClass(selected3 === name)}>{name}</button>
+          ))}
+        </div>
+        {selected1 && selected3 && (
           <div className="mt-3 p-3 bg-white rounded-sm border border-[rgba(127,99,21,0.08)] text-center">
-            <p className="text-lg text-text-primary">{result}</p>
+            <p className="text-xs text-text-secondary/60 mb-1">{selected1}的{selected3}</p>
+            <p className="text-lg text-text-primary font-medium">{result}</p>
           </div>
         )}
       </div>
@@ -794,7 +978,16 @@ function TitleCalc() {
         <p className="text-xs text-text-secondary/60 mb-2">常用关系查询</p>
         <div className="grid grid-cols-2 gap-1">
           {Object.keys(relations).map(k => (
-            <button key={k} onClick={() => { setPerson(k); setResult(`${k} → ${relations[k]}`) }}
+            <button key={k} onClick={() => {
+              const parts = k.split('的')
+              if (parts.length === 2) {
+                setSelected1(parts[0])
+                setSelected3(parts[1])
+              } else {
+                setSelected1(k)
+                setSelected3('')
+              }
+            }}
               className="text-left text-xs p-1.5 bg-white rounded-sm hover:bg-accent/5 text-text-primary">
               {k} → {relations[k]}
             </button>
