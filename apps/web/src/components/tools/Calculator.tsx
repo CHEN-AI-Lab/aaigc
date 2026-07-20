@@ -200,20 +200,20 @@ function CurrencyCalc() {
         </div>
         {result !== null && (
           <div className="mt-3 pt-3 border-t border-[rgba(127,99,21,0.1)] text-center">
-            <p className="text-xs text-text-secondary/60">{amount} {from} =</p>
+            <p className="text-xs text-text-secondary/60">{amount} {from} ({t(`currency${from}`)}) =</p>
             <p className="text-2xl font-bold text-accent">{fmt(result)}</p>
-            <p className="text-xs text-text-secondary mt-1">1 {from} = {fmt(1 / RATES[from] * RATES[to])} {to}</p>
+            <p className="text-xs text-text-secondary mt-1">1 {from} ({t(`currency${from}`)}) = {fmt(1 / RATES[from] * RATES[to])} {to} ({t(`currency${to}`)})</p>
           </div>
         )}
       </div>
       {/* All currencies table */}
       {result !== null && (
         <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-3">
-          <p className="text-xs text-text-secondary/60 mb-2">{amount} {from} 兑换所有货币</p>
+          <p className="text-xs text-text-secondary/60 mb-2">{amount} {from} ({t(`currency${from}`)}) 兑换所有货币</p>
           <div className="grid grid-cols-2 gap-1 text-xs">
             {Object.keys(RATES).filter(c => c !== from).map(c => (
               <div key={c} className="flex justify-between p-1.5 bg-white rounded-sm">
-                <span className="text-text-secondary">{c}</span>
+                <span className="text-text-secondary">{c} ({t(`currency${c}`)})</span>
                 <span className="text-text-primary font-mono">{fmt(a / RATES[from] * RATES[c])}</span>
               </div>
             ))}
