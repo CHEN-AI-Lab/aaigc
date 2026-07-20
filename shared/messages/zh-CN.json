@@ -360,7 +360,22 @@
     "calcAisPctOfB": "A 是 B 的 {pct}%",
     "calcPctOfB": "{val} 是 {a}% 的 B",
     "calcChange": "变化: {pct}%",
-    "timeDesc": "1年=365天 | 1季度=91天 | 1月=30天"
+    "timeDesc": "1年=365天 | 1季度=91天 | 1月=30天",
+    "tabCalc": "计算器",
+    "tabBmi": "BMI",
+    "tabTax": "个税",
+    "tabMortgage": "房贷",
+    "tabChinese": "大写",
+    "tabTitle": "称呼",
+    "tabCurrency": "汇率",
+    "tabBase": "进制",
+    "tabLength": "长度",
+    "tabWeight": "重量",
+    "tabArea": "面积",
+    "tabVolume": "体积",
+    "tabTemp": "温度",
+    "tabSpeed": "速度",
+    "tabTime": "时间"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",

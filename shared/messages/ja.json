@@ -360,7 +360,22 @@
     "calcAisPctOfB": "A は B の {pct}%",
     "calcPctOfB": "{val} は {a}% の B",
     "calcChange": "変化: {pct}%",
-    "timeDesc": "1年=365日 | 1四半期=91日 | 1月=30日"
+    "timeDesc": "1年=365日 | 1四半期=91日 | 1月=30日",
+    "tabCalc": "電卓",
+    "tabBmi": "BMI",
+    "tabTax": "税金",
+    "tabMortgage": "住宅ローン",
+    "tabChinese": "大字",
+    "tabTitle": "呼称",
+    "tabCurrency": "為替",
+    "tabBase": "進数",
+    "tabLength": "長さ",
+    "tabWeight": "重さ",
+    "tabArea": "面積",
+    "tabVolume": "体積",
+    "tabTemp": "温度",
+    "tabSpeed": "速度",
+    "tabTime": "時間"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

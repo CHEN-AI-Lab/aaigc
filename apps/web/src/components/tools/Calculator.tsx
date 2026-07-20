@@ -21,24 +21,25 @@ type Tab = 'calc' | 'currency' | 'length' | 'weight' | 'area' | 'volume' | 'temp
 const TABS: { id: Tab; label: string }[] = [
   { id: 'calc', label: '计算器' }, { id: 'bmi', label: 'BMI' },
   { id: 'tax', label: '个税' }, { id: 'mortgage', label: '房贷' },
+  { id: 'chinese', label: '大写' }, { id: 'title', label: '称呼' },
   { id: 'currency', label: '汇率' }, { id: 'base', label: '进制' },
   { id: 'length', label: '长度' }, { id: 'weight', label: '重量' },
   { id: 'area', label: '面积' }, { id: 'volume', label: '体积' },
   { id: 'temp', label: '温度' }, { id: 'speed', label: '速度' },
-  { id: 'time', label: '时间' }, { id: 'chinese', label: '大写' },
-  { id: 'title', label: '称呼' },
+  { id: 'time', label: '时间' },
 ]
 
 export default function Calculator() {
   const [tab, setTab] = useState<Tab>('calc')
+  const t = useTranslations('tools')
   return (
     <div className="mt-6 space-y-4">
       <div className="flex gap-1 overflow-x-auto pb-1 scrollbar-none border-b border-[rgba(127,99,21,0.15)]">
-        {TABS.map(t => (
-          <button key={t.id} onClick={() => setTab(t.id)}
+        {TABS.map(tb => (
+          <button key={tb.id} onClick={() => setTab(tb.id)}
             className={`px-3 py-1.5 text-xs rounded-t-sm whitespace-nowrap transition-colors shrink-0 ${
-              tab === t.id ? 'bg-accent text-white' : 'text-text-secondary hover:text-text-primary hover:bg-surface'
-            }`}>{t.label}</button>
+              tab === tb.id ? 'bg-accent text-white' : 'text-text-secondary hover:text-text-primary hover:bg-surface'
+            }`}>{t(`tab${tb.id.charAt(0).toUpperCase() + tb.id.slice(1)}`)}</button>
         ))}
       </div>
       {tab === 'calc' && <CalcPanel />}
