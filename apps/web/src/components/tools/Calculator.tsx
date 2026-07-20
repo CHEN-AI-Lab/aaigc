@@ -1092,6 +1092,7 @@ function ChineseNumCalc() {
 
   const chineseResult = (() => {
     if (isNaN(n)) return null
+    if (num.replace('.', '').length > 15) return '数字过大'
     const parts = n.toFixed(2).split('.')
     let int = parseInt(parts[0])
     const dec = parseInt(parts[1])
