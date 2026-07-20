@@ -629,15 +629,15 @@ function TaxCalc() {
           <div className="space-y-2">
             <div className="flex justify-between text-xs p-1.5 bg-white rounded-sm">
               <span className="text-text-secondary">{t('calcTaxSocialInsuranceTotal')}</span>
-              <span className="font-medium">¥{socialInsurance.toFixed(0)}/月</span>
+              <span className="font-medium">¥{socialInsurance.toFixed(0)}</span>
             </div>
             <div className="flex justify-between text-xs p-1.5 bg-white rounded-sm">
               <span className="text-text-secondary">{t('calcTaxSpecialDedTotal')}</span>
-              <span className="font-medium">¥{specialDedTotal.toFixed(0)}/月</span>
+              <span className="font-medium">¥{specialDedTotal.toFixed(0)}</span>
             </div>
             <div className="flex justify-between text-xs p-1.5 bg-white rounded-sm">
               <span className="text-text-secondary">{t('calcTaxMonthlyTaxable')}</span>
-              <span className="font-medium">¥{Math.max(0, monthlyTaxable).toFixed(0)}/月</span>
+              <span className="font-medium">¥{Math.max(0, monthlyTaxable).toFixed(0)}</span>
             </div>
           </div>
         )}
