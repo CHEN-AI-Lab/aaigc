@@ -379,20 +379,9 @@
     }
   },
   "about": {
-    "title": "About AAIGC",
-    "desc": "AAIGC is a collection of free online tools and applications built by independent developer CHEN. Every tool runs entirely in your browser — nothing is sent to a server, and no data is collected.",
-    "statTools": "online tools",
-    "statCategories": "categories",
-    "statLanguages": "languages",
-    "offerTitle": "What We Offer",
-    "toolsCount": "tools",
-    "devCat": "Developer Tools",
-    "textCat": "Text Tools",
-    "securityCat": "Security Tools",
-    "timeCat": "Time Tools",
-    "imageCat": "Image Tools",
-    "mathCat": "Math Tools",
-    "convertCat": "Converters",
+    "title": "About",
+    "desc": "AAIGC is a collection of free online tools created by independent developer CHEN. All tools run entirely in your browser — no data is sent to any server, and nothing is stored or tracked.",
+    "desc2": "The goal is simple: provide useful, fast, and privacy-respecting tools that anyone can use without signing up or sharing personal information.",
     "contact": "Contact"
   },
   "errors": {

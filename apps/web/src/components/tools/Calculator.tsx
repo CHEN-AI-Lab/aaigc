@@ -437,27 +437,46 @@ function BmiCalc() {
   )
 }
 
-// ─── Improved Tax Calculator (monthly + yearly + 年终奖) ─
+// ─── Tax Calculator (月薪 + 五险一金 + 专项附加扣除 + 年终奖) ─
 function TaxCalc() {
   const [salary, setSalary] = useState('')
   const [bonus, setBonus] = useState('')
   const [monthsWorked, setMonthsWorked] = useState('')
-  const [mode, setMode] = useState<'monthly' | 'yearly'>('monthly')
-  const s = parseFloat(salary)
-  const b = parseFloat(bonus)
-  const mw = parseInt(monthsWorked)
-  const useMonthsWorked = !isNaN(mw) && mw > 0 && mw <= 12
 
-  const monthlyBrackets = [
-    { low: 0, high: 3000, rate: 0.03, deduct: 0, label: '不超过 3000 元' },
-    { low: 3000, high: 12000, rate: 0.1, deduct: 210, label: '3000 - 12000 元' },
-    { low: 12000, high: 25000, rate: 0.2, deduct: 1410, label: '12000 - 25000 元' },
-    { low: 25000, high: 35000, rate: 0.25, deduct: 2660, label: '25000 - 35000 元' },
-    { low: 35000, high: 55000, rate: 0.3, deduct: 4410, label: '35000 - 55000 元' },
-    { low: 55000, high: 80000, rate: 0.35, deduct: 7160, label: '55000 - 80000 元' },
-    { low: 80000, high: Infinity, rate: 0.45, deduct: 15160, label: '超过 80000 元' },
-  ]
+  // 五险一金 percentage inputs
+  const [pensionPct, setPensionPct] = useState('8')
+  const [medicalPct, setMedicalPct] = useState('2')
+  const [unemploymentPct, setUnemploymentPct] = useState('0.5')
+  const [housingFundPct, setHousingFundPct] = useState('8')
 
+  // 专项附加扣除 (monthly amounts)
+  const [eduDed, setEduDed] = useState('')          // 子女教育
+  const [contEdu, setContEdu] = useState('')        // 继续教育
+  const [medicalDed, setMedicalDed] = useState('')  // 大病医疗
+  const [housingInt, setHousingInt] = useState('')  // 住房贷款利息
+  const [housingRent, setHousingRent] = useState('') // 住房租金
+  const [elderlyCare, setElderlyCare] = useState('') // 赡养老人
+  const [infantCare, setInfantCare] = useState('')   // 3岁以下婴幼儿照护
+
+  const s = parseFloat(salary) || 0
+  const b = parseFloat(bonus) || 0
+  const mw = parseInt(monthsWorked) || 12
+  const useMonthsWorked = !isNaN(parseInt(monthsWorked)) && parseInt(monthsWorked) > 0 && parseInt(monthsWorked) <= 12
+  const actualMonths = useMonthsWorked ? mw : 12
+
+  // 五险一金 monthly amounts
+  const pensionAmt = s * (parseFloat(pensionPct) || 0) / 100
+  const medicalAmt = s * (parseFloat(medicalPct) || 0) / 100
+  const unemploymentAmt = s * (parseFloat(unemploymentPct) || 0) / 100
+  const housingFundAmt = s * (parseFloat(housingFundPct) || 0) / 100
+  const socialInsurance = pensionAmt + medicalAmt + unemploymentAmt + housingFundAmt
+
+  // 专项附加扣除 monthly total
+  const specialDedTotal = [
+    eduDed, contEdu, medicalDed, housingInt, housingRent, elderlyCare, infantCare
+  ].reduce((sum, v) => sum + (parseFloat(v) || 0), 0)
+
+  // Yearly tax brackets
   const yearlyBrackets = [
     { low: 0, high: 36000, rate: 0.03, deduct: 0, label: '不超过 36000 元' },
     { low: 36000, high: 144000, rate: 0.1, deduct: 2520, label: '36000 - 144000 元' },
@@ -468,79 +487,141 @@ function TaxCalc() {
     { low: 960000, high: Infinity, rate: 0.45, deduct: 181920, label: '超过 960000 元' },
   ]
 
-  const calcTax = (taxable: number, brackets: typeof monthlyBrackets) => {
+  const calcTax = (taxable: number, brackets: typeof yearlyBrackets) => {
     if (taxable <= 0) return null
     const bracket = brackets.find(b => taxable <= b.high) || brackets[brackets.length - 1]
     const tax = taxable * bracket.rate - bracket.deduct
     return { taxable, tax: Math.max(0, tax), rate: bracket.rate, bracket: bracket.label }
   }
 
-  // Salary tax calculation
+  // Monthly taxable income = salary - 5000 threshold - 五险一金 - 专项附加扣除
+  const monthlyTaxable = s - 5000 - socialInsurance - specialDedTotal
+
+  // Salary tax: annualize using months worked
   const salaryResult = (() => {
-    if (isNaN(s)) return null
-    if (useMonthsWorked) {
-      // Use yearly brackets with adjusted deduction
-      const totalIncome = s * mw
-      const totalDeduction = 5000 * mw
-      const taxable = totalIncome - totalDeduction
-      return calcTax(taxable, yearlyBrackets)
-    }
-    if (mode === 'monthly') {
-      const threshold = 5000
-      if (s <= threshold) return null
-      return calcTax(s - threshold, monthlyBrackets)
-    }
-    // Yearly mode
-    const threshold = 60000
-    if (s <= threshold) return null
-    return calcTax(s - threshold, yearlyBrackets)
+    if (isNaN(parseFloat(salary)) || monthlyTaxable <= 0) return null
+    const annualTaxable = monthlyTaxable * actualMonths
+    return calcTax(annualTaxable, yearlyBrackets)
   })()
 
-  // Bonus tax calculation (bonus / 12 to find bracket, then bonus * rate - deduct)
+  // Bonus tax: bonus / 12 to find bracket, then bonus * rate - deduct
   const bonusResult = (() => {
     if (isNaN(b) || b <= 0) return null
     const monthly = b / 12
-    const bracket = monthlyBrackets.find(b => monthly <= b.high) || monthlyBrackets[monthlyBrackets.length - 1]
+    // Use yearly brackets for bonus bracket lookup (same as Chinese tax law)
+    const bracket = yearlyBrackets.find(b => monthly <= b.high) || yearlyBrackets[yearlyBrackets.length - 1]
     const tax = b * bracket.rate - bracket.deduct
     return { bonus: b, tax: Math.max(0, tax), rate: bracket.rate, bracket: bracket.label }
   })()
 
   const totalTax = (salaryResult?.tax || 0) + (bonusResult?.tax || 0)
-  const totalIncome = (salaryResult ? (useMonthsWorked ? s * mw : s) : 0) + (bonusResult?.bonus || 0)
+  const totalIncome = (salaryResult ? s * actualMonths : 0) + (bonusResult?.bonus || 0)
   const afterTax = totalIncome - totalTax
 
-  const btnClass = (active: boolean) =>
-    `px-3 py-1 text-xs rounded-sm ${active ? 'bg-accent text-white' : 'bg-white text-text-secondary'}`
+  const inputClass = "w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary"
+  const labelClass = "block text-xs text-text-secondary mb-1"
 
   return (
     <div className="max-w-sm mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
-        {!useMonthsWorked && (
-          <div className="flex gap-1 mb-3">
-            <button onClick={() => setMode('monthly')} className={btnClass(mode === 'monthly')}>月薪</button>
-            <button onClick={() => setMode('yearly')} className={btnClass(mode === 'yearly')}>年薪</button>
+        {/* Basic salary inputs */}
+        <div className="grid grid-cols-2 gap-3 mb-3">
+          <div>
+            <label className={labelClass}>税前月薪 (元)</label>
+            <input value={salary} onChange={e => setSalary(e.target.value)} className={inputClass} />
+          </div>
+          <div>
+            <label className={labelClass}>年终奖 (元)</label>
+            <input value={bonus} onChange={e => setBonus(e.target.value)} className={inputClass} />
+          </div>
+        </div>
+        <div className="mb-3">
+          <label className={labelClass}>工作月数 (留空按12个月)</label>
+          <input value={monthsWorked} onChange={e => setMonthsWorked(e.target.value)} placeholder="1-12" className={inputClass} />
+        </div>
+
+        {/* 五险一金 */}
+        <div className="mb-3">
+          <p className="text-xs font-medium text-text-primary mb-2">五险一金 (个人缴纳比例)</p>
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <label className={labelClass}>养老保险 (%)</label>
+              <input value={pensionPct} onChange={e => setPensionPct(e.target.value)} className={inputClass} />
+            </div>
+            <div>
+              <label className={labelClass}>医疗保险 (%)</label>
+              <input value={medicalPct} onChange={e => setMedicalPct(e.target.value)} className={inputClass} />
+            </div>
+            <div>
+              <label className={labelClass}>失业保险 (%)</label>
+              <input value={unemploymentPct} onChange={e => setUnemploymentPct(e.target.value)} className={inputClass} />
+            </div>
+            <div>
+              <label className={labelClass}>住房公积金 (%)</label>
+              <input value={housingFundPct} onChange={e => setHousingFundPct(e.target.value)} className={inputClass} />
+            </div>
+          </div>
+        </div>
+
+        {/* 专项附加扣除 */}
+        <div className="mb-3">
+          <p className="text-xs font-medium text-text-primary mb-2">专项附加扣除 (月均金额, 元)</p>
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <label className={labelClass}>子女教育</label>
+              <input value={eduDed} onChange={e => setEduDed(e.target.value)} className={inputClass} />
+            </div>
+            <div>
+              <label className={labelClass}>继续教育</label>
+              <input value={contEdu} onChange={e => setContEdu(e.target.value)} className={inputClass} />
+            </div>
+            <div>
+              <label className={labelClass}>大病医疗</label>
+              <input value={medicalDed} onChange={e => setMedicalDed(e.target.value)} className={inputClass} />
+            </div>
+            <div>
+              <label className={labelClass}>住房贷款利息</label>
+              <input value={housingInt} onChange={e => setHousingInt(e.target.value)} className={inputClass} />
+            </div>
+            <div>
+              <label className={labelClass}>住房租金</label>
+              <input value={housingRent} onChange={e => setHousingRent(e.target.value)} className={inputClass} />
+            </div>
+            <div>
+              <label className={labelClass}>赡养老人</label>
+              <input value={elderlyCare} onChange={e => setElderlyCare(e.target.value)} className={inputClass} />
+            </div>
+            <div className="col-span-2">
+              <label className={labelClass}>3岁以下婴幼儿照护</label>
+              <input value={infantCare} onChange={e => setInfantCare(e.target.value)} className={inputClass} />
+            </div>
+          </div>
+        </div>
+
+        {/* Results */}
+        {s > 0 && (
+          <div className="space-y-2">
+            <div className="flex justify-between text-xs p-1.5 bg-white rounded-sm">
+              <span className="text-text-secondary">五险一金合计</span>
+              <span className="font-medium">¥{socialInsurance.toFixed(0)}/月</span>
+            </div>
+            <div className="flex justify-between text-xs p-1.5 bg-white rounded-sm">
+              <span className="text-text-secondary">专项附加扣除合计</span>
+              <span className="font-medium">¥{specialDedTotal.toFixed(0)}/月</span>
+            </div>
+            <div className="flex justify-between text-xs p-1.5 bg-white rounded-sm">
+              <span className="text-text-secondary">月应纳税所得额</span>
+              <span className="font-medium">¥{Math.max(0, monthlyTaxable).toFixed(0)}/月</span>
+            </div>
           </div>
         )}
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="block text-xs text-text-secondary mb-1">{mode === 'monthly' ? '税前月薪' : '税前年薪'} (元)</label>
-            <input value={salary} onChange={e => setSalary(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
-          </div>
-          <div>
-            <label className="block text-xs text-text-secondary mb-1">年终奖 (元)</label>
-            <input value={bonus} onChange={e => setBonus(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
-          </div>
-        </div>
-        <div className="mt-2">
-          <label className="block text-xs text-text-secondary mb-1">工作月数 (留空使用标准扣除)</label>
-          <input value={monthsWorked} onChange={e => setMonthsWorked(e.target.value)} placeholder="1-12" className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
-        </div>
+
         {(salaryResult || bonusResult) && (
           <div className="mt-3 space-y-2">
             {salaryResult && (
               <>
                 <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
-                  <span className="text-text-secondary">工资应纳税所得额</span>
+                  <span className="text-text-secondary">年应纳税所得额</span>
                   <span className="font-medium">¥{salaryResult.taxable.toFixed(0)}</span>
                 </div>
                 <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
@@ -584,9 +665,9 @@ function TaxCalc() {
       </div>
       {(salaryResult || bonusResult) && (
         <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-3">
-          <p className="text-xs text-text-secondary/60 mb-2">税率表参考</p>
+          <p className="text-xs text-text-secondary/60 mb-2">年度税率表参考</p>
           <div className="space-y-0.5">
-            {(useMonthsWorked || mode === 'yearly' ? yearlyBrackets : monthlyBrackets).map(b => (
+            {yearlyBrackets.map(b => (
               <div key={b.low} className={`flex justify-between text-xs p-1.5 rounded-sm ${b.label === salaryResult?.bracket ? 'bg-accent/10 text-accent font-medium' : 'text-text-secondary'}`}>
                 <span>{b.label}</span>
                 <span>{(b.rate * 100).toFixed(0)}%</span>
@@ -599,40 +680,26 @@ function TaxCalc() {
   )
 }
 
-// ─── Mortgage Calculator (商业/公积金/组合) ──────────
+// ─── Mortgage Calculator (商业/公积金/组合 + LPR+BP + 下拉选择) ─
 function MortgageCalc() {
-  const [total, setTotal] = useState('')
-  const [years, setYears] = useState('')
-  const [rate, setRate] = useState('')
   const [type, setType] = useState<'commercial' | 'fund' | 'mixed'>('commercial')
-  const [fundRate, setFundRate] = useState('')
   const [repayType, setRepayType] = useState<'equal-payment' | 'equal-principal'>('equal-payment')
-  const [lpr, setLpr] = useState('')
-  const [bp, setBp] = useState('0')
-  const [startDate, setStartDate] = useState('')
+  const [loanAmount, setLoanAmount] = useState('')
   const [commercialAmount, setCommercialAmount] = useState('')
   const [fundAmount, setFundAmount] = useState('')
+  const [years, setYears] = useState('30')
+  const [lpr, setLpr] = useState('3.85')
+  const [bp, setBp] = useState('0')
+  const [fundRate, setFundRate] = useState('3.15')
+  const [startDate, setStartDate] = useState('')
 
-  const LPR_OPTIONS = [
-    { label: '不使用LPR', value: '' },
-    { label: '1年期 LPR 3.45%', value: '3.45' },
-    { label: '5年期以上 LPR 3.95%', value: '3.95' },
-    { label: '1年期 LPR 3.55%', value: '3.55' },
-    { label: '5年期以上 LPR 4.20%', value: '4.20' },
-  ]
-
-  const finalRate = lpr ? (parseFloat(lpr) + parseFloat(bp || '0') / 100).toFixed(2) : rate
-  const p = parseFloat(total)
-  const n = parseFloat(years) * 12
-  const cr = parseFloat(finalRate || rate) / 100 / 12
-  const fr = parseFloat(fundRate) / 100 / 12
+  const YEAR_OPTIONS = Array.from({ length: 30 }, (_, i) => String(i + 1))
 
   const calcEqualPayment = (principal: number, monthlyRate: number, months: number) => {
     if (monthlyRate <= 0 || months <= 0) return { monthly: 0, totalInterest: 0, totalPayment: 0, schedule: [] }
     const monthly = principal * monthlyRate * Math.pow(1 + monthlyRate, months) / (Math.pow(1 + monthlyRate, months) - 1)
     const totalPayment = monthly * months
     const totalInterest = totalPayment - principal
-    // Generate schedule
     const schedule: { month: number; payment: number; principal: number; interest: number; remaining: number }[] = []
     let remaining = principal
     for (let i = 1; i <= months; i++) {
@@ -662,23 +729,31 @@ function MortgageCalc() {
     return { monthly: schedule[0]?.payment || 0, totalInterest, totalPayment, schedule }
   }
 
+  const n = parseInt(years) * 12
+  const commercialRate = (parseFloat(lpr) + parseFloat(bp || '0') / 100) / 100 / 12
+  const fundMonthlyRate = (parseFloat(fundRate) || 0) / 100 / 12
+
   const result = (() => {
-    if (isNaN(p) || isNaN(n) || n <= 0) return null
     const calc = repayType === 'equal-payment' ? calcEqualPayment : calcEqualPrincipal
 
-    if (type === 'fund') {
-      return calc(p, fr, n)
-    }
     if (type === 'commercial') {
-      return calc(p, cr, n)
+      const principal = parseFloat(loanAmount) || 0
+      if (principal <= 0 || n <= 0) return null
+      return calc(principal, commercialRate, n)
     }
-    // Mixed mode: use direct amounts
+
+    if (type === 'fund') {
+      const principal = parseFloat(loanAmount) || 0
+      if (principal <= 0 || n <= 0) return null
+      return calc(principal, fundMonthlyRate, n)
+    }
+
+    // Mixed
     const ca = parseFloat(commercialAmount) || 0
     const fa = parseFloat(fundAmount) || 0
-    const total = ca + fa
-    if (total <= 0) return null
-    const comResult = calc(ca, cr, n)
-    const fundResult = calc(fa, fr, n)
+    if (ca + fa <= 0 || n <= 0) return null
+    const comResult = calc(ca, commercialRate, n)
+    const fundResult = calc(fa, fundMonthlyRate, n)
     return {
       monthly: comResult.monthly + fundResult.monthly,
       totalInterest: comResult.totalInterest + fundResult.totalInterest,
@@ -689,93 +764,108 @@ function MortgageCalc() {
     }
   })()
 
-  // Format start date
   const formatDate = (d: string) => {
     if (!d) return ''
     const date = new Date(d)
     return `${date.getFullYear()}年${date.getMonth() + 1}月`
   }
 
+  const effectiveRate = type === 'commercial'
+    ? (parseFloat(lpr) + parseFloat(bp || '0') / 100)
+    : type === 'fund' ? parseFloat(fundRate) : ''
+
   const btnClass = (active: boolean) =>
     `px-3 py-1 text-xs rounded-sm ${active ? 'bg-accent text-white' : 'bg-white text-text-secondary'}`
+  const inputClass = "w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary"
+  const labelClass = "block text-xs text-text-secondary mb-1"
 
   return (
     <div className="max-w-sm mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
+        {/* Loan type */}
         <div className="flex gap-1 mb-3 flex-wrap">
           <button onClick={() => setType('commercial')} className={btnClass(type === 'commercial')}>商业贷款</button>
-          <button onClick={() => setType('fund')} className={btnClass(type === 'fund')}>公积金</button>
-          <button onClick={() => setType('mixed')} className={btnClass(type === 'mixed')}>组合贷</button>
+          <button onClick={() => setType('fund')} className={btnClass(type === 'fund')}>公积金贷款</button>
+          <button onClick={() => setType('mixed')} className={btnClass(type === 'mixed')}>组合贷款</button>
         </div>
-        <div className="flex gap-1 mb-3">
-          <button onClick={() => setRepayType('equal-payment')} className={btnClass(repayType === 'equal-payment')}>等额本息</button>
-          <button onClick={() => setRepayType('equal-principal')} className={btnClass(repayType === 'equal-principal')}>等额本金</button>
+
+        {/* Repay type dropdown */}
+        <div className="mb-3">
+          <label className={labelClass}>还款方式</label>
+          <select value={repayType} onChange={e => setRepayType(e.target.value as 'equal-payment' | 'equal-principal')} className={inputClass}>
+            <option value="equal-payment">等额本息</option>
+            <option value="equal-principal">等额本金</option>
+          </select>
         </div>
+
         <div className="grid grid-cols-2 gap-3">
+          {/* Loan amount */}
           {type !== 'mixed' ? (
             <div className="col-span-2">
-              <label className="block text-xs text-text-secondary mb-1">贷款总额 (元)</label>
-              <input value={total} onChange={e => setTotal(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+              <label className={labelClass}>贷款金额 (元)</label>
+              <input value={loanAmount} onChange={e => setLoanAmount(e.target.value)} className={inputClass} />
             </div>
           ) : (
             <>
               <div>
-                <label className="block text-xs text-text-secondary mb-1">商业贷款金额 (元)</label>
-                <input value={commercialAmount} onChange={e => setCommercialAmount(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+                <label className={labelClass}>商业贷款金额 (元)</label>
+                <input value={commercialAmount} onChange={e => setCommercialAmount(e.target.value)} className={inputClass} />
               </div>
               <div>
-                <label className="block text-xs text-text-secondary mb-1">公积金贷款金额 (元)</label>
-                <input value={fundAmount} onChange={e => setFundAmount(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+                <label className={labelClass}>公积金贷款金额 (元)</label>
+                <input value={fundAmount} onChange={e => setFundAmount(e.target.value)} className={inputClass} />
               </div>
             </>
           )}
+
+          {/* Years dropdown */}
           <div>
-            <label className="block text-xs text-text-secondary mb-1">年限</label>
-            <input value={years} onChange={e => setYears(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
-          </div>
-          <div>
-            <label className="block text-xs text-text-secondary mb-1">LPR</label>
-            <select value={lpr} onChange={e => setLpr(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
-              {LPR_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+            <label className={labelClass}>按揭年数</label>
+            <select value={years} onChange={e => setYears(e.target.value)} className={inputClass}>
+              {YEAR_OPTIONS.map(y => <option key={y} value={y}>{y}年</option>)}
             </select>
           </div>
-          {lpr && (
-            <div>
-              <label className="block text-xs text-text-secondary mb-1">基点 (BP)</label>
-              <input value={bp} onChange={e => setBp(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
-            </div>
-          )}
-          {type !== 'mixed' && (
-            <div>
-              <label className="block text-xs text-text-secondary mb-1">{type === 'fund' ? '公积金利率' : '商业利率'} (%)</label>
-              <input value={type === 'fund' ? fundRate : rate} onChange={e => type === 'fund' ? setFundRate(e.target.value) : setRate(e.target.value)}
-                className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
-            </div>
-          )}
-          {type === 'mixed' && (
+
+          {/* Rate - LPR + BP for commercial */}
+          {type !== 'fund' && (
             <>
               <div>
-                <label className="block text-xs text-text-secondary mb-1">商业利率 (%)</label>
-                <input value={rate} onChange={e => setRate(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+                <label className={labelClass}>LPR (%)</label>
+                <input value={lpr} onChange={e => setLpr(e.target.value)} className={inputClass} />
               </div>
               <div>
-                <label className="block text-xs text-text-secondary mb-1">公积金利率 (%)</label>
-                <input value={fundRate} onChange={e => setFundRate(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+                <label className={labelClass}>基点 (BP)</label>
+                <input value={bp} onChange={e => setBp(e.target.value)} className={inputClass} />
               </div>
             </>
           )}
+
+          {/* Fund rate */}
+          {type !== 'commercial' && (
+            <div>
+              <label className={labelClass}>公积金利率 (%)</label>
+              <input value={fundRate} onChange={e => setFundRate(e.target.value)} className={inputClass} />
+            </div>
+          )}
+
+          {/* Start date */}
           <div className="col-span-2">
-            <label className="block text-xs text-text-secondary mb-1">首次还款日期</label>
-            <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            <label className={labelClass}>首次还款日期</label>
+            <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className={inputClass} />
           </div>
         </div>
+
         {result && result.monthly > 0 && (
           <div className="mt-3 pt-3 border-t border-[rgba(127,99,21,0.1)] space-y-2">
             {startDate && (
               <p className="text-xs text-text-secondary/60">首期还款: {formatDate(startDate)}</p>
             )}
-            {lpr && (
-              <p className="text-xs text-text-secondary/60">执行利率: LPR{parseFloat(bp || '0') >= 0 ? '+' : ''}{bp}BP = {finalRate}%</p>
+            {effectiveRate !== '' && (
+              <p className="text-xs text-text-secondary/60">
+                {type === 'commercial' ? `执行利率: LPR${parseFloat(bp || '0') >= 0 ? '+' : ''}${bp}BP = ${effectiveRate}%`
+                  : type === 'fund' ? `公积金利率: ${effectiveRate}%`
+                  : ''}
+              </p>
             )}
             <div className="flex justify-between items-center p-2 bg-white rounded-sm">
               <span className="text-text-secondary text-sm">月供</span>
@@ -869,23 +959,73 @@ function ChineseNumCalc() {
   )
 }
 
-// ─── Time Converter ──────────────────────────────────
+// ─── Time Converter (fixed display order, formatNumber) ──
+function formatNumber(n: number): string {
+  // If integer, add thousands separator
+  if (Number.isInteger(n)) {
+    return n.toLocaleString('en-US')
+  }
+  // Otherwise check if it's effectively an integer
+  const s = n.toFixed(6)
+  // Remove trailing zeros
+  const trimmed = s.replace(/\.?0+$/, '')
+  // If the trimmed result is integer-like, format with thousands separator
+  const parsed = parseFloat(trimmed)
+  if (Number.isInteger(parsed)) {
+    return parsed.toLocaleString('en-US')
+  }
+  return trimmed
+}
+
 function TimeCalc() {
   const [val, setVal] = useState('')
   const [from, setFrom] = useState('seconds')
   const n = parseFloat(val)
+
+  // 1 year = 365.25 days, 1 month = 365.25/12 days
+  const SECONDS_PER_YEAR = 365.25 * 86400
+  const SECONDS_PER_MONTH = SECONDS_PER_YEAR / 12
+  const SECONDS_PER_WEEK = 7 * 86400
+  const SECONDS_PER_DAY = 86400
+  const SECONDS_PER_HOUR = 3600
+  const SECONDS_PER_MINUTE = 60
+
   const toSeconds = (v: number, u: string) => {
-    switch (u) { case 'seconds': return v; case 'minutes': return v * 60; case 'hours': return v * 3600; case 'days': return v * 86400; case 'weeks': return v * 604800; case 'months': return v * 2629746; case 'years': return v * 31557600; default: return v }
+    switch (u) {
+      case 'seconds': return v
+      case 'minutes': return v * SECONDS_PER_MINUTE
+      case 'hours': return v * SECONDS_PER_HOUR
+      case 'days': return v * SECONDS_PER_DAY
+      case 'weeks': return v * SECONDS_PER_WEEK
+      case 'months': return v * SECONDS_PER_MONTH
+      case 'years': return v * SECONDS_PER_YEAR
+      default: return v
+    }
   }
-  const units = [
-    { label: 'seconds', labelZh: '秒' }, { label: 'minutes', labelZh: '分钟' },
-    { label: 'hours', labelZh: '小时' }, { label: 'days', labelZh: '天' },
-    { label: 'weeks', labelZh: '周' }, { label: 'months', labelZh: '月' },
-    { label: 'years', labelZh: '年' },
-  ]
+
   const toUnit = (v: number, u: string) => {
-    switch (u) { case 'seconds': return v; case 'minutes': return v / 60; case 'hours': return v / 3600; case 'days': return v / 86400; case 'weeks': return v / 604800; case 'months': return v / 2629746; case 'years': return v / 31557600; default: return v }
+    switch (u) {
+      case 'seconds': return v
+      case 'minutes': return v / SECONDS_PER_MINUTE
+      case 'hours': return v / SECONDS_PER_HOUR
+      case 'days': return v / SECONDS_PER_DAY
+      case 'weeks': return v / SECONDS_PER_WEEK
+      case 'months': return v / SECONDS_PER_MONTH
+      case 'years': return v / SECONDS_PER_YEAR
+      default: return v
+    }
   }
+
+  // Fixed display order: 年, 月, 周, 天, 时, 分, 秒
+  const units = [
+    { label: 'years', labelZh: '年' },
+    { label: 'months', labelZh: '月' },
+    { label: 'weeks', labelZh: '周' },
+    { label: 'days', labelZh: '天' },
+    { label: 'hours', labelZh: '时' },
+    { label: 'minutes', labelZh: '分' },
+    { label: 'seconds', labelZh: '秒' },
+  ]
 
   return (
     <div className="max-w-sm mx-auto space-y-3">
@@ -907,7 +1047,7 @@ function TimeCalc() {
             {units.filter(u => u.label !== from).map(u => (
               <div key={u.label} className="flex justify-between p-1.5 bg-white rounded-sm text-xs">
                 <span className="text-text-secondary">{u.labelZh}</span>
-                <span className="text-text-primary font-mono">{toUnit(toSeconds(n, from), u.label).toFixed(6)}</span>
+                <span className="text-text-primary font-mono">{formatNumber(toUnit(toSeconds(n, from), u.label))}</span>
               </div>
             ))}
           </div>
@@ -924,14 +1064,31 @@ function TitleCalc() {
     '妈妈的爸爸': '外公', '妈妈的妈妈': '外婆',
     '爸爸的哥哥': '伯父', '爸爸的弟弟': '叔叔', '爸爸的姐妹': '姑姑',
     '妈妈的哥哥': '舅舅', '妈妈的弟弟': '舅舅', '妈妈的姐妹': '姨妈',
-    '哥哥': '哥哥', '姐姐': '姐姐', '弟弟': '弟弟', '妹妹': '妹妹',
     '哥哥的老婆': '嫂子', '弟弟的老婆': '弟媳',
     '姐姐的老公': '姐夫', '妹妹的老公': '妹夫',
-    '爸爸': '爸爸', '妈妈': '妈妈',
-    '老公': '老公', '老婆': '老婆',
-    '儿子': '儿子', '女儿': '女儿',
     '爷爷的爸爸': '曾祖父', '爷爷的妈妈': '曾祖母',
     '外公的爸爸': '曾外祖父', '外公的妈妈': '曾外祖母',
+    '外婆的爸爸': '曾外祖父', '外婆的妈妈': '曾外祖母',
+    '奶奶的爸爸': '外曾祖父', '奶奶的妈妈': '外曾祖母',
+    '爸爸的爸爸的爸爸': '曾祖父', '爸爸的爸爸的妈妈': '曾祖母',
+    '妈妈的爸爸的爸爸': '外曾祖父', '妈妈的爸爸的妈妈': '外曾祖母',
+    '爷爷的哥哥': '伯祖父', '爷爷的弟弟': '叔祖父', '爷爷的姐妹': '姑祖母',
+    '奶奶的哥哥': '舅祖父', '奶奶的姐妹': '姨祖母',
+    '外公的哥哥': '伯外祖父', '外公的弟弟': '叔外祖父', '外公的姐妹': '姑外祖母',
+    '外婆的哥哥': '舅外祖父', '外婆的姐妹': '姨外祖母',
+    '爸爸的哥哥的老婆': '伯母', '爸爸的弟弟的老婆': '婶婶',
+    '爸爸的姐妹的老公': '姑父', '妈妈的姐妹的老公': '姨父',
+    '妈妈的哥哥的老婆': '舅妈', '妈妈的弟弟的老婆': '舅妈',
+    '哥哥的哥哥': '哥哥', '哥哥的姐姐': '姐姐',
+    '哥哥的弟弟': '弟弟', '哥哥的妹妹': '妹妹',
+    '弟弟的哥哥': '哥哥', '弟弟的姐姐': '姐姐',
+    '姐姐的哥哥': '哥哥', '姐姐的弟弟': '弟弟',
+    '姐姐的姐姐': '姐姐', '姐姐的妹妹': '妹妹',
+    '妹妹的哥哥': '哥哥', '妹妹的姐姐': '姐姐',
+    '爸爸的爸爸的哥哥': '伯祖父', '爸爸的爸爸的弟弟': '叔祖父',
+    '爸爸的爸爸的姐妹': '姑祖母',
+    '妈妈的爸爸的哥哥': '伯外祖父', '妈妈的爸爸的弟弟': '叔外祖父',
+    '妈妈的爸爸的姐妹': '姑外祖母',
   }
 
   const row1 = ['爸爸', '妈妈', '哥哥', '姐姐', '弟弟', '妹妹', '爷爷', '奶奶', '外公', '外婆']
@@ -977,21 +1134,24 @@ function TitleCalc() {
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-3">
         <p className="text-xs text-text-secondary/60 mb-2">常用关系查询</p>
         <div className="grid grid-cols-2 gap-1">
-          {Object.keys(relations).map(k => (
-            <button key={k} onClick={() => {
-              const parts = k.split('的')
-              if (parts.length === 2) {
-                setSelected1(parts[0])
-                setSelected3(parts[1])
-              } else {
-                setSelected1(k)
-                setSelected3('')
-              }
-            }}
-              className="text-left text-xs p-1.5 bg-white rounded-sm hover:bg-accent/5 text-text-primary">
-              {k} → {relations[k]}
-            </button>
-          ))}
+          {Object.keys(relations).map(k => {
+            const parts = k.split('的')
+            return (
+              <button key={k} onClick={() => {
+                if (parts.length === 2) {
+                  setSelected1(parts[0])
+                  setSelected3(parts[1])
+                } else if (parts.length === 3) {
+                  // For 3-part relations like 爸爸的爸爸的爸爸, set first two parts
+                  setSelected1(`${parts[0]}的${parts[1]}`)
+                  setSelected3(parts[2])
+                }
+              }}
+                className="text-left text-xs p-1.5 bg-white rounded-sm hover:bg-accent/5 text-text-primary">
+                {k} → {relations[k]}
+              </button>
+            )
+          })}
         </div>
       </div>
     </div>
