@@ -974,7 +974,7 @@ function MortgageCalc() {
           <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
             <div className="flex items-center justify-between mb-2">
               <p className="text-xs font-medium text-text-primary">{t('calcMortgageSchedule')}</p>
-              <span className="text-xs text-text-secondary/60">{result.schedule.length} 期</span>
+              <span className="text-xs text-text-secondary/60">{t('calcMortgagePeriods', { count: result.schedule.length })}</span>
             </div>
             {Array.from({ length: Math.ceil(result.schedule.length / 12) }, (_, yi) => {
               const year = yi + 1
