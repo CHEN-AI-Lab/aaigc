@@ -3,13 +3,17 @@
 import { usePathname } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
+import { products } from 'data/products'
 
 export default function Footer() {
   const pathname = usePathname()
   const t = useTranslations('footer')
+  const tp = useTranslations('products')
 
-  // Hide footer on tool detail pages (path contains /tools/)
+  // Hide footer on tool detail pages
   if (pathname?.includes('/tools/')) return null
+
+  const liveProducts = products.filter(p => p.status === 'live')
 
   return (
     <footer className="border-t border-[rgba(127,99,21,0.1)] bg-bg mt-auto">
@@ -24,10 +28,17 @@ export default function Footer() {
           <div>
             <h3 className="text-sm font-semibold text-text-primary mb-3">{t('products')}</h3>
             <ul className="space-y-2 text-xs text-text-secondary">
-              <li><a href="https://cookmate.aaigc.online" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">CookMate</a></li>
-              <li><a href="https://aihub.aaigc.online" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">AIHub</a></li>
-              <li>Short Drama</li>
-              <li>Resume Optimizer</li>
+              {liveProducts.map(p => (
+                <li key={p.id}>
+                  {p.url ? (
+                    <a href={p.url} target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">
+                      {tp(`${p.id}.name`)}
+                    </a>
+                  ) : (
+                    <span>{tp(`${p.id}.name`)}</span>
+                  )}
+                </li>
+              ))}
             </ul>
           </div>
           <div>
