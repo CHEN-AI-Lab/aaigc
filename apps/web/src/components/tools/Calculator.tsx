@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 
 function compute(a: number, b: number, op: string): number {
   switch (op) {
@@ -1005,6 +1006,7 @@ function formatNumber(n: number): string {
 }
 
 function TimeCalc() {
+  const t = useTranslations('tools')
   const [val, setVal] = useState('')
   const [from, setFrom] = useState('seconds')
   const n = parseFloat(val)
@@ -1018,32 +1020,32 @@ function TimeCalc() {
   const SECONDS_PER_MINUTE = 60
 
   const toSeconds = (v: number, u: string) => {
-      switch (u) {
-        case 'seconds': return v
-        case 'minutes': return v * SECONDS_PER_MINUTE
-        case 'hours': return v * SECONDS_PER_HOUR
-        case 'days': return v * SECONDS_PER_DAY
-        case 'weeks': return v * SECONDS_PER_WEEK
-        case 'months': return v * SECONDS_PER_MONTH
-        case 'quarters': return v * SECONDS_PER_MONTH * 3
-        case 'years': return v * SECONDS_PER_YEAR
-        default: return v
-      }
+    switch (u) {
+      case 'seconds': return v
+      case 'minutes': return v * SECONDS_PER_MINUTE
+      case 'hours': return v * SECONDS_PER_HOUR
+      case 'days': return v * SECONDS_PER_DAY
+      case 'weeks': return v * SECONDS_PER_WEEK
+      case 'months': return v * SECONDS_PER_MONTH
+      case 'quarters': return v * SECONDS_PER_YEAR / 4
+      case 'years': return v * SECONDS_PER_YEAR
+      default: return v
     }
+  }
 
-    const toUnit = (v: number, u: string) => {
-      switch (u) {
-        case 'seconds': return v
-        case 'minutes': return v / SECONDS_PER_MINUTE
-        case 'hours': return v / SECONDS_PER_HOUR
-        case 'days': return v / SECONDS_PER_DAY
-        case 'weeks': return v / SECONDS_PER_WEEK
-        case 'months': return v / SECONDS_PER_MONTH
-        case 'quarters': return v / (SECONDS_PER_MONTH * 3)
-        case 'years': return v / SECONDS_PER_YEAR
-        default: return v
-      }
+  const toUnit = (v: number, u: string) => {
+    switch (u) {
+      case 'seconds': return v
+      case 'minutes': return v / SECONDS_PER_MINUTE
+      case 'hours': return v / SECONDS_PER_HOUR
+      case 'days': return v / SECONDS_PER_DAY
+      case 'weeks': return v / SECONDS_PER_WEEK
+      case 'months': return v / SECONDS_PER_MONTH
+      case 'quarters': return v / SECONDS_PER_YEAR * 4
+      case 'years': return v / SECONDS_PER_YEAR
+      default: return v
     }
+  }
 
   // Fixed display order: 年, 月, 周, 天, 时, 分, 秒
   const units = [
