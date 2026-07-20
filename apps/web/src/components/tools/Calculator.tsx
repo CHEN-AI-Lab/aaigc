@@ -1217,6 +1217,7 @@ function TitleCalc() {
 
 // ─── Number Base Converter (auto-convert) ────────────
 function BaseCalc() {
+  const t = useTranslations('tools')
   const [input, setInput] = useState('')
   const [fromBase, setFromBase] = useState(10)
   const BASES = [
@@ -1224,7 +1225,11 @@ function BaseCalc() {
     { base: 10, label: 'DEC' }, { base: 16, label: 'HEX' },
   ]
   const decimal = input.trim() ? parseInt(input, fromBase) : NaN
-  const results = isNaN(decimal) ? [] : BASES.map(({ base, label }) => ({ base, label, value: decimal.toString(base).toUpperCase() }))
+  const results = isNaN(decimal) ? [] : BASES.map(({ base, label }) => ({
+    base, label,
+    labelFull: `${label} (${t(`base${base}`)})`,
+    value: decimal.toString(base).toUpperCase(),
+  }))
 
   return (
     <div className="max-w-sm mx-auto space-y-3">
@@ -1234,14 +1239,14 @@ function BaseCalc() {
             className="flex-1 p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary" />
           <select value={fromBase} onChange={e => setFromBase(parseInt(e.target.value))}
             className="p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
-            {BASES.map(b => <option key={b.base} value={b.base}>{b.label}</option>)}
+            {BASES.map(b => <option key={b.base} value={b.base}>{b.label} ({t(`base${b.base}`)})</option>)}
           </select>
         </div>
         {results.length > 0 && (
           <div className="space-y-1">
             {results.map(r => (
               <div key={r.base} className="flex items-center gap-2 p-2 bg-white rounded-sm border border-[rgba(127,99,21,0.08)] text-sm">
-                <span className="w-12 text-accent font-mono text-xs font-bold">{r.label}</span>
+                <span className="w-36 text-accent font-mono text-xs font-bold">{r.labelFull}</span>
                 <code className="flex-1 font-mono text-text-primary">{r.value}</code>
               </div>
             ))}
