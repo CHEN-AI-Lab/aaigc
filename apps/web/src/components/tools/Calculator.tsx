@@ -63,6 +63,7 @@ export default function Calculator() {
 
 // ─── Calculator Panel ────────────────────────────────
 function CalcPanel() {
+  const t = useTranslations('tools')
   const [display, setDisplay] = useState('0')
   const [expr, setExpr] = useState('')
   const [prev, setPrev] = useState<number | null>(null)
@@ -156,7 +157,7 @@ function CalcPanel() {
         {btn('−', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('-'))}
         {['1','2','3'].map(n => btn(n, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input(n)))}
         {btn('+', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('+'))}
-        {btn(sci ? '科学' : '基础', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 text-xs', () => setSci(!sci))}
+        {btn(sci ? t('calcScientific') : t('calcBasic'), 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 text-xs', () => setSci(!sci))}
         {btn('0', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input('0'))}
         {btn('.', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input('.'))}
         {btn('=', 'bg-accent text-white font-bold hover:opacity-90', equals)}
@@ -282,6 +283,7 @@ const SPEED: Unit[] = [
 ]
 
 function UnitTable({ units, title }: { units: Unit[]; title: string }) {
+  const t = useTranslations('tools')
   const [val, setVal] = useState('')
   const [from, setFrom] = useState(units[0]?.label || '')
   const n = parseFloat(val)
@@ -296,7 +298,7 @@ function UnitTable({ units, title }: { units: Unit[]; title: string }) {
             <input value={val} onChange={e => setVal(e.target.value)} maxLength={15} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
           <div className="w-24">
-            <label className="block text-xs text-text-secondary mb-1">单位</label>
+            <label className="block text-xs text-text-secondary mb-1">{t('calcUnit')}</label>
             <select value={from} onChange={e => setFrom(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
               {units.map(u => <option key={u.label} value={u.label}>{u.label}</option>)}
             </select>
@@ -319,6 +321,7 @@ function UnitTable({ units, title }: { units: Unit[]; title: string }) {
 
 // ─── Improved Temperature (all units inputtable) ─────
 function TempCalc() {
+  const t = useTranslations('tools')
   const [val, setVal] = useState('')
   const [unit, setUnit] = useState<'C' | 'F' | 'K'>('C')
   const n = parseFloat(val)
@@ -334,11 +337,11 @@ function TempCalc() {
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
         <div className="flex gap-2 items-end mb-3">
           <div className="flex-1">
-            <label className="block text-xs text-text-secondary mb-1">温度值</label>
+            <label className="block text-xs text-text-secondary mb-1">{t('calcTempValue')}</label>
             <input value={val} onChange={e => setVal(e.target.value)} maxLength={15} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
           <div className="w-24">
-            <label className="block text-xs text-text-secondary mb-1">单位</label>
+            <label className="block text-xs text-text-secondary mb-1">{t('calcUnit')}</label>
             <select value={unit} onChange={e => setUnit(e.target.value as 'C' | 'F' | 'K')} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
               <option value="C">°C</option><option value="F">°F</option><option value="K">K</option>
             </select>
@@ -347,19 +350,19 @@ function TempCalc() {
         {c !== null && (
           <div className="space-y-2">
             <div className="flex justify-between p-2 bg-white rounded-sm text-sm">
-              <span className="text-text-secondary">°C (摄氏度)</span>
+              <span className="text-text-secondary">°C ({t('calcCelsius')})</span>
               <span className="text-text-primary font-mono font-bold">{fmt(c)}</span>
             </div>
             <div className="flex justify-between p-2 bg-white rounded-sm text-sm">
-              <span className="text-text-secondary">°F (华氏度)</span>
+              <span className="text-text-secondary">°F ({t('calcFahrenheit')})</span>
               <span className="text-text-primary font-mono font-bold">{fmt(f!)}</span>
             </div>
             <div className="flex justify-between p-2 bg-white rounded-sm text-sm">
-              <span className="text-text-secondary">K (开尔文)</span>
+              <span className="text-text-secondary">K ({t('calcKelvin')})</span>
               <span className="text-text-primary font-mono font-bold">{fmt(k!)}</span>
             </div>
             <div className="flex justify-between p-2 bg-white rounded-sm text-sm">
-              <span className="text-text-secondary">°Ré (列氏度)</span>
+              <span className="text-text-secondary">°Ré ({t('calcReaumur')})</span>
               <span className="text-text-primary font-mono font-bold">{fmt(c * 0.8)}</span>
             </div>
           </div>
@@ -405,20 +408,20 @@ function BmiCalc() {
     <div className="max-w-md mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
         <div className="flex gap-1 mb-3">
-          <button onClick={() => setUnit('metric')} className={`px-3 py-1 text-xs rounded-sm ${unit === 'metric' ? 'bg-accent text-white' : 'bg-white text-text-secondary'}`}>公制</button>
-          <button onClick={() => setUnit('imperial')} className={`px-3 py-1 text-xs rounded-sm ${unit === 'imperial' ? 'bg-accent text-white' : 'bg-white text-text-secondary'}`}>英制</button>
+          <button onClick={() => setUnit('metric')} className={`px-3 py-1 text-xs rounded-sm ${unit === 'metric' ? 'bg-accent text-white' : 'bg-white text-text-secondary'}`}>{t('calcMetric')}</button>
+          <button onClick={() => setUnit('imperial')} className={`px-3 py-1 text-xs rounded-sm ${unit === 'imperial' ? 'bg-accent text-white' : 'bg-white text-text-secondary'}`}>{t('calcImperial')}</button>
         </div>
         <div className="grid grid-cols-3 gap-3">
           <div>
-            <label className="block text-xs text-text-secondary mb-1">身高 ({unit === 'metric' ? 'cm' : 'in'})</label>
+            <label className="block text-xs text-text-secondary mb-1">{t('calcHeight')} ({unit === 'metric' ? 'cm' : 'in'})</label>
             <input value={h} onChange={e => setH(e.target.value)} maxLength={5} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
           <div>
-            <label className="block text-xs text-text-secondary mb-1">体重 ({unit === 'metric' ? 'kg' : 'lb'})</label>
+            <label className="block text-xs text-text-secondary mb-1">{t('calcWeight')} ({unit === 'metric' ? 'kg' : 'lb'})</label>
             <input value={w} onChange={e => setW(e.target.value)} maxLength={5} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
           <div>
-            <label className="block text-xs text-text-secondary mb-1">年龄</label>
+            <label className="block text-xs text-text-secondary mb-1">{t('calcAge')}</label>
             <input value={age} onChange={e => setAge(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
         </div>
@@ -442,26 +445,27 @@ function BmiCalc() {
   )
 }
 
-// ─── Tax Calculator (月薪 + 五险一金 + 专项附加扣除 + 年终奖) ─
+// ─── Tax Calculator (月薪 + {t('calcTaxSocialInsurance')} + {t('calcTaxSpecialDeductions')} + {t('calcTaxBonus')}) ─
 function TaxCalc() {
+  const t = useTranslations('tools')
   const [salary, setSalary] = useState('15000')
   const [bonus, setBonus] = useState('')
   const [monthsWorked, setMonthsWorked] = useState('12')
 
-  // 五险一金 percentage inputs
+  // {t('calcTaxSocialInsurance')} percentage inputs
   const [pensionPct, setPensionPct] = useState('8')
   const [medicalPct, setMedicalPct] = useState('2')
   const [unemploymentPct, setUnemploymentPct] = useState('0.5')
   const [housingFundPct, setHousingFundPct] = useState('8')
 
-  // 专项附加扣除 (monthly amounts)
-  const [eduDed, setEduDed] = useState('')          // 子女教育
-  const [contEdu, setContEdu] = useState('')        // 继续教育
-  const [medicalDed, setMedicalDed] = useState('')  // 大病医疗
-  const [housingInt, setHousingInt] = useState('')  // 住房贷款利息
-  const [housingRent, setHousingRent] = useState('') // 住房租金
-  const [elderlyCare, setElderlyCare] = useState('') // 赡养老人
-  const [infantCare, setInfantCare] = useState('')   // 3岁以下婴幼儿照护
+  // {t('calcTaxSpecialDeductions')} (monthly amounts)
+  const [eduDed, setEduDed] = useState('')          // {t('calcTaxChildEdu')}
+  const [contEdu, setContEdu] = useState('')        // {t('calcTaxContEdu')}
+  const [medicalDed, setMedicalDed] = useState('')  // {t('calcTaxMedicalDed')}
+  const [housingInt, setHousingInt] = useState('')  // 住房贷款{t('calcMortgageInterest')}
+  const [housingRent, setHousingRent] = useState('') // {t('calcTaxHousingRent')}
+  const [elderlyCare, setElderlyCare] = useState('') // {t('calcTaxElderlyCare')}
+  const [infantCare, setInfantCare] = useState('')   // 3{t('calcTaxInfantCare')}
   const [showDeductions, setShowDeductions] = useState(false)
 
   const s = parseFloat(salary) || 0
@@ -470,27 +474,27 @@ function TaxCalc() {
   const useMonthsWorked = !isNaN(parseInt(monthsWorked)) && parseInt(monthsWorked) > 0 && parseInt(monthsWorked) <= 12
   const actualMonths = useMonthsWorked ? mw : 12
 
-  // 五险一金 monthly amounts
+  // {t('calcTaxSocialInsurance')} monthly amounts
   const pensionAmt = s * (parseFloat(pensionPct) || 0) / 100
   const medicalAmt = s * (parseFloat(medicalPct) || 0) / 100
   const unemploymentAmt = s * (parseFloat(unemploymentPct) || 0) / 100
   const housingFundAmt = s * (parseFloat(housingFundPct) || 0) / 100
   const socialInsurance = pensionAmt + medicalAmt + unemploymentAmt + housingFundAmt
 
-  // 专项附加扣除 monthly total
+  // {t('calcTaxSpecialDeductions')} monthly total
   const specialDedTotal = [
     eduDed, contEdu, medicalDed, housingInt, housingRent, elderlyCare, infantCare
   ].reduce((sum, v) => sum + (parseFloat(v) || 0), 0)
 
   // Yearly tax brackets
   const yearlyBrackets = [
-    { low: 0, high: 36000, rate: 0.03, deduct: 0, label: '不超过 36000 元' },
-    { low: 36000, high: 144000, rate: 0.1, deduct: 2520, label: '36000 - 144000 元' },
-    { low: 144000, high: 300000, rate: 0.2, deduct: 16920, label: '144000 - 300000 元' },
-    { low: 300000, high: 420000, rate: 0.25, deduct: 31920, label: '300000 - 420000 元' },
-    { low: 420000, high: 660000, rate: 0.3, deduct: 52920, label: '420000 - 660000 元' },
-    { low: 660000, high: 960000, rate: 0.35, deduct: 85920, label: '660000 - 960000 元' },
-    { low: 960000, high: Infinity, rate: 0.45, deduct: 181920, label: '超过 960000 元' },
+    { low: 0, high: 36000, rate: 0.03, deduct: 0, label: 'bracket1' },
+    { low: 36000, high: 144000, rate: 0.1, deduct: 2520, label: 'bracket2' },
+    { low: 144000, high: 300000, rate: 0.2, deduct: 16920, label: 'bracket3' },
+    { low: 300000, high: 420000, rate: 0.25, deduct: 31920, label: 'bracket4' },
+    { low: 420000, high: 660000, rate: 0.3, deduct: 52920, label: 'bracket5' },
+    { low: 660000, high: 960000, rate: 0.35, deduct: 85920, label: 'bracket6' },
+    { low: 960000, high: Infinity, rate: 0.45, deduct: 181920, label: 'bracket7' },
   ]
 
   const calcTax = (taxable: number, brackets: typeof yearlyBrackets) => {
@@ -500,7 +504,7 @@ function TaxCalc() {
     return { taxable, tax: Math.max(0, tax), rate: bracket.rate, bracket: bracket.label }
   }
 
-  // Monthly taxable income = salary - 5000 threshold - 五险一金 - 专项附加扣除
+  // Monthly taxable income = salary - 5000 threshold - {t('calcTaxSocialInsurance')} - {t('calcTaxSpecialDeductions')}
   const monthlyTaxable = s - 5000 - socialInsurance - specialDedTotal
 
   // Salary tax: annual income - annual deductions (always 12 months for deductions)
@@ -537,83 +541,83 @@ function TaxCalc() {
         {/* Basic salary inputs */}
         <div className="grid grid-cols-2 gap-3 mb-3">
           <div>
-            <label className={labelClass}>税前月薪 (元)</label>
+            <label className={labelClass}>{t('calcTaxMonthlySalary')} (元)</label>
             <input value={salary} onChange={e => setSalary(e.target.value)} className={inputClass} />
           </div>
           <div>
-            <label className={labelClass}>年终奖 (元)</label>
+            <label className={labelClass}>{t('calcTaxBonus')} (元)</label>
             <input value={bonus} onChange={e => setBonus(e.target.value)} className={inputClass} />
           </div>
         </div>
         <div className="mb-3">
-          <label className={labelClass}>工作月数 (留空按12个月)</label>
+          <label className={labelClass}>{t('calcTaxMonthsWorked')} (12)</label>
           <input value={monthsWorked} onChange={e => setMonthsWorked(e.target.value)} placeholder="1-12" className={inputClass} />
         </div>
 
-        {/* 五险一金 */}
+        {/* {t('calcTaxSocialInsurance')} */}
         <div className="mb-3">
-          <p className="text-xs font-medium text-text-primary mb-2">五险一金 (个人缴纳比例)</p>
+          <p className="text-xs font-medium text-text-primary mb-2">{t('calcTaxSocialInsurance')} ({t('calcTaxSocialInsurance')})</p>
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className={labelClass}>养老保险 (%)</label>
+              <label className={labelClass}>{t('calcTaxPension')} (%)</label>
               <input value={pensionPct} onChange={e => setPensionPct(e.target.value)} className={inputClass} />
             </div>
             <div>
-              <label className={labelClass}>医疗保险 (%)</label>
+              <label className={labelClass}>{t('calcTaxMedical')} (%)</label>
               <input value={medicalPct} onChange={e => setMedicalPct(e.target.value)} className={inputClass} />
             </div>
             <div>
-              <label className={labelClass}>失业保险 (%)</label>
+              <label className={labelClass}>{t('calcTaxUnemployment')} (%)</label>
               <input value={unemploymentPct} onChange={e => setUnemploymentPct(e.target.value)} className={inputClass} />
             </div>
             <div>
-              <label className={labelClass}>住房公积金 (%)</label>
+              <label className={labelClass}>{t('calcTaxHousingFund')} (%)</label>
               <input value={housingFundPct} onChange={e => setHousingFundPct(e.target.value)} className={inputClass} />
             </div>
           </div>
         </div>
 
-        {/* 专项附加扣除 - collapsible */}
+        {/* {t('calcTaxSpecialDeductions')} - collapsible */}
         <div className="mb-3">
           <button onClick={() => setShowDeductions(!showDeductions)}
             className="flex items-center gap-1 text-xs font-medium text-text-primary mb-2 w-full text-left">
             <span className="transition-transform duration-200" style={{ transform: showDeductions ? 'rotate(90deg)' : 'rotate(0deg)' }}>▶</span>
-            专项附加扣除 (月均金额, 元)
+            {t('calcTaxSpecialDeductions')} (, 元)
           </button>
           {showDeductions && (
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className={labelClass}>子女教育</label>
+                <label className={labelClass}>{t('calcTaxChildEdu')}</label>
                 <input value={eduDed} onChange={e => setEduDed(e.target.value)} className={inputClass} />
               </div>
               <div>
-                <label className={labelClass}>继续教育</label>
+                <label className={labelClass}>{t('calcTaxContEdu')}</label>
                 <input value={contEdu} onChange={e => setContEdu(e.target.value)} className={inputClass} />
               </div>
               <div>
-                <label className={labelClass}>大病医疗</label>
+                <label className={labelClass}>{t('calcTaxMedicalDed')}</label>
                 <input value={medicalDed} onChange={e => setMedicalDed(e.target.value)} className={inputClass} />
               </div>
               <div>
-                <label className={labelClass}>住房贷款利息</label>
+                <label className={labelClass}>住房贷款{t('calcMortgageInterest')}</label>
                 <input value={housingInt} onChange={e => {
                   setHousingInt(e.target.value)
                   if (e.target.value) setHousingRent('')
                 }} className={inputClass} />
               </div>
               <div>
-                <label className={labelClass}>住房租金</label>
+                <label className={labelClass}>{t('calcTaxHousingRent')}</label>
                 <input value={housingRent} onChange={e => {
                   setHousingRent(e.target.value)
                   if (e.target.value) setHousingInt('')
                 }} className={inputClass} />
               </div>
               <div>
-                <label className={labelClass}>赡养老人</label>
+                <label className={labelClass}>{t('calcTaxElderlyCare')}</label>
                 <input value={elderlyCare} onChange={e => setElderlyCare(e.target.value)} className={inputClass} />
               </div>
               <div className="col-span-2">
-                <label className={labelClass}>3岁以下婴幼儿照护</label>
+                <label className={labelClass}>3{t('calcTaxInfantCare')}</label>
                 <input value={infantCare} onChange={e => setInfantCare(e.target.value)} className={inputClass} />
               </div>
             </div>
@@ -624,15 +628,15 @@ function TaxCalc() {
         {s > 0 && (
           <div className="space-y-2">
             <div className="flex justify-between text-xs p-1.5 bg-white rounded-sm">
-              <span className="text-text-secondary">五险一金合计</span>
+              <span className="text-text-secondary">{t('calcTaxSocialInsuranceTotal')}</span>
               <span className="font-medium">¥{socialInsurance.toFixed(0)}/月</span>
             </div>
             <div className="flex justify-between text-xs p-1.5 bg-white rounded-sm">
-              <span className="text-text-secondary">专项附加扣除合计</span>
+              <span className="text-text-secondary">{t('calcTaxSpecialDedTotal')}</span>
               <span className="font-medium">¥{specialDedTotal.toFixed(0)}/月</span>
             </div>
             <div className="flex justify-between text-xs p-1.5 bg-white rounded-sm">
-              <span className="text-text-secondary">月应纳税所得额</span>
+              <span className="text-text-secondary">{t('calcTaxMonthlyTaxable')}</span>
               <span className="font-medium">¥{Math.max(0, monthlyTaxable).toFixed(0)}/月</span>
             </div>
           </div>
@@ -643,15 +647,15 @@ function TaxCalc() {
             {salaryResult && (
               <>
                 <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
-                  <span className="text-text-secondary">年应纳税所得额</span>
+                  <span className="text-text-secondary">{t('calcTaxAnnualTaxable')}</span>
                   <span className="font-medium">¥{salaryResult.taxable.toFixed(0)}</span>
                 </div>
                 <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
-                  <span className="text-text-secondary">工资适用税率</span>
+                  <span className="text-text-secondary">{t('calcTaxSalaryRate')}</span>
                   <span className="font-medium">{(salaryResult.rate * 100).toFixed(0)}%</span>
                 </div>
                 <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
-                  <span className="text-text-secondary">工资应缴个税</span>
+                  <span className="text-text-secondary">{t('calcTaxSalaryTax')}</span>
                   <span className="font-medium">¥{salaryResult.tax.toFixed(0)}</span>
                 </div>
               </>
@@ -659,27 +663,27 @@ function TaxCalc() {
             {bonusResult && (
               <>
                 <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
-                  <span className="text-text-secondary">年终奖 (÷12 = ¥{(bonusResult.bonus / 12).toFixed(0)})</span>
+                  <span className="text-text-secondary">{t('calcTaxBonus')} (÷12 = ¥{(bonusResult.bonus / 12).toFixed(0)})</span>
                   <span className="font-medium">{bonusResult.bracket}</span>
                 </div>
                 <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
-                  <span className="text-text-secondary">年终奖适用税率</span>
+                  <span className="text-text-secondary">{t('calcTaxBonus')}适用税率</span>
                   <span className="font-medium">{(bonusResult.rate * 100).toFixed(0)}%</span>
                 </div>
                 <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
-                  <span className="text-text-secondary">年终奖应缴个税</span>
+                  <span className="text-text-secondary">{t('calcTaxBonus')}应缴个税</span>
                   <span className="font-medium">¥{bonusResult.tax.toFixed(0)}</span>
                 </div>
               </>
             )}
             {(salaryResult || bonusResult) && (
               <div className="flex justify-between text-sm p-2 bg-white rounded-sm border-t border-[rgba(127,99,21,0.1)]">
-                <span className="text-text-secondary font-medium">合计个税</span>
+                <span className="text-text-secondary font-medium">{t('calcTaxTotal')}</span>
                 <span className="text-accent font-bold">¥{totalTax.toFixed(0)}</span>
               </div>
             )}
             <div className="flex justify-between text-sm p-2 bg-green-50 rounded-sm border border-green-200">
-              <span className="text-green-700">税后总收入</span>
+              <span className="text-green-700">{t('calcTaxAfterTax')}</span>
               <span className="text-green-700 font-bold">¥{afterTax.toFixed(0)}</span>
             </div>
           </div>
@@ -687,7 +691,7 @@ function TaxCalc() {
       </div>
       {(salaryResult || bonusResult) && (
         <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-3">
-          <p className="text-xs text-text-secondary/60 mb-2">年度税率表参考</p>
+          <p className="text-xs text-text-secondary/60 mb-2">{t('calcTaxBracketReference')}</p>
           <div className="space-y-0.5">
             {yearlyBrackets.map(b => (
               <div key={b.low} className={`flex justify-between text-xs p-1.5 rounded-sm ${b.label === salaryResult?.bracket ? 'bg-accent/10 text-accent font-medium' : 'text-text-secondary'}`}>
@@ -704,6 +708,7 @@ function TaxCalc() {
 
 // ─── Mortgage Calculator (商业/公积金/组合 + LPR+BP + 下拉选择) ─
 function MortgageCalc() {
+  const t = useTranslations('tools')
   const [type, setType] = useState<'commercial' | 'fund' | 'mixed'>('commercial')
   const [repayType, setRepayType] = useState<'equal-payment' | 'equal-principal'>('equal-payment')
   const [loanAmount, setLoanAmount] = useState('300')
@@ -819,17 +824,17 @@ function MortgageCalc() {
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
         {/* Loan type */}
         <div className="flex gap-1 mb-3 flex-wrap">
-          <button onClick={() => setType('commercial')} className={btnClass(type === 'commercial')}>商业贷款</button>
-          <button onClick={() => setType('fund')} className={btnClass(type === 'fund')}>公积金贷款</button>
-          <button onClick={() => setType('mixed')} className={btnClass(type === 'mixed')}>组合贷款</button>
+          <button onClick={() => setType('commercial')} className={btnClass(type === 'commercial')}>{t('calcMortgageCommercial')}</button>
+          <button onClick={() => setType('fund')} className={btnClass(type === 'fund')}>{t('calcMortgageFund')}</button>
+          <button onClick={() => setType('mixed')} className={btnClass(type === 'mixed')}>{t('calcMortgageMixed')}</button>
         </div>
 
         {/* Repay type dropdown */}
         <div className="mb-3">
-          <label className={labelClass}>还款方式</label>
+          <label className={labelClass}>{t('calcMortgageRepayMethod')}</label>
           <select value={repayType} onChange={e => setRepayType(e.target.value as 'equal-payment' | 'equal-principal')} className={inputClass}>
-            <option value="equal-payment">等额本息</option>
-            <option value="equal-principal">等额本金</option>
+            <option value="equal-payment">{t('calcMortgageEqualPayment')}</option>
+            <option value="equal-principal">{t('calcMortgageEqualPrincipal')}</option>
           </select>
         </div>
 
@@ -837,7 +842,7 @@ function MortgageCalc() {
           {/* Loan amount */}
           {type !== 'mixed' ? (
             <div className="col-span-2">
-              <label className={labelClass}>贷款金额 (万元)</label>
+              <label className={labelClass}>{t('calcMortgageAmount')} (万元)</label>
               <input value={loanAmount} onChange={e => setLoanAmount(e.target.value)} maxLength={6} className={inputClass} />
             </div>
           ) : (
@@ -856,7 +861,7 @@ function MortgageCalc() {
           {/* Years dropdowns */}
           {type !== 'mixed' ? (
             <div className="col-span-2">
-              <label className={labelClass}>按揭年数</label>
+              <label className={labelClass}>{t('calcMortgageYears')}</label>
               <select value={type === 'commercial' ? commercialYears : fundYears} onChange={e => {
                 if (type === 'commercial') setCommercialYears(e.target.value)
                 else setFundYears(e.target.value)
@@ -867,13 +872,13 @@ function MortgageCalc() {
           ) : (
             <>
               <div>
-                <label className={labelClass}>商业贷款年限</label>
+                <label className={labelClass}>{t('calcMortgageCommercial')}年限</label>
                 <select value={commercialYears} onChange={e => setCommercialYears(e.target.value)} className={inputClass}>
                   {YEAR_OPTIONS.map(y => <option key={y} value={y}>{y}年</option>)}
                 </select>
               </div>
               <div>
-                <label className={labelClass}>公积金贷款年限</label>
+                <label className={labelClass}>{t('calcMortgageFund')}年限</label>
                 <select value={fundYears} onChange={e => setFundYears(e.target.value)} className={inputClass}>
                   {YEAR_OPTIONS.map(y => <option key={y} value={y}>{y}年</option>)}
                 </select>
@@ -889,7 +894,7 @@ function MortgageCalc() {
                 <input value={lpr} onChange={e => setLpr(e.target.value)} className={inputClass} />
               </div>
               <div>
-                <label className={labelClass}>基点 (BP)</label>
+                <label className={labelClass}>{t('calcMortgageBP')} (BP)</label>
                 <input value={bp} onChange={e => setBp(e.target.value)} className={inputClass} />
               </div>
             </>
@@ -898,14 +903,14 @@ function MortgageCalc() {
           {/* Fund rate */}
           {type !== 'commercial' && (
             <div>
-              <label className={labelClass}>公积金利率 (%)</label>
+              <label className={labelClass}>{t('calcMortgageFundRate')} (%)</label>
               <input value={fundRate} onChange={e => setFundRate(e.target.value)} className={inputClass} />
             </div>
           )}
 
           {/* Start date - dropdowns */}
           <div className="col-span-2">
-            <label className={labelClass}>首次还款日期</label>
+            <label className={labelClass}>{t('calcMortgageFirstPayment')}</label>
             <div className="grid grid-cols-3 gap-2">
               <select value={startYear} onChange={e => setStartYear(e.target.value)} className={inputClass}>
                 {Array.from({ length: 30 }, (_, i) => String(2025 + i)).map(y => <option key={y} value={y}>{y}年</option>)}
@@ -923,43 +928,43 @@ function MortgageCalc() {
         {result && result.monthly > 0 && (
           <div className="mt-3 pt-3 border-t border-[rgba(127,99,21,0.1)] space-y-2">
             {startDate && (
-              <p className="text-xs text-text-secondary/60">首期还款: {formatDate(startDate)}</p>
+              <p className="text-xs text-text-secondary/60">{t('calcMortgageFirstPaymentDate')}: {formatDate(startDate)}</p>
             )}
             {effectiveRate !== '' && (
               <p className="text-xs text-text-secondary/60">
-                {type === 'commercial' ? `执行利率: LPR${parseFloat(bp || '0') >= 0 ? '+' : ''}${bp}BP = ${effectiveRate}%`
-                  : type === 'fund' ? `公积金利率: ${effectiveRate}%`
+                {type === 'commercial' ? `{t('calcMortgageRateInfo')}: LPR${parseFloat(bp || '0') >= 0 ? '+' : ''}${bp}BP = ${effectiveRate}%`
+                  : type === 'fund' ? `{t('calcMortgageFundRate')}: ${effectiveRate}%`
                   : ''}
               </p>
             )}
             <div className="flex justify-between items-center p-2 bg-white rounded-sm">
-              <span className="text-text-secondary text-sm">月供</span>
+              <span className="text-text-secondary text-sm">{t('calcMortgageMonthlyPayment')}</span>
               <span className="text-accent font-bold text-lg">¥{result.monthly.toFixed(0)}</span>
             </div>
             {repayType === 'equal-principal' && result.schedule && result.schedule.length > 1 && (
               <p className="text-xs text-text-secondary/60 text-right">
-                首月月供, 每月递减 <strong>¥{(result.schedule[0].payment - result.schedule[1].payment).toFixed(2)}</strong>
+                首月{t('calcMortgageMonthlyPayment')}, {t('calcMortgageFirstMonthDesc')} <strong>¥{(result.schedule[0].payment - result.schedule[1].payment).toFixed(2)}</strong>
               </p>
             )}
             {type === 'mixed' && 'commercial' in result && 'fund' in result && (
               <div className="p-2 bg-white rounded-sm text-xs space-y-1">
                 <div className="flex justify-between">
-                  <span className="text-text-secondary">商业贷款</span>
-                  <span className="font-medium">{(result as any).commercial.amount.toFixed(0)} 元，月供 {(result as any).commercial.monthly.toFixed(0)} 元</span>
+                  <span className="text-text-secondary">{t('calcMortgageCommercial')}</span>
+                  <span className="font-medium">{(result as any).commercial.amount.toFixed(0)} 元，{t('calcMortgageMonthlyPayment')} {(result as any).commercial.monthly.toFixed(0)} 元</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-text-secondary">公积金贷款</span>
-                  <span className="font-medium">{(result as any).fund.amount.toFixed(0)} 元，月供 {(result as any).fund.monthly.toFixed(0)} 元</span>
+                  <span className="text-text-secondary">{t('calcMortgageFund')}</span>
+                  <span className="font-medium">{(result as any).fund.amount.toFixed(0)} 元，{t('calcMortgageMonthlyPayment')} {(result as any).fund.monthly.toFixed(0)} 元</span>
                 </div>
               </div>
             )}
             <div className="grid grid-cols-2 gap-2">
               <div className="p-2 bg-white rounded-sm text-center">
-                <p className="text-xs text-text-secondary">总利息</p>
+                <p className="text-xs text-text-secondary">{t('calcMortgageTotalInterest')}</p>
                 <p className="text-sm font-medium">¥{result.totalInterest.toFixed(0)}</p>
               </div>
               <div className="p-2 bg-white rounded-sm text-center">
-                <p className="text-xs text-text-secondary">还款总额</p>
+                <p className="text-xs text-text-secondary">{t('calcMortgageTotalPayment')}</p>
                 <p className="text-sm font-medium">¥{result.totalPayment.toFixed(0)}</p>
               </div>
             </div>
@@ -968,7 +973,7 @@ function MortgageCalc() {
         {result && result.schedule && result.schedule.length > 0 && (
           <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-xs font-medium text-text-primary">还款明细</p>
+              <p className="text-xs font-medium text-text-primary">{t('calcMortgageSchedule')}</p>
               <span className="text-xs text-text-secondary/60">{result.schedule.length} 期</span>
             </div>
             {Array.from({ length: Math.ceil(result.schedule.length / 12) }, (_, yi) => {
@@ -990,11 +995,11 @@ function MortgageCalc() {
                   {isExpanded && (
                     <div className="mt-1 space-y-0.5 ml-2">
                       <div className="flex items-center text-[10px] text-text-secondary/60 px-2 py-1">
-                        <span className="w-8">期数</span>
-                        <span className="w-20 text-right">月供</span>
-                        <span className="w-20 text-right">本金</span>
-                        <span className="w-20 text-right">利息</span>
-                        <span className="w-20 text-right">剩余</span>
+                        <span className="w-8">{t('calcMortgagePeriod')}</span>
+                        <span className="w-20 text-right">{t('calcMortgageMonthlyPayment')}</span>
+                        <span className="w-20 text-right">{t('calcMortgagePrincipal')}</span>
+                        <span className="w-20 text-right">{t('calcMortgageInterest')}</span>
+                        <span className="w-20 text-right">{t('calcMortgageRemaining')}</span>
                       </div>
                       {yearMonths.map(m => (
                         <div key={m.month} className="flex items-center text-[11px] px-2 py-1 bg-white rounded-sm">
@@ -1014,8 +1019,8 @@ function MortgageCalc() {
         )}
         {type === 'mixed' && result && 'commercial' in result && 'fund' in result && (
           <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
-            <p className="text-xs font-medium text-text-primary mb-2">还款明细</p>
-            {['商业贷款', '公积金贷款'].map((label, idx) => {
+            <p className="text-xs font-medium text-text-primary mb-2">{t('calcMortgageSchedule')}</p>
+            {[t('calcMortgageCommercial'), t('calcMortgageFund')].map((label, idx) => {
               const part = idx === 0 ? (result as any).commercial : (result as any).fund
               const schedule = part.schedule || []
               if (schedule.length === 0) return null
@@ -1042,11 +1047,11 @@ function MortgageCalc() {
                         {isExpanded && (
                           <div className="mt-1 space-y-0.5 ml-2">
                             <div className="flex items-center text-[10px] text-text-secondary/60 px-2 py-1">
-                              <span className="w-8">期数</span>
-                              <span className="w-20 text-right">月供</span>
-                              <span className="w-20 text-right">本金</span>
-                              <span className="w-20 text-right">利息</span>
-                              <span className="w-20 text-right">剩余</span>
+                              <span className="w-8">{t('calcMortgagePeriod')}</span>
+                              <span className="w-20 text-right">{t('calcMortgageMonthlyPayment')}</span>
+                              <span className="w-20 text-right">{t('calcMortgagePrincipal')}</span>
+                              <span className="w-20 text-right">{t('calcMortgageInterest')}</span>
+                              <span className="w-20 text-right">{t('calcMortgageRemaining')}</span>
                             </div>
                             {yearMonths.map((m: any) => (
                               <div key={m.month} className="flex items-center text-[11px] px-2 py-1 bg-white rounded-sm">
@@ -1074,6 +1079,7 @@ function MortgageCalc() {
 
 // ─── Chinese Uppercase Number ────────────────────────
 function ChineseNumCalc() {
+  const t = useTranslations('tools')
   const [num, setNum] = useState('1234567890')
   const n = parseFloat(num)
   const DIGITS = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖']
@@ -1117,7 +1123,7 @@ function ChineseNumCalc() {
   return (
     <div className="max-w-md mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
-        <label className="block text-xs text-text-secondary mb-1">输入数字</label>
+        <label className="block text-xs text-text-secondary mb-1">{t('calcInputNumber')}</label>
         <input value={num} onChange={e => setNum(e.target.value)} placeholder="12345.67" className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
         {result && (
           <div className="mt-3 p-3 bg-white rounded-sm border border-[rgba(127,99,21,0.08)]">
@@ -1216,7 +1222,7 @@ function TimeCalc() {
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
         <div className="bg-amber-50 border border-amber-200 rounded-sm p-3 text-xs space-y-1">
           <div className="flex items-center justify-between text-amber-800">
-            <span className="font-medium">换算规则</span>
+            <span className="font-medium">{t('calcConversionRules')}</span>
           </div>
           <div className="text-amber-700/80">{t('timeDesc')}</div>
         </div>
@@ -1226,7 +1232,7 @@ function TimeCalc() {
             <input value={val} onChange={e => setVal(e.target.value)} maxLength={15} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
           <div className="w-28">
-            <label className="block text-xs text-text-secondary mb-1">单位</label>
+            <label className="block text-xs text-text-secondary mb-1">{t('calcUnit')}</label>
             <select value={from} onChange={e => setFrom(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
               {units.map(u => <option key={u.label} value={u.label}>{u.labelZh}</option>)}
             </select>
@@ -1249,6 +1255,7 @@ function TimeCalc() {
 
 // ─── Chinese Family Relationship Calculator ──────────
 function TitleCalc() {
+  const t = useTranslations('tools')
   const relations = familyRelations
 
   const malePeople = ['爸爸', '哥哥', '弟弟', '爷爷', '外公', '儿子', '孙子', '伯父', '叔叔', '舅舅', '伯祖父', '叔祖父', '姑父', '姨父', '舅公']
@@ -1269,8 +1276,8 @@ function TitleCalc() {
   const key = selected1 && selected3 ? `${selected1}的${selected3}` : ''
   const result = key
     ? isInvalid
-      ? '不合法'
-      : relations[key] || `${key}（暂未收录）`
+      ? t('calcTitleInvalid')
+      : relations[key] || `${key}（${t('calcTitleNotFound')}）`
     : ''
 
   const clear = () => { setSelected1(''); setSelected3('') }
@@ -1297,7 +1304,7 @@ function TitleCalc() {
       <div className="max-w-lg mx-auto space-y-3">
         <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
           <div className="flex items-center justify-between mb-3">
-                    <p className="text-xs text-text-secondary/60">选择关系</p>
+                    <p className="text-xs text-text-secondary/60">{t('calcTitleSelectRelation')}</p>
                   </div>
           <div className="flex items-center gap-2">
             <div className="grid grid-cols-5 gap-1.5 flex-1">
@@ -1328,7 +1335,7 @@ function TitleCalc() {
         )}
       </div>
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-3">
-        <p className="text-xs text-text-secondary/60 mb-2">常用关系查询</p>
+        <p className="text-xs text-text-secondary/60 mb-2">{t('calcTitleCommonRelations')}</p>
         <div className="grid grid-cols-3 gap-1">
           {commonRelations.map(k => {
             const parts = k.split('的')
@@ -1378,8 +1385,9 @@ function BaseCalc() {
     16: '0-9, A-F',
   }
 
+  const baseNames: Record<number, string> = { 2: 'calcBaseBinary', 8: 'calcBaseOctal', 10: 'calcBaseDecimal', 16: 'calcBaseHex' }
   const error = input.trim() && !validPatterns[fromBase].test(input.trim())
-    ? `输入包含无效字符。${fromBase === 2 ? '二进制' : fromBase === 8 ? '八进制' : fromBase === 10 ? '十进制' : '十六进制'}只允许: ${validChars[fromBase]}`
+    ? t('calcBaseError', { base: t(baseNames[fromBase]), chars: validChars[fromBase] })
     : ''
 
   const decimal = input.trim() && !error ? parseInt(input.trim(), fromBase) : NaN
@@ -1396,7 +1404,7 @@ function BaseCalc() {
       </div>
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-5">
         <div className="flex gap-2 mb-3">
-          <input value={input} onChange={e => setInput(e.target.value)} placeholder="输入数值"
+          <input value={input} onChange={e => setInput(e.target.value)} placeholder="{t('calcInputNumber')}"
             className="flex-1 p-3 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary focus:outline-none focus:border-accent/30" />
           <select value={fromBase} onChange={e => { setInput(''); setFromBase(parseInt(e.target.value)) }}
             className="p-3 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary focus:outline-none">
