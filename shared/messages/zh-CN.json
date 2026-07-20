@@ -501,7 +501,8 @@
     "calcYearN": "第{year}年",
     "calcYearRepayment": "还款 ¥{amount}",
     "calcYearSuffix": "年",
-    "calcMonthSuffix": "月"
+    "calcMonthSuffix": "月",
+    "calcDaySuffix": "日"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",
