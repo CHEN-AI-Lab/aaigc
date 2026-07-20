@@ -360,7 +360,7 @@
     "calcAisPctOfB": "A 是 B 的 {pct}%",
     "calcPctOfB": "{val} 是 {a}% 的 B",
     "calcChange": "变化: {pct}%",
-    "timeDesc": "1年=365天 | 1月=30天 | 1周=7天 | 1天=24时 | 1时=60分 | 1分=60秒"
+    "timeDesc": "1年=365天 | 1月=30天"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",
