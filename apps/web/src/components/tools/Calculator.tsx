@@ -1137,13 +1137,13 @@ function TitleCalc() {
     else if (selected1) setSelected1('')
   }
 
-  // Most common 15 relations for quick reference
+  // Most common 16 relations for quick reference
   const commonRelations = [
     '爸爸的爸爸', '爸爸的妈妈', '妈妈的爸爸', '妈妈的妈妈',
     '爸爸的哥哥', '爸爸的弟弟', '爸爸的姐妹',
     '妈妈的哥哥', '妈妈的弟弟', '妈妈的姐妹',
     '哥哥的老婆', '弟弟的老婆', '姐姐的老公', '妹妹的老公',
-    '爷爷的爸爸',
+    '爷爷的爸爸', '爷爷的妈妈',
   ]
 
   const btnClass = (selected: boolean) =>
