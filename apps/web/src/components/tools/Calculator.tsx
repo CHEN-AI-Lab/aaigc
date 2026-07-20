@@ -1101,8 +1101,11 @@ function TimeCalc() {
   return (
     <div className="max-w-sm mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
-        <div className="text-xs text-text-secondary/60 mb-3 leading-relaxed">
-          {t('timeDesc')}
+        <div className="bg-amber-50 border border-amber-200 rounded-sm p-3 text-xs space-y-1">
+          <div className="flex items-center justify-between text-amber-800">
+            <span className="font-medium">换算规则</span>
+          </div>
+          <div className="text-amber-700/80">{t('timeDesc')}</div>
         </div>
         <div className="flex gap-2 items-end mb-3">
           <div className="flex-1">
@@ -1280,7 +1283,7 @@ function BaseCalc() {
       </div>
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-5">
         <div className="flex gap-2 mb-3">
-          <input value={input} onChange={e => setInput(e.target.value)} placeholder="输入数字"
+          <input value={input} onChange={e => setInput(e.target.value)} placeholder="输入数值"
             className="flex-1 p-3 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary focus:outline-none focus:border-accent/30" />
           <select value={fromBase} onChange={e => { setInput(''); setFromBase(parseInt(e.target.value)) }}
             className="p-3 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary focus:outline-none">
@@ -1291,7 +1294,7 @@ function BaseCalc() {
         {results.length > 0 && (
           <div className="space-y-1.5">
             {results.map(r => (
-              <div key={r.base} className="flex items-center gap-3 p-3 bg-white rounded-sm border border-[rgba(127,99,21,0.08)]">
+              <div key={r.base} className="flex items-center gap-3 p-3 bg-surface rounded-sm border border-[rgba(127,99,21,0.08)]">
                 <span className="w-36 text-accent font-mono text-xs font-bold shrink-0">{r.labelFull}</span>
                 <code className="flex-1 font-mono text-sm text-text-primary break-all">{r.value}</code>
               </div>
