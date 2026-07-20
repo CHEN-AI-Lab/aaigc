@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeAll } from 'vitest'
 import { products } from '../../data/products'
+import { familyRelations } from '../../data/family'
 import type { CategoryInfo, ToolCategoryId } from '../../shared/types'
 
 describe('products', () => {
@@ -33,7 +34,6 @@ describe('products', () => {
   it('each product has a non-empty icon emoji', () => {
     for (const p of products) {
       expect(p.icon.length).toBeGreaterThan(0)
-      // Emoji characters are typically 2 chars in JS strings
       expect(p.icon.codePointAt(0)).toBeGreaterThanOrEqual(0x2000)
     }
   })
@@ -210,15 +210,105 @@ describe('tool categories', () => {
 })
 
 describe('family relations', () => {
-  it('all common Chinese family relations are covered', async () => {
-    const mod = await import('../../apps/web/src/components/tools/Calculator')
-    // Access the TitleCalc component indirectly through the calculator module
-    // The relations are defined inside TitleCalc, so we test the Calculator component exists
-    expect(mod.default).toBeDefined()
+  it('all relations have a non-empty value', () => {
+    for (const [key, value] of Object.entries(familyRelations)) {
+      expect(value).toBeTruthy()
+      expect(typeof value).toBe('string')
+    }
   })
 
-  it('Calculator component can be imported', async () => {
-    const mod = await import('../../apps/web/src/components/tools/Calculator')
-    expect(mod.default).toBeDefined()
+  it('self-referential relations (爸爸, 妈妈, etc.) are valid', () => {
+    expect(familyRelations['爸爸']).toBe('爸爸')
+    expect(familyRelations['妈妈']).toBe('妈妈')
+    expect(familyRelations['哥哥']).toBe('哥哥')
+    expect(familyRelations['姐姐']).toBe('姐姐')
+    expect(familyRelations['弟弟']).toBe('弟弟')
+    expect(familyRelations['妹妹']).toBe('妹妹')
+    expect(familyRelations['儿子']).toBe('儿子')
+    expect(familyRelations['女儿']).toBe('女儿')
+    expect(familyRelations['老公']).toBe('老公')
+    expect(familyRelations['老婆']).toBe('老婆')
+  })
+
+  it('爸爸 side relations are correct', () => {
+    expect(familyRelations['爸爸的老婆']).toBe('妈妈')
+    expect(familyRelations['爸爸的爸爸']).toBe('爷爷')
+    expect(familyRelations['爸爸的妈妈']).toBe('奶奶')
+    expect(familyRelations['爸爸的哥哥']).toBe('伯父')
+    expect(familyRelations['爸爸的弟弟']).toBe('叔叔')
+    expect(familyRelations['爸爸的姐姐']).toBe('姑姑')
+    expect(familyRelations['爸爸的妹妹']).toBe('姑姑')
+    expect(familyRelations['爸爸的儿子']).toBe('兄弟')
+    expect(familyRelations['爸爸的女儿']).toBe('姐妹')
+  })
+
+  it('妈妈 side relations are correct', () => {
+    expect(familyRelations['妈妈的老公']).toBe('爸爸')
+    expect(familyRelations['妈妈的爸爸']).toBe('外公')
+    expect(familyRelations['妈妈的妈妈']).toBe('外婆')
+    expect(familyRelations['妈妈的哥哥']).toBe('舅舅')
+    expect(familyRelations['妈妈的弟弟']).toBe('舅舅')
+    expect(familyRelations['妈妈的姐姐']).toBe('姨妈')
+    expect(familyRelations['妈妈的妹妹']).toBe('姨妈')
+    expect(familyRelations['妈妈的儿子']).toBe('兄弟')
+    expect(familyRelations['妈妈的女儿']).toBe('姐妹')
+  })
+
+  it('sibling spouse relations are correct', () => {
+    expect(familyRelations['哥哥的老婆']).toBe('嫂子')
+    expect(familyRelations['弟弟的老婆']).toBe('弟媳')
+    expect(familyRelations['姐姐的老公']).toBe('姐夫')
+    expect(familyRelations['妹妹的老公']).toBe('妹夫')
+  })
+
+  it('sibling self-referential relations are correct', () => {
+    const siblings = ['哥哥', '姐姐', '弟弟', '妹妹']
+    for (const s of siblings) {
+      expect(familyRelations[`${s}的爸爸`]).toBe('爸爸')
+      expect(familyRelations[`${s}的妈妈`]).toBe('妈妈')
+    }
+  })
+
+  it('grandparent spouse relations are correct', () => {
+    expect(familyRelations['爷爷的老婆']).toBe('奶奶')
+    expect(familyRelations['奶奶的老公']).toBe('爷爷')
+    expect(familyRelations['外公的老婆']).toBe('外婆')
+    expect(familyRelations['外婆的老公']).toBe('外公')
+  })
+
+  it('great-grandparent relations are correct', () => {
+    expect(familyRelations['爷爷的爸爸']).toBe('曾祖父')
+    expect(familyRelations['爷爷的妈妈']).toBe('曾祖母')
+    expect(familyRelations['奶奶的爸爸']).toBe('外曾祖父')
+    expect(familyRelations['奶奶的妈妈']).toBe('外曾祖母')
+    expect(familyRelations['外公的爸爸']).toBe('曾外祖父')
+    expect(familyRelations['外公的妈妈']).toBe('曾外祖母')
+    expect(familyRelations['外婆的爸爸']).toBe('曾外祖父')
+    expect(familyRelations['外婆的妈妈']).toBe('曾外祖母')
+  })
+
+  it('child spouse relations are correct', () => {
+    expect(familyRelations['儿子的老婆']).toBe('儿媳')
+    expect(familyRelations['女儿的老公']).toBe('女婿')
+    expect(familyRelations['儿子的儿子']).toBe('孙子')
+    expect(familyRelations['儿子的女儿']).toBe('孙女')
+    expect(familyRelations['女儿的儿子']).toBe('外孙')
+    expect(familyRelations['女儿的女儿']).toBe('外孙女')
+  })
+
+  it('no relation value contains "未收录"', () => {
+    for (const [key, value] of Object.entries(familyRelations)) {
+      if (value.includes('未收录')) {
+        throw new Error(`Relation "${key}" has value "${value}" which contains "未收录"`)
+      }
+    }
+  })
+
+  it('every relation key has a valid value', () => {
+    const entries = Object.entries(familyRelations)
+    for (const [key, value] of entries) {
+      expect(value).toBeTruthy()
+      expect(typeof value).toBe('string')
+    }
   })
 })
