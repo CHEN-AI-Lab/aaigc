@@ -835,61 +835,87 @@ function MortgageCalc() {
             </>
           )}
 
-          {/* Years dropdowns */}
-          {type !== 'mixed' ? (
-            <div className="col-span-2">
-              <label className={labelClass}>按揭年数</label>
-              <select value={type === 'commercial' ? commercialYears : fundYears} onChange={e => {
-                if (type === 'commercial') setCommercialYears(e.target.value)
-                else setFundYears(e.target.value)
-              }} className={inputClass}>
-                {YEAR_OPTIONS.map(y => <option key={y} value={y}>{y}年</option>)}
-              </select>
-            </div>
-          ) : (
-            <>
-              <div>
-                <label className={labelClass}>商业贷款年限</label>
-                <select value={commercialYears} onChange={e => setCommercialYears(e.target.value)} className={inputClass}>
-                  {YEAR_OPTIONS.map(y => <option key={y} value={y}>{y}年</option>)}
-                </select>
-              </div>
-              <div>
-                <label className={labelClass}>公积金贷款年限</label>
-                <select value={fundYears} onChange={e => setFundYears(e.target.value)} className={inputClass}>
-                  {YEAR_OPTIONS.map(y => <option key={y} value={y}>{y}年</option>)}
-                </select>
-              </div>
-            </>
-          )}
+          {/* Years dropdowns + Rates grouped by loan type */}
+                    {type !== 'mixed' ? (
+                      <>
+                        <div className="col-span-2">
+                          <label className={labelClass}>按揭年数</label>
+                          <select value={type === 'commercial' ? commercialYears : fundYears} onChange={e => {
+                            if (type === 'commercial') setCommercialYears(e.target.value)
+                            else setFundYears(e.target.value)
+                          }} className={inputClass}>
+                            {YEAR_OPTIONS.map(y => <option key={y} value={y}>{y}年</option>)}
+                          </select>
+                        </div>
+                        {type === 'commercial' && (
+                          <>
+                            <div>
+                              <label className={labelClass}>LPR (%)</label>
+                              <input value={lpr} onChange={e => setLpr(e.target.value)} className={inputClass} />
+                            </div>
+                            <div>
+                              <label className={labelClass}>基点 (BP)</label>
+                              <input value={bp} onChange={e => setBp(e.target.value)} className={inputClass} />
+                            </div>
+                          </>
+                        )}
+                        {type === 'fund' && (
+                          <div className="col-span-2">
+                            <label className={labelClass}>公积金利率 (%)</label>
+                            <input value={fundRate} onChange={e => setFundRate(e.target.value)} className={inputClass} />
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        {/* 商业贷款 section */}
+                        <div className="col-span-2 border-b border-[rgba(127,99,21,0.1)] pb-2 mb-1">
+                          <span className="text-xs font-medium text-text-primary">商业贷款</span>
+                        </div>
+                        <div>
+                          <label className={labelClass}>金额 (元)</label>
+                          <input value={commercialAmount} onChange={e => setCommercialAmount(e.target.value)} className={inputClass} />
+                        </div>
+                        <div>
+                          <label className={labelClass}>年限</label>
+                          <select value={commercialYears} onChange={e => setCommercialYears(e.target.value)} className={inputClass}>
+                            {YEAR_OPTIONS.map(y => <option key={y} value={y}>{y}年</option>)}
+                          </select>
+                        </div>
+                        <div>
+                          <label className={labelClass}>LPR (%)</label>
+                          <input value={lpr} onChange={e => setLpr(e.target.value)} className={inputClass} />
+                        </div>
+                        <div>
+                          <label className={labelClass}>基点 (BP)</label>
+                          <input value={bp} onChange={e => setBp(e.target.value)} className={inputClass} />
+                        </div>
+                        {/* 公积金贷款 section */}
+                        <div className="col-span-2 border-b border-[rgba(127,99,21,0.1)] pb-2 mb-1 mt-2">
+                          <span className="text-xs font-medium text-text-primary">公积金贷款</span>
+                        </div>
+                        <div>
+                          <label className={labelClass}>金额 (元)</label>
+                          <input value={fundAmount} onChange={e => setFundAmount(e.target.value)} className={inputClass} />
+                        </div>
+                        <div>
+                          <label className={labelClass}>年限</label>
+                          <select value={fundYears} onChange={e => setFundYears(e.target.value)} className={inputClass}>
+                            {YEAR_OPTIONS.map(y => <option key={y} value={y}>{y}年</option>)}
+                          </select>
+                        </div>
+                        <div className="col-span-2">
+                          <label className={labelClass}>公积金利率 (%)</label>
+                          <input value={fundRate} onChange={e => setFundRate(e.target.value)} className={inputClass} />
+                        </div>
+                      </>
+                    )}
 
-          {/* Rate - LPR + BP for commercial */}
-          {type !== 'fund' && (
-            <>
-              <div>
-                <label className={labelClass}>LPR (%)</label>
-                <input value={lpr} onChange={e => setLpr(e.target.value)} className={inputClass} />
-              </div>
-              <div>
-                <label className={labelClass}>基点 (BP)</label>
-                <input value={bp} onChange={e => setBp(e.target.value)} className={inputClass} />
-              </div>
-            </>
-          )}
-
-          {/* Fund rate */}
-          {type !== 'commercial' && (
-            <div>
-              <label className={labelClass}>公积金利率 (%)</label>
-              <input value={fundRate} onChange={e => setFundRate(e.target.value)} className={inputClass} />
-            </div>
-          )}
-
-          {/* Start date */}
-          <div className="col-span-2">
-            <label className={labelClass}>首次还款日期</label>
-            <input type="text" value={startDate} onChange={e => setStartDate(e.target.value)} placeholder="2026-01-01" className={inputClass} />
-          </div>
+                    {/* First payment date */}
+                    <div className="col-span-2">
+                      <label className={labelClass}>首次还款日期</label>
+                      <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className={inputClass} />
+                    </div>
         </div>
 
         {result && result.monthly > 0 && (
