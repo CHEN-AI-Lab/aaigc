@@ -1061,7 +1061,7 @@ function TimeCalc() {
     <div className="max-w-sm mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
         <div className="text-xs text-text-secondary/60 mb-3 leading-relaxed">
-          1年=365天 | 1月=30天 | 1周=7天 | 1天=24时 | 1时=60分 | 1分=60秒
+          {t('timeDesc')}
         </div>
         <div className="flex gap-2 items-end mb-3">
           <div className="flex-1">
