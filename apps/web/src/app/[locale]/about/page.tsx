@@ -22,9 +22,6 @@ export default async function AboutPage({ params }: Props) {
           <a href="mailto:chen@aaigc.online" className="block text-accent hover:underline">
             chen@aaigc.online
           </a>
-          <a href="https://github.com/CHEN-AI-Lab" target="_blank" rel="noopener noreferrer" className="block text-accent hover:underline">
-            GitHub: CHEN-AI-Lab
-          </a>
         </div>
       </div>
     </div>
