@@ -807,7 +807,10 @@ function MortgageCalc() {
   const formatDate = (d: string) => {
     if (!d) return ''
     const date = new Date(d)
-    return `${date.getFullYear()}${t('calcYearSuffix')}${date.getMonth() + 1}${t('calcMonthSuffix')}${date.getDate()}${t('calcDaySuffix')}`
+    const y = date.getFullYear()
+    const m = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    return `${y}${t('calcYearSuffix')}${m}${t('calcMonthSuffix')}${day}${t('calcDaySuffix')}`
   }
 
   const effectiveRate = type === 'commercial'

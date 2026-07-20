@@ -501,7 +501,7 @@
     "calcYearN": "Year {year}",
     "calcYearRepayment": "Repayment ¥{amount}",
     "calcYearSuffix": "-",
-    "calcMonthSuffix": "",
+    "calcMonthSuffix": "-",
     "calcDaySuffix": ""
   },
   "ui": {
