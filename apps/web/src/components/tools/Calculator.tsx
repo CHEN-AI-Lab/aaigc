@@ -175,12 +175,12 @@ function CurrencyCalc() {
   const swap = () => { setFrom(to); setTo(from) }
 
   return (
-    <div className="max-w-sm mx-auto space-y-3">
+    <div className="max-w-md mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
         <div className="grid grid-cols-[1fr_auto_1fr] gap-2 items-end">
           <div>
             <label className="block text-xs text-text-secondary mb-1">金额</label>
-            <input value={amount} onChange={e => setAmount(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            <input value={amount} onChange={e => setAmount(e.target.value)} maxLength={15} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
           <div />
           <div />
@@ -286,12 +286,12 @@ function UnitTable({ units, title }: { units: Unit[]; title: string }) {
   const uFrom = units.find(u => u.label === from)
 
   return (
-    <div className="max-w-sm mx-auto space-y-3">
+    <div className="max-w-md mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
         <div className="flex gap-2 items-end mb-3">
           <div className="flex-1">
             <label className="block text-xs text-text-secondary mb-1">{title}</label>
-            <input value={val} onChange={e => setVal(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            <input value={val} onChange={e => setVal(e.target.value)} maxLength={15} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
           <div className="w-24">
             <label className="block text-xs text-text-secondary mb-1">单位</label>
@@ -328,12 +328,12 @@ function TempCalc() {
   const k = c !== null ? c + 273.15 : null
 
   return (
-    <div className="max-w-sm mx-auto space-y-3">
+    <div className="max-w-md mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
         <div className="flex gap-2 items-end mb-3">
           <div className="flex-1">
             <label className="block text-xs text-text-secondary mb-1">温度值</label>
-            <input value={val} onChange={e => setVal(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            <input value={val} onChange={e => setVal(e.target.value)} maxLength={15} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
           <div className="w-24">
             <label className="block text-xs text-text-secondary mb-1">单位</label>
@@ -399,7 +399,7 @@ function BmiCalc() {
   const healthyMax = unit === 'metric' ? (24.9 * (height / 100) ** 2).toFixed(0) : ''
 
   return (
-    <div className="max-w-sm mx-auto space-y-3">
+    <div className="max-w-md mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
         <div className="flex gap-1 mb-3">
           <button onClick={() => setUnit('metric')} className={`px-3 py-1 text-xs rounded-sm ${unit === 'metric' ? 'bg-accent text-white' : 'bg-white text-text-secondary'}`}>公制</button>
@@ -408,11 +408,11 @@ function BmiCalc() {
         <div className="grid grid-cols-3 gap-3">
           <div>
             <label className="block text-xs text-text-secondary mb-1">身高 ({unit === 'metric' ? 'cm' : 'in'})</label>
-            <input value={h} onChange={e => setH(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            <input value={h} onChange={e => setH(e.target.value)} maxLength={5} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
           <div>
             <label className="block text-xs text-text-secondary mb-1">体重 ({unit === 'metric' ? 'kg' : 'lb'})</label>
-            <input value={w} onChange={e => setW(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            <input value={w} onChange={e => setW(e.target.value)} maxLength={5} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
           <div>
             <label className="block text-xs text-text-secondary mb-1">年龄</label>
@@ -529,7 +529,7 @@ function TaxCalc() {
   const labelClass = "block text-xs text-text-secondary mb-1"
 
   return (
-    <div className="max-w-sm mx-auto space-y-3">
+    <div className="max-w-md mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
         {/* Basic salary inputs */}
         <div className="grid grid-cols-2 gap-3 mb-3">
@@ -811,7 +811,7 @@ function MortgageCalc() {
   const labelClass = "block text-xs text-text-secondary mb-1"
 
   return (
-    <div className="max-w-sm mx-auto space-y-3">
+    <div className="max-w-md mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
         {/* Loan type */}
         <div className="flex gap-1 mb-3 flex-wrap">
@@ -834,17 +834,17 @@ function MortgageCalc() {
           {type !== 'mixed' ? (
             <div className="col-span-2">
               <label className={labelClass}>贷款金额 (万元)</label>
-              <input value={loanAmount} onChange={e => setLoanAmount(e.target.value)} className={inputClass} />
+              <input value={loanAmount} onChange={e => setLoanAmount(e.target.value)} maxLength={6} className={inputClass} />
             </div>
           ) : (
             <>
               <div>
                 <label className={labelClass}>金额 (万元)</label>
-                <input value={commercialAmount} onChange={e => setCommercialAmount(e.target.value)} className={inputClass} />
+                <input value={commercialAmount} onChange={e => setCommercialAmount(e.target.value)} maxLength={6} className={inputClass} />
               </div>
               <div>
                 <label className={labelClass}>金额 (万元)</label>
-                <input value={fundAmount} onChange={e => setFundAmount(e.target.value)} className={inputClass} />
+                <input value={fundAmount} onChange={e => setFundAmount(e.target.value)} maxLength={6} className={inputClass} />
               </div>
             </>
           )}
@@ -1007,7 +1007,7 @@ function ChineseNumCalc() {
   })()
 
   return (
-    <div className="max-w-sm mx-auto space-y-3">
+    <div className="max-w-md mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
         <label className="block text-xs text-text-secondary mb-1">输入数字</label>
         <input value={num} onChange={e => setNum(e.target.value)} placeholder="12345.67" className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
@@ -1104,7 +1104,7 @@ function TimeCalc() {
   }
 
   return (
-    <div className="max-w-sm mx-auto space-y-3">
+    <div className="max-w-md mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
         <div className="bg-amber-50 border border-amber-200 rounded-sm p-3 text-xs space-y-1">
           <div className="flex items-center justify-between text-amber-800">
@@ -1115,7 +1115,7 @@ function TimeCalc() {
         <div className="flex gap-2 items-end mb-3">
           <div className="flex-1">
             <label className="block text-xs text-text-secondary mb-1">时间转换</label>
-            <input value={val} onChange={e => setVal(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            <input value={val} onChange={e => setVal(e.target.value)} maxLength={15} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
           <div className="w-28">
             <label className="block text-xs text-text-secondary mb-1">单位</label>
@@ -1301,7 +1301,7 @@ function BaseCalc() {
             {results.map(r => (
               <div key={r.base} className="flex items-center gap-3 p-3 bg-surface rounded-sm border border-[rgba(127,99,21,0.08)]">
                 <span className="w-36 text-accent font-mono text-xs font-bold shrink-0">{r.labelFull}</span>
-                <code className="flex-1 font-mono text-sm text-text-primary break-all">{r.value}</code>
+                <code className="flex-1 font-mono text-sm text-text-primary break-all overflow-x-auto">{r.value}</code>
               </div>
             ))}
           </div>

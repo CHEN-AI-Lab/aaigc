@@ -44,7 +44,7 @@ export default function ToolPageClient({ slug }: Props) {
 
   return (
     <div>
-      <div className="max-w-6xl mx-auto px-6 pt-6 text-xs text-text-secondary">
+      <div className="max-w-7xl mx-auto px-6 pt-6 text-xs text-text-secondary">
         <Link href="/tools" className="hover:text-accent transition-colors">
           {tu('tools')}
         </Link>
@@ -52,7 +52,7 @@ export default function ToolPageClient({ slug }: Props) {
         <span className="text-text-primary">{t(`${slug}.name`)}</span>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 py-12">
+      <div className="max-w-7xl mx-auto px-6 py-12">
         <h1 className="text-2xl font-semibold text-text-primary mb-1">
           {t(`${slug}.name`)}
         </h1>
