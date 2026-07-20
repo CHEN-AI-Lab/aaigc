@@ -199,8 +199,8 @@ function CurrencyCalc() {
         {result !== null && (
           <div className="mt-3 pt-3 border-t border-[rgba(127,99,21,0.1)] text-center">
             <p className="text-xs text-text-secondary/60">{amount} {from} =</p>
-            <p className="text-2xl font-bold text-accent">{result.toFixed(4)}</p>
-            <p className="text-xs text-text-secondary mt-1">1 {from} = {(1 / RATES[from] * RATES[to]).toFixed(6)} {to}</p>
+            <p className="text-2xl font-bold text-accent">{fmt(result)}</p>
+            <p className="text-xs text-text-secondary mt-1">1 {from} = {fmt(1 / RATES[from] * RATES[to])} {to}</p>
           </div>
         )}
       </div>
@@ -212,7 +212,7 @@ function CurrencyCalc() {
             {Object.keys(RATES).filter(c => c !== from).map(c => (
               <div key={c} className="flex justify-between p-1.5 bg-white rounded-sm">
                 <span className="text-text-secondary">{c}</span>
-                <span className="text-text-primary font-mono">{(a / RATES[from] * RATES[c]).toFixed(4)}</span>
+                <span className="text-text-primary font-mono">{fmt(a / RATES[from] * RATES[c])}</span>
               </div>
             ))}
           </div>
@@ -305,7 +305,7 @@ function UnitTable({ units, title }: { units: Unit[]; title: string }) {
             {units.filter(u => u.label !== from).map(u => (
               <div key={u.label} className="flex justify-between p-1.5 bg-white rounded-sm text-xs">
                 <span className="text-text-secondary">{u.label}</span>
-                <span className="text-text-primary font-mono">{u.fromBase(uFrom.toBase(n)).toFixed(6)}</span>
+                <span className="text-text-primary font-mono">{fmt(u.fromBase(uFrom.toBase(n)))}</span>
               </div>
             ))}
           </div>
@@ -346,19 +346,19 @@ function TempCalc() {
           <div className="space-y-2">
             <div className="flex justify-between p-2 bg-white rounded-sm text-sm">
               <span className="text-text-secondary">°C (摄氏度)</span>
-              <span className="text-text-primary font-mono font-bold">{c!.toFixed(2)}</span>
+              <span className="text-text-primary font-mono font-bold">{fmt(c)}</span>
             </div>
             <div className="flex justify-between p-2 bg-white rounded-sm text-sm">
               <span className="text-text-secondary">°F (华氏度)</span>
-              <span className="text-text-primary font-mono font-bold">{f!.toFixed(2)}</span>
+              <span className="text-text-primary font-mono font-bold">{fmt(f!)}</span>
             </div>
             <div className="flex justify-between p-2 bg-white rounded-sm text-sm">
               <span className="text-text-secondary">K (开尔文)</span>
-              <span className="text-text-primary font-mono font-bold">{k!.toFixed(2)}</span>
+              <span className="text-text-primary font-mono font-bold">{fmt(k!)}</span>
             </div>
             <div className="flex justify-between p-2 bg-white rounded-sm text-sm">
               <span className="text-text-secondary">°Ré (列氏度)</span>
-              <span className="text-text-primary font-mono font-bold">{(c * 0.8).toFixed(2)}</span>
+              <span className="text-text-primary font-mono font-bold">{fmt(c * 0.8)}</span>
             </div>
           </div>
         )}
@@ -1027,8 +1027,14 @@ function formatNumber(n: number): string {
   if (Number.isInteger(n)) {
     return n.toLocaleString('en-US')
   }
-  // Otherwise show 4 decimal places max
-  return n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 4 })
+  // Otherwise show up to 6 decimal places, strip trailing zeros
+  return n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 6 })
+}
+
+// Strip trailing zeros from decimal string
+function fmt(n: number): string {
+  if (Number.isInteger(n)) return n.toLocaleString('en-US')
+  return n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 10 })
 }
 
 function TimeCalc() {
