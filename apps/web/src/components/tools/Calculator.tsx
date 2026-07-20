@@ -44,12 +44,12 @@ export default function Calculator() {
       </div>
       {tab === 'calc' && <CalcPanel />}
       {tab === 'currency' && <CurrencyCalc />}
-      {tab === 'length' && <UnitTable units={LENGTH} title="长度转换" />}
-      {tab === 'weight' && <UnitTable units={WEIGHT} title="重量转换" />}
-      {tab === 'area' && <UnitTable units={AREA} title="面积转换" />}
-      {tab === 'volume' && <UnitTable units={VOLUME} title="体积转换" />}
+      {tab === 'length' && <UnitTable units={LENGTH} title={t('calcLengthConvert')} />}
+      {tab === 'weight' && <UnitTable units={WEIGHT} title={t('calcWeightConvert')} />}
+      {tab === 'area' && <UnitTable units={AREA} title={t('calcAreaConvert')} />}
+      {tab === 'volume' && <UnitTable units={VOLUME} title={t('calcVolumeConvert')} />}
       {tab === 'temp' && <TempCalc />}
-      {tab === 'speed' && <UnitTable units={SPEED} title="速度转换" />}
+      {tab === 'speed' && <UnitTable units={SPEED} title={t('calcSpeedConvert')} />}
       {tab === 'bmi' && <BmiCalc />}
       {tab === 'tax' && <TaxCalc />}
       {tab === 'mortgage' && <MortgageCalc />}
@@ -371,6 +371,7 @@ function TempCalc() {
 
 // ─── Improved BMI (age/gender reference) ─────────────
 function BmiCalc() {
+  const t = useTranslations('tools')
   const [h, setH] = useState('170')
   const [w, setW] = useState('70')
   const [age, setAge] = useState('30')
@@ -383,10 +384,10 @@ function BmiCalc() {
   // Age-adjusted BMI categories (simplified WHO standards)
   const cat = (() => {
     if (!bmi || isNaN(a)) return null
-    if (a < 18) return bmi < 18.5 ? '偏瘦' : bmi < 24 ? '正常' : '超重'
-    if (a < 40) return bmi < 18.5 ? '偏瘦' : bmi < 25 ? '正常' : bmi < 30 ? '偏胖' : '肥胖'
-    if (a < 60) return bmi < 19 ? '偏瘦' : bmi < 26 ? '正常' : bmi < 31 ? '偏胖' : '肥胖'
-    return bmi < 20 ? '偏瘦' : bmi < 27 ? '正常' : bmi < 32 ? '偏胖' : '肥胖'
+    if (a < 18) return bmi < 18.5 ? 'underweight' : bmi < 24 ? 'normal' : 'overweight'
+    if (a < 40) return bmi < 18.5 ? 'underweight' : bmi < 25 ? 'normal' : bmi < 30 ? 'overweightYoung' : 'obese'
+    if (a < 60) return bmi < 19 ? 'underweight' : bmi < 26 ? 'normal' : bmi < 31 ? 'overweightYoung' : 'obese'
+    return bmi < 20 ? 'underweight' : bmi < 27 ? 'normal' : bmi < 32 ? 'overweightYoung' : 'obese'
   })()
 
   const color = (() => {
@@ -430,8 +431,8 @@ function BmiCalc() {
             <div className="flex items-center gap-3 mb-2">
               <div className={`w-14 h-14 rounded-full ${color} flex items-center justify-center text-white font-bold text-lg`}>{bmi.toFixed(1)}</div>
               <div>
-                <p className="text-sm font-medium text-text-primary">{cat}</p>
-                {unit === 'metric' && <p className="text-xs text-text-secondary">健康体重范围: {healthyMin} - {healthyMax} kg</p>}
+                <p className="text-sm font-medium text-text-primary">{cat ? t(`calc${cat.charAt(0).toUpperCase() + cat.slice(1)}`) : ''}</p>
+                {unit === 'metric' && <p className="text-xs text-text-secondary">{t('calcHealthyWeightRange', { min: healthyMin, max: healthyMax })}</p>}
               </div>
             </div>
           </div>
@@ -1221,7 +1222,7 @@ function TimeCalc() {
         </div>
         <div className="flex gap-2 items-end mb-3">
           <div className="flex-1">
-            <label className="block text-xs text-text-secondary mb-1">时间转换</label>
+            <label className="block text-xs text-text-secondary mb-1">{t('calcTimeConvert')}</label>
             <input value={val} onChange={e => setVal(e.target.value)} maxLength={15} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
           <div className="w-28">
