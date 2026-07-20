@@ -714,7 +714,7 @@ function MortgageCalc() {
   const [startYear, setStartYear] = useState('2026')
   const [startMonth, setStartMonth] = useState('01')
   const [startDay, setStartDay] = useState('01')
-  const [expandedYears, setExpandedYears] = useState<Record<number, boolean>>({})
+  const [expandedYears, setExpandedYears] = useState<Record<string, boolean>>({})
 
   const startDate = `${startYear}-${startMonth}-${startDay}`
   const daysInMonth = new Date(parseInt(startYear), parseInt(startMonth), 0).getDate()
@@ -791,8 +791,8 @@ function MortgageCalc() {
       totalInterest: comResult.totalInterest + fundResult.totalInterest,
       totalPayment: comResult.totalPayment + fundResult.totalPayment,
       schedule: [],
-      commercial: { monthly: comResult.monthly, amount: ca },
-      fund: { monthly: fundResult.monthly, amount: fa },
+      commercial: { monthly: comResult.monthly, amount: ca, schedule: comResult.schedule },
+      fund: { monthly: fundResult.monthly, amount: fa, schedule: fundResult.schedule },
     }
   })()
 
@@ -1004,6 +1004,61 @@ function MortgageCalc() {
                       ))}
                     </div>
                   )}
+                </div>
+              )
+            })}
+          </div>
+        )}
+        {type === 'mixed' && result && 'commercial' in result && 'fund' in result && (
+          <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
+            <p className="text-xs font-medium text-text-primary mb-2">还款明细</p>
+            {['商业贷款', '公积金贷款'].map((label, idx) => {
+              const part = idx === 0 ? (result as any).commercial : (result as any).fund
+              const schedule = part.schedule || []
+              if (schedule.length === 0) return null
+              return (
+                <div key={label} className="mb-2">
+                  <p className="text-xs text-text-secondary/60 mb-1">{label}</p>
+                  {Array.from({ length: Math.ceil(schedule.length / 12) }, (_, yi) => {
+                    const year = yi + 1
+                    const key = `${label}-${year}`
+                    const isExpanded = expandedYears[key as any]
+                    const yearMonths = schedule.slice(yi * 12, (yi + 1) * 12)
+                    const yearTotal = yearMonths.reduce((s: number, m: any) => s + m.payment, 0)
+                    return (
+                      <div key={year} className="mb-1">
+                        <button
+                          onClick={() => setExpandedYears(prev => ({ ...prev, [key]: !prev[key] }))}
+                          className="w-full flex items-center justify-between p-2 bg-white rounded-sm text-xs hover:bg-accent/5 transition-colors"
+                        >
+                          <span className="font-medium text-text-primary">第{year}年</span>
+                          <span className="text-text-secondary">
+                            还款 ¥{yearTotal.toFixed(0)} {isExpanded ? '▲' : '▼'}
+                          </span>
+                        </button>
+                        {isExpanded && (
+                          <div className="mt-1 space-y-0.5 ml-2">
+                            <div className="flex items-center text-[10px] text-text-secondary/60 px-2 py-1">
+                              <span className="w-8">期数</span>
+                              <span className="w-20 text-right">月供</span>
+                              <span className="w-20 text-right">本金</span>
+                              <span className="w-20 text-right">利息</span>
+                              <span className="w-20 text-right">剩余</span>
+                            </div>
+                            {yearMonths.map((m: any) => (
+                              <div key={m.month} className="flex items-center text-[11px] px-2 py-1 bg-white rounded-sm">
+                                <span className="w-8 text-text-secondary">{m.month}</span>
+                                <span className="w-20 text-right text-text-primary font-mono">¥{m.payment.toFixed(0)}</span>
+                                <span className="w-20 text-right text-text-secondary font-mono">¥{m.principal.toFixed(0)}</span>
+                                <span className="w-20 text-right text-text-secondary font-mono">¥{m.interest.toFixed(0)}</span>
+                                <span className="w-20 text-right text-text-secondary/60 font-mono">¥{m.remaining.toFixed(0)}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
                 </div>
               )
             })}
