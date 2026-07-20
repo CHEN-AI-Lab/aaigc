@@ -21,7 +21,7 @@ type Tab = 'calc' | 'currency' | 'length' | 'weight' | 'area' | 'volume' | 'temp
 const TABS: { id: Tab; label: string }[] = [
   { id: 'calc', label: '计算器' }, { id: 'bmi', label: 'BMI' },
   { id: 'tax', label: '个税' }, { id: 'mortgage', label: '房贷' },
-  { id: 'chinese', label: '数字' }, { id: 'title', label: '称呼' },
+  { id: 'chinese', label: '大写' }, { id: 'title', label: '称呼' },
   { id: 'currency', label: '汇率' }, { id: 'base', label: '进制' },
   { id: 'length', label: '长度' }, { id: 'weight', label: '重量' },
   { id: 'area', label: '面积' }, { id: 'volume', label: '体积' },
