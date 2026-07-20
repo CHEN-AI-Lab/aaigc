@@ -712,6 +712,12 @@ function MortgageCalc() {
   const [startDay, setStartDay] = useState('01')
 
   const startDate = `${startYear}-${startMonth}-${startDay}`
+  const daysInMonth = new Date(parseInt(startYear), parseInt(startMonth), 0).getDate()
+  // Clamp day when month changes
+  useEffect(() => {
+    const max = new Date(parseInt(startYear), parseInt(startMonth), 0).getDate()
+    if (parseInt(startDay) > max) setStartDay(String(max).padStart(2, '0'))
+  }, [startYear, startMonth])
 
   const YEAR_OPTIONS = Array.from({ length: 30 }, (_, i) => String(i + 1))
 
@@ -900,7 +906,7 @@ function MortgageCalc() {
                 {Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0')).map(m => <option key={m} value={m}>{m}月</option>)}
               </select>
               <select value={startDay} onChange={e => setStartDay(e.target.value)} className={inputClass}>
-                {Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0')).map(d => <option key={d} value={d}>{d}日</option>)}
+                {Array.from({ length: daysInMonth }, (_, i) => String(i + 1).padStart(2, '0')).map(d => <option key={d} value={d}>{d}日</option>)}
               </select>
             </div>
           </div>
