@@ -360,7 +360,7 @@
     "calcAisPctOfB": "A は B の {pct}%",
     "calcPctOfB": "{val} は {a}% の B",
     "calcChange": "変化: {pct}%",
-    "timeDesc": "1年=365日 | 1月=30日"
+    "timeDesc": "1年=365日 | 1四半期=91日 | 1月=30日"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

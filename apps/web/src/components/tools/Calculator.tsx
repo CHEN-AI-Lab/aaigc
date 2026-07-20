@@ -1027,7 +1027,7 @@ function TimeCalc() {
       case 'days': return v * SECONDS_PER_DAY
       case 'weeks': return v * SECONDS_PER_WEEK
       case 'months': return v * SECONDS_PER_YEAR / 12
-      case 'quarters': return v * SECONDS_PER_YEAR / 4
+      case 'quarters': return v * 91 * SECONDS_PER_DAY
       case 'years': return v * SECONDS_PER_YEAR
       default: return v
     }
@@ -1041,7 +1041,7 @@ function TimeCalc() {
       case 'days': return v / SECONDS_PER_DAY
       case 'weeks': return v / SECONDS_PER_WEEK
       case 'months': return v / SECONDS_PER_YEAR * 12
-      case 'quarters': return v / SECONDS_PER_YEAR * 4
+      case 'quarters': return v / 91 / SECONDS_PER_DAY
       case 'years': return v / SECONDS_PER_YEAR
       default: return v
     }

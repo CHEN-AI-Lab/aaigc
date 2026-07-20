@@ -360,7 +360,7 @@
     "calcAisPctOfB": "A is {pct}% of B",
     "calcPctOfB": "{val} is {a}% of B",
     "calcChange": "Change: {pct}%",
-    "timeDesc": "1 year = 365 days | 1 month = 30 days"
+    "timeDesc": "1 year = 365 days | 1 quarter = 91 days | 1 month = 30 days"
   },
   "ui": {
     "aboutLink": "About AAIGC →",
