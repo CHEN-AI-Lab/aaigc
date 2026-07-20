@@ -426,7 +426,7 @@ function BmiCalc() {
         {bmi && (
           <div className="mt-3 pt-3 border-t border-[rgba(127,99,21,0.1)]">
             <div className="flex items-center gap-3 mb-2">
-              <div className={`w-10 h-10 rounded-full ${color} flex items-center justify-center text-white font-bold text-lg`}>{bmi.toFixed(1)}</div>
+              <div className={`w-14 h-14 rounded-full ${color} flex items-center justify-center text-white font-bold text-lg`}>{bmi.toFixed(1)}</div>
               <div>
                 <p className="text-sm font-medium text-text-primary">{cat}</p>
                 {unit === 'metric' && <p className="text-xs text-text-secondary">健康体重范围: {healthyMin} - {healthyMax} kg</p>}
