@@ -380,10 +380,20 @@
   },
   "about": {
     "title": "关于 AAIGC",
-    "description": "AAIGC 是由独立开发者 CHEN 创建的一系列 AI 驱动工具和应用集合。",
-    "description2": "我们的使命是让 AI 对每个人都触手可及、实用有效 — 从智能食谱规划到 AI 驱动的创作工具。",
-    "contact": "联系方式",
-    "github": "GitHub"
+    "desc": "AAIGC 是由独立开发者 CHEN 打造的免费在线工具集合。所有工具均在浏览器本地运行，无需将数据发送到服务器，也不收集任何个人信息。",
+    "statTools": "个在线工具",
+    "statCategories": "个分类",
+    "statLanguages": "种语言",
+    "offerTitle": "工具分类",
+    "toolsCount": "个工具",
+    "devCat": "开发工具",
+    "textCat": "文本工具",
+    "securityCat": "安全工具",
+    "timeCat": "时间工具",
+    "imageCat": "图像工具",
+    "mathCat": "数学工具",
+    "convertCat": "格式转换",
+    "contact": "联系方式"
   },
   "errors": {
     "notFound": "页面未找到",

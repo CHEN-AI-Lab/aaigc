@@ -380,10 +380,20 @@
   },
   "about": {
     "title": "AAIGCについて",
-    "description": "AAIGC は、独立開発者 CHEN が作成した AI 駆動ツールとアプリケーションのコレクションです。",
-    "description2": "私たちの使命は、AI をすべての人がアクセス可能で実用的なものにすることです。スマートなレシピ計画から AI 駆動のコンテンツ作成まで。",
-    "contact": "お問い合わせ",
-    "github": "GitHub"
+    "desc": "AAIGC は、独立開発者 CHEN が構築した無料オンラインツールのコレクションです。すべてのツールはブラウザ内で完結し、サーバーにデータを送信することはなく、個人情報も収集しません。",
+    "statTools": "個のツール",
+    "statCategories": "個のカテゴリ",
+    "statLanguages": "言語対応",
+    "offerTitle": "ツールカテゴリ",
+    "toolsCount": "個のツール",
+    "devCat": "開発ツール",
+    "textCat": "テキストツール",
+    "securityCat": "セキュリティツール",
+    "timeCat": "時間ツール",
+    "imageCat": "画像ツール",
+    "mathCat": "数学ツール",
+    "convertCat": "変換ツール",
+    "contact": "お問い合わせ"
   },
   "errors": {
     "notFound": "ページが見つかりません",

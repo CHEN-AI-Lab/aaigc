@@ -380,10 +380,20 @@
   },
   "about": {
     "title": "About AAIGC",
-    "description": "AAIGC is a collection of AI-powered tools and applications built by independent developer CHEN.",
-    "description2": "Our mission is to make AI accessible and useful for everyone — from smart recipe planning to AI-powered content creation.",
-    "contact": "Contact",
-    "github": "GitHub"
+    "desc": "AAIGC is a collection of free online tools and applications built by independent developer CHEN. Every tool runs entirely in your browser — nothing is sent to a server, and no data is collected.",
+    "statTools": "online tools",
+    "statCategories": "categories",
+    "statLanguages": "languages",
+    "offerTitle": "What We Offer",
+    "toolsCount": "tools",
+    "devCat": "Developer Tools",
+    "textCat": "Text Tools",
+    "securityCat": "Security Tools",
+    "timeCat": "Time Tools",
+    "imageCat": "Image Tools",
+    "mathCat": "Math Tools",
+    "convertCat": "Converters",
+    "contact": "Contact"
   },
   "errors": {
     "notFound": "Page not found",
