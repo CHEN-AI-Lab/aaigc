@@ -1217,7 +1217,7 @@ function TitleCalc() {
   )
 }
 
-// ─── Number Base Converter (auto-convert) ────────────
+// ─── Number Base Converter (auto-convert, validated) ──
 function BaseCalc() {
   const t = useTranslations('tools')
   const [input, setInput] = useState('')
@@ -1226,35 +1226,58 @@ function BaseCalc() {
     { base: 2, label: 'BIN' }, { base: 8, label: 'OCT' },
     { base: 10, label: 'DEC' }, { base: 16, label: 'HEX' },
   ]
-  const decimal = input.trim() ? parseInt(input, fromBase) : NaN
-  const results = isNaN(decimal) ? [] : BASES.map(({ base, label }) => ({
+
+  // Valid character patterns per base
+  const validPatterns: Record<number, RegExp> = {
+    2: /^[01]+$/i,
+    8: /^[0-7]+$/,
+    10: /^[0-9]+$/,
+    16: /^[0-9a-f]+$/i,
+  }
+
+  const validChars: Record<number, string> = {
+    2: '0, 1',
+    8: '0-7',
+    10: '0-9',
+    16: '0-9, A-F',
+  }
+
+  const error = input.trim() && !validPatterns[fromBase].test(input.trim())
+    ? `输入包含无效字符。${fromBase === 2 ? '二进制' : fromBase === 8 ? '八进制' : fromBase === 10 ? '十进制' : '十六进制'}只允许: ${validChars[fromBase]}`
+    : ''
+
+  const decimal = input.trim() && !error ? parseInt(input.trim(), fromBase) : NaN
+  const results = error || isNaN(decimal) ? [] : BASES.map(({ base, label }) => ({
     base, label,
     labelFull: `${label} (${t(`base${base}`)})`,
     value: decimal.toString(base).toUpperCase(),
   }))
 
   return (
-    <div className="max-w-sm mx-auto space-y-3">
-      <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
+    <div className="max-w-md mx-auto space-y-3">
+      <div className="bg-amber-50 border border-amber-200 rounded-sm p-3 text-xs text-amber-800 leading-relaxed">
+        {t('baseDesc')}
+      </div>
+      <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-5">
         <div className="flex gap-2 mb-3">
           <input value={input} onChange={e => setInput(e.target.value)} placeholder="输入数字"
-            className="flex-1 p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary" />
-          <select value={fromBase} onChange={e => setFromBase(parseInt(e.target.value))}
-            className="p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
+            className="flex-1 p-3 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary focus:outline-none focus:border-accent/30" />
+          <select value={fromBase} onChange={e => { setInput(''); setFromBase(parseInt(e.target.value)) }}
+            className="p-3 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary focus:outline-none">
             {BASES.map(b => <option key={b.base} value={b.base}>{b.label} ({t(`base${b.base}`)})</option>)}
           </select>
         </div>
+        {error && <p className="text-red-500 text-xs mb-2">{error}</p>}
         {results.length > 0 && (
-          <div className="space-y-1">
+          <div className="space-y-1.5">
             {results.map(r => (
-              <div key={r.base} className="flex items-center gap-2 p-2 bg-white rounded-sm border border-[rgba(127,99,21,0.08)] text-sm">
-                <span className="w-36 text-accent font-mono text-xs font-bold">{r.labelFull}</span>
-                <code className="flex-1 font-mono text-text-primary">{r.value}</code>
+              <div key={r.base} className="flex items-center gap-3 p-3 bg-white rounded-sm border border-[rgba(127,99,21,0.08)]">
+                <span className="w-36 text-accent font-mono text-xs font-bold shrink-0">{r.labelFull}</span>
+                <code className="flex-1 font-mono text-sm text-text-primary break-all">{r.value}</code>
               </div>
             ))}
           </div>
         )}
-        {input.trim() && isNaN(decimal) && <p className="text-red-500 text-xs">输入无效</p>}
       </div>
     </div>
   )
