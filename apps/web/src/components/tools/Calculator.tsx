@@ -1010,42 +1010,45 @@ function TimeCalc() {
   const n = parseFloat(val)
 
   // 1 year = 365 days, 1 month = 365/12 days
-  const SECONDS_PER_YEAR = 31536000  // 365 * 86400
-  const SECONDS_PER_MONTH = 2628000  // 365/12 * 86400
-  const SECONDS_PER_WEEK = 7 * 86400
+  const SECONDS_PER_YEAR = 31536000  // 365 days
+  const SECONDS_PER_MONTH = 2592000   // 30 days
+  const SECONDS_PER_WEEK = 604800     // 7 days
   const SECONDS_PER_DAY = 86400
   const SECONDS_PER_HOUR = 3600
   const SECONDS_PER_MINUTE = 60
 
   const toSeconds = (v: number, u: string) => {
-    switch (u) {
-      case 'seconds': return v
-      case 'minutes': return v * SECONDS_PER_MINUTE
-      case 'hours': return v * SECONDS_PER_HOUR
-      case 'days': return v * SECONDS_PER_DAY
-      case 'weeks': return v * SECONDS_PER_WEEK
-      case 'months': return v * SECONDS_PER_MONTH
-      case 'years': return v * SECONDS_PER_YEAR
-      default: return v
+      switch (u) {
+        case 'seconds': return v
+        case 'minutes': return v * SECONDS_PER_MINUTE
+        case 'hours': return v * SECONDS_PER_HOUR
+        case 'days': return v * SECONDS_PER_DAY
+        case 'weeks': return v * SECONDS_PER_WEEK
+        case 'months': return v * SECONDS_PER_MONTH
+        case 'quarters': return v * SECONDS_PER_MONTH * 3
+        case 'years': return v * SECONDS_PER_YEAR
+        default: return v
+      }
     }
-  }
 
-  const toUnit = (v: number, u: string) => {
-    switch (u) {
-      case 'seconds': return v
-      case 'minutes': return v / SECONDS_PER_MINUTE
-      case 'hours': return v / SECONDS_PER_HOUR
-      case 'days': return v / SECONDS_PER_DAY
-      case 'weeks': return v / SECONDS_PER_WEEK
-      case 'months': return v / SECONDS_PER_MONTH
-      case 'years': return v / SECONDS_PER_YEAR
-      default: return v
+    const toUnit = (v: number, u: string) => {
+      switch (u) {
+        case 'seconds': return v
+        case 'minutes': return v / SECONDS_PER_MINUTE
+        case 'hours': return v / SECONDS_PER_HOUR
+        case 'days': return v / SECONDS_PER_DAY
+        case 'weeks': return v / SECONDS_PER_WEEK
+        case 'months': return v / SECONDS_PER_MONTH
+        case 'quarters': return v / (SECONDS_PER_MONTH * 3)
+        case 'years': return v / SECONDS_PER_YEAR
+        default: return v
+      }
     }
-  }
 
   // Fixed display order: 年, 月, 周, 天, 时, 分, 秒
   const units = [
     { label: 'years', labelZh: '年' },
+    { label: 'quarters', labelZh: '季度' },
     { label: 'months', labelZh: '月' },
     { label: 'weeks', labelZh: '周' },
     { label: 'days', labelZh: '天' },
