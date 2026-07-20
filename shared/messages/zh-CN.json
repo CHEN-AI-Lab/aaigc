@@ -502,7 +502,13 @@
     "calcYearRepayment": "还款 ¥{amount}",
     "calcYearSuffix": "年",
     "calcMonthSuffix": "月",
-    "calcDaySuffix": "日"
+    "calcDaySuffix": "日",
+    "calcChineseNote": "中文大写数字和罗马数字转换。中文大写为中文专属内容，不可翻译。",
+    "calcChineseMode": "中文大写",
+    "calcRomanMode": "罗马数字",
+    "calcRomanLimit": "罗马数字仅支持 1-3999",
+    "calcResult": "结果",
+    "calcTitleNote": "中文亲属关系查询。此为中文专属内容，不可翻译。"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",

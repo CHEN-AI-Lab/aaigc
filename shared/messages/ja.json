@@ -502,7 +502,13 @@
     "calcYearRepayment": "返済 ¥{amount}",
     "calcYearSuffix": "年",
     "calcMonthSuffix": "月",
-    "calcDaySuffix": "日"
+    "calcDaySuffix": "日",
+    "calcChineseNote": "中国語大字とローマ数字の変換。中国語大字は中国語専用の内容です。",
+    "calcChineseMode": "中国語大字",
+    "calcRomanMode": "ローマ数字",
+    "calcRomanLimit": "ローマ数字は 1-3999 のみ対応",
+    "calcResult": "結果",
+    "calcTitleNote": "中国語の親族関係検索。中国語専用の内容です。"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

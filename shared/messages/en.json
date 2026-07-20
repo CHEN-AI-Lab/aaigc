@@ -502,7 +502,13 @@
     "calcYearRepayment": "Repayment ¥{amount}",
     "calcYearSuffix": "-",
     "calcMonthSuffix": "-",
-    "calcDaySuffix": ""
+    "calcDaySuffix": "",
+    "calcChineseNote": "Chinese uppercase number and Roman numeral conversion. Chinese uppercase digits are Chinese-specific.",
+    "calcChineseMode": "Chinese Num",
+    "calcRomanMode": "Roman",
+    "calcRomanLimit": "Roman numerals support 1-3999 only",
+    "calcResult": "Result",
+    "calcTitleNote": "Chinese family relationship query. This is Chinese-specific content and cannot be translated."
   },
   "ui": {
     "aboutLink": "About AAIGC →",

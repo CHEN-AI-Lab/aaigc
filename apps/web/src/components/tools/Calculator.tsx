@@ -21,7 +21,7 @@ type Tab = 'calc' | 'currency' | 'length' | 'weight' | 'area' | 'volume' | 'temp
 const TABS: { id: Tab; label: string }[] = [
   { id: 'calc', label: '计算器' }, { id: 'bmi', label: 'BMI' },
   { id: 'tax', label: '个税' }, { id: 'mortgage', label: '房贷' },
-  { id: 'chinese', label: '大写' }, { id: 'title', label: '称呼' },
+  { id: 'chinese', label: '数字' }, { id: 'title', label: '称呼' },
   { id: 'currency', label: '汇率' }, { id: 'base', label: '进制' },
   { id: 'length', label: '长度' }, { id: 'weight', label: '重量' },
   { id: 'area', label: '面积' }, { id: 'volume', label: '体积' },
@@ -1118,7 +1118,7 @@ function ChineseNumCalc() {
     if (dec === 0) s += '整'
     else {
       if (dec >= 10) s += DIGITS[Math.floor(dec / 10)] + '角'
-      if (dec % 10 !== 0) s += DIGITS[dec % 10] + t('calcMinutes')
+      if (dec % 10 !== 0) s += DIGITS[dec % 10] + '分'
     }
     return s
   })()
@@ -1305,6 +1305,9 @@ function TitleCalc() {
 
   return (
       <div className="max-w-lg mx-auto space-y-3">
+        <div className="bg-amber-50 border border-amber-200 rounded-sm p-3 text-xs text-amber-800 leading-relaxed">
+          {t('calcTitleNote')}
+        </div>
         <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
           <div className="flex items-center justify-between mb-3">
                     <p className="text-xs text-text-secondary/60">{t('calcTitleSelectRelation')}</p>
