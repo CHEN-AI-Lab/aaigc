@@ -1137,13 +1137,13 @@ function TitleCalc() {
     else if (selected1) setSelected1('')
   }
 
-  // Most common 16 relations for quick reference
+  // Most common 15 relations for quick reference (3 columns × 5 rows)
   const commonRelations = [
-    '爸爸的爸爸', '爸爸的妈妈', '妈妈的爸爸', '妈妈的妈妈',
-    '爸爸的哥哥', '爸爸的弟弟', '爸爸的姐妹',
-    '妈妈的哥哥', '妈妈的弟弟', '妈妈的姐妹',
-    '哥哥的老婆', '弟弟的老婆', '姐姐的老公', '妹妹的老公',
-    '爷爷的爸爸', '爷爷的妈妈',
+    '爸爸的爸爸', '爸爸的妈妈', '妈妈的爸爸',
+    '妈妈的妈妈', '爸爸的哥哥', '爸爸的弟弟',
+    '爸爸的姐妹', '妈妈的哥哥', '妈妈的弟弟',
+    '妈妈的姐妹', '哥哥的老婆', '弟弟的老婆',
+    '姐姐的老公', '妹妹的老公', '爷爷的爸爸',
   ]
 
   const btnClass = (selected: boolean) =>
@@ -1152,34 +1152,34 @@ function TitleCalc() {
     }`
 
   return (
-    <div className="max-w-sm mx-auto space-y-3">
-      <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
-        <div className="flex items-center justify-between mb-2">
-          <p className="text-xs text-text-secondary/60">选择关系</p>
-          <div className="flex gap-1">
-            <button onClick={back}
-              className="px-2 py-1 text-xs rounded-sm bg-white text-text-secondary border border-[rgba(127,99,21,0.1)] hover:border-accent/30">回退</button>
-            <button onClick={clear}
-              className="px-2 py-1 text-xs rounded-sm bg-white text-red-400 border border-[rgba(127,99,21,0.1)] hover:border-red-300">清除</button>
+      <div className="max-w-lg mx-auto space-y-3">
+        <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-xs text-text-secondary/60">选择关系</p>
+            <div className="flex gap-1">
+              <button onClick={back}
+                className="px-2 py-1 text-xs rounded-sm bg-white text-text-secondary border border-[rgba(127,99,21,0.1)] hover:border-accent/30">回退</button>
+              <button onClick={clear}
+                className="px-2 py-1 text-xs rounded-sm bg-white text-red-400 border border-[rgba(127,99,21,0.1)] hover:border-red-300">清除</button>
+            </div>
           </div>
-        </div>
-        <div className="flex items-start gap-3">
-          <div className="flex flex-wrap gap-1.5 flex-1">
-            {row1.map(name => (
-              <button key={name} onClick={() => setSelected1(selected1 === name ? '' : name)}
-                className={btnClass(selected1 === name)}>{name}</button>
-            ))}
+          <div className="flex items-center gap-2">
+            <div className="grid grid-cols-5 gap-1.5 flex-1">
+              {row1.map(name => (
+                <button key={name} onClick={() => setSelected1(selected1 === name ? '' : name)}
+                  className={btnClass(selected1 === name)}>{name}</button>
+              ))}
+            </div>
+            <div className="shrink-0">
+              <span className="text-base text-text-secondary font-medium">的</span>
+            </div>
+            <div className="grid grid-cols-5 gap-1.5 flex-1">
+              {row3.map(name => (
+                <button key={name} onClick={() => setSelected3(selected3 === name ? '' : name)}
+                  className={btnClass(selected3 === name)}>{name}</button>
+              ))}
+            </div>
           </div>
-          <div className="pt-1 shrink-0">
-            <span className="text-sm text-text-secondary font-medium">的</span>
-          </div>
-          <div className="flex flex-wrap gap-1.5 flex-1 justify-end">
-            {row3.map(name => (
-              <button key={name} onClick={() => setSelected3(selected3 === name ? '' : name)}
-                className={btnClass(selected3 === name)}>{name}</button>
-            ))}
-          </div>
-        </div>
         {selected1 && selected3 && (
           <div className={`mt-3 p-3 bg-white rounded-sm border text-center ${
             isInvalid ? 'border-red-300' : 'border-[rgba(127,99,21,0.08)]'
@@ -1193,7 +1193,7 @@ function TitleCalc() {
       </div>
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-3">
         <p className="text-xs text-text-secondary/60 mb-2">常用关系查询</p>
-        <div className="grid grid-cols-2 gap-1">
+        <div className="grid grid-cols-3 gap-1">
           {commonRelations.map(k => {
             const parts = k.split('的')
             return (
