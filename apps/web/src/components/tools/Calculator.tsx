@@ -500,10 +500,14 @@ function TaxCalc() {
   // Monthly taxable income = salary - 5000 threshold - 五险一金 - 专项附加扣除
   const monthlyTaxable = s - 5000 - socialInsurance - specialDedTotal
 
-  // Salary tax: annualize using months worked
+  // Salary tax: annual income - annual deductions (always 12 months for deductions)
   const salaryResult = (() => {
-    if (isNaN(parseFloat(salary)) || monthlyTaxable <= 0) return null
-    const annualTaxable = monthlyTaxable * actualMonths
+    if (isNaN(parseFloat(salary))) return null
+    const annualIncome = s * actualMonths
+    const annualDeduction = 5000 * 12  // Standard deduction is always 12 months
+    const annualSocialInsurance = socialInsurance * actualMonths
+    const annualSpecialDed = specialDedTotal * actualMonths
+    const annualTaxable = annualIncome - annualDeduction - annualSocialInsurance - annualSpecialDed
     return calcTax(annualTaxable, yearlyBrackets)
   })()
 
