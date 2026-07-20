@@ -589,6 +589,18 @@ function MortgageCalc() {
               <span className="text-text-secondary text-sm">月供</span>
               <span className="text-accent font-bold text-lg">¥{monthly.total.toFixed(0)}</span>
             </div>
+            {type === 'mixed' && (
+              <div className="p-2 bg-white rounded-sm text-xs space-y-1">
+                <div className="flex justify-between">
+                  <span className="text-text-secondary">商业贷款</span>
+                  <span className="font-medium">{(p * (1 - Math.min(100, Math.max(0, parseFloat(fundPortion) || 50)) / 100)).toFixed(0)} 元</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-text-secondary">公积金贷款</span>
+                  <span className="font-medium">{(p * Math.min(100, Math.max(0, parseFloat(fundPortion) || 50)) / 100).toFixed(0)} 元</span>
+                </div>
+              </div>
+            )}
             {(type === 'mixed' || type === 'commercial') && monthly.commercial > 0 && (
               <div className="flex justify-between p-2 bg-white rounded-sm text-xs">
                 <span className="text-text-secondary">商业贷款月供</span>
