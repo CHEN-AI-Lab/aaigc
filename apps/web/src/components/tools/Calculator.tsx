@@ -932,8 +932,8 @@ function MortgageCalc() {
             )}
             {effectiveRate !== '' && (
               <p className="text-xs text-text-secondary/60">
-                {type === 'commercial' ? `{t('calcMortgageRateInfo')}: LPR${parseFloat(bp || '0') >= 0 ? '+' : ''}${bp}BP = ${effectiveRate}%`
-                  : type === 'fund' ? `{t('calcMortgageFundRate')}: ${effectiveRate}%`
+                {type === 'commercial' ? t('calcMortgageRateInfo', { sign: parseFloat(bp || '0') >= 0 ? '+' : '', bp, rate: effectiveRate })
+                  : type === 'fund' ? `${t('calcMortgageFundRate')}: ${effectiveRate}%`
                   : ''}
               </p>
             )}
