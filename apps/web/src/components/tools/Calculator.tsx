@@ -1163,20 +1163,22 @@ function TitleCalc() {
               className="px-2 py-1 text-xs rounded-sm bg-white text-red-400 border border-[rgba(127,99,21,0.1)] hover:border-red-300">清除</button>
           </div>
         </div>
-        <div className="flex flex-wrap gap-1.5 mb-2">
-          {row1.map(name => (
-            <button key={name} onClick={() => setSelected1(selected1 === name ? '' : name)}
-              className={btnClass(selected1 === name)}>{name}</button>
-          ))}
-        </div>
-        <div className="flex items-center gap-2 mb-2">
-          <span className="text-sm text-text-secondary font-medium">的</span>
-        </div>
-        <div className="flex flex-wrap gap-1.5 mb-3">
-          {row3.map(name => (
-            <button key={name} onClick={() => setSelected3(selected3 === name ? '' : name)}
-              className={btnClass(selected3 === name)}>{name}</button>
-          ))}
+        <div className="flex items-start gap-3">
+          <div className="flex flex-wrap gap-1.5 flex-1">
+            {row1.map(name => (
+              <button key={name} onClick={() => setSelected1(selected1 === name ? '' : name)}
+                className={btnClass(selected1 === name)}>{name}</button>
+            ))}
+          </div>
+          <div className="pt-1 shrink-0">
+            <span className="text-sm text-text-secondary font-medium">的</span>
+          </div>
+          <div className="flex flex-wrap gap-1.5 flex-1 justify-end">
+            {row3.map(name => (
+              <button key={name} onClick={() => setSelected3(selected3 === name ? '' : name)}
+                className={btnClass(selected3 === name)}>{name}</button>
+            ))}
+          </div>
         </div>
         {selected1 && selected3 && (
           <div className={`mt-3 p-3 bg-white rounded-sm border text-center ${
