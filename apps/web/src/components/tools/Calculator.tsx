@@ -167,7 +167,7 @@ function CalcPanel() {
 
 // ─── Improved Currency Converter ─────────────────────
 function CurrencyCalc() {
-  const [amount, setAmount] = useState('')
+  const [amount, setAmount] = useState('100')
   const [from, setFrom] = useState('USD')
   const [to, setTo] = useState('CNY')
   const a = parseFloat(amount)
@@ -370,9 +370,9 @@ function TempCalc() {
 
 // ─── Improved BMI (age/gender reference) ─────────────
 function BmiCalc() {
-  const [h, setH] = useState('')
-  const [w, setW] = useState('')
-  const [age, setAge] = useState('')
+  const [h, setH] = useState('170')
+  const [w, setW] = useState('70')
+  const [age, setAge] = useState('30')
   const [gender, setGender] = useState<'male' | 'female'>('male')
   const [unit, setUnit] = useState<'metric' | 'imperial'>('metric')
   const height = parseFloat(h); const weight = parseFloat(w); const a = parseInt(age)
@@ -442,9 +442,9 @@ function BmiCalc() {
 
 // ─── Tax Calculator (月薪 + 五险一金 + 专项附加扣除 + 年终奖) ─
 function TaxCalc() {
-  const [salary, setSalary] = useState('')
+  const [salary, setSalary] = useState('15000')
   const [bonus, setBonus] = useState('')
-  const [monthsWorked, setMonthsWorked] = useState('')
+  const [monthsWorked, setMonthsWorked] = useState('12')
 
   // 五险一金 percentage inputs
   const [pensionPct, setPensionPct] = useState('8')
@@ -704,9 +704,9 @@ function TaxCalc() {
 function MortgageCalc() {
   const [type, setType] = useState<'commercial' | 'fund' | 'mixed'>('commercial')
   const [repayType, setRepayType] = useState<'equal-payment' | 'equal-principal'>('equal-payment')
-  const [loanAmount, setLoanAmount] = useState('')
-  const [commercialAmount, setCommercialAmount] = useState('')
-  const [fundAmount, setFundAmount] = useState('')
+  const [loanAmount, setLoanAmount] = useState('300')
+  const [commercialAmount, setCommercialAmount] = useState('200')
+  const [fundAmount, setFundAmount] = useState('100')
   const [lpr, setLpr] = useState('3.5')
   const [bp, setBp] = useState('0')
   const [fundRate, setFundRate] = useState('3.15')
@@ -1072,7 +1072,7 @@ function MortgageCalc() {
 
 // ─── Chinese Uppercase Number ────────────────────────
 function ChineseNumCalc() {
-  const [num, setNum] = useState('')
+  const [num, setNum] = useState('1234567890')
   const n = parseFloat(num)
   const DIGITS = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖']
   const UNITS = ['', '拾', '佰', '仟']
@@ -1354,7 +1354,7 @@ function TitleCalc() {
 // ─── Number Base Converter (auto-convert, validated) ──
 function BaseCalc() {
   const t = useTranslations('tools')
-  const [input, setInput] = useState('')
+  const [input, setInput] = useState('255')
   const [fromBase, setFromBase] = useState(10)
   const BASES = [
     { base: 2, label: 'BIN' }, { base: 8, label: 'OCT' },
