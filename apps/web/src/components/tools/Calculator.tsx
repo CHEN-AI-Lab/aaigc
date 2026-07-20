@@ -457,6 +457,7 @@ function TaxCalc() {
   const [housingRent, setHousingRent] = useState('') // 住房租金
   const [elderlyCare, setElderlyCare] = useState('') // 赡养老人
   const [infantCare, setInfantCare] = useState('')   // 3岁以下婴幼儿照护
+  const [showDeductions, setShowDeductions] = useState(false)
 
   const s = parseFloat(salary) || 0
   const b = parseFloat(bonus) || 0
@@ -515,7 +516,7 @@ function TaxCalc() {
   })()
 
   const totalTax = (salaryResult?.tax || 0) + (bonusResult?.tax || 0)
-  const totalIncome = (salaryResult ? s * actualMonths : 0) + (bonusResult?.bonus || 0)
+  const totalIncome = s * actualMonths + b
   const afterTax = totalIncome - totalTax
 
   const inputClass = "w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary"
@@ -563,39 +564,51 @@ function TaxCalc() {
           </div>
         </div>
 
-        {/* 专项附加扣除 */}
+        {/* 专项附加扣除 - collapsible */}
         <div className="mb-3">
-          <p className="text-xs font-medium text-text-primary mb-2">专项附加扣除 (月均金额, 元)</p>
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <label className={labelClass}>子女教育</label>
-              <input value={eduDed} onChange={e => setEduDed(e.target.value)} className={inputClass} />
+          <button onClick={() => setShowDeductions(!showDeductions)}
+            className="flex items-center gap-1 text-xs font-medium text-text-primary mb-2 w-full text-left">
+            <span className="transition-transform duration-200" style={{ transform: showDeductions ? 'rotate(90deg)' : 'rotate(0deg)' }}>▶</span>
+            专项附加扣除 (月均金额, 元)
+          </button>
+          {showDeductions && (
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className={labelClass}>子女教育</label>
+                <input value={eduDed} onChange={e => setEduDed(e.target.value)} className={inputClass} />
+              </div>
+              <div>
+                <label className={labelClass}>继续教育</label>
+                <input value={contEdu} onChange={e => setContEdu(e.target.value)} className={inputClass} />
+              </div>
+              <div>
+                <label className={labelClass}>大病医疗</label>
+                <input value={medicalDed} onChange={e => setMedicalDed(e.target.value)} className={inputClass} />
+              </div>
+              <div>
+                <label className={labelClass}>住房贷款利息</label>
+                <input value={housingInt} onChange={e => {
+                  setHousingInt(e.target.value)
+                  if (e.target.value) setHousingRent('')
+                }} className={inputClass} />
+              </div>
+              <div>
+                <label className={labelClass}>住房租金</label>
+                <input value={housingRent} onChange={e => {
+                  setHousingRent(e.target.value)
+                  if (e.target.value) setHousingInt('')
+                }} className={inputClass} />
+              </div>
+              <div>
+                <label className={labelClass}>赡养老人</label>
+                <input value={elderlyCare} onChange={e => setElderlyCare(e.target.value)} className={inputClass} />
+              </div>
+              <div className="col-span-2">
+                <label className={labelClass}>3岁以下婴幼儿照护</label>
+                <input value={infantCare} onChange={e => setInfantCare(e.target.value)} className={inputClass} />
+              </div>
             </div>
-            <div>
-              <label className={labelClass}>继续教育</label>
-              <input value={contEdu} onChange={e => setContEdu(e.target.value)} className={inputClass} />
-            </div>
-            <div>
-              <label className={labelClass}>大病医疗</label>
-              <input value={medicalDed} onChange={e => setMedicalDed(e.target.value)} className={inputClass} />
-            </div>
-            <div>
-              <label className={labelClass}>住房贷款利息</label>
-              <input value={housingInt} onChange={e => setHousingInt(e.target.value)} className={inputClass} />
-            </div>
-            <div>
-              <label className={labelClass}>住房租金</label>
-              <input value={housingRent} onChange={e => setHousingRent(e.target.value)} className={inputClass} />
-            </div>
-            <div>
-              <label className={labelClass}>赡养老人</label>
-              <input value={elderlyCare} onChange={e => setElderlyCare(e.target.value)} className={inputClass} />
-            </div>
-            <div className="col-span-2">
-              <label className={labelClass}>3岁以下婴幼儿照护</label>
-              <input value={infantCare} onChange={e => setInfantCare(e.target.value)} className={inputClass} />
-            </div>
-          </div>
+          )}
         </div>
 
         {/* Results */}
@@ -616,7 +629,7 @@ function TaxCalc() {
           </div>
         )}
 
-        {(salaryResult || bonusResult) && (
+        {s > 0 && (
           <div className="mt-3 space-y-2">
             {salaryResult && (
               <>
@@ -650,7 +663,7 @@ function TaxCalc() {
                 </div>
               </>
             )}
-            {salaryResult && bonusResult && (
+            {(salaryResult || bonusResult) && (
               <div className="flex justify-between text-sm p-2 bg-white rounded-sm border-t border-[rgba(127,99,21,0.1)]">
                 <span className="text-text-secondary font-medium">合计个税</span>
                 <span className="text-accent font-bold">¥{totalTax.toFixed(0)}</span>
@@ -687,10 +700,11 @@ function MortgageCalc() {
   const [loanAmount, setLoanAmount] = useState('')
   const [commercialAmount, setCommercialAmount] = useState('')
   const [fundAmount, setFundAmount] = useState('')
-  const [years, setYears] = useState('30')
   const [lpr, setLpr] = useState('3.85')
   const [bp, setBp] = useState('0')
   const [fundRate, setFundRate] = useState('3.15')
+  const [commercialYears, setCommercialYears] = useState('30')
+  const [fundYears, setFundYears] = useState('25')
   const [startDate, setStartDate] = useState('')
 
   const YEAR_OPTIONS = Array.from({ length: 30 }, (_, i) => String(i + 1))
@@ -729,7 +743,8 @@ function MortgageCalc() {
     return { monthly: schedule[0]?.payment || 0, totalInterest, totalPayment, schedule }
   }
 
-  const n = parseInt(years) * 12
+  const commercialN = parseInt(commercialYears) * 12
+  const fundN = parseInt(fundYears) * 12
   const commercialRate = (parseFloat(lpr) + parseFloat(bp || '0') / 100) / 100 / 12
   const fundMonthlyRate = (parseFloat(fundRate) || 0) / 100 / 12
 
@@ -738,22 +753,22 @@ function MortgageCalc() {
 
     if (type === 'commercial') {
       const principal = parseFloat(loanAmount) || 0
-      if (principal <= 0 || n <= 0) return null
-      return calc(principal, commercialRate, n)
+      if (principal <= 0 || commercialN <= 0) return null
+      return calc(principal, commercialRate, commercialN)
     }
 
     if (type === 'fund') {
       const principal = parseFloat(loanAmount) || 0
-      if (principal <= 0 || n <= 0) return null
-      return calc(principal, fundMonthlyRate, n)
+      if (principal <= 0 || fundN <= 0) return null
+      return calc(principal, fundMonthlyRate, fundN)
     }
 
     // Mixed
     const ca = parseFloat(commercialAmount) || 0
     const fa = parseFloat(fundAmount) || 0
-    if (ca + fa <= 0 || n <= 0) return null
-    const comResult = calc(ca, commercialRate, n)
-    const fundResult = calc(fa, fundMonthlyRate, n)
+    if (ca + fa <= 0) return null
+    const comResult = calc(ca, commercialRate, commercialN)
+    const fundResult = calc(fa, fundMonthlyRate, fundN)
     return {
       monthly: comResult.monthly + fundResult.monthly,
       totalInterest: comResult.totalInterest + fundResult.totalInterest,
@@ -818,13 +833,33 @@ function MortgageCalc() {
             </>
           )}
 
-          {/* Years dropdown */}
-          <div>
-            <label className={labelClass}>按揭年数</label>
-            <select value={years} onChange={e => setYears(e.target.value)} className={inputClass}>
-              {YEAR_OPTIONS.map(y => <option key={y} value={y}>{y}年</option>)}
-            </select>
-          </div>
+          {/* Years dropdowns */}
+          {type !== 'mixed' ? (
+            <div className="col-span-2">
+              <label className={labelClass}>按揭年数</label>
+              <select value={type === 'commercial' ? commercialYears : fundYears} onChange={e => {
+                if (type === 'commercial') setCommercialYears(e.target.value)
+                else setFundYears(e.target.value)
+              }} className={inputClass}>
+                {YEAR_OPTIONS.map(y => <option key={y} value={y}>{y}年</option>)}
+              </select>
+            </div>
+          ) : (
+            <>
+              <div>
+                <label className={labelClass}>商业贷款年限</label>
+                <select value={commercialYears} onChange={e => setCommercialYears(e.target.value)} className={inputClass}>
+                  {YEAR_OPTIONS.map(y => <option key={y} value={y}>{y}年</option>)}
+                </select>
+              </div>
+              <div>
+                <label className={labelClass}>公积金贷款年限</label>
+                <select value={fundYears} onChange={e => setFundYears(e.target.value)} className={inputClass}>
+                  {YEAR_OPTIONS.map(y => <option key={y} value={y}>{y}年</option>)}
+                </select>
+              </div>
+            </>
+          )}
 
           {/* Rate - LPR + BP for commercial */}
           {type !== 'fund' && (
@@ -851,7 +886,7 @@ function MortgageCalc() {
           {/* Start date */}
           <div className="col-span-2">
             <label className={labelClass}>首次还款日期</label>
-            <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className={inputClass} />
+            <input type="text" value={startDate} onChange={e => setStartDate(e.target.value)} placeholder="2026-01-01" className={inputClass} />
           </div>
         </div>
 
@@ -965,16 +1000,8 @@ function formatNumber(n: number): string {
   if (Number.isInteger(n)) {
     return n.toLocaleString('en-US')
   }
-  // Otherwise check if it's effectively an integer
-  const s = n.toFixed(6)
-  // Remove trailing zeros
-  const trimmed = s.replace(/\.?0+$/, '')
-  // If the trimmed result is integer-like, format with thousands separator
-  const parsed = parseFloat(trimmed)
-  if (Number.isInteger(parsed)) {
-    return parsed.toLocaleString('en-US')
-  }
-  return trimmed
+  // Otherwise show 2 decimal places
+  return n.toFixed(2)
 }
 
 function TimeCalc() {
@@ -982,9 +1009,9 @@ function TimeCalc() {
   const [from, setFrom] = useState('seconds')
   const n = parseFloat(val)
 
-  // 1 year = 365.25 days, 1 month = 365.25/12 days
-  const SECONDS_PER_YEAR = 365.25 * 86400
-  const SECONDS_PER_MONTH = SECONDS_PER_YEAR / 12
+  // 1 year = 365 days, 1 month = 365/12 days
+  const SECONDS_PER_YEAR = 31536000  // 365 * 86400
+  const SECONDS_PER_MONTH = 2628000  // 365/12 * 86400
   const SECONDS_PER_WEEK = 7 * 86400
   const SECONDS_PER_DAY = 86400
   const SECONDS_PER_HOUR = 3600
@@ -1062,8 +1089,10 @@ function TitleCalc() {
   const relations: Record<string, string> = {
     '爸爸的爸爸': '爷爷', '爸爸的妈妈': '奶奶',
     '妈妈的爸爸': '外公', '妈妈的妈妈': '外婆',
-    '爸爸的哥哥': '伯父', '爸爸的弟弟': '叔叔', '爸爸的姐妹': '姑姑',
-    '妈妈的哥哥': '舅舅', '妈妈的弟弟': '舅舅', '妈妈的姐妹': '姨妈',
+    '爸爸的哥哥': '伯父', '爸爸的弟弟': '叔叔',
+    '爸爸的姐姐': '姑姑', '爸爸的妹妹': '姑姑', '爸爸的姐妹': '姑姑',
+    '妈妈的哥哥': '舅舅', '妈妈的弟弟': '舅舅',
+    '妈妈的姐姐': '姨妈', '妈妈的妹妹': '姨妈', '妈妈的姐妹': '姨妈',
     '哥哥的老婆': '嫂子', '弟弟的老婆': '弟媳',
     '姐姐的老公': '姐夫', '妹妹的老公': '妹夫',
     '爷爷的爸爸': '曾祖父', '爷爷的妈妈': '曾祖母',
@@ -1072,10 +1101,10 @@ function TitleCalc() {
     '奶奶的爸爸': '外曾祖父', '奶奶的妈妈': '外曾祖母',
     '爸爸的爸爸的爸爸': '曾祖父', '爸爸的爸爸的妈妈': '曾祖母',
     '妈妈的爸爸的爸爸': '外曾祖父', '妈妈的爸爸的妈妈': '外曾祖母',
-    '爷爷的哥哥': '伯祖父', '爷爷的弟弟': '叔祖父', '爷爷的姐妹': '姑祖母',
-    '奶奶的哥哥': '舅祖父', '奶奶的姐妹': '姨祖母',
-    '外公的哥哥': '伯外祖父', '外公的弟弟': '叔外祖父', '外公的姐妹': '姑外祖母',
-    '外婆的哥哥': '舅外祖父', '外婆的姐妹': '姨外祖母',
+    '爷爷的哥哥': '伯祖父', '爷爷的弟弟': '叔祖父', '爷爷的姐妹': '姑奶奶',
+    '奶奶的哥哥': '舅祖父', '奶奶的姐妹': '姨祖母', '奶奶的兄弟': '舅公',
+    '外公的哥哥': '伯外祖父', '外公的弟弟': '叔外祖父', '外公的姐妹': '姨奶奶',
+    '外婆的哥哥': '舅外祖父', '外婆的姐妹': '姨外祖母', '外婆的兄弟': '舅公',
     '爸爸的哥哥的老婆': '伯母', '爸爸的弟弟的老婆': '婶婶',
     '爸爸的姐妹的老公': '姑父', '妈妈的姐妹的老公': '姨父',
     '妈妈的哥哥的老婆': '舅妈', '妈妈的弟弟的老婆': '舅妈',
@@ -1091,14 +1120,45 @@ function TitleCalc() {
     '妈妈的爸爸的姐妹': '姑外祖母',
   }
 
+  const malePeople = ['爸爸', '哥哥', '弟弟', '爷爷', '外公', '儿子', '孙子', '伯父', '叔叔', '舅舅', '伯祖父', '叔祖父', '姑父', '姨父', '舅公']
+  const femalePeople = ['妈妈', '姐姐', '妹妹', '奶奶', '外婆', '女儿', '孙女', '姑姑', '姨妈', '伯母', '婶婶', '舅妈', '姑奶奶', '姨奶奶', '姨祖母']
+
   const row1 = ['爸爸', '妈妈', '哥哥', '姐姐', '弟弟', '妹妹', '爷爷', '奶奶', '外公', '外婆']
   const row3 = ['爸爸', '妈妈', '哥哥', '姐姐', '弟弟', '妹妹', '老公', '老婆', '儿子', '女儿']
 
   const [selected1, setSelected1] = useState('')
   const [selected3, setSelected3] = useState('')
 
+  const invalidSecondRelations = ['老公', '老婆', '儿子', '女儿', '爸爸', '妈妈']
+
+  const isInvalid = (() => {
+    if (!selected1 || !selected3) return false
+    if (malePeople.includes(selected1) && invalidSecondRelations.includes(selected3)) return true
+    if (femalePeople.includes(selected1) && invalidSecondRelations.includes(selected3)) return true
+    return false
+  })()
+
   const key = selected1 && selected3 ? `${selected1}的${selected3}` : ''
-  const result = key ? relations[key] || `${key}（暂未收录）` : ''
+  const result = key
+    ? isInvalid
+      ? '不合法'
+      : relations[key] || `${key}（暂未收录）`
+    : ''
+
+  const clear = () => { setSelected1(''); setSelected3('') }
+  const back = () => {
+    if (selected3) setSelected3('')
+    else if (selected1) setSelected1('')
+  }
+
+  // Most common 15 relations for quick reference
+  const commonRelations = [
+    '爸爸的爸爸', '爸爸的妈妈', '妈妈的爸爸', '妈妈的妈妈',
+    '爸爸的哥哥', '爸爸的弟弟', '爸爸的姐妹',
+    '妈妈的哥哥', '妈妈的弟弟', '妈妈的姐妹',
+    '哥哥的老婆', '弟弟的老婆', '姐姐的老公', '妹妹的老公',
+    '爷爷的爸爸',
+  ]
 
   const btnClass = (selected: boolean) =>
     `px-2.5 py-1.5 text-xs rounded-sm transition-colors ${
@@ -1108,7 +1168,15 @@ function TitleCalc() {
   return (
     <div className="max-w-sm mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
-        <p className="text-xs text-text-secondary/60 mb-2">选择关系</p>
+        <div className="flex items-center justify-between mb-2">
+          <p className="text-xs text-text-secondary/60">选择关系</p>
+          <div className="flex gap-1">
+            <button onClick={back}
+              className="px-2 py-1 text-xs rounded-sm bg-white text-text-secondary border border-[rgba(127,99,21,0.1)] hover:border-accent/30">回退</button>
+            <button onClick={clear}
+              className="px-2 py-1 text-xs rounded-sm bg-white text-red-400 border border-[rgba(127,99,21,0.1)] hover:border-red-300">清除</button>
+          </div>
+        </div>
         <div className="flex flex-wrap gap-1.5 mb-2">
           {row1.map(name => (
             <button key={name} onClick={() => setSelected1(selected1 === name ? '' : name)}
@@ -1125,16 +1193,20 @@ function TitleCalc() {
           ))}
         </div>
         {selected1 && selected3 && (
-          <div className="mt-3 p-3 bg-white rounded-sm border border-[rgba(127,99,21,0.08)] text-center">
+          <div className={`mt-3 p-3 bg-white rounded-sm border text-center ${
+            isInvalid ? 'border-red-300' : 'border-[rgba(127,99,21,0.08)]'
+          }`}>
             <p className="text-xs text-text-secondary/60 mb-1">{selected1}的{selected3}</p>
-            <p className="text-lg text-text-primary font-medium">{result}</p>
+            <p className={`text-lg font-medium ${
+              isInvalid ? 'text-red-500' : 'text-text-primary'
+            }`}>{result}</p>
           </div>
         )}
       </div>
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-3">
         <p className="text-xs text-text-secondary/60 mb-2">常用关系查询</p>
         <div className="grid grid-cols-2 gap-1">
-          {Object.keys(relations).map(k => {
+          {commonRelations.map(k => {
             const parts = k.split('的')
             return (
               <button key={k} onClick={() => {
@@ -1142,7 +1214,6 @@ function TitleCalc() {
                   setSelected1(parts[0])
                   setSelected3(parts[1])
                 } else if (parts.length === 3) {
-                  // For 3-part relations like 爸爸的爸爸的爸爸, set first two parts
                   setSelected1(`${parts[0]}的${parts[1]}`)
                   setSelected3(parts[2])
                 }
