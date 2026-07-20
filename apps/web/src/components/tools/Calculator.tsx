@@ -1080,16 +1080,17 @@ function MortgageCalc() {
   )
 }
 
-// ─── Chinese Uppercase Number ────────────────────────
+// ─── Chinese Uppercase Number + Roman Numeral ─────────
 function ChineseNumCalc() {
   const t = useTranslations('tools')
+  const [mode, setMode] = useState('chinese')
   const [num, setNum] = useState('1234567890')
   const n = parseFloat(num)
   const DIGITS = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖']
   const UNITS = ['', '拾', '佰', '仟']
   const BIG = ['', '万', '亿']
 
-  const result = (() => {
+  const chineseResult = (() => {
     if (isNaN(n)) return null
     const parts = n.toFixed(2).split('.')
     let int = parseInt(parts[0])
@@ -1123,16 +1124,40 @@ function ChineseNumCalc() {
     return s
   })()
 
+  const romanResult = (() => {
+    if (isNaN(n) || n <= 0 || n >= 4000) return null
+    const vals: [number, string][] = [[1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'],
+      [100, 'C'], [90, 'XC'], [50, 'L'], [40, 'XL'],
+      [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']]
+    let remaining = Math.floor(n)
+    let r = ''
+    for (const [val, sym] of vals) {
+      while (remaining >= val) { r += sym; remaining -= val }
+    }
+    return r
+  })()
+
+  const result = mode === 'chinese' ? chineseResult : romanResult
+
   return (
     <div className="max-w-md mx-auto space-y-3">
+      <div className="bg-amber-50 border border-amber-200 rounded-sm p-3 text-xs text-amber-800 leading-relaxed">
+        {t('calcChineseNote')}
+      </div>
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
+        <div className="flex gap-1 mb-3">
+          <button onClick={() => setMode('chinese')} className={`px-3 py-1.5 text-xs rounded-sm ${mode === 'chinese' ? 'bg-accent text-white' : 'bg-white text-text-secondary border border-[rgba(127,99,21,0.1)]'}`}>{t('calcChineseMode')}</button>
+          <button onClick={() => setMode('roman')} className={`px-3 py-1.5 text-xs rounded-sm ${mode === 'roman' ? 'bg-accent text-white' : 'bg-white text-text-secondary border border-[rgba(127,99,21,0.1)]'}`}>{t('calcRomanMode')}</button>
+        </div>
         <label className="block text-xs text-text-secondary mb-1">{t('calcInputNumber')}</label>
         <input value={num} onChange={e => setNum(e.target.value)} placeholder="12345.67" className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
         {result && (
           <div className="mt-3 p-3 bg-white rounded-sm border border-[rgba(127,99,21,0.08)]">
-            <p className="text-sm text-text-primary leading-relaxed">{result}</p>
+            <p className="text-xs text-text-secondary/60 mb-1">{t('calcResult')}</p>
+            <p className="text-lg font-bold text-accent break-all">{result}</p>
           </div>
         )}
+        {mode === 'roman' && n >= 4000 && <p className="text-red-500 text-xs mt-2">{t('calcRomanLimit')}</p>}
       </div>
     </div>
   )
