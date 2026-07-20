@@ -714,6 +714,7 @@ function MortgageCalc() {
   const [startYear, setStartYear] = useState('2026')
   const [startMonth, setStartMonth] = useState('01')
   const [startDay, setStartDay] = useState('01')
+  const [expandedYears, setExpandedYears] = useState<Record<number, boolean>>({})
 
   const startDate = `${startYear}-${startMonth}-${startDay}`
   const daysInMonth = new Date(parseInt(startYear), parseInt(startMonth), 0).getDate()
@@ -932,8 +933,10 @@ function MortgageCalc() {
               <span className="text-text-secondary text-sm">月供</span>
               <span className="text-accent font-bold text-lg">¥{result.monthly.toFixed(0)}</span>
             </div>
-            {repayType === 'equal-principal' && (
-              <p className="text-xs text-text-secondary/60 text-right">首月月供 (每月递减)</p>
+            {repayType === 'equal-principal' && result.schedule && result.schedule.length > 1 && (
+              <p className="text-xs text-text-secondary/60 text-right">
+                首月月供, 每月递减 <strong>¥{(result.schedule[0].payment - result.schedule[1].payment).toFixed(2)}</strong>
+              </p>
             )}
             {type === 'mixed' && 'commercial' in result && 'fund' in result && (
               <div className="p-2 bg-white rounded-sm text-xs space-y-1">
@@ -957,6 +960,53 @@ function MortgageCalc() {
                 <p className="text-sm font-medium">¥{result.totalPayment.toFixed(0)}</p>
               </div>
             </div>
+          </div>
+        )}
+        {result && result.schedule && result.schedule.length > 0 && (
+          <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs font-medium text-text-primary">还款明细</p>
+              <span className="text-xs text-text-secondary/60">{result.schedule.length} 期</span>
+            </div>
+            {Array.from({ length: Math.ceil(result.schedule.length / 12) }, (_, yi) => {
+              const year = yi + 1
+              const isExpanded = expandedYears[year]
+              const yearMonths = result.schedule.slice(yi * 12, (yi + 1) * 12)
+              const yearTotal = yearMonths.reduce((s, m) => s + m.payment, 0)
+              return (
+                <div key={year} className="mb-1">
+                  <button
+                    onClick={() => setExpandedYears(prev => ({ ...prev, [year]: !prev[year] }))}
+                    className="w-full flex items-center justify-between p-2 bg-white rounded-sm text-xs hover:bg-accent/5 transition-colors"
+                  >
+                    <span className="font-medium text-text-primary">第{year}年</span>
+                    <span className="text-text-secondary">
+                      还款 ¥{yearTotal.toFixed(0)} {isExpanded ? '▲' : '▼'}
+                    </span>
+                  </button>
+                  {isExpanded && (
+                    <div className="mt-1 space-y-0.5 ml-2">
+                      <div className="flex items-center text-[10px] text-text-secondary/60 px-2 py-1">
+                        <span className="w-8">期数</span>
+                        <span className="w-20 text-right">月供</span>
+                        <span className="w-20 text-right">本金</span>
+                        <span className="w-20 text-right">利息</span>
+                        <span className="w-20 text-right">剩余</span>
+                      </div>
+                      {yearMonths.map(m => (
+                        <div key={m.month} className="flex items-center text-[11px] px-2 py-1 bg-white rounded-sm">
+                          <span className="w-8 text-text-secondary">{m.month}</span>
+                          <span className="w-20 text-right text-text-primary font-mono">¥{m.payment.toFixed(0)}</span>
+                          <span className="w-20 text-right text-text-secondary font-mono">¥{m.principal.toFixed(0)}</span>
+                          <span className="w-20 text-right text-text-secondary font-mono">¥{m.interest.toFixed(0)}</span>
+                          <span className="w-20 text-right text-text-secondary/60 font-mono">¥{m.remaining.toFixed(0)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )
+            })}
           </div>
         )}
       </div>
