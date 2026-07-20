@@ -950,11 +950,11 @@ function MortgageCalc() {
               <div className="p-2 bg-white rounded-sm text-xs space-y-1">
                 <div className="flex justify-between">
                   <span className="text-text-secondary">{t('calcMortgageCommercial')}</span>
-                  <span className="font-medium">{(result as any).commercial.amount.toFixed(0)} 元，{t('calcMortgageMonthlyPayment')} {(result as any).commercial.monthly.toFixed(0)} 元</span>
+                  <span className="font-medium">{t('calcMortgageDetail', { amount: (result as any).commercial.amount.toFixed(0), monthly: (result as any).commercial.monthly.toFixed(0) })}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-text-secondary">{t('calcMortgageFund')}</span>
-                  <span className="font-medium">{(result as any).fund.amount.toFixed(0)} 元，{t('calcMortgageMonthlyPayment')} {(result as any).fund.monthly.toFixed(0)} 元</span>
+                  <span className="font-medium">{t('calcMortgageDetail', { amount: (result as any).fund.amount.toFixed(0), monthly: (result as any).fund.monthly.toFixed(0) })}</span>
                 </div>
               </div>
             )}
