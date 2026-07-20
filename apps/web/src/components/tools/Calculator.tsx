@@ -167,6 +167,7 @@ function CalcPanel() {
 
 // ─── Improved Currency Converter ─────────────────────
 function CurrencyCalc() {
+  const t = useTranslations('tools')
   const [amount, setAmount] = useState('100')
   const [from, setFrom] = useState('USD')
   const [to, setTo] = useState('CNY')
@@ -187,13 +188,13 @@ function CurrencyCalc() {
           <div />
           <div>
             <select value={from} onChange={e => setFrom(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
-              {Object.keys(RATES).map(c => <option key={c} value={c}>{c}</option>)}
+              {Object.keys(RATES).map(c => <option key={c} value={c}>{c} ({t(`currency${c}`)})</option>)}
             </select>
           </div>
           <button onClick={swap} className="p-2 text-lg text-accent hover:opacity-70 self-center">⇄</button>
           <div>
             <select value={to} onChange={e => setTo(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
-              {Object.keys(RATES).map(c => <option key={c} value={c}>{c}</option>)}
+              {Object.keys(RATES).map(c => <option key={c} value={c}>{c} ({t(`currency${c}`)})</option>)}
             </select>
           </div>
         </div>

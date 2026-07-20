@@ -375,7 +375,20 @@
     "tabVolume": "体積",
     "tabTemp": "温度",
     "tabSpeed": "速度",
-    "tabTime": "時間"
+    "tabTime": "時間",
+    "currencyUSD": "米ドル",
+    "currencyCNY": "人民元",
+    "currencyEUR": "ユーロ",
+    "currencyJPY": "日本円",
+    "currencyGBP": "英ポンド",
+    "currencyKRW": "韓国ウォン",
+    "currencyHKD": "香港ドル",
+    "currencyTWD": "台湾ドル",
+    "currencySGD": "シンガポールドル",
+    "currencyAUD": "豪ドル",
+    "currencyCAD": "カナダドル",
+    "currencyTHB": "タイバーツ",
+    "currencyVND": "ベトナムドン"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

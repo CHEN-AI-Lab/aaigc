@@ -375,7 +375,20 @@
     "tabVolume": "Volume",
     "tabTemp": "Temperature",
     "tabSpeed": "Speed",
-    "tabTime": "Time"
+    "tabTime": "Time",
+    "currencyUSD": "US Dollar",
+    "currencyCNY": "Chinese Yuan",
+    "currencyEUR": "Euro",
+    "currencyJPY": "Japanese Yen",
+    "currencyGBP": "British Pound",
+    "currencyKRW": "South Korean Won",
+    "currencyHKD": "Hong Kong Dollar",
+    "currencyTWD": "Taiwan Dollar",
+    "currencySGD": "Singapore Dollar",
+    "currencyAUD": "Australian Dollar",
+    "currencyCAD": "Canadian Dollar",
+    "currencyTHB": "Thai Baht",
+    "currencyVND": "Vietnamese Dong"
   },
   "ui": {
     "aboutLink": "About AAIGC →",

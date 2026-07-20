@@ -375,7 +375,20 @@
     "tabVolume": "体积",
     "tabTemp": "温度",
     "tabSpeed": "速度",
-    "tabTime": "时间"
+    "tabTime": "时间",
+    "currencyUSD": "美元",
+    "currencyCNY": "人民币",
+    "currencyEUR": "欧元",
+    "currencyJPY": "日元",
+    "currencyGBP": "英镑",
+    "currencyKRW": "韩元",
+    "currencyHKD": "港币",
+    "currencyTWD": "台币",
+    "currencySGD": "新加坡元",
+    "currencyAUD": "澳元",
+    "currencyCAD": "加元",
+    "currencyTHB": "泰铢",
+    "currencyVND": "越南盾"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",
