@@ -1002,14 +1002,14 @@ function formatNumber(n: number): string {
   if (Number.isInteger(n)) {
     return n.toLocaleString('en-US')
   }
-  // Otherwise show 2 decimal places
-  return n.toFixed(2)
+  // Otherwise show 4 decimal places max
+  return n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 4 })
 }
 
 function TimeCalc() {
   const t = useTranslations('tools')
   const [val, setVal] = useState('')
-  const [from, setFrom] = useState('seconds')
+  const [from, setFrom] = useState('years')
   const n = parseFloat(val)
 
   // 1 year = 365 days, 1 month = 365/12 days
@@ -1027,7 +1027,7 @@ function TimeCalc() {
       case 'hours': return v * SECONDS_PER_HOUR
       case 'days': return v * SECONDS_PER_DAY
       case 'weeks': return v * SECONDS_PER_WEEK
-      case 'months': return v * SECONDS_PER_YEAR / 12
+      case 'months': return v * SECONDS_PER_MONTH
       case 'quarters': return v * 91 * SECONDS_PER_DAY
       case 'years': return v * SECONDS_PER_YEAR
       default: return v
@@ -1041,7 +1041,7 @@ function TimeCalc() {
       case 'hours': return v / SECONDS_PER_HOUR
       case 'days': return v / SECONDS_PER_DAY
       case 'weeks': return v / SECONDS_PER_WEEK
-      case 'months': return v / SECONDS_PER_YEAR * 12
+      case 'months': return v / SECONDS_PER_MONTH
       case 'quarters': return v / 91 / SECONDS_PER_DAY
       case 'years': return v / SECONDS_PER_YEAR
       default: return v
