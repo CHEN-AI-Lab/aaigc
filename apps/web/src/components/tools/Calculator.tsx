@@ -1129,14 +1129,11 @@ function TitleCalc() {
   const [selected1, setSelected1] = useState('')
   const [selected3, setSelected3] = useState('')
 
-  const invalidSecondRelations = ['老公', '老婆', '儿子', '女儿', '爸爸', '妈妈']
-
-  const isInvalid = (() => {
-    if (!selected1 || !selected3) return false
-    if (malePeople.includes(selected1) && invalidSecondRelations.includes(selected3)) return true
-    if (femalePeople.includes(selected1) && invalidSecondRelations.includes(selected3)) return true
-    return false
-  })()
+  // Only block same-gender spouse: 男性+老公 or 女性+老婆
+  const isInvalid = selected1 && selected3 && (
+    (malePeople.includes(selected1) && selected3 === '老公') ||
+    (femalePeople.includes(selected1) && selected3 === '老婆')
+  )
 
   const key = selected1 && selected3 ? `${selected1}的${selected3}` : ''
   const result = key
