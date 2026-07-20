@@ -388,7 +388,9 @@
     "currencyAUD": "豪ドル",
     "currencyCAD": "カナダドル",
     "currencyTHB": "タイバーツ",
-    "currencyVND": "ベトナムドン"
+    "currencyVND": "ベトナムドン",
+    "currencyAmount": "金額",
+    "currencyAll": "すべての通貨に換算"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

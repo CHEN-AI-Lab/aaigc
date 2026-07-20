@@ -181,7 +181,7 @@ function CurrencyCalc() {
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
         <div className="grid grid-cols-[1fr_auto_1fr] gap-2 items-end">
           <div>
-            <label className="block text-xs text-text-secondary mb-1">金额</label>
+            <label className="block text-xs text-text-secondary mb-1">{t('currencyAmount')}</label>
             <input value={amount} onChange={e => setAmount(e.target.value)} maxLength={15} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
           <div />
@@ -209,7 +209,7 @@ function CurrencyCalc() {
       {/* All currencies table */}
       {result !== null && (
         <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-3">
-          <p className="text-xs text-text-secondary/60 mb-2">{amount} {from} ({t(`currency${from}`)}) 兑换所有货币</p>
+          <p className="text-xs text-text-secondary/60 mb-2">{amount} {from} ({t(`currency${from}`)}) {t('currencyAll')}</p>
           <div className="grid grid-cols-2 gap-1 text-xs">
             {Object.keys(RATES).filter(c => c !== from).map(c => (
               <div key={c} className="flex justify-between p-1.5 bg-white rounded-sm">

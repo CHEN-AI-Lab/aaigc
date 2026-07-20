@@ -388,7 +388,9 @@
     "currencyAUD": "澳元",
     "currencyCAD": "加元",
     "currencyTHB": "泰铢",
-    "currencyVND": "越南盾"
+    "currencyVND": "越南盾",
+    "currencyAmount": "金额",
+    "currencyAll": "兑换所有货币"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",

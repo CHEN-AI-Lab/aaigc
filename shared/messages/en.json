@@ -388,7 +388,9 @@
     "currencyAUD": "Australian Dollar",
     "currencyCAD": "Canadian Dollar",
     "currencyTHB": "Thai Baht",
-    "currencyVND": "Vietnamese Dong"
+    "currencyVND": "Vietnamese Dong",
+    "currencyAmount": "Amount",
+    "currencyAll": "Convert to all currencies"
   },
   "ui": {
     "aboutLink": "About AAIGC →",
