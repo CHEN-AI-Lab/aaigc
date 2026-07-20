@@ -499,7 +499,9 @@
     "calcMonth": "{m} month",
     "calcDay": "{d} day",
     "calcYearN": "Year {year}",
-    "calcYearRepayment": "Repayment ¥{amount}"
+    "calcYearRepayment": "Repayment ¥{amount}",
+    "calcYearSuffix": "-",
+    "calcMonthSuffix": ""
   },
   "ui": {
     "aboutLink": "About AAIGC →",
