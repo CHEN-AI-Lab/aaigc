@@ -541,37 +541,37 @@ function TaxCalc() {
         {/* Basic salary inputs */}
         <div className="grid grid-cols-2 gap-3 mb-3">
           <div>
-            <label className={labelClass}>{t('calcTaxMonthlySalary')} (元)</label>
+            <label className={labelClass}>{t('calcTaxMonthlySalary')}</label>
             <input value={salary} onChange={e => setSalary(e.target.value)} className={inputClass} />
           </div>
           <div>
-            <label className={labelClass}>{t('calcTaxBonus')} (元)</label>
+            <label className={labelClass}>{t('calcTaxBonus')}</label>
             <input value={bonus} onChange={e => setBonus(e.target.value)} className={inputClass} />
           </div>
         </div>
         <div className="mb-3">
-          <label className={labelClass}>{t('calcTaxMonthsWorked')} (12)</label>
+          <label className={labelClass}>{t('calcTaxMonthsWorked')}</label>
           <input value={monthsWorked} onChange={e => setMonthsWorked(e.target.value)} placeholder="1-12" className={inputClass} />
         </div>
 
         {/* {t('calcTaxSocialInsurance')} */}
         <div className="mb-3">
-          <p className="text-xs font-medium text-text-primary mb-2">{t('calcTaxSocialInsurance')} ({t('calcTaxSocialInsurance')})</p>
+          <p className="text-xs font-medium text-text-primary mb-2">{t('calcTaxSocialInsurance')}</p>
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className={labelClass}>{t('calcTaxPension')} (%)</label>
+              <label className={labelClass}>{t('calcTaxPension')}</label>
               <input value={pensionPct} onChange={e => setPensionPct(e.target.value)} className={inputClass} />
             </div>
             <div>
-              <label className={labelClass}>{t('calcTaxMedical')} (%)</label>
+              <label className={labelClass}>{t('calcTaxMedical')}</label>
               <input value={medicalPct} onChange={e => setMedicalPct(e.target.value)} className={inputClass} />
             </div>
             <div>
-              <label className={labelClass}>{t('calcTaxUnemployment')} (%)</label>
+              <label className={labelClass}>{t('calcTaxUnemployment')}</label>
               <input value={unemploymentPct} onChange={e => setUnemploymentPct(e.target.value)} className={inputClass} />
             </div>
             <div>
-              <label className={labelClass}>{t('calcTaxHousingFund')} (%)</label>
+              <label className={labelClass}>{t('calcTaxHousingFund')}</label>
               <input value={housingFundPct} onChange={e => setHousingFundPct(e.target.value)} className={inputClass} />
             </div>
           </div>
@@ -582,7 +582,7 @@ function TaxCalc() {
           <button onClick={() => setShowDeductions(!showDeductions)}
             className="flex items-center gap-1 text-xs font-medium text-text-primary mb-2 w-full text-left">
             <span className="transition-transform duration-200" style={{ transform: showDeductions ? 'rotate(90deg)' : 'rotate(0deg)' }}>▶</span>
-            {t('calcTaxSpecialDeductions')} (, 元)
+            {t('calcTaxSpecialDeductions')}
           </button>
           {showDeductions && (
             <div className="grid grid-cols-2 gap-2">
