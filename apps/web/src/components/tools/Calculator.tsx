@@ -768,20 +768,20 @@ function MortgageCalc() {
     const calc = repayType === 'equal-payment' ? calcEqualPayment : calcEqualPrincipal
 
     if (type === 'commercial') {
-      const principal = parseFloat(loanAmount) || 0
+      const principal = (parseFloat(loanAmount) || 0) * 10000
       if (principal <= 0 || commercialN <= 0) return null
       return calc(principal, commercialRate, commercialN)
     }
 
     if (type === 'fund') {
-      const principal = parseFloat(loanAmount) || 0
+      const principal = (parseFloat(loanAmount) || 0) * 10000
       if (principal <= 0 || fundN <= 0) return null
       return calc(principal, fundMonthlyRate, fundN)
     }
 
     // Mixed
-    const ca = parseFloat(commercialAmount) || 0
-    const fa = parseFloat(fundAmount) || 0
+    const ca = (parseFloat(commercialAmount) || 0) * 10000
+    const fa = (parseFloat(fundAmount) || 0) * 10000
     if (ca + fa <= 0) return null
     const comResult = calc(ca, commercialRate, commercialN)
     const fundResult = calc(fa, fundMonthlyRate, fundN)
@@ -833,17 +833,17 @@ function MortgageCalc() {
           {/* Loan amount */}
           {type !== 'mixed' ? (
             <div className="col-span-2">
-              <label className={labelClass}>贷款金额 (元)</label>
+              <label className={labelClass}>贷款金额 (万元)</label>
               <input value={loanAmount} onChange={e => setLoanAmount(e.target.value)} className={inputClass} />
             </div>
           ) : (
             <>
               <div>
-                <label className={labelClass}>商业贷款金额 (元)</label>
+                <label className={labelClass}>金额 (万元)</label>
                 <input value={commercialAmount} onChange={e => setCommercialAmount(e.target.value)} className={inputClass} />
               </div>
               <div>
-                <label className={labelClass}>公积金贷款金额 (元)</label>
+                <label className={labelClass}>金额 (万元)</label>
                 <input value={fundAmount} onChange={e => setFundAmount(e.target.value)} className={inputClass} />
               </div>
             </>
