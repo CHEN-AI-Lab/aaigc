@@ -706,7 +706,7 @@ function MortgageCalc() {
   const [loanAmount, setLoanAmount] = useState('')
   const [commercialAmount, setCommercialAmount] = useState('')
   const [fundAmount, setFundAmount] = useState('')
-  const [lpr, setLpr] = useState('3.85')
+  const [lpr, setLpr] = useState('3.5')
   const [bp, setBp] = useState('0')
   const [fundRate, setFundRate] = useState('3.15')
   const [commercialYears, setCommercialYears] = useState('30')
