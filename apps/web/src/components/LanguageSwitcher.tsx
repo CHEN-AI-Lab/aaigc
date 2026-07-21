@@ -34,7 +34,7 @@ export default function LanguageSwitcher() {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center justify-center w-8 h-8 rounded-sm hover:bg-[#fff0c2] transition-colors text-text-secondary text-lg"
+        className="flex items-center justify-center w-8 h-8 rounded-md text-text-secondary hover:text-accent hover:bg-surface/80 transition-colors"
         title={current}
       >
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
