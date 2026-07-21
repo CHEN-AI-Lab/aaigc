@@ -24,22 +24,22 @@ export default function ThemeSwitcher() {
   }
 
   return (
-    <div className="relative inline-block">
+    <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-1 text-xs text-text-secondary hover:text-accent transition-colors"
+        className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-md bg-surface border border-[rgba(127,99,21,0.15)] text-text-secondary hover:text-accent shadow-sm transition-colors"
       >
         🎨 {t(`theme${current}`)}
         <span className="text-[10px]">{open ? '▲' : '▼'}</span>
       </button>
       {open && (
-        <div className="absolute top-full right-0 mt-1 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm shadow-warm-sm min-w-[140px] z-50">
+        <div className="absolute top-full right-0 mt-1 bg-surface border border-[rgba(127,99,21,0.15)] rounded-md shadow-md min-w-[150px] z-50 overflow-hidden">
           {THEMES.map(id => (
             <button
               key={id}
               onClick={() => switchTheme(id)}
-              className={`w-full text-left px-3 py-2 text-xs hover:bg-accent/10 transition-colors ${
-                current === id ? 'text-accent font-medium' : 'text-text-secondary'
+              className={`w-full text-left px-3 py-2 text-xs transition-colors ${
+                current === id ? 'text-accent font-medium bg-accent/5' : 'text-text-secondary hover:bg-accent/5'
               }`}
             >
               {t(`theme${id}`)}

@@ -21,7 +21,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <NextIntlClientProvider key={locale} locale={locale} messages={messages}>
-      <div className="fixed top-4 right-4 z-50">
+      <div className="fixed top-4 right-16 z-50">
         <ThemeSwitcher />
       </div>
       <div className="flex flex-col min-h-screen">
