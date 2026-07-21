@@ -76,6 +76,21 @@
   --color-dark: #111111;
 }
 
+/* ─── Theme 7: 经典暖色（第一版）─── */
+.theme-7 {
+  --color-bg: #fffaeb;
+  --color-surface: #fff0c2;
+  --color-card: #ffffff;
+  --color-hover: rgba(0,0,0,0.05);
+  --color-border: rgba(127,99,21,0.15);
+  --color-accent: #fa520f;
+  --color-accent-light: #ffa110;
+  --color-error: #dc2626;
+  --color-text-primary: #1f1f1f;
+  --color-text-secondary: #767d88;
+  --color-dark: #1f1f1f;
+}
+
 /* ─── Utility classes that use CSS variables ─── */
 .bg-card { background-color: var(--color-card); }
 .text-error { color: var(--color-error); }
