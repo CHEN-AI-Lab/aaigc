@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import '../globals.css'
+import ThemeSwitcher from '@/components/ThemeSwitcher'
 
 export const metadata: Metadata = {
   title: {
@@ -37,7 +38,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-screen antialiased">{children}</body>
+      <body className="min-h-screen antialiased">
+        <div className="fixed top-4 right-4 z-50">
+          <ThemeSwitcher />
+        </div>
+        {children}
+      </body>
     </html>
   )
 }
