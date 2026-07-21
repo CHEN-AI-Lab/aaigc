@@ -54,7 +54,7 @@ export default function ToolsClient() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={t('search')}
-          className="w-full max-w-md p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/30"
+          className="w-full max-w-md p-3 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/30"
         />
       </div>
 
@@ -69,7 +69,7 @@ export default function ToolsClient() {
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
               {filtered.map((tool) => (
                 <Link key={tool.id} href={`/tools/${tool.id}`}
-                  className="block bg-surface rounded-sm p-4 shadow-warm-sm hover:shadow-warm transition-shadow border border-[rgba(127,99,21,0.05)]">
+                  className="block bg-card rounded-sm p-4 shadow-warm-sm hover:shadow-warm transition-shadow border border-[rgba(127,99,21,0.05)]">
                   <div className="text-xs font-mono text-accent mb-2">{tool.icon}</div>
                   <h3 className="text-sm font-medium text-text-primary">{t(`${tool.id}.name`)}</h3>
                 </Link>
@@ -91,7 +91,7 @@ export default function ToolsClient() {
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
               {catTools.map((tool) => (
                 <Link key={tool.id} href={`/tools/${tool.id}`}
-                  className="block bg-surface rounded-sm p-4 shadow-warm-sm hover:shadow-warm transition-shadow border border-[rgba(127,99,21,0.05)]">
+                  className="block bg-card rounded-sm p-4 shadow-warm-sm hover:shadow-warm transition-shadow border border-[rgba(127,99,21,0.05)]">
                   <div className="text-xs font-mono text-accent mb-2">{tool.icon}</div>
                   <h3 className="text-sm font-medium text-text-primary">{t(`${tool.id}.name`)}</h3>
                   <p className="text-xs text-text-secondary mt-1 line-clamp-2">
