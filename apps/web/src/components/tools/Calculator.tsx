@@ -1158,7 +1158,7 @@ function ChineseNumCalc() {
             <p className="text-lg font-bold text-accent break-all">{result}</p>
           </div>
         )}
-        {mode === 'roman' && n >= 4000 && <p className="text-red-500 text-xs mt-2">{t('calcRomanLimit')}</p>}
+        {mode === 'roman' && n >= 4000 && <p className="text-error text-xs mt-2">{t('calcRomanLimit')}</p>}
       </div>
     </div>
   )
@@ -1361,7 +1361,7 @@ function TitleCalc() {
           }`}>
             <p className="text-xs text-text-secondary/60 mb-1">{selected1}的{selected3}</p>
             <p className={`text-lg font-medium ${
-              isInvalid ? 'text-red-500' : 'text-text-primary'
+              isInvalid ? 'text-error' : 'text-text-primary'
             }`}>{result}</p>
           </div>
         )}
@@ -1443,7 +1443,7 @@ function BaseCalc() {
             {BASES.map(b => <option key={b.base} value={b.base}>{b.label} ({t(`base${b.base}`)})</option>)}
           </select>
         </div>
-        {error && <p className="text-red-500 text-xs mb-2">{error}</p>}
+        {error && <p className="text-error text-xs mb-2">{error}</p>}
         {results.length > 0 && (
           <div className="space-y-1.5">
             {results.map(r => (

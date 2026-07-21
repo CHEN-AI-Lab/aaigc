@@ -47,7 +47,7 @@ export default function ThemeSwitcher() {
                 localStorage.setItem('aaigc-theme', id)
               }}
               className={`w-full text-left px-3 py-2 text-xs transition-colors ${
-                current === id ? 'text-accent font-medium bg-accent/5' : 'text-text-secondary hover:bg-accent/5'
+                current === id ? 'text-accent font-medium bg-accent/5' : 'text-text-secondary hover-bg-hover'
               }`}
             >
               {t(`theme${id}`)}
