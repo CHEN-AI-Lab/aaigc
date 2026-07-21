@@ -508,7 +508,12 @@
     "calcRomanMode": "ローマ数字",
     "calcRomanLimit": "ローマ数字は 1-3999 のみ対応",
     "calcResult": "結果",
-    "calcTitleNote": "中国語の親族関係検索。中国語専用の内容です。"
+    "calcTitleNote": "中国語の親族関係検索。中国語専用の内容です。",
+    "theme8": "苔緑",
+    "theme12": "暖色テラコッタ",
+    "theme11": "スレートティール",
+    "theme4": "ダークモード",
+    "theme6": "ミニマルグレー"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

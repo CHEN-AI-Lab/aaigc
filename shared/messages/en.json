@@ -508,7 +508,12 @@
     "calcRomanMode": "Roman",
     "calcRomanLimit": "Roman numerals support 1-3999 only",
     "calcResult": "Result",
-    "calcTitleNote": "Chinese family relationship query. This is Chinese-specific content and cannot be translated."
+    "calcTitleNote": "Chinese family relationship query. This is Chinese-specific content and cannot be translated.",
+    "theme8": "Sage Green",
+    "theme12": "Warm Terracotta",
+    "theme11": "Slate Teal",
+    "theme4": "Dark Mode",
+    "theme6": "Minimal Gray"
   },
   "ui": {
     "aboutLink": "About AAIGC →",

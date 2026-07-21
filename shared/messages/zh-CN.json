@@ -508,7 +508,12 @@
     "calcRomanMode": "罗马数字",
     "calcRomanLimit": "罗马数字仅支持 1-3999",
     "calcResult": "结果",
-    "calcTitleNote": "中文亲属关系查询。此为中文专属内容，不可翻译。"
+    "calcTitleNote": "中文亲属关系查询。此为中文专属内容，不可翻译。",
+    "theme8": "苔绿",
+    "theme12": "暖沙陶土",
+    "theme11": "石板青绿",
+    "theme4": "深色模式",
+    "theme6": "极简灰"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",
