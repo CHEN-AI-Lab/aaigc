@@ -3,7 +3,6 @@ import { getMessages, setRequestLocale } from 'next-intl/server'
 import { routing } from '../../i18n/routing'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
-import ThemeSwitcher from '../../components/ThemeSwitcher'
 
 type Props = {
   children: React.ReactNode
@@ -21,9 +20,6 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <NextIntlClientProvider key={locale} locale={locale} messages={messages}>
-      <div className="fixed top-4 right-16 z-50">
-        <ThemeSwitcher />
-      </div>
       <div className="flex flex-col min-h-screen">
         <Header />
         <main className="flex-1">{children}</main>

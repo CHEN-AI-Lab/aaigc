@@ -27,7 +27,7 @@ export default function ThemeSwitcher() {
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-md bg-surface border border-[rgba(127,99,21,0.15)] text-text-secondary hover:text-accent shadow-sm transition-colors"
+        className="flex items-center gap-1 px-2.5 py-1.5 text-xs rounded-md bg-surface border border-[rgba(127,99,21,0.15)] text-text-secondary hover:text-accent shadow-sm transition-colors"
       >
         🎨 {t(`theme${current}`)}
         <span className="text-[10px]">{open ? '▲' : '▼'}</span>

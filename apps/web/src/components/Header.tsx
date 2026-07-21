@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import LanguageSwitcher from './LanguageSwitcher'
+import ThemeSwitcher from './ThemeSwitcher'
 
 export default function Header() {
   const t = useTranslations('common')
@@ -25,7 +26,10 @@ export default function Header() {
             {t('about')}
           </Link>
         </nav>
-        <LanguageSwitcher />
+        <div className="flex items-center gap-2">
+          <ThemeSwitcher />
+          <LanguageSwitcher />
+        </div>
       </div>
     </header>
   )
