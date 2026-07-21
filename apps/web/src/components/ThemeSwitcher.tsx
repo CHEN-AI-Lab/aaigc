@@ -46,11 +46,12 @@ export default function ThemeSwitcher() {
                 document.documentElement.className = `theme-${id}`
                 localStorage.setItem('aaigc-theme', id)
               }}
-              className={`w-full text-left px-3 py-2 text-xs transition-colors ${
-                current === id ? 'bg-accent/10 text-accent font-medium' : 'text-text-secondary hover:bg-surface'
+              className={`w-full text-left px-3 py-2 text-xs transition-colors flex items-center justify-between ${
+                current === id ? 'bg-accent/15 text-accent font-medium' : 'text-text-secondary hover:bg-surface'
               }`}
             >
               {t(`theme${id}`)}
+              {current === id && <span className="text-accent ml-2">✓</span>}
             </button>
           ))}
         </div>
