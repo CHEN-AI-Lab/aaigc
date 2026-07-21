@@ -4,16 +4,18 @@ import { usePathname } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { products } from 'data/products'
+import { tools, toolCategories } from 'data/tools'
 
 export default function Footer() {
   const pathname = usePathname()
   const t = useTranslations('footer')
   const tp = useTranslations('products')
+  const tt = useTranslations('tools')
 
-  // Hide footer on tool detail pages
   if (pathname?.includes('/tools/')) return null
 
   const liveProducts = products.filter(p => p.status === 'live')
+  const featureTools = tools.slice(0, 3)
 
   return (
     <footer className="border-t border-[rgba(127,99,21,0.1)] bg-bg mt-auto">
@@ -44,9 +46,13 @@ export default function Footer() {
           <div>
             <h3 className="text-sm font-semibold text-text-primary mb-3">{t('tools')}</h3>
             <ul className="space-y-2 text-xs text-text-secondary">
-              <li><Link href="/tools/json-formatter" className="hover:text-accent transition-colors">{t('toolJson')}</Link></li>
-              <li><Link href="/tools/timestamp" className="hover:text-accent transition-colors">{t('toolTimestamp')}</Link></li>
-              <li><Link href="/tools/qrcode" className="hover:text-accent transition-colors">{t('toolQrcode')}</Link></li>
+              {featureTools.map(tool => (
+                <li key={tool.id}>
+                  <Link href={`/tools/${tool.id}`} className="hover:text-accent transition-colors">
+                    {tt(`${tool.id}.name`)}
+                  </Link>
+                </li>
+              ))}
               <li><Link href="/tools" className="hover:text-accent transition-colors">{t('more')}</Link></li>
             </ul>
           </div>
