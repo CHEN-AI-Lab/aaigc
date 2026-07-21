@@ -1,17 +1,59 @@
 @import "tailwindcss";
 
-/* ─── Mistral warm color palette ─── */
-
-@theme {
-  --color-bg: #fffaeb;
-  --color-surface: #fff0c2;
-  --color-accent: #fa520f;
-  --color-accent-light: #ffa110;
-  --color-accent-gradient: linear-gradient(180deg, #ffd900, #ffe295, #ffa110, #ff8105, #fb6424, #fa520f);
-  --color-text-primary: #1f1f1f;
-  --color-text-secondary: #767d88;
-  --color-dark: #1f1f1f;
+/* ─── Default theme: 苔绿 (#8) ─── */
+:root, .theme-8 {
+  --color-bg: #f6f9f4;
+  --color-surface: #eef5ea;
+  --color-accent: #2d6b2d;
+  --color-accent-light: #4a8a4a;
+  --color-text-primary: #1e2a1e;
+  --color-text-secondary: #4a6b4a;
+  --color-dark: #1e2a1e;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* ─── Theme 12: 暖沙陶土 ─── */
+.theme-12 {
+  --color-bg: #faf6ee;
+  --color-surface: #f5ede0;
+  --color-accent: #a0522d;
+  --color-accent-light: #c07050;
+  --color-text-primary: #2d2818;
+  --color-text-secondary: #6b5d4a;
+  --color-dark: #2d2818;
+}
+
+/* ─── Theme 11: 石板蓝+青绿 ─── */
+.theme-11 {
+  --color-bg: #f4f6f8;
+  --color-surface: #eef1f5;
+  --color-accent: #0d9488;
+  --color-accent-light: #14b8a6;
+  --color-text-primary: #1e293b;
+  --color-text-secondary: #475569;
+  --color-dark: #1e293b;
+}
+
+/* ─── Theme 4: 深色模式 ─── */
+.theme-4 {
+  --color-bg: #0a0a0a;
+  --color-surface: #141414;
+  --color-accent: #ffffff;
+  --color-accent-light: #e0e0e0;
+  --color-text-primary: #ededed;
+  --color-text-secondary: #888888;
+  --color-dark: #ffffff;
+}
+
+/* ─── Theme 6: 极简灰 ─── */
+.theme-6 {
+  --color-bg: #fafafa;
+  --color-surface: #f5f5f5;
+  --color-accent: #111111;
+  --color-accent-light: #444444;
+  --color-text-primary: #111111;
+  --color-text-secondary: #666666;
+  --color-dark: #111111;
 }
 
 /* ─── Base styles ─── */

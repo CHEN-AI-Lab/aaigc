@@ -4,7 +4,8 @@ import { usePathname } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { products } from 'data/products'
-import { tools, toolCategories } from 'data/tools'
+import { tools } from 'data/tools'
+import ThemeSwitcher from './ThemeSwitcher'
 
 export default function Footer() {
   const pathname = usePathname()
@@ -66,7 +67,8 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <div className="border-t border-[rgba(127,99,21,0.1)] mt-8 pt-8 text-center text-xs text-text-secondary">
+        <div className="border-t border-[rgba(127,99,21,0.1)] mt-8 pt-8 flex flex-col items-center gap-3 text-xs text-text-secondary">
+          <ThemeSwitcher />
           &copy; {new Date().getFullYear()} {t('copyright')}
         </div>
       </div>

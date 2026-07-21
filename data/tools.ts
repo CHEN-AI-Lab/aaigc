@@ -52,10 +52,11 @@ export const tools: ToolMeta[] = [
 
   // ─── Math Tools ───
   { id: 'number-base', category: 'math', icon: '🔢', component: 'NumberBaseConverter' },
-
+  { id: 'calculator', category: 'math', icon: '🧮', component: 'Calculator' },
+  
   // ─── Converters ───
   { id: 'yaml-json', category: 'convert', icon: '🔄', component: 'YamlJsonConverter', npmDeps: ['js-yaml'] },
   { id: 'html-entities', category: 'convert', icon: '🔣', component: 'HtmlEntities' },
   { id: 'json-to-csv', category: 'convert', icon: '📊', component: 'JsonToCsv' },
-  { id: 'calculator', category: 'math', icon: '🧮', component: 'Calculator' },
+
 ]
