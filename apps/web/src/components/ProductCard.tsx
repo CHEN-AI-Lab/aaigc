@@ -18,7 +18,7 @@ export default function ProductCard({ product }: { product: Product }) {
   const desc = tp(`${product.id}.description`)
 
   const content = (
-    <div className="block bg-surface rounded-sm p-6 shadow-warm-sm hover:shadow-warm transition-shadow group text-center cursor-default">
+    <div className="block bg-surface rounded-sm p-6 shadow-warm-sm hover:shadow-warm transition-shadow group text-center cursor-default border border-card">
       <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">{product.icon}</div>
       <h3 className="card-title text-text-primary mb-2 text-center">{name}</h3>
       {desc && <p className="text-sm text-text-secondary mb-4 line-clamp-2 text-center leading-relaxed">{desc}</p>}

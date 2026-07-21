@@ -98,8 +98,8 @@
   --color-error: #dc2626;
   --color-text-primary: #1f1f1f;
   --color-text-secondary: #767d88;
-  --color-shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-  --color-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  --color-shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+  --color-shadow: 0 6px 20px rgba(0,0,0,0.1);
   --color-dark: #1f1f1f;
 }
 
@@ -110,6 +110,7 @@
 .hover-bg-hover:hover { background-color: var(--color-hover); }
 .shadow-warm-sm { box-shadow: var(--color-shadow-sm); }
 .shadow-warm { box-shadow: var(--color-shadow); }
+.border-card { border-color: var(--color-border); }
 
 /* ─── Base styles ─── */
 body {
