@@ -1142,7 +1142,7 @@ function ChineseNumCalc() {
 
   return (
     <div className="max-w-md mx-auto space-y-3">
-      <div className="bg-amber-50 border border-amber-200 rounded-sm p-3 text-xs text-amber-800 leading-relaxed">
+      <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm p-3 text-xs text-text-secondary leading-relaxed">
         {t('calcChineseNote')}
       </div>
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
@@ -1249,11 +1249,11 @@ function TimeCalc() {
   return (
     <div className="max-w-md mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
-        <div className="bg-amber-50 border border-amber-200 rounded-sm p-3 text-xs space-y-1">
-          <div className="flex items-center justify-between text-amber-800">
+        <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm p-3 text-xs space-y-1">
+          <div className="flex items-center justify-between text-text-primary">
             <span className="font-medium">{t('calcConversionRules')}</span>
           </div>
-          <div className="text-amber-700/80">{t('timeDesc')}</div>
+          <div className="text-text-secondary/80">{t('timeDesc')}</div>
         </div>
         <div className="flex gap-2 items-end mb-3">
           <div className="flex-1">
@@ -1331,7 +1331,7 @@ function TitleCalc() {
 
   return (
       <div className="max-w-lg mx-auto space-y-3">
-        <div className="bg-amber-50 border border-amber-200 rounded-sm p-3 text-xs text-amber-800 leading-relaxed">
+        <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm p-3 text-xs text-text-secondary leading-relaxed">
           {t('calcTitleNote')}
         </div>
         <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
@@ -1431,7 +1431,7 @@ function BaseCalc() {
 
   return (
     <div className="max-w-md mx-auto space-y-3">
-      <div className="bg-amber-50 border border-amber-200 rounded-sm p-3 text-xs text-amber-800 leading-relaxed">
+      <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm p-3 text-xs text-text-secondary leading-relaxed">
         {t('baseDesc')}
       </div>
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-5">
