@@ -61,7 +61,6 @@ export default function Footer() {
             <ul className="space-y-2 text-xs text-text-secondary">
               <li><Link href="/updates" className="hover:text-accent transition-colors">{t('updates')}</Link></li>
               <li><Link href="/privacy" className="hover:text-accent transition-colors">{t('privacy')}</Link></li>
-              <li><a href="https://github.com/CHEN-AI-Lab" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">GitHub</a></li>
               <li><a href="mailto:chen@aaigc.online" className="hover:text-accent transition-colors">Email</a></li>
             </ul>
           </div>
