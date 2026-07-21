@@ -34,7 +34,7 @@ export default function LanguageSwitcher() {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center justify-center w-8 h-8 rounded-md text-text-secondary hover:text-accent hover:bg-surface/80 transition-colors"
+        className="flex items-center justify-center w-8 h-8 rounded-md text-text-secondary hover:text-accent hover:bg-surface transition-colors"
         title={current}
       >
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -44,13 +44,13 @@ export default function LanguageSwitcher() {
         </svg>
       </button>
       {open && (
-        <div className="absolute right-0 top-full mt-1 bg-surface border border-[rgba(127,99,21,0.15)] rounded-md shadow-md min-w-[120px] z-50">
+        <div className="absolute right-0 top-full mt-1 bg-surface border border-[rgba(127,99,21,0.15)] rounded-md shadow-md min-w-[120px] z-50 overflow-hidden">
           {locales.map((l) => (
             <button
               key={l}
               onClick={() => switchLocale(l)}
-              className={`block w-full text-left px-4 py-2 text-sm transition-colors hover-bg-hover ${
-                locale === l ? 'font-medium text-accent' : 'text-text-primary'
+              className={`block w-full text-left px-4 py-2 text-sm transition-colors ${
+                locale === l ? 'bg-accent/10 text-accent font-medium' : 'text-text-secondary hover:bg-surface'
               }`}
             >
               {localeNames[l]}

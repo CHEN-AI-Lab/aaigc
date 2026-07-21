@@ -30,7 +30,7 @@ export default function ThemeSwitcher() {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen(v => !v)}
-        className="flex items-center justify-center w-8 h-8 rounded-md text-text-secondary hover:text-accent hover:bg-surface/80 transition-colors"
+        className="flex items-center justify-center w-8 h-8 rounded-md text-text-secondary hover:text-accent hover:bg-surface transition-colors"
         title={t(`theme${current}`)}
       >
         🎨
@@ -47,7 +47,7 @@ export default function ThemeSwitcher() {
                 localStorage.setItem('aaigc-theme', id)
               }}
               className={`w-full text-left px-3 py-2 text-xs transition-colors ${
-                current === id ? 'text-accent font-medium bg-accent/5' : 'text-text-secondary hover-bg-hover'
+                current === id ? 'bg-accent/10 text-accent font-medium' : 'text-text-secondary hover:bg-surface'
               }`}
             >
               {t(`theme${id}`)}
