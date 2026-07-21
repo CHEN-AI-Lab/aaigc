@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 
 const THEMES = ['8', '12', '11', '4', '6']
@@ -9,12 +9,25 @@ export default function ThemeSwitcher() {
   const [current, setCurrent] = useState('8')
   const [open, setOpen] = useState(false)
   const t = useTranslations('tools')
+  const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const saved = localStorage.getItem('aaigc-theme') || '8'
     setCurrent(saved)
     document.documentElement.className = `theme-${saved}`
   }, [])
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    if (!open) return
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [open])
 
   const switchTheme = (id: string) => {
     setCurrent(id)
@@ -24,9 +37,9 @@ export default function ThemeSwitcher() {
   }
 
   return (
-    <div className="relative">
+    <div className="relative" ref={ref}>
       <button
-        onClick={() => setOpen(!open)}
+        onClick={() => setOpen(v => !v)}
         className="flex items-center gap-1 px-2.5 py-1.5 text-xs rounded-md bg-surface border border-[rgba(127,99,21,0.15)] text-text-secondary hover:text-accent shadow-sm transition-colors"
       >
         🎨 {t(`theme${current}`)}
