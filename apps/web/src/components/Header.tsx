@@ -9,7 +9,7 @@ export default function Header() {
   const t = useTranslations('common')
 
   return (
-    <header className="border-b border-[rgba(127,99,21,0.1)] bg-bg sticky top-0 z-50">
+    <header className="border-b border-[rgba(127,99,21,0.1)] bg-bg backdrop-blur-sm sticky top-0 z-50">
       <div className="max-w-6xl mx-auto flex items-center px-6 h-16">
         <Link href="/" className="flex items-center gap-2 shrink-0">
           <span className="text-2xl">🚀</span>

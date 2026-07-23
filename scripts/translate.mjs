@@ -64,6 +64,9 @@ const MESSAGES_DIR = path.resolve("shared/messages")
 const BACKUP_FILE = path.join(SHARED_DIR, "translation-memory.json.bak")
 const MAX_BACKUPS = 5
 
+// 源语言（直接手写，不是翻译目标）
+const SOURCE_LANGUAGES = ["zh-CN", "en"]
+
 // ─── 参数解析 ───
 const LANG = process.argv[2]
 const IS_CHECK = process.argv.includes("--check")
@@ -275,6 +278,42 @@ function checkConcurrentModification() {
   return true
 }
 
+// 语言排序优先级
+const LANG_PRIORITY = ["zh-CN", "zh-TW", "en", "ja"]
+
+/**
+ * 对记忆库按语言优先级排序
+ * 先按源语言排序（zh-CN → zh-TW → en → ja → 其他）
+ * 再按目标语言排序（同源语言内）
+ */
+function sortMemory(memory) {
+  const sorted = {}
+  const keys = Object.keys(memory).sort((a, b) => {
+    const [aSrc, aTgt] = a.split("→")
+    const [bSrc, bTgt] = b.split("→")
+    const aSrcIdx = LANG_PRIORITY.indexOf(aSrc)
+    const bSrcIdx = LANG_PRIORITY.indexOf(bSrc)
+    const aTgtIdx = LANG_PRIORITY.indexOf(aTgt)
+    const bTgtIdx = LANG_PRIORITY.indexOf(bTgt)
+
+    // 按源语言排序
+    if (aSrcIdx !== -1 && bSrcIdx !== -1) {
+      if (aSrcIdx !== bSrcIdx) return aSrcIdx - bSrcIdx
+    } else if (aSrcIdx !== -1) return -1
+    else if (bSrcIdx !== -1) return 1
+
+    // 源语言相同，按目标语言排序
+    if (aTgtIdx !== -1 && bTgtIdx !== -1) return aTgtIdx - bTgtIdx
+    if (aTgtIdx !== -1) return -1
+    if (bTgtIdx !== -1) return 1
+    return a.localeCompare(b)
+  })
+  for (const key of keys) {
+    sorted[key] = memory[key]
+  }
+  return sorted
+}
+
 function saveMemory(memory, silent = false) {
   fs.mkdirSync(SHARED_DIR, { recursive: true })
 
@@ -286,7 +325,7 @@ function saveMemory(memory, silent = false) {
     if (!silent) console.error(`  ⚠️  备份失败: ${e.message}`)
   }
 
-  fs.writeFileSync(MEMORY_FILE, JSON.stringify(memory, null, 2) + "\n")
+  fs.writeFileSync(MEMORY_FILE, JSON.stringify(sortMemory(memory), null, 2) + "\n")
 }
 
 function getMemoryKey(sourceLang, targetLang) {
@@ -308,6 +347,11 @@ function lookupMemory(memory, sourceLang, targetLang, sourceText) {
 }
 
 function setMemory(memory, sourceLang, targetLang, sourceText, translatedText) {
+  // 安全防护：源语言作为目标时禁止写入
+  if (SOURCE_LANGUAGES.includes(targetLang)) {
+    return false
+  }
+
   const key = getMemoryKey(sourceLang, targetLang)
   if (!memory[key]) memory[key] = { locked: {}, unlocked: {} }
 
@@ -929,6 +973,13 @@ const SOURCE_LANG = SRC_LANG || (LANG === "zh-TW" ? "zh-CN" : "en")
 const SOURCE_FILE = path.join(MESSAGES_DIR, `${SOURCE_LANG}.json`)
 const TARGET_FILE = path.join(MESSAGES_DIR, `${LANG}.json`)
 
+// 源语言（zh-CN、en）是直接手写的，不是翻译目标，禁止写入记忆库
+const IS_SOURCE_LANG = SOURCE_LANGUAGES.includes(LANG)
+if (IS_SOURCE_LANG) {
+  console.log(`ℹ️  ${LANG} 是源语言（直接手写），不是翻译目标，跳过记忆库操作`)
+  console.log(`   翻译文件内容不变，仅校验 key 一致性`)
+}
+
 const source = JSON.parse(fs.readFileSync(SOURCE_FILE, "utf-8"))
 
 let target = {}
@@ -943,6 +994,10 @@ const memory = loadMemory()
 
 // ===== --learn 模式：学习翻译变动（跳过已锁定的条目） =====
 if (IS_LEARN) {
+  if (IS_SOURCE_LANG) {
+    console.log(`\n⏭️  ${LANG} 是源语言，无需学习记忆库`)
+    process.exit(0)
+  }
   let committedTarget = {}
   let hasGitVersion = false
   try {
@@ -1038,6 +1093,11 @@ if (IS_LEARN) {
 }
 
 // ===== 翻译模式：找出缺失的 key =====
+if (IS_SOURCE_LANG) {
+  console.log(`\n⏭️  ${LANG} 是源语言，跳过 AI 翻译`)
+  console.log(`   ${LANG}.json 是直接手写的，不需要翻译`)
+  process.exit(0)
+}
 const missing = []
 function findMissing(src, tgt, prefix = "") {
   for (const k of Object.keys(src)) {

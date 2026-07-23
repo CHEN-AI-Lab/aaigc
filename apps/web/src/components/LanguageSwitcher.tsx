@@ -53,7 +53,13 @@ export default function LanguageSwitcher() {
                 locale === l ? 'text-accent font-medium' : 'text-text-secondary hover:bg-accent/10'
               }`}
             >
-              <span className={`w-2 h-2 rounded-full shrink-0 ${locale === l ? 'bg-accent' : 'bg-transparent'}`} />
+              <span className="w-4 shrink-0 flex items-center justify-center">
+                {locale === l ? (
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-accent">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                ) : null}
+              </span>
               {localeNames[l]}
             </button>
           ))}
