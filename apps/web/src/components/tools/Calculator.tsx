@@ -183,18 +183,18 @@ function CurrencyCalc() {
         <div className="grid grid-cols-[1fr_auto_1fr] gap-2 items-end">
           <div>
             <label className="block text-xs text-text-secondary mb-1">{t('currencyAmount')}</label>
-            <input value={amount} onChange={e => setAmount(e.target.value)} maxLength={15} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            <input value={amount} onChange={e => setAmount(e.target.value)} maxLength={15} className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
           <div />
           <div />
           <div>
-            <select value={from} onChange={e => setFrom(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
+            <select value={from} onChange={e => setFrom(e.target.value)} className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
               {Object.keys(RATES).map(c => <option key={c} value={c}>{c} ({t(`currency${c}`)})</option>)}
             </select>
           </div>
           <button onClick={swap} className="p-2 text-lg text-accent hover:opacity-70 self-center">⇄</button>
           <div>
-            <select value={to} onChange={e => setTo(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
+            <select value={to} onChange={e => setTo(e.target.value)} className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
               {Object.keys(RATES).map(c => <option key={c} value={c}>{c} ({t(`currency${c}`)})</option>)}
             </select>
           </div>
@@ -213,7 +213,7 @@ function CurrencyCalc() {
           <p className="text-xs text-text-secondary/60 mb-2">{amount} {from} ({t(`currency${from}`)}) {t('currencyAll')}</p>
           <div className="grid grid-cols-2 gap-1 text-xs">
             {Object.keys(RATES).filter(c => c !== from).map(c => (
-              <div key={c} className="flex justify-between p-1.5 bg-white rounded-sm">
+              <div key={c} className="flex justify-between p-1.5 bg-card rounded-sm">
                 <span className="text-text-secondary">{c} ({t(`currency${c}`)})</span>
                 <span className="text-text-primary font-mono">{fmt(a / RATES[from] * RATES[c])}</span>
               </div>
@@ -295,11 +295,11 @@ function UnitTable({ units, title }: { units: Unit[]; title: string }) {
         <div className="flex gap-2 items-end mb-3">
           <div className="flex-1">
             <label className="block text-xs text-text-secondary mb-1">{title}</label>
-            <input value={val} onChange={e => setVal(e.target.value)} maxLength={15} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            <input value={val} onChange={e => setVal(e.target.value)} maxLength={15} className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
           <div className="w-24">
             <label className="block text-xs text-text-secondary mb-1">{t('calcUnit')}</label>
-            <select value={from} onChange={e => setFrom(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
+            <select value={from} onChange={e => setFrom(e.target.value)} className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
               {units.map(u => <option key={u.label} value={u.label}>{u.label}</option>)}
             </select>
           </div>
@@ -307,7 +307,7 @@ function UnitTable({ units, title }: { units: Unit[]; title: string }) {
         {!isNaN(n) && uFrom && (
           <div className="space-y-0.5">
             {units.filter(u => u.label !== from).map(u => (
-              <div key={u.label} className="flex justify-between p-1.5 bg-white rounded-sm text-xs">
+              <div key={u.label} className="flex justify-between p-1.5 bg-card rounded-sm text-xs">
                 <span className="text-text-secondary">{u.label}</span>
                 <span className="text-text-primary font-mono">{fmt(u.fromBase(uFrom.toBase(n)))}</span>
               </div>
@@ -338,30 +338,30 @@ function TempCalc() {
         <div className="flex gap-2 items-end mb-3">
           <div className="flex-1">
             <label className="block text-xs text-text-secondary mb-1">{t('calcTempValue')}</label>
-            <input value={val} onChange={e => setVal(e.target.value)} maxLength={15} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            <input value={val} onChange={e => setVal(e.target.value)} maxLength={15} className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
           <div className="w-24">
             <label className="block text-xs text-text-secondary mb-1">{t('calcUnit')}</label>
-            <select value={unit} onChange={e => setUnit(e.target.value as 'C' | 'F' | 'K')} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
+            <select value={unit} onChange={e => setUnit(e.target.value as 'C' | 'F' | 'K')} className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
               <option value="C">°C</option><option value="F">°F</option><option value="K">K</option>
             </select>
           </div>
         </div>
         {c !== null && (
           <div className="space-y-2">
-            <div className="flex justify-between p-2 bg-white rounded-sm text-sm">
+            <div className="flex justify-between p-2 bg-card rounded-sm text-sm">
               <span className="text-text-secondary">°C ({t('calcCelsius')})</span>
               <span className="text-text-primary font-mono font-bold">{fmt(c)}</span>
             </div>
-            <div className="flex justify-between p-2 bg-white rounded-sm text-sm">
+            <div className="flex justify-between p-2 bg-card rounded-sm text-sm">
               <span className="text-text-secondary">°F ({t('calcFahrenheit')})</span>
               <span className="text-text-primary font-mono font-bold">{fmt(f!)}</span>
             </div>
-            <div className="flex justify-between p-2 bg-white rounded-sm text-sm">
+            <div className="flex justify-between p-2 bg-card rounded-sm text-sm">
               <span className="text-text-secondary">K ({t('calcKelvin')})</span>
               <span className="text-text-primary font-mono font-bold">{fmt(k!)}</span>
             </div>
-            <div className="flex justify-between p-2 bg-white rounded-sm text-sm">
+            <div className="flex justify-between p-2 bg-card rounded-sm text-sm">
               <span className="text-text-secondary">°Ré ({t('calcReaumur')})</span>
               <span className="text-text-primary font-mono font-bold">{fmt(c * 0.8)}</span>
             </div>
@@ -408,26 +408,26 @@ function BmiCalc() {
     <div className="max-w-md mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
         <div className="flex gap-1 mb-3">
-          <button onClick={() => setUnit('metric')} className={`px-3 py-1 text-xs rounded-sm ${unit === 'metric' ? 'bg-accent text-white' : 'bg-white text-text-secondary'}`}>{t('calcMetric')}</button>
-          <button onClick={() => setUnit('imperial')} className={`px-3 py-1 text-xs rounded-sm ${unit === 'imperial' ? 'bg-accent text-white' : 'bg-white text-text-secondary'}`}>{t('calcImperial')}</button>
+          <button onClick={() => setUnit('metric')} className={`px-3 py-1 text-xs rounded-sm ${unit === 'metric' ? 'bg-accent text-white' : 'bg-card text-text-secondary'}`}>{t('calcMetric')}</button>
+          <button onClick={() => setUnit('imperial')} className={`px-3 py-1 text-xs rounded-sm ${unit === 'imperial' ? 'bg-accent text-white' : 'bg-card text-text-secondary'}`}>{t('calcImperial')}</button>
         </div>
         <div className="grid grid-cols-3 gap-3">
           <div>
             <label className="block text-xs text-text-secondary mb-1">{t('calcHeight')} ({unit === 'metric' ? 'cm' : 'in'})</label>
-            <input value={h} onChange={e => setH(e.target.value)} maxLength={5} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            <input value={h} onChange={e => setH(e.target.value)} maxLength={5} className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
           <div>
             <label className="block text-xs text-text-secondary mb-1">{t('calcWeight')} ({unit === 'metric' ? 'kg' : 'lb'})</label>
-            <input value={w} onChange={e => setW(e.target.value)} maxLength={5} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            <input value={w} onChange={e => setW(e.target.value)} maxLength={5} className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
           <div>
             <label className="block text-xs text-text-secondary mb-1">{t('calcAge')}</label>
-            <input value={age} onChange={e => setAge(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            <input value={age} onChange={e => setAge(e.target.value)} className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
         </div>
         <div className="flex gap-1 mt-2">
-          <button onClick={() => setGender('male')} className={`flex-1 p-2 text-xs rounded-sm ${gender === 'male' ? 'bg-accent text-white' : 'bg-white text-text-secondary border border-[rgba(127,99,21,0.1)]'}`}>{t('calcMale')}</button>
-          <button onClick={() => setGender('female')} className={`flex-1 p-2 text-xs rounded-sm ${gender === 'female' ? 'bg-accent text-white' : 'bg-white text-text-secondary border border-[rgba(127,99,21,0.1)]'}`}>{t('calcFemale')}</button>
+          <button onClick={() => setGender('male')} className={`flex-1 p-2 text-xs rounded-sm ${gender === 'male' ? 'bg-accent text-white' : 'bg-card text-text-secondary border border-[rgba(127,99,21,0.1)]'}`}>{t('calcMale')}</button>
+          <button onClick={() => setGender('female')} className={`flex-1 p-2 text-xs rounded-sm ${gender === 'female' ? 'bg-accent text-white' : 'bg-card text-text-secondary border border-[rgba(127,99,21,0.1)]'}`}>{t('calcFemale')}</button>
         </div>
         {bmi && (
           <div className="mt-3 pt-3 border-t border-[rgba(127,99,21,0.1)]">
@@ -532,7 +532,7 @@ function TaxCalc() {
   const totalIncome = s * actualMonths + b
   const afterTax = totalIncome - totalTax
 
-  const inputClass = "w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary"
+  const inputClass = "w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary"
   const labelClass = "block text-xs text-text-secondary mb-1"
 
   return (
@@ -627,15 +627,15 @@ function TaxCalc() {
         {/* Results */}
         {s > 0 && (
           <div className="space-y-2">
-            <div className="flex justify-between text-xs p-1.5 bg-white rounded-sm">
+            <div className="flex justify-between text-xs p-1.5 bg-card rounded-sm">
               <span className="text-text-secondary">{t('calcTaxSocialInsuranceTotal')}</span>
               <span className="font-medium">¥{socialInsurance.toFixed(0)}</span>
             </div>
-            <div className="flex justify-between text-xs p-1.5 bg-white rounded-sm">
+            <div className="flex justify-between text-xs p-1.5 bg-card rounded-sm">
               <span className="text-text-secondary">{t('calcTaxSpecialDedTotal')}</span>
               <span className="font-medium">¥{specialDedTotal.toFixed(0)}</span>
             </div>
-            <div className="flex justify-between text-xs p-1.5 bg-white rounded-sm">
+            <div className="flex justify-between text-xs p-1.5 bg-card rounded-sm">
               <span className="text-text-secondary">{t('calcTaxMonthlyTaxable')}</span>
               <span className="font-medium">¥{Math.max(0, monthlyTaxable).toFixed(0)}</span>
             </div>
@@ -646,15 +646,15 @@ function TaxCalc() {
           <div className="mt-3 space-y-2">
             {salaryResult && (
               <>
-                <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
+                <div className="flex justify-between text-sm p-2 bg-card rounded-sm">
                   <span className="text-text-secondary">{t('calcTaxAnnualTaxable')}</span>
                   <span className="font-medium">¥{salaryResult.taxable.toFixed(0)}</span>
                 </div>
-                <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
+                <div className="flex justify-between text-sm p-2 bg-card rounded-sm">
                   <span className="text-text-secondary">{t('calcTaxSalaryRate')}</span>
                   <span className="font-medium">{(salaryResult.rate * 100).toFixed(0)}%</span>
                 </div>
-                <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
+                <div className="flex justify-between text-sm p-2 bg-card rounded-sm">
                   <span className="text-text-secondary">{t('calcTaxSalaryTax')}</span>
                   <span className="font-medium">¥{salaryResult.tax.toFixed(0)}</span>
                 </div>
@@ -662,22 +662,22 @@ function TaxCalc() {
             )}
             {bonusResult && (
               <>
-                <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
+                <div className="flex justify-between text-sm p-2 bg-card rounded-sm">
                   <span className="text-text-secondary">{t('calcTaxBonus')} (÷12 = ¥{(bonusResult.bonus / 12).toFixed(0)})</span>
                   <span className="font-medium">{bonusResult.bracket}</span>
                 </div>
-                <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
+                <div className="flex justify-between text-sm p-2 bg-card rounded-sm">
                   <span className="text-text-secondary">{t('calcTaxBonusRate')}</span>
                   <span className="font-medium">{(bonusResult.rate * 100).toFixed(0)}%</span>
                 </div>
-                <div className="flex justify-between text-sm p-2 bg-white rounded-sm">
+                <div className="flex justify-between text-sm p-2 bg-card rounded-sm">
                   <span className="text-text-secondary">{t('calcTaxBonusTax')}</span>
                   <span className="font-medium">¥{bonusResult.tax.toFixed(0)}</span>
                 </div>
               </>
             )}
             {(salaryResult || bonusResult) && (
-              <div className="flex justify-between text-sm p-2 bg-white rounded-sm border-t border-[rgba(127,99,21,0.1)]">
+              <div className="flex justify-between text-sm p-2 bg-card rounded-sm border-t border-[rgba(127,99,21,0.1)]">
                 <span className="text-text-secondary font-medium">{t('calcTaxTotal')}</span>
                 <span className="text-accent font-bold">¥{totalTax.toFixed(0)}</span>
               </div>
@@ -818,8 +818,8 @@ function MortgageCalc() {
     : type === 'fund' ? parseFloat(fundRate) : ''
 
   const btnClass = (active: boolean) =>
-    `px-3 py-1 text-xs rounded-sm ${active ? 'bg-accent text-white' : 'bg-white text-text-secondary'}`
-  const inputClass = "w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary"
+    `px-3 py-1 text-xs rounded-sm ${active ? 'bg-accent text-white' : 'bg-card text-text-secondary'}`
+  const inputClass = "w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary"
   const labelClass = "block text-xs text-text-secondary mb-1"
 
   return (
@@ -940,7 +940,7 @@ function MortgageCalc() {
                   : ''}
               </p>
             )}
-            <div className="flex justify-between items-center p-2 bg-white rounded-sm">
+            <div className="flex justify-between items-center p-2 bg-card rounded-sm">
               <span className="text-text-secondary text-sm">{t('calcMortgageMonthlyPayment')}</span>
               <span className="text-accent font-bold text-lg">¥{result.monthly.toFixed(0)}</span>
             </div>
@@ -950,7 +950,7 @@ function MortgageCalc() {
               </p>
             )}
             {type === 'mixed' && 'commercial' in result && 'fund' in result && (
-              <div className="p-2 bg-white rounded-sm text-xs space-y-1">
+              <div className="p-2 bg-card rounded-sm text-xs space-y-1">
                 <div className="flex justify-between">
                   <span className="text-text-secondary">{t('calcMortgageCommercial')}</span>
                   <span className="font-medium">{t('calcMortgageDetail', { amount: (result as any).commercial.amount.toFixed(0), monthly: (result as any).commercial.monthly.toFixed(0) })}</span>
@@ -962,11 +962,11 @@ function MortgageCalc() {
               </div>
             )}
             <div className="grid grid-cols-2 gap-2">
-              <div className="p-2 bg-white rounded-sm text-center">
+              <div className="p-2 bg-card rounded-sm text-center">
                 <p className="text-xs text-text-secondary">{t('calcMortgageTotalInterest')}</p>
                 <p className="text-sm font-medium">¥{result.totalInterest.toFixed(0)}</p>
               </div>
-              <div className="p-2 bg-white rounded-sm text-center">
+              <div className="p-2 bg-card rounded-sm text-center">
                 <p className="text-xs text-text-secondary">{t('calcMortgageTotalPayment')}</p>
                 <p className="text-sm font-medium">¥{result.totalPayment.toFixed(0)}</p>
               </div>
@@ -988,7 +988,7 @@ function MortgageCalc() {
                 <div key={year} className="mb-1">
                   <button
                     onClick={() => setExpandedYears(prev => ({ ...prev, [year]: !prev[year] }))}
-                    className="w-full flex items-center justify-between p-2 bg-white rounded-sm text-xs hover:bg-accent/5 transition-colors"
+                    className="w-full flex items-center justify-between p-2 bg-card rounded-sm text-xs hover:bg-accent/5 transition-colors"
                   >
                     <span className="font-medium text-text-primary">{t('calcYearN', { year })}</span>
                     <span className="text-text-secondary">
@@ -1005,7 +1005,7 @@ function MortgageCalc() {
                         <span className="w-20 text-right">{t('calcMortgageRemaining')}</span>
                       </div>
                       {yearMonths.map(m => (
-                        <div key={m.month} className="flex items-center text-[11px] px-2 py-1 bg-white rounded-sm">
+                        <div key={m.month} className="flex items-center text-[11px] px-2 py-1 bg-card rounded-sm">
                           <span className="w-8 text-text-secondary">{m.month}</span>
                           <span className="w-20 text-right text-text-primary font-mono">¥{m.payment.toFixed(0)}</span>
                           <span className="w-20 text-right text-text-secondary font-mono">¥{m.principal.toFixed(0)}</span>
@@ -1040,7 +1040,7 @@ function MortgageCalc() {
                       <div key={year} className="mb-1">
                         <button
                           onClick={() => setExpandedYears(prev => ({ ...prev, [key]: !prev[key] }))}
-                          className="w-full flex items-center justify-between p-2 bg-white rounded-sm text-xs hover:bg-accent/5 transition-colors"
+                          className="w-full flex items-center justify-between p-2 bg-card rounded-sm text-xs hover:bg-accent/5 transition-colors"
                         >
                           <span className="font-medium text-text-primary">{t('calcYearN', { year })}</span>
                           <span className="text-text-secondary">
@@ -1057,7 +1057,7 @@ function MortgageCalc() {
                               <span className="w-20 text-right">{t('calcMortgageRemaining')}</span>
                             </div>
                             {yearMonths.map((m: any) => (
-                              <div key={m.month} className="flex items-center text-[11px] px-2 py-1 bg-white rounded-sm">
+                              <div key={m.month} className="flex items-center text-[11px] px-2 py-1 bg-card rounded-sm">
                                 <span className="w-8 text-text-secondary">{m.month}</span>
                                 <span className="w-20 text-right text-text-primary font-mono">¥{m.payment.toFixed(0)}</span>
                                 <span className="w-20 text-right text-text-secondary font-mono">¥{m.principal.toFixed(0)}</span>
@@ -1147,13 +1147,13 @@ function ChineseNumCalc() {
       </div>
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
         <div className="flex gap-1 mb-3">
-          <button onClick={() => setMode('chinese')} className={`px-3 py-1.5 text-xs rounded-sm ${mode === 'chinese' ? 'bg-accent text-white' : 'bg-white text-text-secondary border border-[rgba(127,99,21,0.1)]'}`}>{t('calcChineseMode')}</button>
-          <button onClick={() => setMode('roman')} className={`px-3 py-1.5 text-xs rounded-sm ${mode === 'roman' ? 'bg-accent text-white' : 'bg-white text-text-secondary border border-[rgba(127,99,21,0.1)]'}`}>{t('calcRomanMode')}</button>
+          <button onClick={() => setMode('chinese')} className={`px-3 py-1.5 text-xs rounded-sm ${mode === 'chinese' ? 'bg-accent text-white' : 'bg-card text-text-secondary border border-[rgba(127,99,21,0.1)]'}`}>{t('calcChineseMode')}</button>
+          <button onClick={() => setMode('roman')} className={`px-3 py-1.5 text-xs rounded-sm ${mode === 'roman' ? 'bg-accent text-white' : 'bg-card text-text-secondary border border-[rgba(127,99,21,0.1)]'}`}>{t('calcRomanMode')}</button>
         </div>
         <label className="block text-xs text-text-secondary mb-1">{t('calcInputNumber')}</label>
-        <input value={num} onChange={e => setNum(e.target.value)} placeholder="12345.67" className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+        <input value={num} onChange={e => setNum(e.target.value)} placeholder="12345.67" className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
         {result && (
-          <div className="mt-3 p-3 bg-white rounded-sm border border-[rgba(127,99,21,0.08)]">
+          <div className="mt-3 p-3 bg-card rounded-sm border border-[rgba(127,99,21,0.08)]">
             <p className="text-xs text-text-secondary/60 mb-1">{t('calcResult')}</p>
             <p className="text-lg font-bold text-accent break-all">{result}</p>
           </div>
@@ -1258,11 +1258,11 @@ function TimeCalc() {
         <div className="flex gap-2 items-end mb-3">
           <div className="flex-1">
             <label className="block text-xs text-text-secondary mb-1">{t('calcTimeConvert')}</label>
-            <input value={val} onChange={e => setVal(e.target.value)} maxLength={15} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            <input value={val} onChange={e => setVal(e.target.value)} maxLength={15} className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
           </div>
           <div className="w-28">
             <label className="block text-xs text-text-secondary mb-1">{t('calcUnit')}</label>
-            <select value={from} onChange={e => setFrom(e.target.value)} className="w-full p-2 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
+            <select value={from} onChange={e => setFrom(e.target.value)} className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
               {units.map(u => <option key={u.label} value={u.label}>{u.labelZh}</option>)}
             </select>
           </div>
@@ -1270,7 +1270,7 @@ function TimeCalc() {
         {!isNaN(n) && (
           <div className="space-y-0.5">
             {units.filter(u => u.label !== from).map(u => (
-              <div key={u.label} className="flex justify-between p-1.5 bg-white rounded-sm text-xs">
+              <div key={u.label} className="flex justify-between p-1.5 bg-card rounded-sm text-xs">
                 <span className="text-text-secondary">{u.labelZh}</span>
                 <span className="text-text-primary font-mono">{formatNumber(convertUnit(n, from, u.label))}</span>
               </div>
@@ -1326,7 +1326,7 @@ function TitleCalc() {
 
   const btnClass = (selected: boolean) =>
     `px-2.5 py-1.5 text-xs rounded-sm transition-colors ${
-      selected ? 'bg-accent text-white' : 'bg-white text-text-secondary border border-[rgba(127,99,21,0.1)] hover:border-accent/30'
+      selected ? 'bg-accent text-white' : 'bg-card text-text-secondary border border-[rgba(127,99,21,0.1)] hover:border-accent/30'
     }`
 
   return (
@@ -1356,7 +1356,7 @@ function TitleCalc() {
             </div>
           </div>
         {selected1 && selected3 && (
-          <div className={`mt-3 p-3 bg-white rounded-sm border text-center ${
+          <div className={`mt-3 p-3 bg-card rounded-sm border text-center ${
             isInvalid ? 'border-red-300' : 'border-[rgba(127,99,21,0.08)]'
           }`}>
             <p className="text-xs text-text-secondary/60 mb-1">{selected1}的{selected3}</p>
@@ -1381,7 +1381,7 @@ function TitleCalc() {
                   setSelected3(parts[2])
                 }
               }}
-                className="text-left text-xs p-1.5 bg-white rounded-sm hover:bg-accent/5 text-text-primary">
+                className="text-left text-xs p-1.5 bg-card rounded-sm hover:bg-accent/5 text-text-primary">
                 {k} → {relations[k]}
               </button>
             )
@@ -1437,9 +1437,9 @@ function BaseCalc() {
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-5">
         <div className="flex gap-2 mb-3">
           <input value={input} onChange={e => setInput(e.target.value)} placeholder="{t('calcInputNumber')}"
-            className="flex-1 p-3 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary focus:outline-none focus:border-accent/30" />
+            className="flex-1 p-3 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary focus:outline-none focus:border-accent/30" />
           <select value={fromBase} onChange={e => { setInput(''); setFromBase(parseInt(e.target.value)) }}
-            className="p-3 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary focus:outline-none">
+            className="p-3 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary focus:outline-none">
             {BASES.map(b => <option key={b.base} value={b.base}>{b.label} ({t(`base${b.base}`)})</option>)}
           </select>
         </div>

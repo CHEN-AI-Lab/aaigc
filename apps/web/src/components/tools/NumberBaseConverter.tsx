@@ -41,7 +41,7 @@ export default function NumberBaseConverter() {
 
   return (
     <div className="mt-6 space-y-6">
-      <div className="p-3 bg-amber-50 border border-amber-200 rounded-sm text-xs text-amber-800 leading-relaxed">
+      <div className="p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-xs text-text-secondary leading-relaxed">
         {t('baseDesc')}
       </div>
 

@@ -37,7 +37,7 @@ export default function MarkdownPreview() {
         </div>
         <div className="flex flex-col gap-2">
           <span className="text-xs text-text-secondary font-medium">{t('preview')}</span>
-          <div className="flex-1 min-h-[400px] overflow-y-auto p-3 bg-white border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary prose prose-sm max-w-none">
+          <div className="flex-1 min-h-[400px] overflow-y-auto p-3 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary prose prose-sm max-w-none">
             <ReactMarkdown>{input}</ReactMarkdown>
           </div>
         </div>

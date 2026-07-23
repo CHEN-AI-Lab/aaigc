@@ -69,7 +69,7 @@ export default function PasswordGenerator() {
             <button onClick={() => navigator.clipboard.writeText(password)} className="absolute top-2 right-2 text-xs px-2 py-1 bg-accent text-white rounded-sm hover:opacity-90 min-w-[4.5rem] text-center">{t('copy')}</button>
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div className="flex-1 h-2 bg-surface rounded-full overflow-hidden">
               <div className={`h-full ${strengthColor} transition-all duration-300`} style={{ width: `${strength}%` }} />
             </div>
             <span className="text-xs text-text-secondary font-medium">{strengthLabel} ({strength}%)</span>
