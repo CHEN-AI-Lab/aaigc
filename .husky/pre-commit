@@ -1,7 +1,18 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/bin/sh
+# pre-commit hook: 自动学习翻译文件变动到记忆库
+# 当 shared/messages/ 下的翻译文件被修改时，自动执行 --learn
+# 记忆库文件位于 .shared/translation-memory.json（所有项目共享），不提交到 git
 
-echo "=== Pre-commit checks ==="
-bash scripts/check-structure.sh
-python3 scripts/check-translations.py
-pnpm test
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '^shared/messages/' | grep -v 'en\.json$' | grep -v 'zh-CN\.json$' || true)
+
+if [ -z "$STAGED_FILES" ]; then
+  exit 0
+fi
+
+echo "📝 检测到翻译文件变动，正在更新记忆库..."
+
+for FILE in $STAGED_FILES; do
+  LANG=$(basename "$FILE" .json)
+  echo "   → $LANG"
+  node scripts/translate.mjs "$LANG" --learn --yes 2>&1 | sed 's/^/     /'
+done

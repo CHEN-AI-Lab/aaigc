@@ -12,7 +12,8 @@
     "test:shared": "pnpm --filter shared test",
     "typecheck": "pnpm --filter web exec -- tsc --noEmit && pnpm --filter shared exec -- tsc --noEmit",
     "check": "bash scripts/check.sh",
-    "setup": "pnpm install"
+    "setup": "pnpm install",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@playwright/test": "^1.60.0",

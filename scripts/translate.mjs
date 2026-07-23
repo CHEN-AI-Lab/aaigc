@@ -73,6 +73,7 @@ const IS_UNLOCK = process.argv.includes("--unlock")
 const IS_SHOW_LOCKS = process.argv.includes("--show-locks")
 const IS_RESTORE = process.argv.includes("--restore")
 const IS_STATS = process.argv.includes("--stats")
+const IS_YES = process.argv.includes("--yes")
 
 const SEARCH_INDEX = process.argv.indexOf("--search")
 const IS_SEARCH = SEARCH_INDEX !== -1
@@ -1004,21 +1005,24 @@ if (IS_LEARN) {
     console.log(`    新值:       "${translated}"`)
   }
 
-  const rl = await import("node:readline").then((m) => m.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  }))
+  // 确认提示（--yes 跳过）
+  if (!IS_YES) {
+    const rl = await import("node:readline").then((m) => m.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    }))
 
-  const answer = await new Promise((resolve) => {
-    rl.question(`\n确认学习到记忆库？(y/N) `, (ans) => {
-      rl.close()
-      resolve(ans.trim().toLowerCase())
+    const answer = await new Promise((resolve) => {
+      rl.question(`\n确认学习到记忆库？(y/N) `, (ans) => {
+        rl.close()
+        resolve(ans.trim().toLowerCase())
+      })
     })
-  })
 
-  if (answer !== "y" && answer !== "yes") {
-    console.log(`\n⏹️  已取消，记忆库未更改`)
-    process.exit(0)
+    if (answer !== "y" && answer !== "yes") {
+      console.log(`\n⏹️  已取消，记忆库未更改`)
+      process.exit(0)
+    }
   }
 
   for (const { keyPath, srcText, translated } of changes) {

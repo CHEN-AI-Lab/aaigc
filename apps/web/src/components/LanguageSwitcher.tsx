@@ -44,13 +44,13 @@ export default function LanguageSwitcher() {
         </svg>
       </button>
       {open && (
-        <div className="absolute right-0 top-full mt-1 bg-surface border border-[rgba(127,99,21,0.15)] rounded-md shadow-md min-w-[120px] z-50 overflow-hidden">
+        <div className="absolute right-0 top-full mt-1 bg-card border border-[rgba(127,99,21,0.15)] rounded-md shadow-md min-w-[120px] z-50 overflow-hidden">
           {locales.map((l) => (
             <button
               key={l}
               onClick={() => switchLocale(l)}
               className={`block w-full text-left px-4 py-2 text-sm transition-colors ${
-                locale === l ? 'bg-accent/15 text-accent font-medium' : 'text-text-secondary hover:bg-surface'
+                locale === l ? 'bg-accent/20 text-accent font-medium' : 'text-text-secondary hover:bg-accent/10'
               }`}
             >
               {localeNames[l]}

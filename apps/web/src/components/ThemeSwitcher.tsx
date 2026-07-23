@@ -36,7 +36,7 @@ export default function ThemeSwitcher() {
         🎨
       </button>
       {open && (
-        <div className="absolute top-full right-0 mt-1 bg-surface border border-[rgba(127,99,21,0.15)] rounded-md shadow-md min-w-[150px] z-50 overflow-hidden">
+        <div className="absolute top-full right-0 mt-1 bg-card border border-[rgba(127,99,21,0.15)] rounded-md shadow-md min-w-[150px] z-50 overflow-hidden">
           {THEMES.map(id => (
             <button
               key={id}
@@ -47,10 +47,10 @@ export default function ThemeSwitcher() {
                 localStorage.setItem('aaigc-theme', id)
               }}
               className={`w-full text-left px-3 py-2 text-xs transition-colors ${
-                              current === id ? 'bg-accent/15 text-accent font-medium' : 'text-text-secondary hover:bg-surface'
-                            }`}
-                          >
-                            {t(`theme${id}`)}
+                current === id ? 'bg-accent/20 text-accent font-medium' : 'text-text-secondary hover:bg-accent/10'
+              }`}
+            >
+              {t(`theme${id}`)}
             </button>
           ))}
         </div>
