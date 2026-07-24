@@ -376,6 +376,8 @@
     "tabTemp": "Temperature",
     "tabSpeed": "Speed",
     "tabTime": "Time",
+    "chinaOnlyLabel": "China",
+    "chinaOnlyNote": "This tool is for China mainland users only. Data and rules are based on the Chinese tax/mortgage system.",
     "currencyUSD": "US Dollar",
     "currencyCNY": "Chinese Yuan",
     "currencyEUR": "Euro",

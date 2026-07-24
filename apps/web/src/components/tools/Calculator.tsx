@@ -32,14 +32,19 @@ const TABS: { id: Tab }[] = [
 export default function Calculator() {
   const [tab, setTab] = useState<Tab>('calc')
   const t = useTranslations('tools')
+  const CHINA_ONLY_TABS = new Set<Tab>(['tax', 'mortgage', 'title'])
   return (
     <div className="mt-6 space-y-4">
       <div className="flex gap-1 overflow-x-auto pb-1 scrollbar-none border-b border-[rgba(127,99,21,0.15)]">
         {TABS.map(tb => (
           <button key={tb.id} onClick={() => setTab(tb.id)}
-            className={`px-3 py-1.5 text-xs rounded-t-sm whitespace-nowrap transition-colors shrink-0 ${
+            className={`px-3 py-1.5 text-xs rounded-t-sm whitespace-nowrap transition-colors shrink-0 flex items-center gap-1.5 ${
               tab === tb.id ? 'bg-accent text-white' : 'text-text-secondary hover:text-text-primary hover:bg-surface'
-            }`}>{t(`tab${tb.id.charAt(0).toUpperCase() + tb.id.slice(1)}`)}</button>
+            }`}>{t(`tab${tb.id.charAt(0).toUpperCase() + tb.id.slice(1)}`)}
+            {CHINA_ONLY_TABS.has(tb.id) && (
+              <span className="text-[10px] px-1 rounded-sm bg-white/20 text-white/90 font-medium">{t('chinaOnlyLabel')}</span>
+            )}
+          </button>
         ))}
       </div>
       {tab === 'calc' && <CalcPanel />}
@@ -537,6 +542,9 @@ function TaxCalc() {
 
   return (
     <div className="max-w-md mx-auto space-y-3">
+      <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm p-3 text-xs text-text-secondary leading-relaxed">
+        {t('chinaOnlyNote')}
+      </div>
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
         {/* Basic salary inputs */}
         <div className="grid grid-cols-2 gap-3 mb-3">
@@ -824,6 +832,9 @@ function MortgageCalc() {
 
   return (
     <div className="max-w-md mx-auto space-y-3">
+      <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm p-3 text-xs text-text-secondary leading-relaxed">
+        {t('chinaOnlyNote')}
+      </div>
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
         {/* Loan type */}
         <div className="flex gap-1 mb-3 flex-wrap">
@@ -1331,8 +1342,9 @@ function TitleCalc() {
 
   return (
       <div className="max-w-lg mx-auto space-y-3">
-        <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm p-3 text-xs text-text-secondary leading-relaxed">
+        <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm p-3 text-xs text-text-secondary leading-relaxed space-y-1">
           {t('calcTitleNote')}
+          <p>{t('chinaOnlyNote')}</p>
         </div>
         <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
           <div className="flex items-center justify-between mb-3">

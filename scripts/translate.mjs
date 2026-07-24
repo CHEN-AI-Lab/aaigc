@@ -77,6 +77,8 @@ const IS_SHOW_LOCKS = process.argv.includes("--show-locks")
 const IS_RESTORE = process.argv.includes("--restore")
 const IS_STATS = process.argv.includes("--stats")
 const IS_YES = process.argv.includes("--yes")
+const IS_ALL = process.argv.includes("--all")
+const IS_SYNC = process.argv.includes("--sync")
 
 const SEARCH_INDEX = process.argv.indexOf("--search")
 const IS_SEARCH = SEARCH_INDEX !== -1
@@ -94,7 +96,7 @@ const SRC_ARG = process.argv.indexOf("--source")
 const SRC_LANG = SRC_ARG !== -1 ? process.argv[SRC_ARG + 1] : null
 
 // 检查是否独立模式（不需要 <lang-code>）
-const IS_STANDALONE = IS_CHECK || IS_LOCK || IS_UNLOCK || IS_SHOW_LOCKS || IS_RESTORE || IS_STATS || IS_SEARCH || IS_EXPORT || IS_IMPORT
+const IS_STANDALONE = IS_CHECK || IS_LOCK || IS_UNLOCK || IS_SHOW_LOCKS || IS_RESTORE || IS_STATS || IS_SEARCH || IS_EXPORT || IS_IMPORT || IS_ALL || IS_SYNC
 
 if (!LANG && !IS_STANDALONE) {
   console.error("用法: node scripts/translate.mjs <lang-code> [--source <src>] [--learn]")
@@ -104,6 +106,8 @@ if (!LANG && !IS_STANDALONE) {
   console.error("       node scripts/translate.mjs --show-locks")
   console.error("       node scripts/translate.mjs --restore")
   console.error("       node scripts/translate.mjs --stats")
+  console.error("       node scripts/translate.mjs --all")
+  console.error("       node scripts/translate.mjs --sync")
   console.error("       node scripts/translate.mjs --search <text>")
   console.error("       node scripts/translate.mjs --export <file>")
   console.error("       node scripts/translate.mjs --import <file>")
@@ -187,7 +191,7 @@ function loadMemory() {
     }
 
     const raw = JSON.parse(fs.readFileSync(MEMORY_FILE, "utf-8"))
-    return migrateMemory(raw)
+    return sortMemory(migrateMemory(raw))
   } catch (e) {
     console.error(`\n❌ 记忆库文件损坏或无法读取: ${MEMORY_FILE}`)
     console.error(`   错误: ${e.message}`)
@@ -218,9 +222,9 @@ function migrateMemory(memory) {
       if (!group || typeof group !== "object") continue
       const keys = Object.keys(group)
       for (const rawKey of keys) {
-        const normalized = normalizeSource(rawKey)
-        if (normalized !== rawKey) {
-          group[normalized] = group[rawKey]
+        const normKey = normalizeSource(rawKey)
+        if (normKey !== rawKey) {
+          group[normKey] = group[rawKey]
           delete group[rawKey]
           normalized = true
         }
@@ -289,6 +293,10 @@ const LANG_PRIORITY = ["zh-CN", "zh-TW", "en", "ja"]
 function sortMemory(memory) {
   const sorted = {}
   const keys = Object.keys(memory).sort((a, b) => {
+    // en→zh-CN 放在最前面（供查看用）
+    if (a === "en→zh-CN") return -1
+    if (b === "en→zh-CN") return 1
+
     const [aSrc, aTgt] = a.split("→")
     const [bSrc, bTgt] = b.split("→")
     const aSrcIdx = LANG_PRIORITY.indexOf(aSrc)
@@ -347,7 +355,7 @@ function lookupMemory(memory, sourceLang, targetLang, sourceText) {
 }
 
 function setMemory(memory, sourceLang, targetLang, sourceText, translatedText) {
-  // 安全防护：源语言作为目标时禁止写入
+  // 安全防护：源语言作为目标时禁止写入（除非是 --sync 模式直接写 locked）
   if (SOURCE_LANGUAGES.includes(targetLang)) {
     return false
   }
@@ -967,6 +975,88 @@ if (IS_IMPORT) {
   process.exit(0)
 }
 
+// ===== --all 模式：翻译所有语言 =====
+if (IS_ALL) {
+  const files = fs.readdirSync(MESSAGES_DIR).filter((f) => f.endsWith(".json"))
+  const languages = files
+    .map((f) => f.replace(".json", ""))
+    .filter((lang) => !SOURCE_LANGUAGES.includes(lang))
+    .sort()
+
+  if (languages.length === 0) {
+    console.log("📭 没有需要翻译的语言")
+    process.exit(0)
+  }
+
+  console.log(`🌐 将翻译 ${languages.length} 种语言: ${languages.join(", ")}\n`)
+  process.env.AI_SILENT = "1" // 减少日志输出
+
+  for (const lang of languages) {
+    console.log(`─── ${lang} ───`)
+    try {
+      execSync(`node scripts/translate.mjs ${lang} --yes`, { stdio: "inherit", timeout: 120000 })
+    } catch (e) {
+      console.error(`  ❌ ${lang} 翻译失败`)
+    }
+    console.log()
+  }
+
+  console.log("✅ 所有语言翻译完成")
+  process.exit(0)
+}
+
+// ===== --sync 模式：同步中英文对应关系到记忆库（存到 locked 组） =====
+if (IS_SYNC) {
+  const enFile = path.join(MESSAGES_DIR, "en.json")
+  const zhFile = path.join(MESSAGES_DIR, "zh-CN.json")
+
+  if (!fs.existsSync(enFile) || !fs.existsSync(zhFile)) {
+    console.error("❌ 需要 en.json 和 zh-CN.json 都存在")
+    process.exit(1)
+  }
+
+  const en = JSON.parse(fs.readFileSync(enFile, "utf-8"))
+  const zh = JSON.parse(fs.readFileSync(zhFile, "utf-8"))
+  const memory = loadMemory()
+
+  // 确保 en→zh-CN 语言对存在
+  const langKey = getMemoryKey("en", "zh-CN")
+  if (!memory[langKey]) memory[langKey] = { locked: {}, unlocked: {} }
+
+  // 扁平化两个文件，找到相同 key 的对应关系
+  const enFlat = flattenKeys(en)
+  const zhFlat = {}
+  for (const { keyPath, value } of flattenKeys(zh)) {
+    zhFlat[keyPath] = value
+  }
+
+  let added = 0
+  let updated = 0
+
+  for (const { keyPath, value: enValue } of enFlat) {
+    const zhValue = zhFlat[keyPath]
+    if (zhValue === undefined) continue
+
+    const existing = memory[langKey].locked[enValue]
+    if (existing === zhValue) continue
+
+    memory[langKey].locked[enValue] = zhValue
+    if (existing === undefined) {
+      console.log(`  ✅ ${keyPath}: "${enValue}" → "${zhValue}"`)
+      added++
+    } else {
+      console.log(`  🔄 ${keyPath}: "${existing}" → "${zhValue}"`)
+      updated++
+    }
+  }
+
+  saveMemory(memory)
+  console.log(`\n✅ 中英文对应关系已同步`)
+  console.log(`   新增 ${added} 条，更新 ${updated} 条`)
+  console.log(`   位置: ${langKey} → locked`)
+  process.exit(0)
+}
+
 // ===== 以下为需要 <lang-code> 的模式 =====
 // ─── 源语言自动检测 ───
 const SOURCE_LANG = SRC_LANG || (LANG === "zh-TW" ? "zh-CN" : "en")
@@ -1031,11 +1121,11 @@ if (IS_LEARN) {
     if (hasGitVersion) {
       const committedValue = committedFlat[keyPath]
       if (committedValue === translated) continue
-      changes.push({ keyPath, srcText, translated, oldValue: committedValue ?? "(无)" })
+      changes.push({ keyPath, srcText, translated, sourceValue: getNested(source, keyPath), oldValue: committedValue ?? "(无)" })
     } else {
       const memorized = lookupMemory(memory, SOURCE_LANG, LANG, srcText)
       if (memorized !== translated) {
-        changes.push({ keyPath, srcText, translated, oldValue: memorized ?? "(无)" })
+        changes.push({ keyPath, srcText, translated, sourceValue: getNested(source, keyPath), oldValue: memorized ?? "(无)" })
       }
     }
   }
@@ -1053,11 +1143,18 @@ if (IS_LEARN) {
   }
 
   console.log(`\n📋 以下 ${changes.length} 条翻译将写入记忆库：`)
-  for (const { keyPath, srcText, translated, oldValue } of changes) {
-    console.log(`  ${keyPath}`)
-    console.log(`    源文:       "${srcText}"`)
-    console.log(`    旧记忆库:   "${oldValue}"`)
-    console.log(`    新值:       "${translated}"`)
+  for (const { keyPath, srcText, translated, sourceValue, oldValue } of changes) {
+    if (Array.isArray(sourceValue) && Array.isArray(translated) && sourceValue.length === translated.length) {
+      console.log(`  ${keyPath}（数组，${sourceValue.length} 项 → 拆分为单独条目）`)
+      for (let i = 0; i < sourceValue.length; i++) {
+        console.log(`    [${i + 1}] "${sourceValue[i]}" → "${translated[i]}"`)
+      }
+    } else {
+      console.log(`  ${keyPath}`)
+      console.log(`    源文:       "${srcText}"`)
+      console.log(`    旧记忆库:   "${oldValue}"`)
+      console.log(`    新值:       "${translated}"`)
+    }
   }
 
   // 确认提示（--yes 跳过）
@@ -1080,8 +1177,36 @@ if (IS_LEARN) {
     }
   }
 
-  for (const { keyPath, srcText, translated } of changes) {
-    setMemory(memory, SOURCE_LANG, LANG, srcText, translated)
+  for (const { keyPath, srcText, translated, sourceValue } of changes) {
+    // 数组拆分：每个元素单独存入记忆库
+    if (Array.isArray(sourceValue) && Array.isArray(translated) && sourceValue.length === translated.length) {
+      let splitCount = 0
+      let skipCount = 0
+      for (let i = 0; i < sourceValue.length; i++) {
+        const elemSrc = String(sourceValue[i]).trim()
+        const elemTgt = String(translated[i]).trim()
+        if (!elemSrc || !elemTgt) continue
+
+        // 检查是否已存在不同翻译
+        const existing = lookupMemory(memory, SOURCE_LANG, LANG, elemSrc)
+        if (existing !== null && existing !== elemTgt) {
+          console.log(`  ⚠️  冲突: "${elemSrc}" 已有不同翻译 "${existing}"，跳过`)
+          skipCount++
+          continue
+        }
+        if (setMemory(memory, SOURCE_LANG, LANG, elemSrc, elemTgt)) {
+          splitCount++
+        }
+      }
+      if (splitCount > 0) {
+        console.log(`  📦 ${keyPath}: 数组拆分为 ${splitCount} 条单独存储`)
+      }
+      if (skipCount > 0) {
+        console.log(`  ⚠️  跳过 ${skipCount} 条冲突`)
+      }
+    } else {
+      setMemory(memory, SOURCE_LANG, LANG, srcText, translated)
+    }
   }
 
   saveMemory(memory)
