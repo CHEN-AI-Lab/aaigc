@@ -22,10 +22,8 @@ export default function ProductCard({ product }: { product: Product }) {
       <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">{product.icon}</div>
       <h3 className="card-title text-text-primary mb-2 text-center">{name}</h3>
       {desc && <p className="text-sm text-text-secondary mb-4 line-clamp-2 text-center leading-relaxed">{desc}</p>}
-      <span className={`inline-block text-xs px-3 py-1 rounded-sm font-medium ${
-        product.status === 'live' ? 'bg-green-500 text-white' : 'bg-amber-500 text-white'
-      }`}>
-        {product.status === 'live' ? tc('live') : tc('inDevelopment')}
+      <span className="inline-block text-xs px-3 py-1 rounded-sm font-medium bg-surface text-text-secondary">
+        {tc('comingSoon')}
       </span>
     </div>
   )

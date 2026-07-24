@@ -40,10 +40,8 @@ export default async function ProductDetailPage({ params }: Props) {
             <h1 className="text-3xl font-semibold text-text-primary mb-2">{name}</h1>
             {desc && <p className="text-text-secondary mb-4">{desc}</p>}
             <div className="flex items-center gap-3">
-              <span className={`text-xs px-2 py-1 rounded-sm font-medium ${
-                product.status === 'live' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
-              }`}>
-                {product.status === 'live' ? tc('live') : tc('inDevelopment')}
+              <span className="text-xs px-2 py-1 rounded-sm font-medium bg-surface text-text-secondary">
+                {tc('comingSoon')}
               </span>
             </div>
           </div>

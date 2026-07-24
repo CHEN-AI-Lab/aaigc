@@ -28,7 +28,8 @@ export default async function HomePage({ params }: Props) {
 
       {/* Products Grid */}
       <section className="max-w-6xl mx-auto px-6 pb-16">
-        <h2 className="section-title text-text-primary text-center mb-10">{t('productsTitle')}</h2>
+        <h2 className="section-title text-text-primary text-center mb-2">{t('productsTitle')}</h2>
+        <p className="text-text-secondary text-center mb-10">{t('productsDesc')}</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {products.map((p) => (
             <ProductCard key={p.id} product={p} />

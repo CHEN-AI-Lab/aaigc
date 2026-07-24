@@ -27,7 +27,7 @@ export default function ProductsClient({ products }: { products: Product[] }) {
           >
             {f === 'all' ? t('all') :
              f === 'live' ? t('live') :
-             t('inDevelopment')}
+             t('comingSoon')}
           </button>
         ))}
       </div>
