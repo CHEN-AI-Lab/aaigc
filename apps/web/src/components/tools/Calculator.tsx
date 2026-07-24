@@ -488,13 +488,13 @@ function TaxCalc() {
 
   // Yearly tax brackets
   const yearlyBrackets = [
-    { low: 0, high: 36000, rate: 0.03, deduct: 0, label: 'bracket1' },
-    { low: 36000, high: 144000, rate: 0.1, deduct: 2520, label: 'bracket2' },
-    { low: 144000, high: 300000, rate: 0.2, deduct: 16920, label: 'bracket3' },
-    { low: 300000, high: 420000, rate: 0.25, deduct: 31920, label: 'bracket4' },
-    { low: 420000, high: 660000, rate: 0.3, deduct: 52920, label: 'bracket5' },
-    { low: 660000, high: 960000, rate: 0.35, deduct: 85920, label: 'bracket6' },
-    { low: 960000, high: Infinity, rate: 0.45, deduct: 181920, label: 'bracket7' },
+    { low: 0, high: 36000, rate: 0.03, deduct: 0, label: 'calcTaxBracket1' },
+    { low: 36000, high: 144000, rate: 0.1, deduct: 2520, label: 'calcTaxBracket2' },
+    { low: 144000, high: 300000, rate: 0.2, deduct: 16920, label: 'calcTaxBracket3' },
+    { low: 300000, high: 420000, rate: 0.25, deduct: 31920, label: 'calcTaxBracket4' },
+    { low: 420000, high: 660000, rate: 0.3, deduct: 52920, label: 'calcTaxBracket5' },
+    { low: 660000, high: 960000, rate: 0.35, deduct: 85920, label: 'calcTaxBracket6' },
+    { low: 960000, high: Infinity, rate: 0.45, deduct: 181920, label: 'calcTaxBracket7' },
   ]
 
   const calcTax = (taxable: number, brackets: typeof yearlyBrackets) => {
@@ -664,7 +664,7 @@ function TaxCalc() {
               <>
                 <div className="flex justify-between text-sm p-2 bg-card rounded-sm">
                   <span className="text-text-secondary">{t('calcTaxBonus')} (÷12 = ¥{(bonusResult.bonus / 12).toFixed(0)})</span>
-                  <span className="font-medium">{bonusResult.bracket}</span>
+                  <span className="font-medium">{t(bonusResult.bracket)}</span>
                 </div>
                 <div className="flex justify-between text-sm p-2 bg-card rounded-sm">
                   <span className="text-text-secondary">{t('calcTaxBonusRate')}</span>
@@ -695,7 +695,7 @@ function TaxCalc() {
           <div className="space-y-0.5">
             {yearlyBrackets.map(b => (
               <div key={b.low} className={`flex justify-between text-xs p-1.5 rounded-sm ${b.label === salaryResult?.bracket ? 'bg-accent/10 text-accent font-medium' : 'text-text-secondary'}`}>
-                <span>{b.label}</span>
+                <span>{t(b.label)}</span>
                 <span>{(b.rate * 100).toFixed(0)}%</span>
               </div>
             ))}
