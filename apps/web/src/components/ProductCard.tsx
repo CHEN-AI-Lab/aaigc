@@ -28,14 +28,6 @@ export default function ProductCard({ product }: { product: Product }) {
     </div>
   )
 
-  if (product.url) {
-    return (
-      <a href={product.url} target="_blank" rel="noopener noreferrer">
-        {content}
-      </a>
-    )
-  }
-
   return (
     <>
       <div onClick={() => showToast(tc('comingSoon'))}>
