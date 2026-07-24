@@ -76,14 +76,14 @@
   --color-card: #222222;
   --color-hover: rgba(255, 255, 255, 0.08);
   --color-border: rgba(255, 255, 255, 0.1);
-  --color-accent: #ffffff;
-  --color-accent-light: #cccccc;
+  --color-accent: #38bdf8;
+  --color-accent-light: #7dd3fc;
   --color-error: #f87171;
   --color-text-primary: #f0f0f0;
   --color-text-secondary: #999999;
   --color-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
   --color-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --color-dark: #ffffff;
+  --color-dark: #111111;
 }
 
 /* ─── Theme 6: 极简灰 ─── */
