@@ -5,11 +5,13 @@ import { locales, defaultLocale } from 'shared/constants/locales'
 import enMessages from 'shared/messages/en.json'
 import zhMessages from 'shared/messages/zh-CN.json'
 import jaMessages from 'shared/messages/ja.json'
+import zhTwMessages from 'shared/messages/zh-TW.json'
 
 const messageMap: Record<string, Record<string, unknown>> = {
   'zh-CN': zhMessages as Record<string, unknown>,
   'en': enMessages as Record<string, unknown>,
   'ja': jaMessages as Record<string, unknown>,
+  'zh-TW': zhTwMessages as Record<string, unknown>,
 }
 
 export default getRequestConfig(async ({ requestLocale }) => {
