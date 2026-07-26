@@ -20,7 +20,7 @@ export default async function HomePage({ params }: Props) {
   return (
     <div>
       {/* Hero */}
-      <section className="relative overflow-hidden py-28 px-6 text-center">
+      <section className="relative overflow-hidden py-14 px-6 text-center">
         <div className="absolute inset-0 bg-gradient-to-b from-accent/5 via-transparent to-transparent pointer-events-none" />
         <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-accent/3 rounded-full blur-3xl pointer-events-none" />
         <div className="relative">
@@ -36,7 +36,7 @@ export default async function HomePage({ params }: Props) {
       </section>
 
       {/* Products Grid */}
-      <section className="bg-surface py-20">
+      <section className="bg-surface py-14">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="section-title text-text-primary text-center mb-2">{t('productsTitle')}</h2>
           <p className="text-text-secondary text-center mb-12 max-w-lg mx-auto">{tp('subtitle')}</p>
@@ -57,7 +57,7 @@ export default async function HomePage({ params }: Props) {
       </section>
 
       {/* Tools Section */}
-      <section className="py-20">
+      <section className="py-14">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="section-title text-text-primary text-center mb-2">{t('toolsTitle')}</h2>
           <p className="text-text-secondary text-center mb-12 max-w-lg mx-auto">{t('toolsDesc')}</p>
@@ -100,7 +100,7 @@ export default async function HomePage({ params }: Props) {
       </section>
 
       {/* CTA */}
-      <section className="bg-surface py-20 px-6 text-center">
+      <section className="bg-surface py-14 px-6 text-center">
         <Link
           href="/about"
           className="inline-flex items-center gap-2 px-8 py-3 bg-dark text-white text-sm font-medium rounded-sm hover:opacity-90 transition-opacity shadow-warm-sm"
