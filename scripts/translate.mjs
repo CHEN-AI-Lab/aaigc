@@ -67,6 +67,26 @@ const MAX_BACKUPS = 5
 // 源语言（直接手写，不是翻译目标）
 const SOURCE_LANGUAGES = ["zh-CN", "en"]
 
+// ─── 自动加载共享 global.env 文件（支持 dotenv 格式，无需 npm 依赖） ───
+const ENV_FILE = path.join(SHARED_DIR, "global.env")
+if (fs.existsSync(ENV_FILE)) {
+  const envContent = fs.readFileSync(ENV_FILE, "utf-8")
+  for (const line of envContent.split("\n")) {
+    const trimmed = line.trim()
+    if (!trimmed || trimmed.startsWith("#")) continue
+    const eqIdx = trimmed.indexOf("=")
+    if (eqIdx === -1) continue
+    const key = trimmed.slice(0, eqIdx).trim()
+    let value = trimmed.slice(eqIdx + 1).trim()
+    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+      value = value.slice(1, -1)
+    }
+    if (key && !process.env[key]) {
+      process.env[key] = value
+    }
+  }
+}
+
 // ─── 参数解析 ───
 const LANG = process.argv[2]
 const IS_CHECK = process.argv.includes("--check")
