@@ -12,8 +12,11 @@ export default function ProductCard({ product }: { product: Product }) {
   const desc = tp(`${product.id}.description`)
   const isLive = product.status === 'live'
 
-  const content = (
-    <div className="block bg-card rounded-sm p-6 shadow-warm-sm hover:shadow-warm transition-shadow group text-center cursor-pointer border border-card">
+  return (
+    <Link
+      href={`/products/${product.id}`}
+      className="block bg-card rounded-sm p-6 shadow-warm-sm hover:shadow-warm transition-shadow group text-center cursor-pointer border border-card"
+    >
       <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">{product.icon}</div>
       <h3 className="card-title text-text-primary mb-2 text-center">{name}</h3>
       {desc && <p className="text-sm text-text-secondary mb-4 line-clamp-2 text-center leading-relaxed">{desc}</p>}
@@ -22,20 +25,6 @@ export default function ProductCard({ product }: { product: Product }) {
       }`}>
         {isLive ? tc('live') : tc('comingSoon')}
       </span>
-    </div>
-  )
-
-  if (isLive && product.url) {
-    return (
-      <a href={product.url} target="_blank" rel="noopener noreferrer">
-        {content}
-      </a>
-    )
-  }
-
-  return (
-    <Link href={`/products/${product.id}`}>
-      {content}
     </Link>
   )
 }

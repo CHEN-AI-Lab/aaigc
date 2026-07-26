@@ -24,6 +24,9 @@ export default async function ProductDetailPage({ params }: Props) {
 
   const name = t(`${slug}.name`)
   const desc = t(`${slug}.description`)
+  const productData = t.raw(slug) as Record<string, unknown> | undefined
+  const features = productData?.features as string[] | undefined
+  const isLive = product.status === 'live'
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-16">
@@ -41,13 +44,38 @@ export default async function ProductDetailPage({ params }: Props) {
             {desc && <p className="text-text-secondary mb-4">{desc}</p>}
             <div className="flex items-center gap-3">
               <span className={`text-xs px-2 py-1 rounded-sm font-medium ${
-                product.status === 'live' ? 'bg-green-500 text-white' : 'bg-surface text-text-secondary'
+                isLive ? 'bg-green-500 text-white' : 'bg-surface text-text-secondary'
               }`}>
-                {product.status === 'live' ? tc('live') : tc('comingSoon')}
+                {isLive ? tc('live') : tc('comingSoon')}
               </span>
             </div>
           </div>
         </div>
+
+        {features && features.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-sm font-semibold text-text-primary mb-3 uppercase tracking-wider">{t('features')}</h2>
+            <ul className="space-y-2">
+              {features.map((f, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm text-text-secondary">
+                  <span className="text-accent shrink-0 mt-0.5">✦</span>
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {isLive && product.url && (
+          <a
+            href={product.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-white text-sm font-medium rounded-sm hover:opacity-90 transition-opacity"
+          >
+            {t('visit')} →
+          </a>
+        )}
       </div>
     </div>
   )
