@@ -55,7 +55,7 @@ export default async function HomePage({ params }: Props) {
       </section>
 
       {/* Tools Section */}
-      <section className="bg-surface py-20">
+      <section className="py-20">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="section-title text-text-primary text-center mb-2">{t('toolsTitle')}</h2>
           <p className="text-text-secondary text-center mb-12 max-w-lg mx-auto">{t('toolsDesc')}</p>
