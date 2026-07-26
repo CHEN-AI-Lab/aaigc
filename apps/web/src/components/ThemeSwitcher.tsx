@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 
-const THEMES = ['8', '12', '11', '4', '6', '7']
+const THEMES = ['8', '12', '11', '4', '6']
 
 export default function ThemeSwitcher() {
   const [current, setCurrent] = useState('8')
