@@ -54,7 +54,7 @@ export default function ThemeSwitcher() {
                 document.documentElement.className = `theme-${id}`
                 localStorage.setItem('aaigc-theme', id)
               }}
-              className={`w-full text-left px-3 py-2 text-xs transition-colors ${
+              className={`block w-full text-left px-3 py-2 text-xs transition-colors ${
                 current === id ? 'font-medium' : 'text-text-secondary hover:bg-accent/10'
               }`}
               style={current === id ? { backgroundColor: THEME_COLORS[id] + '18', color: THEME_COLORS[id] } : undefined}
