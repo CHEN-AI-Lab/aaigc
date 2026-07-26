@@ -49,17 +49,10 @@ export default function LanguageSwitcher() {
             <button
               key={l}
               onClick={() => switchLocale(l)}
-              className={`block w-full text-left px-4 py-2 text-sm transition-colors flex items-center gap-2 ${
+              className={`block w-full text-left px-4 py-2 text-sm transition-colors ${
                 locale === l ? 'bg-accent/10 text-accent font-medium' : 'text-text-secondary hover:bg-accent/10'
               }`}
             >
-              <span className="w-4 shrink-0 flex items-center justify-center">
-                {locale === l ? (
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-accent">
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                ) : null}
-              </span>
               {localeNames[l]}
             </button>
           ))}

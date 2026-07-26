@@ -54,18 +54,11 @@ export default function ThemeSwitcher() {
                 document.documentElement.className = `theme-${id}`
                 localStorage.setItem('aaigc-theme', id)
               }}
-              className={`w-full text-left px-3 py-2 text-xs transition-colors flex items-center gap-2 ${
+              className={`w-full text-left px-3 py-2 text-xs transition-colors ${
                 current === id ? 'font-medium' : 'text-text-secondary hover:bg-accent/10'
               }`}
               style={current === id ? { backgroundColor: THEME_COLORS[id] + '18', color: THEME_COLORS[id] } : undefined}
             >
-              {current === id ? (
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ color: THEME_COLORS[id] }}>
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-              ) : (
-                <span className="w-4" />
-              )}
               {t(`theme${id}`)}
             </button>
           ))}
