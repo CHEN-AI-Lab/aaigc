@@ -44,7 +44,7 @@ export default function LanguageSwitcher() {
         </svg>
       </button>
       {open && (
-        <div className="absolute right-0 top-full mt-1 bg-card border border-[rgba(127,99,21,0.15)] rounded-md shadow-md z-50 min-w-[100px]">
+        <div className="absolute right-0 top-full mt-1 bg-card border border-[rgba(127,99,21,0.15)] rounded-md shadow-md z-50 w-max">
           {locales.map((l) => (
             <button
               key={l}
