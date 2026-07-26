@@ -5,6 +5,14 @@ import { useTranslations } from 'next-intl'
 
 const THEMES = ['8', '12', '11', '4', '6']
 
+const THEME_COLORS: Record<string, string> = {
+  '8': '#2d6b2d',
+  '12': '#a0522d',
+  '11': '#0d9488',
+  '4': '#38bdf8',
+  '6': '#111111',
+}
+
 export default function ThemeSwitcher() {
   const [current, setCurrent] = useState('8')
   const [open, setOpen] = useState(false)
@@ -36,7 +44,7 @@ export default function ThemeSwitcher() {
         🎨
       </button>
       {open && (
-        <div className="absolute top-full right-0 mt-1 bg-card border border-[rgba(127,99,21,0.15)] rounded-md shadow-md min-w-[150px] z-50 overflow-hidden">
+        <div className="absolute top-full right-0 mt-1 bg-card border border-[rgba(127,99,21,0.15)] rounded-md shadow-md min-w-[160px] z-50 overflow-hidden">
           {THEMES.map(id => (
             <button
               key={id}
@@ -57,6 +65,10 @@ export default function ThemeSwitcher() {
                   </svg>
                 ) : null}
               </span>
+              <span
+                className="w-3 h-3 rounded-full shrink-0 border border-[rgba(127,99,21,0.15)]"
+                style={{ backgroundColor: THEME_COLORS[id] }}
+              />
               {t(`theme${id}`)}
             </button>
           ))}
