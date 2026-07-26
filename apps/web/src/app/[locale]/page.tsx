@@ -36,21 +36,23 @@ export default async function HomePage({ params }: Props) {
       </section>
 
       {/* Products Grid */}
-      <section className="max-w-6xl mx-auto px-6 pt-20 pb-20">
-        <h2 className="section-title text-text-primary text-center mb-2">{t('productsTitle')}</h2>
-        <p className="text-text-secondary text-center mb-12 max-w-lg mx-auto">{tp('subtitle')}</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {featuredProducts.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
-        </div>
-        <div className="mt-10 text-center">
-          <Link
-            href="/products"
-            className="inline-flex items-center gap-1 text-sm text-accent hover:underline"
-          >
-            {tc('viewAll')} →
-          </Link>
+      <section className="bg-surface py-20">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="section-title text-text-primary text-center mb-2">{t('productsTitle')}</h2>
+          <p className="text-text-secondary text-center mb-12 max-w-lg mx-auto">{tp('subtitle')}</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {featuredProducts.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+          <div className="mt-10 text-center">
+            <Link
+              href="/products"
+              className="inline-flex items-center gap-1 text-sm text-accent hover:underline"
+            >
+              {tc('viewAll')} →
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -98,7 +100,7 @@ export default async function HomePage({ params }: Props) {
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-6 text-center">
+      <section className="bg-surface py-20 px-6 text-center">
         <Link
           href="/about"
           className="inline-flex items-center gap-2 px-8 py-3 bg-dark text-white text-sm font-medium rounded-sm hover:opacity-90 transition-opacity shadow-warm-sm"
