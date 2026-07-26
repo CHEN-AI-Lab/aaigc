@@ -11,6 +11,7 @@ export default async function HomePage({ params }: Props) {
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'home' })
   const tc = await getTranslations({ locale, namespace: 'common' })
+  const tp = await getTranslations({ locale, namespace: 'products' })
   const tt = await getTranslations({ locale, namespace: 'tools' })
 
   const featuredProducts = products.slice(0, 4)
@@ -77,10 +78,10 @@ export default async function HomePage({ params }: Props) {
         </div>
       </section>
 
-      {/* Products Grid — Coming Soon showcase */}
+      {/* Products Grid */}
       <section className="max-w-6xl mx-auto px-6 pt-20 pb-20">
         <h2 className="section-title text-text-primary text-center mb-2">{t('productsTitle')}</h2>
-        <p className="text-text-secondary text-center mb-12 max-w-lg mx-auto">{t('productsDesc')}</p>
+        <p className="text-text-secondary text-center mb-12 max-w-lg mx-auto">{tp('subtitle')}</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {featuredProducts.map((p) => (
             <ProductCard key={p.id} product={p} />
