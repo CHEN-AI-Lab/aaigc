@@ -35,7 +35,26 @@ export default async function HomePage({ params }: Props) {
         </div>
       </section>
 
-      {/* Tools Section — working features, shown first */}
+      {/* Products Grid */}
+      <section className="max-w-6xl mx-auto px-6 pt-20 pb-20">
+        <h2 className="section-title text-text-primary text-center mb-2">{t('productsTitle')}</h2>
+        <p className="text-text-secondary text-center mb-12 max-w-lg mx-auto">{tp('subtitle')}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {featuredProducts.map((p) => (
+            <ProductCard key={p.id} product={p} />
+          ))}
+        </div>
+        <div className="mt-10 text-center">
+          <Link
+            href="/products"
+            className="inline-flex items-center gap-1 text-sm text-accent hover:underline"
+          >
+            {tc('viewAll')} →
+          </Link>
+        </div>
+      </section>
+
+      {/* Tools Section */}
       <section className="bg-surface py-20">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="section-title text-text-primary text-center mb-2">{t('toolsTitle')}</h2>
@@ -75,25 +94,6 @@ export default async function HomePage({ params }: Props) {
               ))}
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Products Grid */}
-      <section className="max-w-6xl mx-auto px-6 pt-20 pb-20">
-        <h2 className="section-title text-text-primary text-center mb-2">{t('productsTitle')}</h2>
-        <p className="text-text-secondary text-center mb-12 max-w-lg mx-auto">{tp('subtitle')}</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {featuredProducts.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
-        </div>
-        <div className="mt-10 text-center">
-          <Link
-            href="/products"
-            className="inline-flex items-center gap-1 text-sm text-accent hover:underline"
-          >
-            {tc('viewAll')} →
-          </Link>
         </div>
       </section>
 
