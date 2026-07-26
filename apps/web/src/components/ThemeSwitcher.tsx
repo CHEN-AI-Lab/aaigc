@@ -44,7 +44,7 @@ export default function ThemeSwitcher() {
         🎨
       </button>
       {open && (
-        <div className="absolute top-full right-0 mt-1 bg-card border border-[rgba(127,99,21,0.15)] rounded-md shadow-md z-50 overflow-hidden whitespace-nowrap min-w-max">
+        <div className="absolute top-full right-0 mt-1 bg-card border border-[rgba(127,99,21,0.15)] rounded-md shadow-md z-50 min-w-[120px]">
           {THEMES.map(id => (
             <button
               key={id}
