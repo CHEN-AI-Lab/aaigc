@@ -56,13 +56,13 @@ export default async function HomePage({ params }: Props) {
               <Link
                 key={cat.id}
                 href="/tools"
-                className="bg-bg rounded-sm p-4 shadow-warm-sm hover:shadow-warm transition-all text-center group hover:-translate-y-0.5"
+                className="bg-bg rounded-sm p-5 shadow-warm-sm hover:shadow-warm transition-all text-center group hover:-translate-y-0.5"
               >
-                <div className="text-2xl mb-1.5">{cat.icon}</div>
-                <h3 className="text-xs font-semibold text-text-primary">
+                <div className="text-3xl mb-2">{cat.icon}</div>
+                <h3 className="text-sm font-semibold text-text-primary">
                   {tt(`${cat.id}Tools`)}
                 </h3>
-                <p className="text-[10px] text-text-secondary mt-1">{t('toolCount', { count })}</p>
+                <p className="text-xs text-text-secondary mt-1">{t('toolCount', { count })}</p>
               </Link>
             )})}
           </div>
