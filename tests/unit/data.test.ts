@@ -39,11 +39,7 @@ describe('products', () => {
   })
 
   it('has at least one live product', () => {
-    expect(products.some(p => p.status === 'live')).toBe(false)
-  })
-
-  it('all products are in development', () => {
-    expect(products.every(p => p.status === 'wip')).toBe(true)
+    expect(products.some(p => p.status === 'live')).toBe(true)
   })
 
   it('has at least one wip product', () => {
