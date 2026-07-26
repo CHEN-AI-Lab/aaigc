@@ -13,11 +13,13 @@ export default async function HomePage({ params }: Props) {
   const tc = await getTranslations({ locale, namespace: 'common' })
   const tt = await getTranslations({ locale, namespace: 'tools' })
 
+  const featuredProducts = products.slice(0, 4)
+  const popularTools = ['json-formatter', 'timestamp', 'qrcode', 'base64', 'regex-tester', 'markdown-preview', 'color-picker', 'text-diff']
+
   return (
     <div>
       {/* Hero */}
       <section className="relative overflow-hidden py-28 px-6 text-center">
-        {/* Decorative background */}
         <div className="absolute inset-0 bg-gradient-to-b from-accent/5 via-transparent to-transparent pointer-events-none" />
         <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-accent/3 rounded-full blur-3xl pointer-events-none" />
         <div className="relative">
@@ -32,23 +34,13 @@ export default async function HomePage({ params }: Props) {
         </div>
       </section>
 
-      {/* Products Grid */}
-      <section className="max-w-6xl mx-auto px-6 pt-12 pb-20">
-        <h2 className="section-title text-text-primary text-center mb-2">{t('productsTitle')}</h2>
-        <p className="text-text-secondary text-center mb-12 max-w-lg mx-auto">{t('productsDesc')}</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {products.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
-        </div>
-      </section>
-
-      {/* Tools Section */}
+      {/* Tools Section — working features, shown first */}
       <section className="bg-surface py-20">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="section-title text-text-primary text-center mb-2">{t('toolsTitle')}</h2>
           <p className="text-text-secondary text-center mb-12 max-w-lg mx-auto">{t('toolsDesc')}</p>
 
+          {/* Category grid */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {toolCategories.map((cat) => {
               const count = tools.filter((t) => t.category === cat.id).length
@@ -67,23 +59,45 @@ export default async function HomePage({ params }: Props) {
             )})}
           </div>
 
-          {/* Quick tool links */}
-          <div className="mt-12 flex flex-wrap justify-center gap-2">
-            {['json-formatter', 'timestamp', 'qrcode', 'base64', 'regex-tester', 'markdown-preview', 'color-picker', 'text-diff'].map((toolId) => (
-              <Link
-                key={toolId}
-                href={`/tools/${toolId}`}
-                className="text-xs px-3 py-1.5 bg-bg text-text-secondary hover:text-accent hover:bg-accent/5 rounded-sm transition-colors border border-[rgba(127,99,21,0.1)]"
-              >
-                {tt(`${toolId}.name`)}
-              </Link>
-            ))}
+          {/* Popular tools quick links */}
+          <div className="mt-12 text-center">
+            <p className="text-xs text-text-secondary mb-4">{t('popularTools')}</p>
+            <div className="flex flex-wrap justify-center gap-2">
+              {popularTools.map((toolId) => (
+                <Link
+                  key={toolId}
+                  href={`/tools/${toolId}`}
+                  className="text-xs px-3 py-1.5 bg-bg text-text-secondary hover:text-accent hover:bg-accent/5 rounded-sm transition-colors border border-[rgba(127,99,21,0.1)]"
+                >
+                  {tt(`${toolId}.name`)}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
+      {/* Products Grid — Coming Soon showcase */}
+      <section className="max-w-6xl mx-auto px-6 pt-20 pb-20">
+        <h2 className="section-title text-text-primary text-center mb-2">{t('productsTitle')}</h2>
+        <p className="text-text-secondary text-center mb-12 max-w-lg mx-auto">{t('productsDesc')}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {featuredProducts.map((p) => (
+            <ProductCard key={p.id} product={p} />
+          ))}
+        </div>
+        <div className="mt-10 text-center">
+          <Link
+            href="/products"
+            className="inline-flex items-center gap-1 text-sm text-accent hover:underline"
+          >
+            {tc('viewAll')} →
+          </Link>
+        </div>
+      </section>
+
       {/* CTA */}
-      <section className="py-20 px-6 text-center">
+      <section className="py-20 px-6 text-center bg-surface">
         <Link
           href="/about"
           className="inline-flex items-center gap-2 px-8 py-3 bg-dark text-white text-sm font-medium rounded-sm hover:opacity-90 transition-opacity shadow-warm-sm"

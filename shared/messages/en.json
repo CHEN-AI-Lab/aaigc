@@ -27,7 +27,8 @@
     "convertTools": "Converters",
     "securityTools": "Security Tools",
     "mathTools": "Math Tools",
-    "toolCount": "{count} tools"
+    "toolCount": "{count} tools",
+    "popularTools": "Popular tools"
   },
   "products": {
     "title": "Our Products",

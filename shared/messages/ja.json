@@ -27,7 +27,8 @@
     "convertTools": "変換ツール",
     "securityTools": "セキュリティツール",
     "mathTools": "数学ツール",
-    "toolCount": "{count} ツール"
+    "toolCount": "{count} ツール",
+    "popularTools": "人気ツール"
   },
   "products": {
     "title": "製品一覧",

@@ -27,7 +27,8 @@
     "convertTools": "格式转换",
     "securityTools": "安全工具",
     "mathTools": "数学工具",
-    "toolCount": "{count} 个工具"
+    "toolCount": "{count} 个工具",
+    "popularTools": "热门工具"
   },
   "products": {
     "title": "我们的产品",
