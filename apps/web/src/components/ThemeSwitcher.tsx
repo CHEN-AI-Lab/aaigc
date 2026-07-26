@@ -57,7 +57,7 @@ export default function ThemeSwitcher() {
               className={`w-full text-left px-3 py-2 text-xs transition-colors flex items-center gap-2 ${
                 current === id ? 'font-medium' : 'text-text-secondary hover:bg-accent/10'
               }`}
-              style={current === id ? { color: THEME_COLORS[id] } : undefined}
+              style={current === id ? { backgroundColor: THEME_COLORS[id] + '18', color: THEME_COLORS[id] } : undefined}
             >
               {current === id ? (
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ color: THEME_COLORS[id] }}>
