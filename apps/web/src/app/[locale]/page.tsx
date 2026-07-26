@@ -16,20 +16,26 @@ export default async function HomePage({ params }: Props) {
   return (
     <div>
       {/* Hero */}
-      <section className="py-24 px-6 text-center">
-        <h1 className="display-hero text-text-primary mb-4">🚀 AAIGC</h1>
-        <p className="text-xl text-text-secondary max-w-xl mx-auto mb-8">
-          {t('heroSubtitle')}
-        </p>
-        <p className="text-lg text-accent font-medium">
-          {tc('tagline')}
-        </p>
+      <section className="relative overflow-hidden py-28 px-6 text-center">
+        {/* Decorative background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-accent/5 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-accent/3 rounded-full blur-3xl pointer-events-none" />
+        <div className="relative">
+          <div className="text-6xl mb-6">🚀</div>
+          <h1 className="display-hero text-text-primary mb-4">AAIGC</h1>
+          <p className="text-xl text-text-secondary max-w-xl mx-auto mb-8 leading-relaxed">
+            {t('heroSubtitle')}
+          </p>
+          <p className="text-lg text-accent font-medium">
+            {tc('tagline')}
+          </p>
+        </div>
       </section>
 
       {/* Products Grid */}
-      <section className="max-w-6xl mx-auto px-6 pb-16">
+      <section className="max-w-6xl mx-auto px-6 pb-20">
         <h2 className="section-title text-text-primary text-center mb-2">{t('productsTitle')}</h2>
-        <p className="text-text-secondary text-center mb-10">{t('productsDesc')}</p>
+        <p className="text-text-secondary text-center mb-12 max-w-lg mx-auto">{t('productsDesc')}</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {products.map((p) => (
             <ProductCard key={p.id} product={p} />
@@ -38,36 +44,36 @@ export default async function HomePage({ params }: Props) {
       </section>
 
       {/* Tools Section */}
-      <section className="bg-surface py-16">
+      <section className="bg-surface py-20">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="section-title text-text-primary text-center mb-2">{t('toolsTitle')}</h2>
-          <p className="text-text-secondary text-center mb-10">{t('toolsDesc')}</p>
+          <p className="text-text-secondary text-center mb-12 max-w-lg mx-auto">{t('toolsDesc')}</p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {toolCategories.map((cat) => {
               const count = tools.filter((t) => t.category === cat.id).length
               return (
               <Link
                 key={cat.id}
                 href="/tools"
-                className="bg-bg rounded-sm p-5 shadow-warm-sm hover:shadow-warm transition-shadow text-center group"
+                className="bg-bg rounded-sm p-4 shadow-warm-sm hover:shadow-warm transition-all text-center group hover:-translate-y-0.5"
               >
-                <div className="text-3xl mb-2">{cat.icon}</div>
-                <h3 className="text-sm font-semibold text-text-primary">
+                <div className="text-2xl mb-1.5">{cat.icon}</div>
+                <h3 className="text-xs font-semibold text-text-primary">
                   {tt(`${cat.id}Tools`)}
                 </h3>
-                <p className="text-xs text-text-secondary mt-1">{t('toolCount', { count })}</p>
+                <p className="text-[10px] text-text-secondary mt-1">{t('toolCount', { count })}</p>
               </Link>
             )})}
           </div>
 
           {/* Quick tool links */}
-          <div className="mt-10 flex flex-wrap justify-center gap-3">
+          <div className="mt-12 flex flex-wrap justify-center gap-2">
             {['json-formatter', 'timestamp', 'qrcode', 'base64', 'regex-tester', 'markdown-preview', 'color-picker', 'text-diff'].map((toolId) => (
               <Link
                 key={toolId}
                 href={`/tools/${toolId}`}
-                className="text-sm px-4 py-2 bg-bg text-text-secondary hover:text-accent rounded-sm transition-colors border border-[rgba(127,99,21,0.1)]"
+                className="text-xs px-3 py-1.5 bg-bg text-text-secondary hover:text-accent hover:bg-accent/5 rounded-sm transition-colors border border-[rgba(127,99,21,0.1)]"
               >
                 {tt(`${toolId}.name`)}
               </Link>
@@ -77,10 +83,10 @@ export default async function HomePage({ params }: Props) {
       </section>
 
       {/* CTA */}
-      <section className="py-16 px-6 text-center">
+      <section className="py-20 px-6 text-center">
         <Link
           href="/about"
-          className="inline-flex items-center gap-2 px-8 py-3 bg-dark text-white text-sm font-medium rounded-sm hover:opacity-90 transition-opacity"
+          className="inline-flex items-center gap-2 px-8 py-3 bg-dark text-white text-sm font-medium rounded-sm hover:opacity-90 transition-opacity shadow-warm-sm"
         >
           {tc('aboutLink')}
         </Link>
