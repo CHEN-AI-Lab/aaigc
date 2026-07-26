@@ -98,7 +98,7 @@ export default async function HomePage({ params }: Props) {
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-6 text-center bg-surface">
+      <section className="py-20 px-6 text-center">
         <Link
           href="/about"
           className="inline-flex items-center gap-2 px-8 py-3 bg-dark text-white text-sm font-medium rounded-sm hover:opacity-90 transition-opacity shadow-warm-sm"
