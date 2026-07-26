@@ -1,8 +1,8 @@
 {
   "common": {
     "appName": "AAIGC",
-    "tagline": "让 AI 赋能你的工作与生活",
-    "taglineZh": "让 AI 赋能你的工作与生活",
+    "tagline": "讓 AI 賦能你的工作與生活",
+    "taglineZh": "讓 AI 賦能你的工作與生活",
     "products": "產品",
     "tools": "工具",
     "about": "關於",
@@ -11,11 +11,11 @@
     "live": "已上線",
     "inDevelopment": "開發中",
     "all": "全部",
-    "aboutLink": "关于 AAIGC →"
+    "aboutLink": "關於 AAIGC"
   },
   "home": {
-    "heroTitle": "AI 驱动工具集",
-    "heroSubtitle": "AI 应用与在线工具的集合",
+    "heroTitle": "AI 驅動工具集",
+    "heroSubtitle": "AI 應用與線上工具的集合",
     "productsTitle": "我們的產品",
     "productsDesc": "即將上線 — 看看我們在做什麼",
     "toolsTitle": "線上工具",
@@ -31,84 +31,172 @@
     "popularTools": "熱門工具"
   },
   "products": {
+    "cookmate": {
+      "name": "CookMate",
+      "description": "AI 智慧食譜與餐食規劃平台。輸入食材，AI 自動生成菜譜，支援週計劃、購物清單、飲食定製。",
+      "features": "AI 菜譜生成，輸入冰箱裡的食材即可,智慧週計劃與購物清單,支援飲食偏好定製"
+    },
+    "aihub": {
+      "name": "AIHub",
+      "description": "中文 AI 工具導航與評測平台。收錄數百款 AI 工具的真實用戶評測。",
+      "features": "收錄 50+ 類別、數百款 AI 工具,真實用戶評分與評測,分類導航與搜尋"
+    },
+    "short-drama": {
+      "name": "Short Drama",
+      "description": "AI 短劇腳本生成器。輸入題材，AI 自動生成分集大綱、場景拆解和完整劇本。",
+      "features": "支援霸總、穿越、甜寵等 10+ 題材,分集大綱 + 場景拆分 + 完整劇本,人物弧光自動生成"
+    },
+    "resume-optimizer": {
+      "name": "Resume Optimizer",
+      "description": "AI 履歷優化工具。智慧分析履歷內容，提供優化建議，提升面試通過率。",
+      "features": "AI 智慧分析履歷內容,針對目標崗位定製優化建議,多種履歷模板"
+    },
+    "copycraft": {
+      "name": "CopyCraft",
+      "description": "AI 驅動的文案創作工具。生成行銷文案、產品描述和廣告內容。"
+    },
+    "contentforge": {
+      "name": "ContentForge",
+      "description": "AI 內容生成平台，支援部落格、文章和社交媒體內容。"
+    },
+    "postforge": {
+      "name": "PostForge",
+      "description": "社交媒體帖子生成與排程工具，AI 驅動內容創作。"
+    },
+    "maestro": {
+      "name": "Maestro",
+      "description": "AI 音樂創作與音頻處理工具。"
+    },
+    "ai-portfolio-studio": {
+      "name": "AI Portfolio Studio",
+      "description": "AI 驅動的作品集網站構建器。"
+    },
+    "ai-toolbox": {
+      "name": "AI Toolbox",
+      "description": "AI 實用工具和功能集合。"
+    },
+    "content-ai-site": {
+      "name": "Content AI Site",
+      "description": "AI 驅動的內容管理與發佈平台。"
+    },
     "title": "我們的產品",
-    "subtitle": "探索 AAIGC 产品矩阵",
+    "subtitle": "探索 AAIGC 產品矩陣",
     "status": "狀態",
     "techStack": "技術棧",
     "features": "功能特性",
     "visit": "前往",
-    "learnMore": "了解更多",
-    "cookmate": {
-      "name": "CookMate",
-      "description": "AI 智能食谱与餐食规划平台。输入食材，AI 自动生成菜谱，支持周计划、购物清单、饮食定制。",
-      "features": [
-        "AI 菜谱生成，输入冰箱里的食材即可",
-        "智能周计划与购物清单",
-        "支持饮食偏好定制"
-      ]
-    },
-    "aihub": {
-      "name": "AIHub",
-      "description": "中文 AI 工具导航与评测平台。收录数百款 AI 工具的真实用户评测。",
-      "features": [
-        "收录 50+ 类别、数百款 AI 工具",
-        "真实用户评分与评测",
-        "分类导航与搜索"
-      ]
-    },
-    "short-drama": {
-      "name": "Short Drama",
-      "description": "AI 短剧脚本生成器。输入题材，AI 自动生成分集大纲、场景拆解和完整剧本。",
-      "features": [
-        "支持霸总、穿越、甜宠等 10+ 题材",
-        "分集大纲 + 场景拆分 + 完整剧本",
-        "人物弧光自动生成"
-      ]
-    },
-    "resume-optimizer": {
-      "name": "Resume Optimizer",
-      "description": "AI 简历优化工具。智能分析简历内容，提供优化建议，提升面试通过率。",
-      "features": [
-        "AI 智能分析简历内容",
-        "针对目标岗位定制优化建议",
-        "多种简历模板"
-      ]
-    },
-    "copycraft": {
-      "name": "CopyCraft",
-      "description": "AI 驱动的文案创作工具。生成营销文案、产品描述和广告内容。"
-    },
-    "contentforge": {
-      "name": "ContentForge",
-      "description": "AI 内容生成平台，支持博客、文章和社交媒体内容。"
-    },
-    "postforge": {
-      "name": "PostForge",
-      "description": "社交媒体帖子生成与调度工具，AI 驱动内容创作。"
-    },
-    "maestro": {
-      "name": "Maestro",
-      "description": "AI 音乐创作与音频处理工具。"
-    },
-    "ai-portfolio-studio": {
-      "name": "AI Portfolio Studio",
-      "description": "AI 驱动的作品集网站构建器。"
-    },
-    "ai-toolbox": {
-      "name": "AI Toolbox",
-      "description": "AI 实用工具和功能集合。"
-    },
-    "content-ai-site": {
-      "name": "Content AI Site",
-      "description": "AI 驱动的内容管理与发布平台。"
-    }
+    "learnMore": "了解更多"
   },
   "tools": {
+    "json-formatter": {
+      "name": "JSON 格式化",
+      "description": "格式化與校驗 JSON 資料"
+    },
+    "regex-tester": {
+      "name": "正則測試器",
+      "description": "即時測試正規表示式"
+    },
+    "base64": {
+      "name": "Base64 編解碼",
+      "description": "文字與 Base64 互相轉換"
+    },
+    "url-encode": {
+      "name": "URL 編解碼",
+      "description": "URL 編碼與解碼"
+    },
+    "jwt-decoder": {
+      "name": "JWT 解碼器",
+      "description": "解析 JWT Token 的 Payload"
+    },
+    "uuid-generator": {
+      "name": "UUID 生成器",
+      "description": "生成 UUID v4 識別碼"
+    },
+    "html-preview": {
+      "name": "HTML 預覽",
+      "description": "即時渲染 HTML 程式碼"
+    },
+    "css-minifier": {
+      "name": "CSS 壓縮/格式化",
+      "description": "壓縮與格式化 CSS 程式碼"
+    },
+    "markdown-preview": {
+      "name": "Markdown 預覽",
+      "description": "即時渲染 Markdown 內容"
+    },
+    "word-counter": {
+      "name": "字數統計",
+      "description": "統計字元數、單詞數、行數"
+    },
+    "text-diff": {
+      "name": "文字比對",
+      "description": "比較兩段文字的差異"
+    },
+    "case-converter": {
+      "name": "大小寫轉換",
+      "description": "文字大小寫轉換：大寫、小寫、首字母大寫"
+    },
+    "lorem-ipsum": {
+      "name": "Lorem Ipsum",
+      "description": "生成佔位文字"
+    },
+    "text-to-slug": {
+      "name": "文字轉 Slug",
+      "description": "將文字轉換為 URL 友好的 Slug"
+    },
+    "list-sorter": {
+      "name": "列表排序",
+      "description": "排序、去重和打亂列表"
+    },
+    "timestamp": {
+      "name": "時間戳轉換",
+      "description": "Unix 時間戳與日期互轉"
+    },
+    "date-calculator": {
+      "name": "日期計算器",
+      "description": "日期間隔計算與日期加減"
+    },
+    "qrcode": {
+      "name": "二維碼生成",
+      "description": "輸入文字生成二維碼圖片"
+    },
+    "color-picker": {
+      "name": "顏色選擇器",
+      "description": "選色並生成 HEX/RGB/HSL"
+    },
+    "image-to-base64": {
+      "name": "圖片轉 Base64",
+      "description": "將圖片檔案轉換為 Base64 編碼"
+    },
+    "number-base": {
+      "name": "進位制轉換",
+      "description": "十進位制、二進位制、八進位制、十六進位制互轉"
+    },
+    "yaml-json": {
+      "name": "YAML ↔ JSON",
+      "description": "YAML 與 JSON 格式互轉"
+    },
+    "html-entities": {
+      "name": "HTML 實體編碼",
+      "description": "HTML 特殊字元轉義與反轉義"
+    },
+    "json-to-csv": {
+      "name": "JSON → CSV",
+      "description": "JSON 資料轉換為 CSV 格式"
+    },
+    "password-generator": {
+      "name": "密碼生成器",
+      "description": "生成安全隨機密碼"
+    },
+    "calculator": {
+      "name": "計算機",
+      "description": "多功能計算機：基本計算、科學計算、百分比、BMI、折扣、年齡"
+    },
     "title": "線上工具",
-    "subtitle": "面向开发者和日常使用的免费工具",
-    "search": "搜索工具...",
-    "noResults": "未找到相关工具",
-    "category": "分类",
+    "subtitle": "面向開發者和日常使用的免費工具",
+    "search": "搜尋工具...",
+    "noResults": "未找到相關工具",
+    "category": "分類",
     "foundTools": "找到 {count} 個工具",
     "devTools": "開發工具",
     "textTools": "文字工具",
@@ -117,415 +205,306 @@
     "convertTools": "格式轉換",
     "securityTools": "安全工具",
     "mathTools": "數學工具",
-    "encode": "编码",
-    "decode": "解码",
-    "convert": "转换",
-    "copy": "复制",
+    "encode": "編碼",
+    "decode": "解碼",
+    "convert": "轉換",
+    "copy": "複製",
     "clear": "清空",
     "format": "格式化",
-    "validate": "校验",
-    "minify": "压缩",
+    "validate": "校驗",
+    "minify": "壓縮",
     "generate": "生成",
     "sortAsc": "升序 A→Z",
     "sortDesc": "降序 Z→A",
     "dedup": "去重",
-    "shuffle": "打乱",
-    "saved": "节省 {bytes} 字节",
-    "downloadJson": "下载 JSON",
-    "downloadPng": "下载 PNG",
-    "downloadMarkdown": "下载 Markdown",
-    "downloadYaml": "下载 YAML",
-    "generateQrCode": "生成二维码",
-    "pick": "选取",
-    "presetColors": "预设颜色",
-    "editor": "编辑器",
-    "preview": "预览",
-    "matches": "匹配结果",
-    "lines": "行数",
-    "characters": "字符数",
+    "shuffle": "打亂",
+    "saved": "節省 {bytes} 位元組",
+    "downloadJson": "下載 JSON",
+    "downloadPng": "下載 PNG",
+    "downloadMarkdown": "下載 Markdown",
+    "downloadYaml": "下載 YAML",
+    "generateQrCode": "生成二維碼",
+    "pick": "選取",
+    "presetColors": "預設顏色",
+    "editor": "編輯器",
+    "preview": "預覽",
+    "matches": "匹配結果",
+    "lines": "行數",
+    "characters": "字元數",
     "noSpace": "不含空格",
-    "words": "单词数",
-    "cjk": "中文字符",
-    "escape": "转义",
-    "unescape": "反转义",
-    "invalidInput": "输入无效",
-    "invalidJson": "无效的 JSON",
-    "validJson": "✅ JSON 格式正确",
-    "invalidBase64": "Base64 输入无效",
-    "invalidTimestamp": "无效的时间戳",
-    "invalidDate": "无效的日期",
-    "invalidJwt": "无效的 JWT：解码失败",
-    "invalidJwtParts": "无效的 JWT：需要 3 段",
-    "failedToUnescape": "HTML 反转义失败",
-    "failedToGenerateQr": "二维码生成失败",
-    "conversionFailed": "转换失败",
-    "emptyYaml": "YAML 内容为空或无效",
-    "pleaseEnterText": "请输入文本",
-    "pleaseEnterContent": "请输入内容",
-    "pleaseSelectDate": "请选择日期",
-    "pleaseSelectBothDates": "请选择两个日期",
-    "enterNumberOfDays": "请输入天数",
-    "enterNumber": "输入数字...",
-    "count": "数量",
-    "length": "长度",
-    "dropImage": "拖拽图片或点击浏览",
+    "words": "單詞數",
+    "cjk": "中文字元",
+    "escape": "轉義",
+    "unescape": "反轉義",
+    "invalidInput": "輸入無效",
+    "invalidJson": "無效的 JSON",
+    "validJson": "✅ JSON 格式正確",
+    "invalidBase64": "Base64 輸入無效",
+    "invalidTimestamp": "無效的時間戳",
+    "invalidDate": "無效的日期",
+    "invalidJwt": "無效的 JWT：解碼失敗",
+    "invalidJwtParts": "無效的 JWT：需要 3 段",
+    "failedToUnescape": "HTML 反轉義失敗",
+    "failedToGenerateQr": "二維碼生成失敗",
+    "conversionFailed": "轉換失敗",
+    "emptyYaml": "YAML 內容為空或無效",
+    "pleaseEnterText": "請輸入文字",
+    "pleaseEnterContent": "請輸入內容",
+    "pleaseSelectDate": "請選擇日期",
+    "pleaseSelectBothDates": "請選擇兩個日期",
+    "enterNumberOfDays": "請輸入天數",
+    "enterNumber": "輸入數字...",
+    "count": "數量",
+    "length": "長度",
+    "dropImage": "拖曳圖片或點選瀏覽",
     "maxSize": "最大 5MB",
-    "fileTooLarge": "文件过大，最大 5MB",
-    "failedToRead": "文件读取失败",
-    "loremDesc": "生成用于设计和布局草稿的占位文本。选择段落、句子或单词模式，设置数量后点击生成。",
-    "baseDesc": "输入一个数字并选择其当前进制。转换器将显示该数字在所有其他进制下的值。",
-    "dateDifference": "日期间隔",
-    "addSubtractDays": "日期加减",
-    "calculateDiffDesc": "计算两个日期之间的时间差",
-    "addDaysDesc": "在指定日期上加减天数",
-    "startDate": "开始日期",
-    "endDate": "结束日期",
+    "fileTooLarge": "檔案過大，最大 5MB",
+    "failedToRead": "檔案讀取失敗",
+    "loremDesc": "生成用於設計和佈局草稿的佔位文字。選擇段落、句子或單詞模式，設定數量後點選生成。",
+    "baseDesc": "輸入一個數字並選擇其當前進位制。轉換器將顯示該數字在所有其他進位制下的值。",
+    "dateDifference": "日期間隔",
+    "addSubtractDays": "日期加減",
+    "calculateDiffDesc": "計算兩個日期之間的時間差",
+    "addDaysDesc": "在指定日期上加減天數",
+    "startDate": "開始日期",
+    "endDate": "結束日期",
     "date": "日期",
-    "days": "天数",
-    "hours": "小时",
-    "minutes": "分钟",
-    "diffFormat": "{prefix}{days} 天, {hours} 小时, {minutes} 分钟",
-    "calculate": "计算",
-    "result": "结果",
-    "timestampToDate": "时间戳 → 日期",
-    "dateToTimestamp": "日期 → 时间戳",
-    "secondsLabel": "秒级（10位）",
-    "millisecondsLabel": "毫秒级（13位）",
-    "now": "现在",
+    "days": "天數",
+    "hours": "小時",
+    "minutes": "分鐘",
+    "diffFormat": "{prefix}{days} 天, {hours} 小時, {minutes} 分鐘",
+    "calculate": "計算",
+    "result": "結果",
+    "timestampToDate": "時間戳 → 日期",
+    "dateToTimestamp": "日期 → 時間戳",
+    "secondsLabel": "秒級（10位）",
+    "millisecondsLabel": "毫秒級（13位）",
+    "now": "現在",
     "year": "年",
     "month": "月",
-    "enterText": "输入文本...",
-    "enterUrl": "输入 URL...",
-    "enterHtml": "输入 HTML...",
-    "enterMarkdown": "输入 Markdown...",
-    "enterTextOrUrl": "输入文本或 URL...",
-    "typeOrPasteText": "在此输入或粘贴文本...",
-    "regularExpression": "正则表达式...",
-    "testText": "测试文本...",
-    "originalText": "原始文本",
-    "modifiedText": "修改后文本",
+    "enterText": "輸入文字...",
+    "enterUrl": "輸入 URL...",
+    "enterHtml": "輸入 HTML...",
+    "enterMarkdown": "輸入 Markdown...",
+    "enterTextOrUrl": "輸入文字或 URL...",
+    "typeOrPasteText": "在此輸入或貼上文字...",
+    "regularExpression": "正規表示式...",
+    "testText": "測試文字...",
+    "originalText": "原始文字",
+    "modifiedText": "修改後文字",
     "today": "今天",
     "max": "最大",
     "seconds": "秒",
     "ss": "秒",
     "ms": "毫秒",
     "day": "日",
-    "supportsTimestamp": "支持秒级（10位）或毫秒级（13位）时间戳",
-    "selectDateTime": "选择日期、时间和毫秒（本地时区）",
+    "supportsTimestamp": "支援秒級（10位）或毫秒級（13位）時間戳",
+    "selectDateTime": "選擇日期、時間和毫秒（本地時區）",
     "hex": "HEX",
-    "input": "输入",
-    "output": "输出",
-    "placeholder": "在此输入...",
-    "json-formatter": {
-      "name": "JSON 格式化",
-      "description": "格式化与校验 JSON 数据"
-    },
-    "regex-tester": {
-      "name": "正则测试器",
-      "description": "实时测试正则表达式"
-    },
-    "base64": {
-      "name": "Base64 编解码",
-      "description": "文本与 Base64 互相转换"
-    },
-    "url-encode": {
-      "name": "URL 编解码",
-      "description": "URL 编码与解码"
-    },
-    "jwt-decoder": {
-      "name": "JWT 解码器",
-      "description": "解析 JWT Token 的 Payload"
-    },
-    "uuid-generator": {
-      "name": "UUID 生成器",
-      "description": "生成 UUID v4 标识符"
-    },
-    "html-preview": {
-      "name": "HTML 预览",
-      "description": "实时渲染 HTML 代码"
-    },
-    "css-minifier": {
-      "name": "CSS 压缩/格式化",
-      "description": "压缩与格式化 CSS 代码"
-    },
-    "markdown-preview": {
-      "name": "Markdown 预览",
-      "description": "实时渲染 Markdown 内容"
-    },
-    "word-counter": {
-      "name": "字数统计",
-      "description": "统计字符数、单词数、行数"
-    },
-    "text-diff": {
-      "name": "文字比對",
-      "description": "比较两段文本的差异"
-    },
-    "case-converter": {
-      "name": "大小写转换",
-      "description": "文本大小写转换：大写、小写、首字母大写"
-    },
-    "lorem-ipsum": {
-      "name": "Lorem Ipsum",
-      "description": "生成占位文本"
-    },
-    "text-to-slug": {
-      "name": "文本转 Slug",
-      "description": "将文本转换为 URL 友好的 Slug"
-    },
-    "list-sorter": {
-      "name": "列表排序",
-      "description": "排序、去重和打乱列表"
-    },
-    "timestamp": {
-      "name": "时间戳转换",
-      "description": "Unix 时间戳与日期互转"
-    },
-    "date-calculator": {
-      "name": "日期计算器",
-      "description": "日期间隔计算与日期加减"
-    },
-    "qrcode": {
-      "name": "二维码生成",
-      "description": "输入文字生成二维码图片"
-    },
-    "color-picker": {
-      "name": "颜色选择器",
-      "description": "选色并生成 HEX/RGB/HSL"
-    },
-    "image-to-base64": {
-      "name": "图片转 Base64",
-      "description": "将图片文件转换为 Base64 编码"
-    },
-    "number-base": {
-      "name": "进制转换",
-      "description": "十进制、二进制、八进制、十六进制互转"
-    },
-    "yaml-json": {
-      "name": "YAML ↔ JSON",
-      "description": "YAML 与 JSON 格式互转"
-    },
-    "html-entities": {
-      "name": "HTML 实体编码",
-      "description": "HTML 特殊字符转义与反转义"
-    },
-    "json-to-csv": {
-      "name": "JSON → CSV",
-      "description": "JSON 数据转换为 CSV 格式"
-    },
-    "password-generator": {
-      "name": "密码生成器",
-      "description": "生成安全随机密码"
-    },
-    "base2": "二进制",
-    "base8": "八进制",
-    "base10": "十进制",
-    "base16": "十六进制",
-    "caseupper": "全部大写",
-    "caselower": "全部小写",
-    "casetitle": "首字母大写",
-    "casecamel": "驼峰式",
-    "casesnake": "下划线式",
+    "input": "輸入",
+    "output": "輸出",
+    "placeholder": "在此輸入...",
+    "base2": "二進位制",
+    "base8": "八進位制",
+    "base10": "十進位制",
+    "base16": "十六進位制",
+    "caseupper": "全部大寫",
+    "caselower": "全部小寫",
+    "casetitle": "首字母大寫",
+    "casecamel": "駝峰式",
+    "casesnake": "底線式",
     "loremParagraphs": "段落",
     "loremSentences": "句子",
-    "loremWords": "单词",
+    "loremWords": "單詞",
     "weak": "弱",
     "medium": "中",
-    "strong": "强",
-    "fromBase": "输入进制",
-    "copied": "已复制",
-    "calculator": {
-      "name": "计算器",
-      "description": "多功能计算器：基本计算、科学计算、百分比、BMI、折扣、年龄"
-    },
+    "strong": "強",
+    "fromBase": "輸入進位制",
+    "copied": "已複製",
     "calcBasic": "基本",
-    "calcScientific": "科学",
+    "calcScientific": "科學",
     "calcPercent": "百分比",
     "calcBmi": "BMI",
     "calcDiscount": "折扣",
-    "calcAge": "年龄",
+    "calcAge": "年齡",
     "calcValueA": "值 A",
     "calcValueB": "值 B",
     "calcHeight": "身高",
-    "calcWeight": "体重",
+    "calcWeight": "體重",
     "calcMetric": "公制",
     "calcImperial": "英制",
-    "calcOriginalPrice": "原价",
+    "calcOriginalPrice": "原價",
     "calcDiscountPct": "折扣 (%)",
     "calcDateOfBirth": "出生日期",
-    "calcYouSave": "节省",
-    "calcFinalPrice": "最终价格",
-    "calcYearsOld": "岁",
+    "calcYouSave": "節省",
+    "calcFinalPrice": "最終價格",
+    "calcYearsOld": "歲",
     "calcUnderweight": "偏瘦",
     "calcNormal": "正常",
     "calcOverweight": "偏胖",
     "calcObese": "肥胖",
     "calcAisPctOfB": "A 是 B 的 {pct}%",
     "calcPctOfB": "{val} 是 {a}% 的 B",
-    "calcChange": "变化: {pct}%",
+    "calcChange": "變化: {pct}%",
     "timeDesc": "1年=365天 | 1季度=91天 | 1月=30天",
-    "tabCalc": "计算器",
+    "tabCalc": "計算機",
     "tabBmi": "BMI",
-    "tabTax": "个税",
-    "tabMortgage": "房贷",
-    "tabChinese": "数字",
-    "tabTitle": "称呼",
-    "tabCurrency": "汇率",
-    "tabBase": "进制",
-    "tabLength": "长度",
+    "tabTax": "個稅",
+    "tabMortgage": "房貸",
+    "tabChinese": "數字",
+    "tabTitle": "稱呼",
+    "tabCurrency": "匯率",
+    "tabBase": "進位制",
+    "tabLength": "長度",
     "tabWeight": "重量",
-    "tabArea": "面积",
-    "tabVolume": "体积",
-    "tabTemp": "温度",
+    "tabArea": "面積",
+    "tabVolume": "體積",
+    "tabTemp": "溫度",
     "tabSpeed": "速度",
-    "tabTime": "时间",
-    "chinaOnlyLabel": "中国",
-    "chinaOnlyNote": "本工具仅适用于中国大陆用户，数据及规则基于中国税法/房贷体系。",
+    "tabTime": "時間",
+    "chinaOnlyLabel": "中國",
+    "chinaOnlyNote": "本工具僅適用於中國大陸使用者，資料及規則基於中國稅法/房貸體系。",
     "currencyUSD": "美元",
-    "currencyCNY": "人民币",
-    "currencyEUR": "欧元",
-    "currencyJPY": "日元",
-    "currencyGBP": "英镑",
-    "currencyKRW": "韩元",
-    "currencyHKD": "港币",
-    "currencyTWD": "台币",
+    "currencyCNY": "人民幣",
+    "currencyEUR": "歐元",
+    "currencyJPY": "日圓",
+    "currencyGBP": "英鎊",
+    "currencyKRW": "韓元",
+    "currencyHKD": "港幣",
+    "currencyTWD": "台幣",
     "currencySGD": "新加坡元",
     "currencyAUD": "澳元",
     "currencyCAD": "加元",
-    "currencyTHB": "泰铢",
+    "currencyTHB": "泰銖",
     "currencyVND": "越南盾",
-    "currencyAmount": "金额",
-    "currencyAll": "兑换所有货币",
+    "currencyAmount": "金額",
+    "currencyAll": "兌換所有貨幣",
     "calcYears": "年",
     "calcQuarters": "季度",
     "calcMonths": "月",
-    "calcWeeks": "周",
+    "calcWeeks": "週",
     "calcDays": "天",
-    "calcHours": "时",
+    "calcHours": "時",
     "calcMinutes": "分",
     "calcSeconds": "秒",
-    "calcConversionRules": "换算规则",
-    "calcTimeConvert": "时间转换",
-    "calcUnit": "单位",
-    "calcLengthConvert": "长度转换",
-    "calcWeightConvert": "重量转换",
-    "calcAreaConvert": "面积转换",
-    "calcVolumeConvert": "体积转换",
-    "calcSpeedConvert": "速度转换",
-    "calcTempValue": "温度值",
-    "calcCelsius": "°C (摄氏度)",
-    "calcFahrenheit": "°F (华氏度)",
-    "calcKelvin": "K (开尔文)",
+    "calcConversionRules": "換算規則",
+    "calcTimeConvert": "時間轉換",
+    "calcUnit": "單位",
+    "calcLengthConvert": "長度轉換",
+    "calcWeightConvert": "重量轉換",
+    "calcAreaConvert": "面積轉換",
+    "calcVolumeConvert": "體積轉換",
+    "calcSpeedConvert": "速度轉換",
+    "calcTempValue": "溫度值",
+    "calcCelsius": "°C (攝氏度)",
+    "calcFahrenheit": "°F (華氏度)",
+    "calcKelvin": "K (克爾文)",
     "calcReaumur": "°Ré (列氏度)",
     "calcMale": "男",
     "calcFemale": "女",
-    "calcHealthyWeightRange": "健康体重范围: {min} - {max} kg",
+    "calcHealthyWeightRange": "健康體重範圍: {min} - {max} kg",
     "calcOverweightYouth": "超重",
-    "calcTaxMonthlySalary": "税前月薪 (元)",
-    "calcTaxBonus": "年终奖 (元)",
-    "calcTaxMonthsWorked": "工作月数 (留空按12个月)",
-    "calcTaxSocialInsurance": "五险一金 (个人缴纳比例)",
-    "calcTaxPension": "养老保险 (%)",
-    "calcTaxMedical": "医疗保险 (%)",
-    "calcTaxUnemployment": "失业保险 (%)",
-    "calcTaxHousingFund": "住房公积金 (%)",
-    "calcTaxSpecialDeductions": "专项附加扣除 (月均金额, 元)",
+    "calcTaxMonthlySalary": "稅前月薪 (元)",
+    "calcTaxBonus": "年終獎 (元)",
+    "calcTaxMonthsWorked": "工作月數 (留空按12個月)",
+    "calcTaxSocialInsurance": "五險一金 (個人繳納比例)",
+    "calcTaxPension": "養老保險 (%)",
+    "calcTaxMedical": "醫療保險 (%)",
+    "calcTaxUnemployment": "失業保險 (%)",
+    "calcTaxHousingFund": "住房公積金 (%)",
+    "calcTaxSpecialDeductions": "專項附加扣除 (月均金額, 元)",
     "calcTaxChildEdu": "子女教育",
-    "calcTaxContEdu": "继续教育",
-    "calcTaxMedicalDed": "大病医疗",
-    "calcTaxHousingInt": "住房贷款利息",
+    "calcTaxContEdu": "繼續教育",
+    "calcTaxMedicalDed": "大病醫療",
+    "calcTaxHousingInt": "住房貸款利息",
     "calcTaxHousingRent": "住房租金",
-    "calcTaxElderlyCare": "赡养老人",
-    "calcTaxInfantCare": "3岁以下婴幼儿照护",
-    "calcTaxSocialInsuranceTotal": "五险一金合计 (元/月)",
-    "calcTaxSpecialDedTotal": "专项附加扣除合计 (元/月)",
-    "calcTaxMonthlyTaxable": "月应纳税所得额 (元)",
-    "calcTaxAnnualTaxable": "年应纳税所得额 (元)",
-    "calcTaxSalaryRate": "工资适用税率",
-    "calcTaxSalaryTax": "工资应缴个税 (元)",
-    "calcTaxBonusDetail": "年终奖 (÷12 = ¥{val})",
-    "calcTaxBonusRate": "年终奖适用税率",
-    "calcTaxBonusTax": "年终奖应缴个税 (元)",
-    "calcTaxTotal": "合计个税 (元)",
-    "calcTaxAfterTax": "税后总收入 (元)",
-    "calcTaxBracketReference": "年度税率表参考",
-    "calcTaxBracket1": "不超过 36000 元",
+    "calcTaxElderlyCare": "贍養老人",
+    "calcTaxInfantCare": "3歲以下嬰幼兒照護",
+    "calcTaxSocialInsuranceTotal": "五險一金合計 (元/月)",
+    "calcTaxSpecialDedTotal": "專項附加扣除合計 (元/月)",
+    "calcTaxMonthlyTaxable": "月應納稅所得額 (元)",
+    "calcTaxAnnualTaxable": "年應納稅所得額 (元)",
+    "calcTaxSalaryRate": "工資適用稅率",
+    "calcTaxSalaryTax": "工資應繳個稅 (元)",
+    "calcTaxBonusDetail": "年終獎 (÷12 = ¥{val})",
+    "calcTaxBonusRate": "年終獎適用稅率",
+    "calcTaxBonusTax": "年終獎應繳個稅 (元)",
+    "calcTaxTotal": "合計個稅 (元)",
+    "calcTaxAfterTax": "稅後總收入 (元)",
+    "calcTaxBracketReference": "年度稅率表參考",
+    "calcTaxBracket1": "不超過 36000 元",
     "calcTaxBracket2": "36000 - 144000 元",
     "calcTaxBracket3": "144000 - 300000 元",
     "calcTaxBracket4": "300000 - 420000 元",
     "calcTaxBracket5": "420000 - 660000 元",
     "calcTaxBracket6": "660000 - 960000 元",
-    "calcTaxBracket7": "超过 960000 元",
-    "calcMortgageCommercial": "商业贷款",
-    "calcMortgageFund": "公积金贷款",
-    "calcMortgageMixed": "组合贷款",
-    "calcMortgageRepayMethod": "还款方式",
-    "calcMortgageEqualPayment": "等额本息",
-    "calcMortgageEqualPrincipal": "等额本金",
-    "calcMortgageAmount": "贷款金额 (万元)",
-    "calcMortgageAmountShort": "金额 (万元)",
-    "calcMortgageYears": "按揭年数",
-    "calcMortgageCommercialYears": "商业贷款年限",
-    "calcMortgageFundYears": "公积金贷款年限",
+    "calcTaxBracket7": "超過 960000 元",
+    "calcMortgageCommercial": "商業貸款",
+    "calcMortgageFund": "公積金貸款",
+    "calcMortgageMixed": "組合貸款",
+    "calcMortgageRepayMethod": "還款方式",
+    "calcMortgageEqualPayment": "等額本息",
+    "calcMortgageEqualPrincipal": "等額本金",
+    "calcMortgageAmount": "貸款金額 (萬元)",
+    "calcMortgageAmountShort": "金額 (萬元)",
+    "calcMortgageYears": "按揭年數",
+    "calcMortgageCommercialYears": "商業貸款年限",
+    "calcMortgageFundYears": "公積金貸款年限",
     "calcMortgageLPR": "LPR (%)",
-    "calcMortgageBP": "基点 (BP)",
-    "calcMortgageFundRate": "公积金利率 (%)",
-    "calcMortgageFirstPayment": "首次还款日期",
-    "calcMortgageFirstPaymentDate": "首期还款: {date}",
-    "calcMortgageRateInfo": "执行利率: LPR{sign}{bp}BP = {rate}%",
-    "calcMortgageFundRateValue": "公积金利率: {rate}%",
+    "calcMortgageBP": "基點 (BP)",
+    "calcMortgageFundRate": "公積金利率 (%)",
+    "calcMortgageFirstPayment": "首次還款日期",
+    "calcMortgageFirstPaymentDate": "首期還款: {date}",
+    "calcMortgageRateInfo": "執行利率: LPR{sign}{bp}BP = {rate}%",
+    "calcMortgageFundRateValue": "公積金利率: {rate}%",
     "calcMortgageMonthlyPayment": "月供",
-    "calcMortgageFirstMonthDesc": "首月, 每月递减 ¥{amount}",
+    "calcMortgageFirstMonthDesc": "首月, 每月遞減 ¥{amount}",
     "calcMortgageDetail": "{amount} 元，月供 {monthly} 元",
-    "calcMortgageTotalInterest": "总利息",
-    "calcMortgageTotalPayment": "还款总额",
-    "calcMortgageSchedule": "还款明细",
+    "calcBaseBinary": "二進位制",
+    "calcBaseOctal": "八進位制",
+    "calcBaseDecimal": "十進位制",
+    "calcBaseHex": "十六進位制",
+    "calcOverweightYoung": "偏胖",
+    "calcYearSuffix": "年",
+    "calcMonthSuffix": "月",
+    "calcDaySuffix": "日",
+    "calcResult": "結果",
+    "calcMortgageTotalInterest": "總利息",
+    "calcMortgageTotalPayment": "還款總額",
+    "calcMortgageSchedule": "還款明細",
     "calcMortgagePeriods": "{count} 期",
     "calcMortgageYearN": "第{year}年",
-    "calcMortgageYearTotal": "还款 ¥{amount}",
-    "calcMortgagePeriod": "期数",
+    "calcMortgageYearTotal": "還款 ¥{amount}",
+    "calcMortgagePeriod": "期數",
     "calcMortgagePrincipal": "本金",
     "calcMortgageInterest": "利息",
-    "calcMortgageRemaining": "剩余",
-    "calcInputNumber": "输入数字",
+    "calcMortgageRemaining": "剩餘",
+    "calcInputNumber": "輸入數字",
     "calcTitleInvalid": "不合法",
-    "calcTitleNotFound": "暂未收录",
-    "calcTitleSelectRelation": "选择关系",
-    "calcTitleCommonRelations": "常用关系查询",
-    "calcBaseError": "输入包含无效字符。{base}只允许: {chars}",
-    "calcBaseBinary": "二进制",
-    "calcBaseOctal": "八进制",
-    "calcBaseDecimal": "十进制",
-    "calcBaseHex": "十六进制",
-    "calcEnterNumber": "输入数值",
+    "calcTitleNotFound": "暫未收錄",
+    "calcTitleSelectRelation": "選擇關係",
+    "calcTitleCommonRelations": "常用關係查詢",
+    "calcBaseError": "輸入包含無效字元。{base}只允許: {chars}",
+    "calcEnterNumber": "輸入數值",
     "calcDateFormat": "{year}年{month}月",
-    "calcOverweightYoung": "偏胖",
     "calcYear": "{y}年",
     "calcMonth": "{m}月",
     "calcDay": "{d}日",
     "calcYearN": "第{year}年",
-    "calcYearRepayment": "还款 ¥{amount}",
-    "calcYearSuffix": "年",
-    "calcMonthSuffix": "月",
-    "calcDaySuffix": "日",
-    "calcChineseNote": "中文大写数字和罗马数字转换。中文大写为中文专属内容，不可翻译。",
-    "calcChineseMode": "中文大写",
-    "calcRomanMode": "罗马数字",
-    "calcRomanLimit": "罗马数字仅支持 1-3999",
-    "calcResult": "结果",
-    "calcTitleNote": "中文亲属关系查询。此为中文专属内容，不可翻译。",
-    "theme8": "苔绿",
+    "calcYearRepayment": "還款 ¥{amount}",
+    "calcChineseNote": "中文大寫數字和羅馬數字轉換。中文大寫為中文專屬內容，不可翻譯。",
+    "calcChineseMode": "中文大寫",
+    "calcRomanMode": "羅馬數字",
+    "calcRomanLimit": "羅馬數字僅支援 1-3999",
+    "calcTitleNote": "中文親屬關係查詢。此為中文專屬內容，不可翻譯。",
+    "theme8": "苔綠",
     "theme12": "暖沙陶土",
-    "theme11": "石板青绿",
+    "theme11": "石板青綠",
     "theme4": "深色模式",
-    "theme6": "极简灰",
-    "theme7": "经典暖色"
+    "theme6": "極簡灰",
+    "theme7": "經典暖色"
   },
   "ui": {
-    "aboutLink": "关于 AAIGC →",
-    "all": "全部",
-    "tools": "工具",
-    "loading": "載入中...",
-    "foundTools": "找到 {count} 個工具",
     "toolLinks": {
       "jsonFormatter": "JSON 格式化",
       "timestamp": "時間戳",
@@ -535,12 +514,17 @@
       "markdownPreview": "Markdown",
       "colorPicker": "顏色選擇",
       "textDiff": "文字比對"
-    }
+    },
+    "aboutLink": "關於 AAIGC",
+    "all": "全部",
+    "tools": "工具",
+    "loading": "載入中...",
+    "foundTools": "找到 {count} 個工具"
   },
   "about": {
-    "title": "关于 AAIGC",
-    "desc": "AAIGC 是一系列 AI 驱动的工具和应用集合。",
-    "desc2": "我们的使命是让 AI 对每个人都触手可及、实用有效。",
+    "title": "關於 AAIGC",
+    "desc": "AAIGC 是一系列 AI 驅動的工具和應用集合。",
+    "desc2": "我們的使命是讓 AI 對每個人都觸手可及、實用有效。",
     "contact": "聯絡方式"
   },
   "errors": {
@@ -550,7 +534,7 @@
     "requestFailed": "請求失敗，請稍後重試"
   },
   "footer": {
-    "tagline": "AI 驱动工具与应用的集合",
+    "tagline": "AI 驅動工具與應用程式的集合",
     "products": "產品",
     "tools": "工具",
     "connect": "聯繫",
@@ -560,11 +544,11 @@
     "more": "更多...",
     "updates": "更新日誌",
     "privacy": "隱私政策",
-    "copyright": "AAIGC 保留所有权利"
+    "copyright": "AAIGC 保留所有權利"
   },
   "privacy": {
     "title": "隱私政策",
-    "desc": "AAIGC 是一个静态网站。我们不收集、存储或处理任何个人数据。所有工具均在您的浏览器中运行 — 不会有数据发送到我们的服务器。我们使用一个功能性 Cookie 来记住您的语言偏好。不使用任何跟踪或分析工具。",
+    "desc": "AAIGC 是一個靜態網站。我們不收集、儲存或處理任何個人資料。所有工具均在您的瀏覽器中執行 — 不會有資料發送到我們的伺服器。我們使用一個功能性 Cookie 來記住您的語言偏好。不使用任何追蹤或分析工具。",
     "contact": "如有疑問，請聯絡 chen@aaigc.online。"
   },
   "updates": {
