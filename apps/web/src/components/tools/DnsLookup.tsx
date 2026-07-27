@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 
 const TYPES = ['A', 'AAAA', 'CNAME', 'MX', 'TXT', 'NS', 'SOA']
+const TYPE_NAMES: Record<number, string> = { 1: 'A', 2: 'NS', 5: 'CNAME', 6: 'SOA', 15: 'MX', 16: 'TXT', 28: 'AAAA', 33: 'SRV', 99: 'SPF' }
 
 export default function DnsLookup() {
   const t = useTranslations('tools')
@@ -51,7 +52,7 @@ export default function DnsLookup() {
             <tbody>{result.map((r, i) => (
               <tr key={i} className="border-b border-[rgba(127,99,21,0.08)]">
                 <td className="p-3 text-text-primary font-mono text-xs">{r.name}</td>
-                <td className="p-3 text-text-primary">{r.type}</td>
+                <td className="p-3 text-text-primary">{TYPE_NAMES[r.type] || r.type}</td>
                 <td className="p-3 text-text-secondary">{r.TTL}</td>
                 <td className="p-3 text-text-primary font-mono text-xs break-all">{r.data}</td>
               </tr>
