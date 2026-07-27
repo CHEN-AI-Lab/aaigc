@@ -17,10 +17,10 @@ export default function DnsLookup() {
     if (!domain.trim()) return
     setLoading(true); setError(''); setResult(null)
     try {
-      const r = await fetch(`https://dns.google/resolve?name=${domain}&type=${type}`)
+      const r = await fetch(`/api/tools/dns-lookup?name=${domain}&type=${type}`)
       const d = await r.json()
       if (d.Answer) setResult(d.Answer)
-      else setError(d.Comment || t('noResults'))
+      else setError(d.error || t('noResults'))
     } catch { setError(t('conversionFailed')) }
     setLoading(false)
   }

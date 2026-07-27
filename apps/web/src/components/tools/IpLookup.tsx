@@ -10,9 +10,13 @@ export default function IpLookup() {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    fetch('https://api.ipify.org?format=json')
+    fetch('/api/tools/ip-lookup')
       .then(r => r.json())
-      .then(d => { setIp(d.ip); setLoading(false) })
+      .then(d => {
+        if (d.ip) setIp(d.ip)
+        else setError(d.error || t('conversionFailed'))
+        setLoading(false)
+      })
       .catch(() => { setError(t('conversionFailed')); setLoading(false) })
   }, [t])
 
@@ -24,7 +28,7 @@ export default function IpLookup() {
         {!loading && !error && (
           <>
             <p className="text-xs text-text-secondary mb-2">{t('ip-lookup.name')}</p>
-            <p className="text-3xl font-mono font-semibold text-text-primary">{ip}</p>
+            <p className="text-sm font-mono text-text-primary break-all">{ip}</p>
           </>
         )}
       </div>
