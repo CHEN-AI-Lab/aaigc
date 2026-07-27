@@ -35,6 +35,14 @@ const toolModules: Record<string, React.LazyExoticComponent<React.ComponentType>
   'text-to-slug': lazy(() => import('./tools/TextToSlug')),
   'list-sorter': lazy(() => import('./tools/ListSorter')),
   'calculator': lazy(() => import('./tools/Calculator')),
+  'ip-lookup': lazy(() => import('./tools/IpLookup')),
+  'dns-lookup': lazy(() => import('./tools/DnsLookup')),
+  'http-status-codes': lazy(() => import('./tools/HttpStatusCodes')),
+  'user-agent-parser': lazy(() => import('./tools/UserAgentParser')),
+  'random-generator': lazy(() => import('./tools/RandomGenerator')),
+  'cron-builder': lazy(() => import('./tools/CronBuilder')),
+  'emoji-picker': lazy(() => import('./tools/EmojiPicker')),
+  'text-to-binary': lazy(() => import('./tools/TextToBinary')),
 }
 
 export default function ToolPageClient({ slug }: Props) {
