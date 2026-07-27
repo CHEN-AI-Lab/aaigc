@@ -69,7 +69,7 @@ export default async function HomePage({ params }: Props) {
               return (
               <Link
                 key={cat.id}
-                href="/tools"
+                href={`/tools#category-${cat.id}`}
                 className="bg-bg rounded-sm p-5 shadow-warm-sm hover:shadow-warm transition-all text-center group hover:-translate-y-0.5"
               >
                 <div className="text-3xl mb-2">{cat.icon}</div>

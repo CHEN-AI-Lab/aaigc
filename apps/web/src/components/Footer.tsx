@@ -11,6 +11,7 @@ export default function Footer() {
   const t = useTranslations('footer')
   const tp = useTranslations('products')
   const tt = useTranslations('tools')
+  const tc = useTranslations('common')
 
   if (pathname?.includes('/tools/')) return null
 
@@ -57,16 +58,17 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-text-primary mb-3">{t('connect')}</h3>
+            <h3 className="text-sm font-semibold text-text-primary mb-3">{t('company')}</h3>
             <ul className="space-y-2 text-xs text-text-secondary">
               <li><Link href="/updates" className="hover:text-accent transition-colors">{t('updates')}</Link></li>
-              <li><Link href="/privacy" className="hover:text-accent transition-colors">{t('privacy')}</Link></li>
+              <li><Link href="/about" className="hover:text-accent transition-colors">{tc('about')}</Link></li>
               <li><a href="mailto:chen@aaigc.online" className="hover:text-accent transition-colors">{t('email')}</a></li>
             </ul>
           </div>
         </div>
-        <div className="border-t border-[rgba(127,99,21,0.1)] mt-8 pt-8 text-center text-xs text-text-secondary">
-          &copy; {new Date().getFullYear()} {t('copyright')}
+        <div className="border-t border-[rgba(127,99,21,0.1)] mt-8 pt-8 flex items-center justify-center gap-6 text-xs text-text-secondary">
+          <span>&copy; {new Date().getFullYear()} {t('copyright')}</span>
+          <Link href="/privacy" className="hover:text-accent transition-colors">{t('privacy')}</Link>
         </div>
       </div>
     </footer>

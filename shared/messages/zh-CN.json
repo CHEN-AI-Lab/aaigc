@@ -554,6 +554,7 @@
     "products": "产品",
     "tools": "工具",
     "connect": "联系",
+    "company": "更多",
     "toolJson": "JSON 格式化",
     "toolTimestamp": "时间戳",
     "toolQrcode": "二维码",
@@ -561,7 +562,7 @@
     "updates": "更新日志",
     "privacy": "隐私政策",
     "email": "chen@aaigc.online",
-    "copyright": "AAIGC 保留所有权利"
+    "copyright": "AAIGC. 保留所有权利。"
   },
   "privacy": {
     "title": "隐私政策",

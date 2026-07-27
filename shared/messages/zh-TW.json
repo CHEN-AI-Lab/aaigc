@@ -538,6 +538,7 @@
     "products": "產品",
     "tools": "工具",
     "connect": "聯繫",
+    "company": "更多",
     "toolJson": "JSON 格式化",
     "toolTimestamp": "時間戳",
     "toolQrcode": "二維碼",
@@ -545,7 +546,7 @@
     "updates": "更新日誌",
     "privacy": "隱私政策",
     "email": "chen@aaigc.online",
-    "copyright": "AAIGC 保留所有權利"
+    "copyright": "AAIGC. 保留所有權利。"
   },
   "privacy": {
     "title": "隱私政策",

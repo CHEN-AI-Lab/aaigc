@@ -10,6 +10,18 @@ export default function ToolsClient() {
   const locale = useLocale()
   const [query, setQuery] = useState('')
 
+  // Scroll to category section on initial load if hash is present
+  useEffect(() => {
+    const hash = window.location.hash
+    if (hash) {
+      const id = hash.replace('#', '')
+      const el = document.getElementById(id)
+      if (el) {
+        setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100)
+      }
+    }
+  }, [])
+
   // Preload all tool components so clicking is instant
   useEffect(() => {
     const componentMap: Record<string, string> = {
@@ -84,7 +96,7 @@ export default function ToolsClient() {
         if (catTools.length === 0) return null
         return (
           <div key={cat.id} className="mb-12">
-            <h2 className="flex items-center gap-2 text-lg font-semibold text-text-primary mb-4">
+            <h2 id={`category-${cat.id}`} className="flex items-center gap-2 text-lg font-semibold text-text-primary mb-4 scroll-mt-20">
               <span>{cat.icon}</span>
               <span>{t(`${cat.id}Tools`)}</span>
             </h2>
