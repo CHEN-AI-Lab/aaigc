@@ -20,7 +20,7 @@ export default function DnsLookup() {
       const r = await fetch(`/api/tools/dns-lookup?name=${domain}&type=${type}`)
       const d = await r.json()
       if (d.Answer) setResult(d.Answer)
-      else setError(d.error || t('noResults'))
+      else setError(d.error || 'No results found')
     } catch { setError(t('conversionFailed')) }
     setLoading(false)
   }
