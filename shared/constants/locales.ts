@@ -8,8 +8,8 @@ export function isLocale(value: string): value is Locale {
 }
 
 export const localeNames: Record<Locale, string> = {
-  'zh-CN': '中文',
+  'zh-CN': '简体中文',
   'en': 'English',
   'ja': '日本語',
-  'zh-TW': '繁體中文',
+  'zh-TW': '繁体中文',
 }
