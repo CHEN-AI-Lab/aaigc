@@ -36,5 +36,14 @@ export async function GET(request: NextRequest) {
 
   const answer = await queryDns(clean, type)
   if (answer) return NextResponse.json({ Answer: answer })
+  // No Answer records found — return Authority (SOA/NS) if available
+  try {
+    const fallback = await fetch(`https://dns.alidns.com/resolve?name=${clean}&type=${type}`, {
+      headers: { accept: 'application/dns-json' },
+      signal: AbortSignal.timeout(3000),
+    })
+    const fb = await fallback.json()
+    if (fb.Authority?.length) return NextResponse.json({ Answer: fb.Authority, note: `No ${type} records — showing SOA/NS instead` })
+  } catch {}
   return NextResponse.json({ error: `No ${type} records found for ${clean}` }, { status: 404 })
 }

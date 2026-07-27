@@ -13,6 +13,7 @@ export default function DnsLookup() {
   const [result, setResult] = useState<any[] | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [note, setNote] = useState('')
 
   const lookup = async () => {
     if (!domain.trim()) return
@@ -20,7 +21,7 @@ export default function DnsLookup() {
     try {
       const r = await fetch(`/api/tools/dns-lookup?name=${domain}&type=${type}`)
       const d = await r.json()
-      if (d.Answer) setResult(d.Answer)
+      if (d.Answer) { setResult(d.Answer); setNote(d.note || '') }
       else setError(d.error || 'No results found')
     } catch { setError(t('conversionFailed')) }
     setLoading(false)
@@ -40,6 +41,7 @@ export default function DnsLookup() {
       </div>
       {loading && <p className="text-text-secondary text-sm">Loading...</p>}
       {error && <p className="text-red-500 text-sm">{error}</p>}
+      {note && <p className="text-xs text-text-secondary mb-1">{note}</p>}
       {result && (
         <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm overflow-hidden">
           <table className="w-full text-sm">
