@@ -28,7 +28,7 @@ export default function IpLookup() {
         {!loading && !error && (
           <>
             <p className="text-xs text-text-secondary mb-2">{t('ip-lookup.name')}</p>
-            <p className="text-sm font-mono text-text-primary break-all">{ip}</p>
+            <p className="text-2xl font-mono font-semibold text-text-primary">{ip}</p>
           </>
         )}
       </div>
