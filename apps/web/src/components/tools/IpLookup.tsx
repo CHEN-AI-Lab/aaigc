@@ -20,11 +20,8 @@ export default function IpLookup() {
       .catch(() => { setError(t('conversionFailed')); setLoading(false) })
   }, [t])
 
-  let locStr = [data?.country, data?.region].filter(Boolean).join(' ')
-  // Skip city if it looks like a district (ends with 区/县/镇)
-  if (data?.city && !/区$|县$|镇$|乡$|街道$/.test(data.city)) {
-    locStr = [data.country, data.region, data.city].filter(Boolean).join(' ')
-  }
+  // Show country + province only (city data from ip-api.com is unreliable for China)
+  const locStr = [data?.country, data?.region].filter(Boolean).join(' ')
 
   return (
     <div className="mt-6 space-y-4">
