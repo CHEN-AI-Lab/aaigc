@@ -37,27 +37,27 @@ export default async function ProductDetailPage({ params }: Props) {
       </div>
 
       <div className="bg-surface rounded-sm p-8 shadow-warm-sm">
-        <div className="flex items-start gap-6 mb-8">
-          <div className="text-6xl">{product.icon}</div>
-          <div className="flex-1">
-            <h1 className="text-3xl font-semibold text-text-primary mb-2">{name}</h1>
-            {desc && <p className="text-text-secondary mb-4">{desc}</p>}
-            <div className="flex items-center gap-3">
-              <span className={`text-xs px-2 py-1 rounded-sm font-medium ${
+        <div className="flex items-start gap-6 mb-6">
+          <div className="text-6xl shrink-0">{product.icon}</div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-3 mb-3">
+              <h1 className="text-3xl font-semibold text-text-primary">{name}</h1>
+              <span className={`shrink-0 text-xs px-2.5 py-0.5 rounded-sm font-medium ${
                 isLive ? 'bg-green-500 text-white' : 'bg-surface text-text-secondary'
               }`}>
                 {isLive ? tc('live') : tc('comingSoon')}
               </span>
             </div>
+            {desc && <p className="text-text-secondary leading-relaxed">{desc}</p>}
           </div>
         </div>
 
         {features && features.length > 0 && (
-          <div className="mb-8">
-            <h2 className="text-sm font-semibold text-text-primary mb-3 uppercase tracking-wider">{t('features')}</h2>
-            <ul className="space-y-2">
+          <div className="mt-10 mb-10">
+            <h2 className="text-sm font-semibold text-text-primary mb-4 uppercase tracking-wider">{t('features')}</h2>
+            <ul className="space-y-2.5">
               {features.map((f, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-text-secondary">
+                <li key={i} className="flex items-start gap-2.5 text-xs text-text-secondary/80">
                   <span className="text-accent shrink-0 mt-0.5">✦</span>
                   {f}
                 </li>
@@ -71,7 +71,7 @@ export default async function ProductDetailPage({ params }: Props) {
             href={product.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-white text-sm font-medium rounded-sm hover:opacity-90 transition-opacity"
+            className="flex items-center justify-center w-full px-6 py-3.5 bg-accent text-white text-sm font-medium rounded-sm hover:opacity-90 transition-opacity"
           >
             {t('visit')} →
           </a>

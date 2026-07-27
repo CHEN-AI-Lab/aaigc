@@ -61,7 +61,7 @@ export default function Footer() {
             <ul className="space-y-2 text-xs text-text-secondary">
               <li><Link href="/updates" className="hover:text-accent transition-colors">{t('updates')}</Link></li>
               <li><Link href="/privacy" className="hover:text-accent transition-colors">{t('privacy')}</Link></li>
-              <li><a href="mailto:chen@aaigc.online" className="hover:text-accent transition-colors">Email</a></li>
+              <li><a href="mailto:chen@aaigc.online" className="hover:text-accent transition-colors">{t('email')}</a></li>
             </ul>
           </div>
         </div>
