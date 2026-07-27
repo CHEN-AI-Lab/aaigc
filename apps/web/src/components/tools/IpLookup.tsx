@@ -20,7 +20,11 @@ export default function IpLookup() {
       .catch(() => { setError(t('conversionFailed')); setLoading(false) })
   }, [t])
 
-  const location = [data?.country, data?.region, data?.city].filter(Boolean).join(' ')
+  let locStr = [data?.country, data?.region].filter(Boolean).join(' ')
+  // Skip city if it looks like a district (ends with 区/县/镇)
+  if (data?.city && !/区$|县$|镇$|乡$|街道$/.test(data.city)) {
+    locStr = [data.country, data.region, data.city].filter(Boolean).join(' ')
+  }
 
   return (
     <div className="mt-6 space-y-4">
@@ -34,10 +38,10 @@ export default function IpLookup() {
               <p className="text-2xl font-mono font-semibold text-text-primary">{data.ip}</p>
             </div>
             <div className="border-t border-[rgba(127,99,21,0.1)] pt-4 space-y-3 text-sm">
-              {location && (
+              {locStr && (
                 <div className="flex">
                   <span className="w-20 text-text-secondary shrink-0">{t('ipLocation')}</span>
-                  <span className="text-text-primary">{location}</span>
+                  <span className="text-text-primary">{locStr}</span>
                 </div>
               )}
               {data.isp && (
