@@ -546,7 +546,11 @@
     "dnsName": "名稱",
     "dnsType": "類型",
     "dnsTtl": "TTL",
-    "dnsData": "數據"
+    "dnsData": "數據",
+    "loading": "載入中...",
+    "noResultsFound": "未找到結果",
+    "dnsPlaceholder": "example.com",
+    "dnsNote": "沒有 {type} 記錄 — 顯示 SOA/NS 替代"
   },
   "ui": {
     "toolLinks": {

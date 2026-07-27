@@ -25,7 +25,7 @@ export default function IpLookup() {
   return (
     <div className="mt-6 space-y-4">
       <div className="p-6 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm">
-        {loading && <p className="text-text-secondary text-center">Loading...</p>}
+        {loading && <p className="text-text-secondary text-center">{t('loading')}</p>}
         {error && <p className="text-red-500 text-center">{error}</p>}
         {!loading && !error && data && (
           <div className="space-y-4">

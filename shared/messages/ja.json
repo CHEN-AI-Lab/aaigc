@@ -562,7 +562,11 @@
     "dnsName": "名前",
     "dnsType": "タイプ",
     "dnsTtl": "TTL",
-    "dnsData": "データ"
+    "dnsData": "データ",
+    "loading": "読み込み中...",
+    "noResultsFound": "結果が見つかりません",
+    "dnsPlaceholder": "example.com",
+    "dnsNote": "{type} レコードなし — SOA/NS を表示"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

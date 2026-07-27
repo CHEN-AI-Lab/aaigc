@@ -562,7 +562,11 @@
     "dnsName": "Name",
     "dnsType": "Type",
     "dnsTtl": "TTL",
-    "dnsData": "Data"
+    "dnsData": "Data",
+    "loading": "Loading...",
+    "noResultsFound": "No results found",
+    "dnsPlaceholder": "example.com",
+    "dnsNote": "No {type} records — showing SOA/NS instead"
   },
   "ui": {
     "aboutLink": "About AAIGC →",
