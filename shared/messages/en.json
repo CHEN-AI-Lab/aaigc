@@ -28,7 +28,9 @@
     "securityTools": "Security Tools",
     "mathTools": "Math Tools",
     "toolCount": "{count} tools",
-    "popularTools": "Popular tools"
+    "popularTools": "Popular tools",
+    "networkTools": "Network Tools",
+    "otherTools": "Other Tools"
   },
   "products": {
     "title": "Our Products",
@@ -518,7 +520,41 @@
     "theme11": "Slate Teal",
     "theme4": "Dark Mode",
     "theme6": "Minimal Gray",
-    "theme7": "Classic Warm"
+    "theme7": "Classic Warm",
+    "networkTools": "Network Tools",
+    "otherTools": "Other Tools",
+    "ip-lookup": {
+      "name": "IP Lookup",
+      "description": "Look up your public IP address, location, and ISP information"
+    },
+    "dns-lookup": {
+      "name": "DNS Lookup",
+      "description": "Query DNS records — A, CNAME, MX, TXT and more"
+    },
+    "http-status-codes": {
+      "name": "HTTP Status Codes",
+      "description": "Browse all HTTP status codes with descriptions"
+    },
+    "user-agent-parser": {
+      "name": "User-Agent Parser",
+      "description": "Parse and analyze browser User-Agent strings"
+    },
+    "random-generator": {
+      "name": "Random Generator",
+      "description": "Generate random numbers, strings, and colors"
+    },
+    "cron-builder": {
+      "name": "Cron Builder",
+      "description": "Visually build cron expressions with an easy interface"
+    },
+    "emoji-picker": {
+      "name": "Emoji Picker",
+      "description": "Browse, search, and copy emojis"
+    },
+    "text-to-binary": {
+      "name": "Text to Binary",
+      "description": "Convert text to binary, octal, and hexadecimal"
+    }
   },
   "ui": {
     "aboutLink": "About AAIGC →",

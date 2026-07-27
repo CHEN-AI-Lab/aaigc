@@ -13,12 +13,15 @@ export default function LanguageSwitcher() {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
+    if (!open) return
+    const handleClickOutside = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
     }
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+  }, [open])
+
+  const toggle = useCallback(() => setOpen(v => !v), [])
 
   const switchLocale = useCallback(
     (nextLocale: string) => {
@@ -33,7 +36,7 @@ export default function LanguageSwitcher() {
   return (
     <div ref={ref} className="relative">
       <button
-        onClick={() => setOpen(!open)}
+        onClick={toggle}
         className="flex items-center justify-center w-8 h-8 rounded-md text-text-secondary hover:text-accent hover:bg-surface transition-colors"
         title={current}
       >
@@ -44,7 +47,7 @@ export default function LanguageSwitcher() {
         </svg>
       </button>
       {open && (
-        <div className="absolute right-0 top-full mt-1 bg-card border border-[rgba(127,99,21,0.15)] rounded-md shadow-md z-50 w-max">
+        <div className="absolute right-0 top-full mt-1 bg-card border border-[rgba(127,99,21,0.15)] rounded-md shadow-md z-[60] w-max">
           {locales.map((l) => (
             <button
               key={l}

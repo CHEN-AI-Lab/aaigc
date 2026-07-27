@@ -8,6 +8,8 @@ export const toolCategories: CategoryInfo[] = [
   { id: 'image', nameEn: 'Image Tools', icon: '🎨', order: 5 },
   { id: 'math', nameEn: 'Math Tools', icon: '🧮', order: 6 },
   { id: 'convert', nameEn: 'Converters', icon: '🔄', order: 7 },
+  { id: 'network', nameEn: 'Network Tools', icon: '🌐', order: 8 },
+  { id: 'other', nameEn: 'Other Tools', icon: '📦', order: 9 },
 ]
 
 export interface ToolMeta {
@@ -28,6 +30,10 @@ export const tools: ToolMeta[] = [
   { id: 'uuid-generator', category: 'dev', icon: '🆔', component: 'UuidGenerator' },
   { id: 'html-preview', category: 'dev', icon: '🌐', component: 'HtmlPreview' },
   { id: 'css-minifier', category: 'dev', icon: '🎨', component: 'CssMinifier' },
+  { id: 'number-base', category: 'dev', icon: '🔢', component: 'NumberBaseConverter' },
+  { id: 'yaml-json', category: 'dev', icon: '🔄', component: 'YamlJsonConverter', npmDeps: ['js-yaml'] },
+  { id: 'json-to-csv', category: 'dev', icon: '📊', component: 'JsonToCsv' },
+  { id: 'html-entities', category: 'dev', icon: '🔣', component: 'HtmlEntities' },
 
   // ─── Text Tools ───
   { id: 'markdown-preview', category: 'text', icon: '📄', component: 'MarkdownPreview', npmDeps: ['react-markdown'] },
@@ -51,12 +57,20 @@ export const tools: ToolMeta[] = [
   { id: 'image-to-base64', category: 'image', icon: '🖼️', component: 'ImageToBase64' },
 
   // ─── Math Tools ───
-  { id: 'number-base', category: 'math', icon: '🔢', component: 'NumberBaseConverter' },
   { id: 'calculator', category: 'math', icon: '🧮', component: 'Calculator' },
   
   // ─── Converters ───
-  { id: 'yaml-json', category: 'convert', icon: '🔄', component: 'YamlJsonConverter', npmDeps: ['js-yaml'] },
-  { id: 'html-entities', category: 'convert', icon: '🔣', component: 'HtmlEntities' },
-  { id: 'json-to-csv', category: 'convert', icon: '📊', component: 'JsonToCsv' },
+
+  // ─── Network Tools ───
+  { id: 'ip-lookup', category: 'network', icon: '🌐', component: 'IpLookup' },
+  { id: 'dns-lookup', category: 'network', icon: '🔍', component: 'DnsLookup' },
+  { id: 'http-status-codes', category: 'network', icon: '📋', component: 'HttpStatusCodes' },
+  { id: 'user-agent-parser', category: 'network', icon: '🖥️', component: 'UserAgentParser' },
+
+  // ─── Other Tools ───
+  { id: 'random-generator', category: 'other', icon: '🎲', component: 'RandomGenerator' },
+  { id: 'cron-builder', category: 'other', icon: '⏰', component: 'CronBuilder' },
+  { id: 'emoji-picker', category: 'other', icon: '😊', component: 'EmojiPicker' },
+  { id: 'text-to-binary', category: 'other', icon: '🔢', component: 'TextToBinary' },
 
 ]

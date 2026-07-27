@@ -1,0 +1,41 @@
+'use client'
+
+import { useState } from 'react'
+import { useTranslations } from 'next-intl'
+
+const CODES = [
+  ...'100 Continue|101 Switching Protocols|102 Processing'.split('|').map(s => { const [c, ...r] = s.split(' '); return { code: parseInt(c), name: r.join(' '), desc: 'Informational' } }),
+  ...'200 OK|201 Created|202 Accepted|204 No Content|301 Moved Permanently|302 Found|304 Not Modified|307 Temporary Redirect|308 Permanent Redirect'.split('|').map(s => { const [c, ...r] = s.split(' '); return { code: parseInt(c), name: r.join(' '), desc: 'Success / Redirection' } }),
+  ...'400 Bad Request|401 Unauthorized|403 Forbidden|404 Not Found|405 Method Not Allowed|408 Request Timeout|409 Conflict|410 Gone|422 Unprocessable Entity|429 Too Many Requests'.split('|').map(s => { const [c, ...r] = s.split(' '); return { code: parseInt(c), name: r.join(' '), desc: 'Client Error' } }),
+  ...'500 Internal Server Error|502 Bad Gateway|503 Service Unavailable|504 Gateway Timeout'.split('|').map(s => { const [c, ...r] = s.split(' '); return { code: parseInt(c), name: r.join(' '), desc: 'Server Error' } }),
+]
+
+export default function HttpStatusCodes() {
+  const t = useTranslations('tools')
+  const [q, setQ] = useState('')
+
+  const filtered = CODES.filter(c => !q || `${c.code}`.includes(q) || c.name.toLowerCase().includes(q.toLowerCase()))
+
+  return (
+    <div className="mt-6 space-y-4">
+      <input value={q} onChange={e => setQ(e.target.value)} placeholder={t('search')}
+        className="w-full max-w-xs p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/30" />
+      <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm overflow-hidden">
+        <table className="w-full text-sm">
+          <thead><tr className="border-b border-[rgba(127,99,21,0.15)]">
+            <th className="text-left p-3 text-text-secondary font-medium">Code</th>
+            <th className="text-left p-3 text-text-secondary font-medium">Name</th>
+            <th className="text-left p-3 text-text-secondary font-medium">Category</th>
+          </tr></thead>
+          <tbody>{filtered.map((c, i) => (
+            <tr key={i} className="border-b border-[rgba(127,99,21,0.08)] hover:bg-accent/5">
+              <td className="p-3 text-text-primary font-mono font-semibold">{c.code}</td>
+              <td className="p-3 text-text-primary">{c.name}</td>
+              <td className="p-3 text-text-secondary text-xs">{c.desc}</td>
+            </tr>
+          ))}</tbody>
+        </table>
+      </div>
+    </div>
+  )
+}

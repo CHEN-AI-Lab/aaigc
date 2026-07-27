@@ -24,11 +24,13 @@
     "textTools": "文字工具",
     "timeTools": "時間工具",
     "imageTools": "圖像工具",
-    "convertTools": "格式轉換",
+    "convertTools": "轉換工具",
     "securityTools": "安全工具",
     "mathTools": "數學工具",
     "toolCount": "{count} 個工具",
-    "popularTools": "熱門工具"
+    "popularTools": "熱門工具",
+    "networkTools": "網路工具",
+    "otherTools": "其他工具"
   },
   "products": {
     "cookmate": {
@@ -202,7 +204,7 @@
     "textTools": "文字工具",
     "timeTools": "時間工具",
     "imageTools": "圖像工具",
-    "convertTools": "格式轉換",
+    "convertTools": "轉換工具",
     "securityTools": "安全工具",
     "mathTools": "數學工具",
     "encode": "編碼",
@@ -502,7 +504,41 @@
     "theme11": "石板青綠",
     "theme4": "深色模式",
     "theme6": "極簡灰",
-    "theme7": "經典暖色"
+    "theme7": "經典暖色",
+    "networkTools": "網路工具",
+    "otherTools": "其他工具",
+    "ip-lookup": {
+      "name": "IP 查詢",
+      "description": "查詢當前公網 IP 地址、地理位置和 ISP 資訊"
+    },
+    "dns-lookup": {
+      "name": "DNS 查詢",
+      "description": "查詢 DNS 記錄 — A、CNAME、MX、TXT 等"
+    },
+    "http-status-codes": {
+      "name": "HTTP 狀態碼",
+      "description": "瀏覽所有 HTTP 狀態碼及其含義"
+    },
+    "user-agent-parser": {
+      "name": "UA 解析",
+      "description": "解析瀏覽器 User-Agent 字串資訊"
+    },
+    "random-generator": {
+      "name": "隨機數生成器",
+      "description": "生成隨機數字、字串和顏色"
+    },
+    "cron-builder": {
+      "name": "Cron 表達式生成器",
+      "description": "可視化生成 Cron 表達式，簡單易用"
+    },
+    "emoji-picker": {
+      "name": "Emoji 選擇器",
+      "description": "瀏覽、搜尋和複製 Emoji"
+    },
+    "text-to-binary": {
+      "name": "文字轉二進制",
+      "description": "將文字轉換為二進制、八進制和十六進制"
+    }
   },
   "ui": {
     "toolLinks": {

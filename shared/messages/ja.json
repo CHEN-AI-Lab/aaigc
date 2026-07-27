@@ -28,7 +28,9 @@
     "securityTools": "セキュリティツール",
     "mathTools": "数学ツール",
     "toolCount": "{count} ツール",
-    "popularTools": "人気ツール"
+    "popularTools": "人気ツール",
+    "networkTools": "ネットワークツール",
+    "otherTools": "その他ツール"
   },
   "products": {
     "title": "製品一覧",
@@ -518,7 +520,41 @@
     "theme11": "スレートティール",
     "theme4": "ダークモード",
     "theme6": "ミニマルグレー",
-    "theme7": "クラシック暖色"
+    "theme7": "クラシック暖色",
+    "networkTools": "ネットワークツール",
+    "otherTools": "その他ツール",
+    "ip-lookup": {
+      "name": "IP アドレス確認",
+      "description": "現在のパブリック IP、位置情報、ISP を確認"
+    },
+    "dns-lookup": {
+      "name": "DNS ルックアップ",
+      "description": "A、CNAME、MX、TXT などの DNS レコードを照会"
+    },
+    "http-status-codes": {
+      "name": "HTTP ステータスコード",
+      "description": "すべての HTTP ステータスコードとその説明"
+    },
+    "user-agent-parser": {
+      "name": "UA 解析",
+      "description": "ブラウザの User-Agent 文字列を解析"
+    },
+    "random-generator": {
+      "name": "ランダム生成器",
+      "description": "ランダムな数字、文字列、色を生成"
+    },
+    "cron-builder": {
+      "name": "Cron 式ビルダー",
+      "description": "Cron 式を視覚的に簡単に作成"
+    },
+    "emoji-picker": {
+      "name": "絵文字ピッカー",
+      "description": "絵文字を閲覧、検索、コピー"
+    },
+    "text-to-binary": {
+      "name": "テキスト→バイナリ",
+      "description": "テキストを2進数、8進数、16進数に変換"
+    }
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

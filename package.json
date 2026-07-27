@@ -12,6 +12,11 @@
     "test:shared": "pnpm --filter shared test",
     "typecheck": "pnpm --filter web exec -- tsc --noEmit && pnpm --filter shared exec -- tsc --noEmit",
     "check": "bash scripts/check.sh",
+    "check:light": "bash scripts/check-light.sh",
+    "check:syntax": "find . -name '*.mjs' -not -path '*/node_modules/*' -not -path '*/.next/*' -exec node --check {} \\;",
+    "check:json": "python3 scripts/check-json.py",
+    "check:type": "pnpm --filter shared exec -- tsc --noEmit && pnpm --filter web exec -- tsc --noEmit",
+    "test:light": "pnpm vitest run --pool=forks --poolOptions.forks.singleFork --maxWorkers=1",
     "setup": "pnpm install",
     "prepare": "husky"
   },
