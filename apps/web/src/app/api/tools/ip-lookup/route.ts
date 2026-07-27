@@ -2,10 +2,30 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const DATACENTER_KEYWORDS = ['cloud', 'datacenter', 'hosting', 'amazon', 'google cloud', 'azure', 'alibaba', 'tencent', 'huawei cloud', 'server', 'transit']
 
+const ISP_NAMES: Record<string, string> = {
+  'chinanet': '中国电信',
+  'china telecom': '中国电信',
+  'china mobile': '中国移动',
+  'china unicom': '中国联通',
+  'cernet': '中国教育网',
+  'china education and research network': '中国教育网',
+  'drpeng': '鹏博士',
+  'greatwall': '长城宽带',
+  'wasu': '华数宽带',
+}
+
 function guessUsage(org: string): string {
   const lower = org.toLowerCase()
   if (DATACENTER_KEYWORDS.some(k => lower.includes(k))) return '数据中心'
   return '家庭宽带'
+}
+
+function translateIsp(name: string): string {
+  const lower = name.toLowerCase().trim()
+  for (const [key, val] of Object.entries(ISP_NAMES)) {
+    if (lower.includes(key)) return val
+  }
+  return name
 }
 
 export async function GET(request: NextRequest) {
@@ -18,7 +38,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ ip: clientIp })
     }
     try {
-      const res = await fetch(`http://ip-api.com/json/${clientIp}?fields=query,city,regionName,country,isp,org,as`, {
+      const res = await fetch(`http://ip-api.com/json/${clientIp}?fields=query,city,regionName,country,isp,org,as&lang=zh-CN`, {
         signal: AbortSignal.timeout(5000),
       })
       const data = await res.json()
@@ -28,7 +48,7 @@ export async function GET(request: NextRequest) {
           country: data.country || '',
           region: data.regionName || '',
           city: data.city || '',
-          isp: data.isp || data.org || '',
+          isp: translateIsp(data.isp || data.org || ''),
           usage: guessUsage(data.org || data.isp || ''),
         })
       }
