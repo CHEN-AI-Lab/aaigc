@@ -20,8 +20,11 @@ export default function IpLookup() {
       .catch(() => { setError(t('conversionFailed')); setLoading(false) })
   }, [t])
 
-  // Show country + province only (city data from ip-api.com is unreliable for China)
-  const locStr = [data?.country, data?.region].filter(Boolean).join(' ')
+  // Show country + province + city (skip common district-level names)
+  const DISTRICT_NAMES = new Set(['新城', '雁塔', '未央', '碑林', '莲湖', '灞桥', '长安', '浦东', '朝阳', '海淀', '天河', '福田', '罗湖', '南山', '武侯', '锦江', '青羊', '鼓楼', '玄武', '秦淮', '建邺'])
+  const isDistrict = (name: string) => /区$|县$|镇$|乡$|街道$/.test(name) || DISTRICT_NAMES.has(name)
+  const cityName = data?.city && !isDistrict(data.city) ? data.city : ''
+  const locStr = [data?.country, data?.region, cityName].filter(Boolean).join(' ')
 
   return (
     <div className="mt-6 space-y-4">

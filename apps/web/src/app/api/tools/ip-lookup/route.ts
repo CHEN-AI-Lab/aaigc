@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ ip: clientIp })
     }
     try {
-      const res = await fetch(`http://ip-api.com/json/${clientIp}?fields=query,city,regionName,country,isp,org,as,hosting,mobile,proxy&lang=zh-CN`, {
+      const res = await fetch(`http://ip-api.com/json/${clientIp}?fields=query,city,regionName,country,district,isp,org,as,hosting,mobile,proxy&lang=zh-CN`, {
         signal: AbortSignal.timeout(5000),
       })
       const data = await res.json()
@@ -51,6 +51,7 @@ export async function GET(request: NextRequest) {
           country: data.country || '',
           region: data.regionName || '',
           city: data.city || '',
+          district: data.district || '',
           isp: translateIsp(data.isp || data.org || ''),
           usage: guessUsage(data.org || data.isp || '', data.hosting, data.mobile, data.proxy),
         })
