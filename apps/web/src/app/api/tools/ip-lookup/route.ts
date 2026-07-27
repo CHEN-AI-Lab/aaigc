@@ -14,9 +14,12 @@ const ISP_NAMES: Record<string, string> = {
   'wasu': '华数宽带',
 }
 
-function guessUsage(org: string): string {
+function guessUsage(org: string, hosting?: boolean, mobile?: boolean, proxy?: boolean): string {
+  if (hosting === true) return '数据中心/云服务'
+  if (proxy === true) return '代理/VPN'
+  if (mobile === true) return '移动网络'
   const lower = org.toLowerCase()
-  if (DATACENTER_KEYWORDS.some(k => lower.includes(k))) return '数据中心'
+  if (DATACENTER_KEYWORDS.some(k => lower.includes(k))) return '数据中心/云服务'
   return '家庭宽带'
 }
 
@@ -38,7 +41,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ ip: clientIp })
     }
     try {
-      const res = await fetch(`http://ip-api.com/json/${clientIp}?fields=query,city,regionName,country,isp,org,as&lang=zh-CN`, {
+      const res = await fetch(`http://ip-api.com/json/${clientIp}?fields=query,city,regionName,country,isp,org,as,hosting,mobile,proxy&lang=zh-CN`, {
         signal: AbortSignal.timeout(5000),
       })
       const data = await res.json()
@@ -49,7 +52,7 @@ export async function GET(request: NextRequest) {
           region: data.regionName || '',
           city: data.city || '',
           isp: translateIsp(data.isp || data.org || ''),
-          usage: guessUsage(data.org || data.isp || ''),
+          usage: guessUsage(data.org || data.isp || '', data.hosting, data.mobile, data.proxy),
         })
       }
     } catch {}
