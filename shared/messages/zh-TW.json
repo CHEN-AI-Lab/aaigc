@@ -538,7 +538,15 @@
     "text-to-binary": {
       "name": "文字轉二進制",
       "description": "將文字轉換為二進制、八進制和十六進制"
-    }
+    },
+    "ipMyIp": "本機IP",
+    "ipLocation": "歸屬地",
+    "ipIsp": "運營商",
+    "ipUsage": "應用場景",
+    "dnsName": "名稱",
+    "dnsType": "類型",
+    "dnsTtl": "TTL",
+    "dnsData": "數據"
   },
   "ui": {
     "toolLinks": {

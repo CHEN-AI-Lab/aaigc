@@ -554,7 +554,15 @@
     "text-to-binary": {
       "name": "Text to Binary",
       "description": "Convert text to binary, octal, and hexadecimal"
-    }
+    },
+    "ipMyIp": "Your IP",
+    "ipLocation": "Location",
+    "ipIsp": "ISP",
+    "ipUsage": "Usage",
+    "dnsName": "Name",
+    "dnsType": "Type",
+    "dnsTtl": "TTL",
+    "dnsData": "Data"
   },
   "ui": {
     "aboutLink": "About AAIGC →",

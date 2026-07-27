@@ -30,25 +30,25 @@ export default function IpLookup() {
         {!loading && !error && data && (
           <div className="space-y-4">
             <div className="text-center">
-              <p className="text-xs text-text-secondary mb-1">本机IP</p>
+              <p className="text-xs text-text-secondary mb-1">{t('ipMyIp')}</p>
               <p className="text-2xl font-mono font-semibold text-text-primary">{data.ip}</p>
             </div>
             <div className="border-t border-[rgba(127,99,21,0.1)] pt-4 space-y-3 text-sm">
               {location && (
                 <div className="flex">
-                  <span className="w-20 text-text-secondary shrink-0">归属地</span>
+                  <span className="w-20 text-text-secondary shrink-0">{t('ipLocation')}</span>
                   <span className="text-text-primary">{location}</span>
                 </div>
               )}
               {data.isp && (
                 <div className="flex">
-                  <span className="w-20 text-text-secondary shrink-0">运营商</span>
+                  <span className="w-20 text-text-secondary shrink-0">{t('ipIsp')}</span>
                   <span className="text-text-primary">{data.isp}</span>
                 </div>
               )}
               {data.usage && (
                 <div className="flex">
-                  <span className="w-20 text-text-secondary shrink-0">应用场景</span>
+                  <span className="w-20 text-text-secondary shrink-0">{t('ipUsage')}</span>
                   <span className="text-text-primary">{data.usage}</span>
                 </div>
               )}

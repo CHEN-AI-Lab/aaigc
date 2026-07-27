@@ -46,10 +46,10 @@ export default function DnsLookup() {
         <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm overflow-hidden">
           <table className="w-full text-sm">
             <thead><tr className="border-b border-[rgba(127,99,21,0.15)]">
-              <th className="text-left p-3 text-text-secondary font-medium">Name</th>
-              <th className="text-left p-3 text-text-secondary font-medium">Type</th>
-              <th className="text-left p-3 text-text-secondary font-medium">TTL</th>
-              <th className="text-left p-3 text-text-secondary font-medium">Data</th>
+              <th className="text-left p-3 text-text-secondary font-medium">{t('dnsName')}</th>
+              <th className="text-left p-3 text-text-secondary font-medium">{t('dnsType')}</th>
+              <th className="text-left p-3 text-text-secondary font-medium">{t('dnsTtl')}</th>
+              <th className="text-left p-3 text-text-secondary font-medium">{t('dnsData')}</th>
             </tr></thead>
             <tbody>{result.map((r, i) => (
               <tr key={i} className="border-b border-[rgba(127,99,21,0.08)]">

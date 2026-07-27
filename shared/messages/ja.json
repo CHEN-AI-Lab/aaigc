@@ -554,7 +554,15 @@
     "text-to-binary": {
       "name": "テキスト→バイナリ",
       "description": "テキストを2進数、8進数、16進数に変換"
-    }
+    },
+    "ipMyIp": "自分のIP",
+    "ipLocation": "所在地",
+    "ipIsp": "ISP",
+    "ipUsage": "利用形態",
+    "dnsName": "名前",
+    "dnsType": "タイプ",
+    "dnsTtl": "TTL",
+    "dnsData": "データ"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

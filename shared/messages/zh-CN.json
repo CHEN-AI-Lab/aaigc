@@ -554,7 +554,15 @@
     "text-to-binary": {
       "name": "文本转二进制",
       "description": "将文本转换为二进制、八进制和十六进制"
-    }
+    },
+    "ipMyIp": "本机IP",
+    "ipLocation": "归属地",
+    "ipIsp": "运营商",
+    "ipUsage": "应用场景",
+    "dnsName": "名称",
+    "dnsType": "类型",
+    "dnsTtl": "TTL",
+    "dnsData": "数据"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",
