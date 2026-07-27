@@ -1,6 +1,6 @@
 import type { Locale } from '../types'
 
-export const locales = ['zh-CN', 'en', 'ja', 'zh-TW'] as const
+export const locales = ['en', 'zh-CN', 'zh-TW', 'ja'] as const
 export const defaultLocale: Locale = 'en'
 
 export function isLocale(value: string): value is Locale {
