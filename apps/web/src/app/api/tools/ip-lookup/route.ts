@@ -71,8 +71,9 @@ async function tryIpsb(ip: string) {
   return null
 }
 
-async function tryIpapi(ip: string) {
-  const res = await fetch(`http://ip-api.com/json/${ip}?fields=query,city,regionName,country,isp,org,as,hosting,mobile,proxy&lang=zh-CN`, {
+async function tryIpapi(ip: string, lang: string) {
+  const langParam = lang.startsWith('zh') ? 'zh-CN' : 'en'
+  const res = await fetch(`http://ip-api.com/json/${ip}?fields=query,city,regionName,country,isp,org,as,hosting,mobile,proxy&lang=${langParam}`, {
     signal: AbortSignal.timeout(5000),
   })
   const data = await res.json()
@@ -96,7 +97,6 @@ async function tryIpapi(ip: string) {
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const lang = searchParams.get('lang') || 'en'
-  const isChinese = lang.startsWith('zh')
 
   const forwarded = request.headers.get('x-forwarded-for')
   const realIp = request.headers.get('x-real-ip')
@@ -107,21 +107,16 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ ip: clientIp })
     }
 
-    if (isChinese) {
-      const api = await tryIpapi(clientIp).catch(() => null)
-      if (api) return NextResponse.json(api)
-      const info = await tryIpinfo(clientIp).catch(() => null)
-      if (info) return NextResponse.json(info)
-      const sb = await tryIpsb(clientIp).catch(() => null)
-      if (sb) return NextResponse.json(sb)
-    } else {
-      const info = await tryIpinfo(clientIp).catch(() => null)
-      if (info) return NextResponse.json(info)
-      const sb = await tryIpsb(clientIp).catch(() => null)
-      if (sb) return NextResponse.json(sb)
-      const api = await tryIpapi(clientIp).catch(() => null)
-      if (api) return NextResponse.json(api)
-    }
+    // Same priority for all locales — only language parameter differs
+    // ip-api.com has the most fields (hosting/mobile/proxy for usage detection)
+    const api = await tryIpapi(clientIp, lang).catch(() => null)
+    if (api) return NextResponse.json(api)
+
+    const info = await tryIpinfo(clientIp).catch(() => null)
+    if (info) return NextResponse.json(info)
+
+    const sb = await tryIpsb(clientIp).catch(() => null)
+    if (sb) return NextResponse.json(sb)
 
     return NextResponse.json({ ip: clientIp })
   }
