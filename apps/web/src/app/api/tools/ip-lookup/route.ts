@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-const DATACENTER_KEYWORDS = ['cloud', 'datacenter', 'hosting', 'amazon', 'google cloud', 'azure', 'alibaba', 'tencent', 'huawei cloud', 'server', 'transit']
+const DATACENTER_KEYWORDS = ['cloud', 'datacenter', 'hosting', 'amazon', 'google cloud', 'azure', 'alibaba', 'tencent', 'huawei cloud', 'backbone', 'idc', 'ovh', 'digitalocean', 'linode', 'vultr', 'hetzner']
 
 const COUNTRY_NAMES: Record<string, string> = {
   'CN': 'China', 'US': 'United States', 'JP': 'Japan', 'KR': 'South Korea',
@@ -28,7 +28,7 @@ function countryName(code: string): string {
 function guessUsage(org: string): string {
   const lower = org.toLowerCase()
   if (DATACENTER_KEYWORDS.some(k => lower.includes(k))) return '数据中心/云服务'
-  return '家庭宽带'
+  return '宽带'
 }
 
 function translateIsp(name: string): string {
@@ -72,18 +72,22 @@ async function tryIpsb(ip: string) {
 }
 
 async function tryIpapi(ip: string) {
-  const res = await fetch(`http://ip-api.com/json/${ip}?fields=query,city,regionName,country,isp,org,as&lang=zh-CN`, {
+  const res = await fetch(`http://ip-api.com/json/${ip}?fields=query,city,regionName,country,isp,org,as,hosting,mobile,proxy&lang=zh-CN`, {
     signal: AbortSignal.timeout(5000),
   })
   const data = await res.json()
   if (data.query) {
+    let usage = guessUsage(data.org || data.isp || '')
+    if (data.hosting === true) usage = '数据中心/云服务'
+    else if (data.proxy === true) usage = '代理/VPN'
+    else if (data.mobile === true) usage = '移动网络'
     return {
       ip: data.query,
       country: data.country || '',
       region: data.regionName || '',
       city: data.city || '',
       isp: translateIsp(data.isp || data.org || ''),
-      usage: guessUsage(data.org || data.isp || ''),
+      usage,
     }
   }
   return null
@@ -104,7 +108,6 @@ export async function GET(request: NextRequest) {
     }
 
     if (isChinese) {
-      // Chinese locale: use ip-api.com with lang=zh-CN (returns Chinese names)
       const api = await tryIpapi(clientIp).catch(() => null)
       if (api) return NextResponse.json(api)
       const info = await tryIpinfo(clientIp).catch(() => null)
@@ -112,7 +115,6 @@ export async function GET(request: NextRequest) {
       const sb = await tryIpsb(clientIp).catch(() => null)
       if (sb) return NextResponse.json(sb)
     } else {
-      // Other locales: use ipinfo.io first (English names)
       const info = await tryIpinfo(clientIp).catch(() => null)
       if (info) return NextResponse.json(info)
       const sb = await tryIpsb(clientIp).catch(() => null)
