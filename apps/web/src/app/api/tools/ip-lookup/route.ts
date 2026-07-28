@@ -14,10 +14,7 @@ const ISP_NAMES: Record<string, string> = {
   'wasu': '华数宽带',
 }
 
-function guessUsage(org: string, hosting?: boolean, mobile?: boolean, proxy?: boolean): string {
-  if (hosting === true) return '数据中心/云服务'
-  if (proxy === true) return '代理/VPN'
-  if (mobile === true) return '移动网络'
+function guessUsage(org: string): string {
   const lower = org.toLowerCase()
   if (DATACENTER_KEYWORDS.some(k => lower.includes(k))) return '数据中心/云服务'
   return '家庭宽带'
@@ -31,6 +28,56 @@ function translateIsp(name: string): string {
   return name
 }
 
+async function tryIpinfo(ip: string) {
+  const res = await fetch(`https://ipinfo.io/${ip}/json`, { signal: AbortSignal.timeout(5000) })
+  const data = await res.json()
+  if (data.city) {
+    return {
+      ip: data.ip,
+      country: data.country === 'CN' ? '中国' : data.country,
+      region: data.region || '',
+      city: data.city || '',
+      isp: translateIsp(data.org || ''),
+      usage: guessUsage(data.org || ''),
+    }
+  }
+  return null
+}
+
+async function tryIpsb(ip: string) {
+  const res = await fetch(`https://api.ip.sb/geoip/${ip}`, { signal: AbortSignal.timeout(5000) })
+  const data = await res.json()
+  if (data.city) {
+    return {
+      ip: data.ip,
+      country: data.country || '',
+      region: data.region || '',
+      city: data.city || '',
+      isp: translateIsp(data.isp || data.organization || ''),
+      usage: guessUsage(data.isp || data.organization || ''),
+    }
+  }
+  return null
+}
+
+async function tryIpapi(ip: string) {
+  const res = await fetch(`http://ip-api.com/json/${ip}?fields=query,city,regionName,country,isp,org,as&lang=zh-CN`, {
+    signal: AbortSignal.timeout(5000),
+  })
+  const data = await res.json()
+  if (data.query) {
+    return {
+      ip: data.query,
+      country: data.country || '',
+      region: data.regionName || '',
+      city: data.city || '',
+      isp: translateIsp(data.isp || data.org || ''),
+      usage: guessUsage(data.org || data.isp || ''),
+    }
+  }
+  return null
+}
+
 export async function GET(request: NextRequest) {
   const forwarded = request.headers.get('x-forwarded-for')
   const realIp = request.headers.get('x-real-ip')
@@ -40,22 +87,19 @@ export async function GET(request: NextRequest) {
     if (clientIp.startsWith('127.') || clientIp.startsWith('10.') || clientIp.startsWith('192.168.') || clientIp.startsWith('172.16.')) {
       return NextResponse.json({ ip: clientIp })
     }
-    try {
-      const res = await fetch(`http://ip-api.com/json/${clientIp}?fields=query,city,regionName,country,isp,org,as,hosting,mobile,proxy&lang=zh-CN`, {
-        signal: AbortSignal.timeout(5000),
-      })
-      const data = await res.json()
-      if (data.query) {
-        return NextResponse.json({
-          ip: data.query,
-          country: data.country || '',
-          region: data.regionName || '',
-          city: data.city || '',
-          isp: translateIsp(data.isp || data.org || ''),
-          usage: guessUsage(data.org || data.isp || '', data.hosting, data.mobile, data.proxy),
-        })
-      }
-    } catch {}
+
+    // Try ipinfo.io first (50K/month, accurate city names)
+    const info = await tryIpinfo(clientIp).catch(() => null)
+    if (info) return NextResponse.json(info)
+
+    // Fallback to ip.sb (100 req/min, no monthly limit)
+    const sb = await tryIpsb(clientIp).catch(() => null)
+    if (sb) return NextResponse.json(sb)
+
+    // Final fallback to ip-api.com
+    const api = await tryIpapi(clientIp).catch(() => null)
+    if (api) return NextResponse.json(api)
+
     return NextResponse.json({ ip: clientIp })
   }
 
