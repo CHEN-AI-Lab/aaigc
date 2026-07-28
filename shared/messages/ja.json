@@ -566,7 +566,11 @@
     "loading": "読み込み中...",
     "noResultsFound": "結果が見つかりません",
     "dnsPlaceholder": "example.com",
-    "dnsNote": "{type} レコードなし — SOA/NS を表示"
+    "dnsNote": "{type} レコードなし — SOA/NS を表示",
+    "usageDatacenter": "データセンター/クラウド",
+    "usageBroadband": "ブロードバンド",
+    "usageProxy": "プロキシ/VPN",
+    "usageMobile": "モバイルネットワーク"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

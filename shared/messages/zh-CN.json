@@ -566,7 +566,11 @@
     "loading": "加载中...",
     "noResultsFound": "未找到结果",
     "dnsPlaceholder": "example.com",
-    "dnsNote": "没有 {type} 记录 — 显示 SOA/NS 替代"
+    "dnsNote": "没有 {type} 记录 — 显示 SOA/NS 替代",
+    "usageDatacenter": "数据中心/云服务",
+    "usageBroadband": "宽带",
+    "usageProxy": "代理/VPN",
+    "usageMobile": "移动网络"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",

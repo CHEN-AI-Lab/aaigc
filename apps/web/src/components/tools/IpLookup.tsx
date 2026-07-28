@@ -51,7 +51,7 @@ export default function IpLookup() {
               {data.usage && (
                 <div className="flex">
                   <span className="w-20 text-text-secondary shrink-0">{t('ipUsage')}</span>
-                  <span className="text-text-primary">{data.usage}</span>
+                  <span className="text-text-primary">{t('usage' + data.usage.charAt(0).toUpperCase() + data.usage.slice(1))}</span>
                 </div>
               )}
             </div>

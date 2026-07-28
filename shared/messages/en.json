@@ -566,7 +566,11 @@
     "loading": "Loading...",
     "noResultsFound": "No results found",
     "dnsPlaceholder": "example.com",
-    "dnsNote": "No {type} records — showing SOA/NS instead"
+    "dnsNote": "No {type} records — showing SOA/NS instead",
+    "usageDatacenter": "Datacenter / Cloud",
+    "usageBroadband": "Broadband",
+    "usageProxy": "Proxy / VPN",
+    "usageMobile": "Mobile Network"
   },
   "ui": {
     "aboutLink": "About AAIGC →",

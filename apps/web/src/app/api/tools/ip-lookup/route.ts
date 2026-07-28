@@ -27,8 +27,8 @@ function countryName(code: string): string {
 
 function guessUsage(org: string): string {
   const lower = org.toLowerCase()
-  if (DATACENTER_KEYWORDS.some(k => lower.includes(k))) return '数据中心/云服务'
-  return '宽带'
+  if (DATACENTER_KEYWORDS.some(k => lower.includes(k))) return 'datacenter'
+  return 'broadband'
 }
 
 function translateIsp(name: string): string {
@@ -79,9 +79,9 @@ async function tryIpapi(ip: string, lang: string) {
   const data = await res.json()
   if (data.query) {
     let usage = guessUsage(data.org || data.isp || '')
-    if (data.hosting === true) usage = '数据中心/云服务'
-    else if (data.proxy === true) usage = '代理/VPN'
-    else if (data.mobile === true) usage = '移动网络'
+    if (data.hosting === true) usage = 'datacenter'
+    else if (data.proxy === true) usage = 'proxy'
+    else if (data.mobile === true) usage = 'mobile'
     return {
       ip: data.query,
       country: data.country || '',
