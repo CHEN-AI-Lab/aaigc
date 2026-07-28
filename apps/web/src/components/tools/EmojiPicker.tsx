@@ -118,6 +118,15 @@ export default function EmojiPicker() {
   const t = useTranslations('tools')
   const locale = useLocale()
   const isCn = locale.startsWith('zh')
+
+  const emojiName = (item: { emoji: string; name: string }) => {
+    if (isCn) {
+      const hex = item.emoji.codePointAt(0)?.toString(16).toUpperCase() || ''
+      const cn = t('emojiName' + hex)
+      if (cn && !cn.startsWith('emojiName')) return cn
+    }
+    return item.name
+  }
   const [cat, setCat] = useState('Smileys')
   const [copied, setCopied] = useState('')
 
@@ -138,7 +147,7 @@ export default function EmojiPicker() {
         {EMOJIS[cat].map((item, i) => (
           <button key={i} onClick={() => copy(item.emoji)}
             className={`text-xl p-2 rounded-sm hover:bg-accent/10 transition-colors text-center ${copied === item.emoji ? 'bg-green-500/20' : ''}`}
-            title={isCn && item.nameCn ? item.nameCn : item.name}>{item.emoji}</button>
+            title={emojiName(item)}>{item.emoji}</button>
         ))}
       </div>
       {copied && <p className="text-xs text-green-500 text-center">✓ {t('copied')}</p>}
