@@ -48,9 +48,9 @@ export default function HttpStatusCodes() {
       <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm overflow-hidden">
         <table className="w-full text-sm">
           <thead><tr className="border-b border-[rgba(127,99,21,0.15)]">
-            <th className="text-left p-3 text-text-secondary font-medium">{t('httpCode')}</th>
-            <th className="text-left p-3 text-text-secondary font-medium">{t('httpName')}</th>
-            <th className="text-left p-3 text-text-secondary font-medium">{t('httpCategory')}</th>
+            <th className="w-16 p-3 text-left text-text-secondary font-medium">{t('httpCode')}</th>
+            <th className="p-3 text-left text-text-secondary font-medium">{t('httpName')}</th>
+            <th className="w-32 p-3 text-left text-text-secondary font-medium">{t('httpCategory')}</th>
           </tr></thead>
           <tbody>{filtered.map((c, i) => (
             <tr key={i} className="border-b border-[rgba(127,99,21,0.08)] hover:bg-accent/5">
