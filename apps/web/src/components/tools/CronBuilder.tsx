@@ -10,6 +10,7 @@ export default function CronBuilder() {
   const [day, setDay] = useState('*')
   const [month, setMonth] = useState('*')
   const [dow, setDow] = useState('*')
+  const [copied, setCopied] = useState(false)
 
   const preset = (s: string) => {
     const [m, h, d, mo, dw] = s.split(' ')
@@ -60,7 +61,10 @@ export default function CronBuilder() {
       <div className="p-4 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-center">
         <p className="text-xs text-text-secondary mb-1">生成的 Cron 表达式</p>
         <p className="text-lg font-mono font-semibold text-accent">{expression}</p>
-        <p className="text-xs text-text-secondary mt-1">点击右侧复制按钮，粘贴到服务器的定时任务配置中</p>
+        <div className="mt-2 flex items-center justify-center gap-2">
+          <button onClick={() => { navigator.clipboard.writeText(expression); setCopied(true); setTimeout(() => setCopied(false), 2000) }}
+            className="px-4 py-1.5 bg-accent text-white text-xs rounded-sm hover:opacity-90">{copied ? '✓ 已复制' : '📋 复制'}</button>
+        </div>
       </div>
     </div>
   )

@@ -54,7 +54,14 @@ export default function RandomGenerator() {
       {result && (
         <div className="p-4 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm">
           <p className="text-xs text-text-secondary mb-1">生成结果</p>
-          <p className="text-lg font-mono font-semibold text-text-primary break-all" style={mode === 'color' ? { color: result } : undefined}>{result}</p>
+          {mode === 'color' ? (
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-sm border border-[rgba(127,99,21,0.15)] shrink-0" style={{ backgroundColor: result }} />
+              <p className="text-lg font-mono font-semibold text-text-primary">{result}</p>
+            </div>
+          ) : (
+            <p className="text-lg font-mono font-semibold text-text-primary break-all">{result}</p>
+          )}
         </div>
       )}
     </div>

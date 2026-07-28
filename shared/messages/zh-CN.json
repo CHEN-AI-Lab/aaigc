@@ -604,7 +604,12 @@
     "httpStatus500": "服务器内部错误",
     "httpStatus502": "坏网关",
     "httpStatus503": "服务不可用",
-    "httpStatus504": "网关超时"
+    "httpStatus504": "网关超时",
+    "emojiSmileys": "表情",
+    "emojiGestures": "手势",
+    "emojiAnimals": "动物",
+    "emojiFood": "食物",
+    "emojiSymbols": "符号"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",

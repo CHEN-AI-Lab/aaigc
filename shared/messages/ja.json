@@ -604,7 +604,12 @@
     "httpStatus500": "内部サーバーエラー",
     "httpStatus502": "不正なゲートウェイ",
     "httpStatus503": "サービス利用不可",
-    "httpStatus504": "ゲートウェイタイムアウト"
+    "httpStatus504": "ゲートウェイタイムアウト",
+    "emojiSmileys": "笑顔",
+    "emojiGestures": "ジェスチャー",
+    "emojiAnimals": "動物",
+    "emojiFood": "食べ物",
+    "emojiSymbols": "記号"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

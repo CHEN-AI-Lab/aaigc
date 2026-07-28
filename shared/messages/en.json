@@ -604,7 +604,12 @@
     "httpStatus500": "Internal Server Error",
     "httpStatus502": "Bad Gateway",
     "httpStatus503": "Service Unavailable",
-    "httpStatus504": "Gateway Timeout"
+    "httpStatus504": "Gateway Timeout",
+    "emojiSmileys": "Smileys",
+    "emojiGestures": "Gestures",
+    "emojiAnimals": "Animals",
+    "emojiFood": "Food",
+    "emojiSymbols": "Symbols"
   },
   "ui": {
     "aboutLink": "About AAIGC →",
