@@ -570,7 +570,11 @@
     "usageDatacenter": "Datacenter / Cloud",
     "usageBroadband": "Broadband",
     "usageProxy": "Proxy / VPN",
-    "usageMobile": "Mobile Network"
+    "usageMobile": "Mobile Network",
+    "usageCdn": "CDN",
+    "usageEducation": "Education",
+    "usageGovernment": "Government",
+    "usageIsp": "Fixed Line ISP"
   },
   "ui": {
     "aboutLink": "About AAIGC →",

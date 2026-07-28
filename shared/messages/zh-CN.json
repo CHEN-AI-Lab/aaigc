@@ -570,7 +570,11 @@
     "usageDatacenter": "数据中心/云服务",
     "usageBroadband": "宽带",
     "usageProxy": "代理/VPN",
-    "usageMobile": "移动网络"
+    "usageMobile": "移动网络",
+    "usageCdn": "CDN",
+    "usageEducation": "教育网",
+    "usageGovernment": "政府",
+    "usageIsp": "家庭宽带"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",

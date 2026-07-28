@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 const DATACENTER_KEYWORDS = ['cloud', 'datacenter', 'hosting', 'amazon', 'google cloud', 'azure', 'alibaba', 'tencent', 'huawei cloud', 'backbone', 'idc', 'ovh', 'digitalocean', 'linode', 'vultr', 'hetzner']
+const EDU_KEYWORDS = ['edu', 'university', 'college', 'school', 'cernet', 'ac.cn', 'sch.cn']
+const GOV_KEYWORDS = ['gov', 'government', 'state', 'federal', 'municipal']
+const CDN_KEYWORDS = ['cdn', 'cloudflare', 'fastly', 'akamai', 'cloudfront']
 
 const COUNTRY_NAMES: Record<string, string> = {
   'CN': 'China', 'US': 'United States', 'JP': 'Japan', 'KR': 'South Korea',
@@ -27,8 +30,11 @@ function countryName(code: string): string {
 
 function guessUsage(org: string): string {
   const lower = org.toLowerCase()
+  if (CDN_KEYWORDS.some(k => lower.includes(k))) return 'cdn'
   if (DATACENTER_KEYWORDS.some(k => lower.includes(k))) return 'datacenter'
-  return 'broadband'
+  if (EDU_KEYWORDS.some(k => lower.includes(k))) return 'education'
+  if (GOV_KEYWORDS.some(k => lower.includes(k))) return 'government'
+  return 'isp'
 }
 
 function translateIsp(name: string): string {
@@ -107,8 +113,6 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ ip: clientIp })
     }
 
-    // Same priority for all locales — only language parameter differs
-    // ip-api.com has the most fields (hosting/mobile/proxy for usage detection)
     const api = await tryIpapi(clientIp, lang).catch(() => null)
     if (api) return NextResponse.json(api)
 

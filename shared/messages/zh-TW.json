@@ -554,7 +554,11 @@
     "usageDatacenter": "數據中心/雲服務",
     "usageBroadband": "寬頻",
     "usageProxy": "代理/VPN",
-    "usageMobile": "移動網路"
+    "usageMobile": "移動網路",
+    "usageCdn": "CDN",
+    "usageEducation": "教育",
+    "usageGovernment": "政府",
+    "usageIsp": "家庭寬頻"
   },
   "ui": {
     "toolLinks": {

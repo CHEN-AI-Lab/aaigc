@@ -570,7 +570,11 @@
     "usageDatacenter": "データセンター/クラウド",
     "usageBroadband": "ブロードバンド",
     "usageProxy": "プロキシ/VPN",
-    "usageMobile": "モバイルネットワーク"
+    "usageMobile": "モバイルネットワーク",
+    "usageCdn": "CDN",
+    "usageEducation": "教育",
+    "usageGovernment": "政府",
+    "usageIsp": "固定ブロードバンド"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",
