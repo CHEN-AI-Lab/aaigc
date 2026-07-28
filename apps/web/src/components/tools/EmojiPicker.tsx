@@ -136,7 +136,7 @@ export default function EmojiPicker() {
 
   return (
     <div className="mt-6 space-y-4">
-      <p className="text-xs text-text-secondary mb-3">点击任意 Emoji 即可复制到剪贴板，粘贴到聊天、文档或社交媒体中使用</p>
+      <p className="text-xs text-text-secondary mb-3">{t('emojiDesc')}</p>
       <div className="flex gap-2 flex-wrap">
         {Object.keys(EMOJIS).map(c => (
           <button key={c} onClick={() => setCat(c)}

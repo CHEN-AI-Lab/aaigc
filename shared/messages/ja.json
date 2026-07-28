@@ -641,7 +641,8 @@
     "cronCopy": "📋 コピー",
     "cronCopied": "✓ コピー完了",
     "cronUsage": "使い方：Linux サーバーで実行",
-    "cronUsageCmd": "crontab -e"
+    "cronUsageCmd": "crontab -e",
+    "emojiDesc": "絵文字をクリックしてクリップボードにコピー、チャットや文書に貼り付け"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

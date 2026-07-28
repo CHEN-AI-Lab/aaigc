@@ -933,7 +933,8 @@
     "cronCopy": "📋 复制",
     "cronCopied": "✓ 已复制",
     "cronUsage": "使用方式：在 Linux 服务器上运行",
-    "cronUsageCmd": "crontab -e"
+    "cronUsageCmd": "crontab -e",
+    "emojiDesc": "点击任意 Emoji 即可复制到剪贴板，粘贴到聊天、文档或社交媒体中使用"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",

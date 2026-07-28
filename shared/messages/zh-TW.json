@@ -625,7 +625,8 @@
     "cronCopy": "📋 複製",
     "cronCopied": "✓ 已複製",
     "cronUsage": "使用方式：在 Linux 伺服器上執行",
-    "cronUsageCmd": "crontab -e"
+    "cronUsageCmd": "crontab -e",
+    "emojiDesc": "點擊任意 Emoji 即可複製到剪貼簿，貼上到聊天、文件或社交媒體中使用"
   },
   "ui": {
     "toolLinks": {

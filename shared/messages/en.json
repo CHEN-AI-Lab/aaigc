@@ -641,7 +641,8 @@
     "cronCopy": "📋 Copy",
     "cronCopied": "✓ Copied",
     "cronUsage": "Usage: run on your Linux server",
-    "cronUsageCmd": "crontab -e"
+    "cronUsageCmd": "crontab -e",
+    "emojiDesc": "Click any emoji to copy it to your clipboard, then paste into chats, documents, or social media"
   },
   "ui": {
     "aboutLink": "About AAIGC →",
