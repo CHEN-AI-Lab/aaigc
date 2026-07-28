@@ -1,26 +1,26 @@
 'use client'
 
 import { useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 
-const EMOJIS: Record<string, { emoji: string; name: string }[]> = {
+const EMOJIS: Record<string, { emoji: string; name: string; nameCn?: string }[]> = {
   'Smileys': [
-    { emoji: '😀', name: 'Grinning Face' }, { emoji: '😃', name: 'Grinning Face with Big Eyes' }, { emoji: '😄', name: 'Grinning Face with Smiling Eyes' },
-    { emoji: '😁', name: 'Beaming Face with Smiling Eyes' }, { emoji: '😅', name: 'Grinning Face with Sweat' }, { emoji: '😂', name: 'Face with Tears of Joy' },
-    { emoji: '🤣', name: 'Rolling on the Floor Laughing' }, { emoji: '😊', name: 'Smiling Face with Smiling Eyes' }, { emoji: '😇', name: 'Smiling Face with Halo' },
-    { emoji: '🙂', name: 'Slightly Smiling Face' }, { emoji: '😉', name: 'Winking Face' }, { emoji: '😌', name: 'Relieved Face' },
-    { emoji: '😍', name: 'Smiling Face with Heart-Eyes' }, { emoji: '🥰', name: 'Smiling Face with Hearts' }, { emoji: '😘', name: 'Face Blowing a Kiss' },
-    { emoji: '😗', name: 'Kissing Face' }, { emoji: '😋', name: 'Face Savoring Food' }, { emoji: '😛', name: 'Face with Tongue' },
-    { emoji: '😜', name: 'Winking Face with Tongue' }, { emoji: '🤪', name: 'Zany Face' }, { emoji: '😝', name: 'Squinting Face with Tongue' },
-    { emoji: '🤑', name: 'Money-Mouth Face' }, { emoji: '🤗', name: 'Hugging Face' }, { emoji: '🤭', name: 'Face with Hand Over Mouth' },
-    { emoji: '🤫', name: 'Shushing Face' }, { emoji: '🤔', name: 'Thinking Face' }, { emoji: '🤐', name: 'Zipper-Mouth Face' },
-    { emoji: '🤨', name: 'Face with Raised Eyebrow' }, { emoji: '😐', name: 'Neutral Face' }, { emoji: '😑', name: 'Expressionless Face' },
-    { emoji: '😶', name: 'Face Without Mouth' }, { emoji: '😏', name: 'Smirking Face' }, { emoji: '😒', name: 'Unamused Face' },
-    { emoji: '🙄', name: 'Face with Rolling Eyes' }, { emoji: '😬', name: 'Grimacing Face' }, { emoji: '😮', name: 'Face with Open Mouth' },
-    { emoji: '😯', name: 'Hushed Face' }, { emoji: '😲', name: 'Astonished Face' }, { emoji: '😳', name: 'Flushed Face' },
-    { emoji: '🥺', name: 'Pleading Face' }, { emoji: '😢', name: 'Crying Face' }, { emoji: '😭', name: 'Loudly Crying Face' },
-    { emoji: '😤', name: 'Face with Steam From Nose' }, { emoji: '😡', name: 'Pouting Face' }, { emoji: '🤬', name: 'Face with Symbols on Mouth' },
-    { emoji: '😈', name: 'Smiling Face with Horns' }, { emoji: '👿', name: 'Angry Face with Horns' }, { emoji: '💀', name: 'Skull' }, { emoji: '☠️', name: 'Skull and Crossbones' }, { emoji: '💩', name: 'Pile of Poo' },
+    { emoji: '😀', name: 'Grinning Face', nameCn: ' grinning' }, { emoji: '😃', name: 'Grinning Face with Big Eyes', nameCn: ' grinning' }, { emoji: '😄', name: 'Grinning Face with Smiling Eyes', nameCn: ' grinning' },
+    { emoji: '😁', name: 'Beaming Face with Smiling Eyes', nameCn: ' grinning' }, { emoji: '😅', name: 'Grinning Face with Sweat', nameCn: ' grinning' }, { emoji: '😂', name: 'Face with Tears of Joy', nameCn: '笑哭' },
+    { emoji: '🤣', name: 'Rolling on the Floor Laughing', nameCn: '笑滚' }, { emoji: '😊', name: 'Smiling Face with Smiling Eyes', nameCn: '微笑' }, { emoji: '😇', name: 'Smiling Face with Halo', nameCn: '天使' },
+    { emoji: '🙂', name: 'Slightly Smiling Face', nameCn: '微笑' }, { emoji: '😉', name: 'Winking Face', nameCn: '眨眼' }, { emoji: '😌', name: 'Relieved Face', nameCn: '安心' },
+    { emoji: '😍', name: 'Smiling Face with Heart-Eyes', nameCn: '爱心' }, { emoji: '🥰', name: 'Smiling Face with Hearts', nameCn: '爱心' }, { emoji: '😘', name: 'Face Blowing a Kiss', nameCn: '飞吻' },
+    { emoji: '😗', name: 'Kissing Face', nameCn: '亲吻' }, { emoji: '😋', name: 'Face Savoring Food', nameCn: '美味' }, { emoji: '😛', name: 'Face with Tongue', nameCn: '吐舌' },
+    { emoji: '😜', name: 'Winking Face with Tongue', nameCn: '眨眼' }, { emoji: '🤪', name: 'Zany Face', nameCn: '疯狂' }, { emoji: '😝', name: 'Squinting Face with Tongue', nameCn: '眯眼' },
+    { emoji: '🤑', name: 'Money-Mouth Face', nameCn: '金钱' }, { emoji: '🤗', name: 'Hugging Face', nameCn: '拥抱' }, { emoji: '🤭', name: 'Face with Hand Over Mouth', nameCn: '捂嘴' },
+    { emoji: '🤫', name: 'Shushing Face', nameCn: '嘘' }, { emoji: '🤔', name: 'Thinking Face', nameCn: '思考' }, { emoji: '🤐', name: 'Zipper-Mouth Face', nameCn: '闭嘴' },
+    { emoji: '🤨', name: 'Face with Raised Eyebrow', nameCn: '挑眉' }, { emoji: '😐', name: 'Neutral Face', nameCn: '中性' }, { emoji: '😑', name: 'Expressionless Face', nameCn: '无表情' },
+    { emoji: '😶', name: 'Face Without Mouth', nameCn: '无嘴' }, { emoji: '😏', name: 'Smirking Face', nameCn: '得意' }, { emoji: '😒', name: 'Unamused Face', nameCn: '不悦' },
+    { emoji: '🙄', name: 'Face with Rolling Eyes', nameCn: '翻白眼' }, { emoji: '😬', name: 'Grimacing Face', nameCn: '龇牙' }, { emoji: '😮', name: 'Face with Open Mouth', nameCn: '惊讶' },
+    { emoji: '😯', name: 'Hushed Face', nameCn: '吃惊' }, { emoji: '😲', name: 'Astonished Face', nameCn: '震惊' }, { emoji: '😳', name: 'Flushed Face', nameCn: '脸红' },
+    { emoji: '🥺', name: 'Pleading Face', nameCn: '恳求' }, { emoji: '😢', name: 'Crying Face', nameCn: '哭泣' }, { emoji: '😭', name: 'Loudly Crying Face', nameCn: '大哭' },
+    { emoji: '😤', name: 'Face with Steam From Nose', nameCn: '生气' }, { emoji: '😡', name: 'Pouting Face', nameCn: '发怒' }, { emoji: '🤬', name: 'Face with Symbols on Mouth', nameCn: '咒骂' },
+    { emoji: '😈', name: 'Smiling Face with Horns', nameCn: '恶魔' }, { emoji: '👿', name: 'Angry Face with Horns', nameCn: '愤怒' }, { emoji: '💀', name: 'Skull', nameCn: '骷髅' }, { emoji: '☠️', name: 'Skull and Crossbones', nameCn: '骷髅' }, { emoji: '💩', name: 'Pile of Poo', nameCn: '便便' },
   ],
   'Gestures': [
     { emoji: '👍', name: 'Thumbs Up' }, { emoji: '👎', name: 'Thumbs Down' }, { emoji: '👌', name: 'OK Hand' }, { emoji: '✌️', name: 'Victory Hand' },
@@ -116,6 +116,8 @@ const EMOJIS: Record<string, { emoji: string; name: string }[]> = {
 
 export default function EmojiPicker() {
   const t = useTranslations('tools')
+  const locale = useLocale()
+  const isCn = locale.startsWith('zh')
   const [cat, setCat] = useState('Smileys')
   const [copied, setCopied] = useState('')
 
@@ -136,7 +138,7 @@ export default function EmojiPicker() {
         {EMOJIS[cat].map((item, i) => (
           <button key={i} onClick={() => copy(item.emoji)}
             className={`text-xl p-2 rounded-sm hover:bg-accent/10 transition-colors text-center ${copied === item.emoji ? 'bg-green-500/20' : ''}`}
-            title={item.name}>{item.emoji}</button>
+            title={isCn && item.nameCn ? item.nameCn : item.name}>{item.emoji}</button>
         ))}
       </div>
       {copied && <p className="text-xs text-green-500 text-center">✓ {t('copied')}</p>}
