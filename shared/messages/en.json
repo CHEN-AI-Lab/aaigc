@@ -574,7 +574,15 @@
     "usageCdn": "CDN",
     "usageEducation": "Education",
     "usageGovernment": "Government",
-    "usageIsp": "Fixed Line ISP"
+    "usageIsp": "Fixed Line ISP",
+    "httpCode": "Code",
+    "httpName": "Name",
+    "httpCategory": "Category",
+    "httpInfo": "Informational",
+    "httpSuccess": "Success",
+    "httpRedirect": "Redirection",
+    "httpClientError": "Client Error",
+    "httpServerError": "Server Error"
   },
   "ui": {
     "aboutLink": "About AAIGC →",

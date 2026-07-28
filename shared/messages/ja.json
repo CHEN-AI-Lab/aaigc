@@ -574,7 +574,15 @@
     "usageCdn": "CDN",
     "usageEducation": "教育",
     "usageGovernment": "政府",
-    "usageIsp": "固定ブロードバンド"
+    "usageIsp": "固定ブロードバンド",
+    "httpCode": "コード",
+    "httpName": "名称",
+    "httpCategory": "カテゴリ",
+    "httpInfo": "情報",
+    "httpSuccess": "成功",
+    "httpRedirect": "リダイレクト",
+    "httpClientError": "クライアントエラー",
+    "httpServerError": "サーバーエラー"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

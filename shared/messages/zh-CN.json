@@ -574,7 +574,15 @@
     "usageCdn": "CDN",
     "usageEducation": "教育网",
     "usageGovernment": "政府",
-    "usageIsp": "家庭宽带"
+    "usageIsp": "家庭宽带",
+    "httpCode": "状态码",
+    "httpName": "名称",
+    "httpCategory": "分类",
+    "httpInfo": "信息",
+    "httpSuccess": "成功",
+    "httpRedirect": "重定向",
+    "httpClientError": "客户端错误",
+    "httpServerError": "服务端错误"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",

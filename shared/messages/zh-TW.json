@@ -558,7 +558,15 @@
     "usageCdn": "CDN",
     "usageEducation": "教育",
     "usageGovernment": "政府",
-    "usageIsp": "家庭寬頻"
+    "usageIsp": "家庭寬頻",
+    "httpCode": "狀態碼",
+    "httpName": "名稱",
+    "httpCategory": "分類",
+    "httpInfo": "資訊",
+    "httpSuccess": "成功",
+    "httpRedirect": "重定向",
+    "httpClientError": "用戶端錯誤",
+    "httpServerError": "服務端錯誤"
   },
   "ui": {
     "toolLinks": {
