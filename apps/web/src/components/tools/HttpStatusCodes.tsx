@@ -4,17 +4,39 @@ import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 
 const CODES = [
-  ...'100 Continue|101 Switching Protocols|102 Processing'.split('|').map(s => { const [c, ...r] = s.split(' '); return { code: parseInt(c), name: r.join(' '), cat: 'httpInfo' } }),
-  ...'200 OK|201 Created|202 Accepted|204 No Content|301 Moved Permanently|302 Found|304 Not Modified|307 Temporary Redirect|308 Permanent Redirect'.split('|').map(s => { const [c, ...r] = s.split(' '); return { code: parseInt(c), name: r.join(' '), cat: c.startsWith('30') ? 'httpRedirect' : 'httpSuccess' } }),
-  ...'400 Bad Request|401 Unauthorized|403 Forbidden|404 Not Found|405 Method Not Allowed|408 Request Timeout|409 Conflict|410 Gone|422 Unprocessable Entity|429 Too Many Requests'.split('|').map(s => { const [c, ...r] = s.split(' '); return { code: parseInt(c), name: r.join(' '), cat: 'httpClientError' } }),
-  ...'500 Internal Server Error|502 Bad Gateway|503 Service Unavailable|504 Gateway Timeout'.split('|').map(s => { const [c, ...r] = s.split(' '); return { code: parseInt(c), name: r.join(' '), cat: 'httpServerError' } }),
+  { code: 100, key: 'httpStatus100', cat: 'httpInfo' },
+  { code: 101, key: 'httpStatus101', cat: 'httpInfo' },
+  { code: 102, key: 'httpStatus102', cat: 'httpInfo' },
+  { code: 200, key: 'httpStatus200', cat: 'httpSuccess' },
+  { code: 201, key: 'httpStatus201', cat: 'httpSuccess' },
+  { code: 202, key: 'httpStatus202', cat: 'httpSuccess' },
+  { code: 204, key: 'httpStatus204', cat: 'httpSuccess' },
+  { code: 301, key: 'httpStatus301', cat: 'httpRedirect' },
+  { code: 302, key: 'httpStatus302', cat: 'httpRedirect' },
+  { code: 304, key: 'httpStatus304', cat: 'httpRedirect' },
+  { code: 307, key: 'httpStatus307', cat: 'httpRedirect' },
+  { code: 308, key: 'httpStatus308', cat: 'httpRedirect' },
+  { code: 400, key: 'httpStatus400', cat: 'httpClientError' },
+  { code: 401, key: 'httpStatus401', cat: 'httpClientError' },
+  { code: 403, key: 'httpStatus403', cat: 'httpClientError' },
+  { code: 404, key: 'httpStatus404', cat: 'httpClientError' },
+  { code: 405, key: 'httpStatus405', cat: 'httpClientError' },
+  { code: 408, key: 'httpStatus408', cat: 'httpClientError' },
+  { code: 409, key: 'httpStatus409', cat: 'httpClientError' },
+  { code: 410, key: 'httpStatus410', cat: 'httpClientError' },
+  { code: 422, key: 'httpStatus422', cat: 'httpClientError' },
+  { code: 429, key: 'httpStatus429', cat: 'httpClientError' },
+  { code: 500, key: 'httpStatus500', cat: 'httpServerError' },
+  { code: 502, key: 'httpStatus502', cat: 'httpServerError' },
+  { code: 503, key: 'httpStatus503', cat: 'httpServerError' },
+  { code: 504, key: 'httpStatus504', cat: 'httpServerError' },
 ]
 
 export default function HttpStatusCodes() {
   const t = useTranslations('tools')
   const [q, setQ] = useState('')
 
-  const filtered = CODES.filter(c => !q || `${c.code}`.includes(q) || c.name.toLowerCase().includes(q.toLowerCase()))
+  const filtered = CODES.filter(c => !q || `${c.code}`.includes(q) || t(c.key).toLowerCase().includes(q.toLowerCase()))
 
   return (
     <div className="mt-6 space-y-4">
@@ -30,7 +52,7 @@ export default function HttpStatusCodes() {
           <tbody>{filtered.map((c, i) => (
             <tr key={i} className="border-b border-[rgba(127,99,21,0.08)] hover:bg-accent/5">
               <td className="p-3 text-text-primary font-mono font-semibold">{c.code}</td>
-              <td className="p-3 text-text-primary">{c.name}</td>
+              <td className="p-3 text-text-primary">{t(c.key)}</td>
               <td className="p-3 text-text-secondary text-xs">{t(c.cat)}</td>
             </tr>
           ))}</tbody>
