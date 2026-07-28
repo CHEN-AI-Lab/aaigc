@@ -90,6 +90,10 @@ async function tryIpapi(ip: string) {
 }
 
 export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url)
+  const lang = searchParams.get('lang') || 'en'
+  const isChinese = lang.startsWith('zh')
+
   const forwarded = request.headers.get('x-forwarded-for')
   const realIp = request.headers.get('x-real-ip')
   const clientIp = forwarded?.split(',')[0]?.trim() || realIp || ''
@@ -99,17 +103,23 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ ip: clientIp })
     }
 
-    // Try ipinfo.io first (50K/month, accurate city names)
-    const info = await tryIpinfo(clientIp).catch(() => null)
-    if (info) return NextResponse.json(info)
-
-    // Fallback to ip.sb (100 req/min, no monthly limit)
-    const sb = await tryIpsb(clientIp).catch(() => null)
-    if (sb) return NextResponse.json(sb)
-
-    // Final fallback to ip-api.com
-    const api = await tryIpapi(clientIp).catch(() => null)
-    if (api) return NextResponse.json(api)
+    if (isChinese) {
+      // Chinese locale: use ip-api.com with lang=zh-CN (returns Chinese names)
+      const api = await tryIpapi(clientIp).catch(() => null)
+      if (api) return NextResponse.json(api)
+      const info = await tryIpinfo(clientIp).catch(() => null)
+      if (info) return NextResponse.json(info)
+      const sb = await tryIpsb(clientIp).catch(() => null)
+      if (sb) return NextResponse.json(sb)
+    } else {
+      // Other locales: use ipinfo.io first (English names)
+      const info = await tryIpinfo(clientIp).catch(() => null)
+      if (info) return NextResponse.json(info)
+      const sb = await tryIpsb(clientIp).catch(() => null)
+      if (sb) return NextResponse.json(sb)
+      const api = await tryIpapi(clientIp).catch(() => null)
+      if (api) return NextResponse.json(api)
+    }
 
     return NextResponse.json({ ip: clientIp })
   }

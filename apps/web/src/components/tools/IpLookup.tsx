@@ -1,16 +1,17 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 
 export default function IpLookup() {
   const t = useTranslations('tools')
+  const locale = useLocale()
   const [data, setData] = useState<{ ip: string; country: string; region: string; city: string; isp: string; usage: string } | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
   useEffect(() => {
-    fetch('/api/tools/ip-lookup')
+    fetch(`/api/tools/ip-lookup?lang=${locale}`)
       .then(r => r.json())
       .then(d => {
         if (d.ip) setData(d)
