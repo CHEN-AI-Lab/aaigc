@@ -2,6 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const DATACENTER_KEYWORDS = ['cloud', 'datacenter', 'hosting', 'amazon', 'google cloud', 'azure', 'alibaba', 'tencent', 'huawei cloud', 'server', 'transit']
 
+const COUNTRY_NAMES: Record<string, string> = {
+  'CN': 'China', 'US': 'United States', 'JP': 'Japan', 'KR': 'South Korea',
+  'GB': 'United Kingdom', 'DE': 'Germany', 'FR': 'France', 'CA': 'Canada',
+  'AU': 'Australia', 'SG': 'Singapore', 'TW': 'Taiwan', 'HK': 'Hong Kong',
+  'IN': 'India', 'RU': 'Russia', 'BR': 'Brazil', 'NL': 'Netherlands',
+}
+
 const ISP_NAMES: Record<string, string> = {
   'chinanet': '中国电信',
   'china telecom': '中国电信',
@@ -12,6 +19,10 @@ const ISP_NAMES: Record<string, string> = {
   'drpeng': '鹏博士',
   'greatwall': '长城宽带',
   'wasu': '华数宽带',
+}
+
+function countryName(code: string): string {
+  return COUNTRY_NAMES[code] || code
 }
 
 function guessUsage(org: string): string {
@@ -34,7 +45,7 @@ async function tryIpinfo(ip: string) {
   if (data.city) {
     return {
       ip: data.ip,
-      country: data.country === 'CN' ? '中国' : data.country,
+      country: countryName(data.country || ''),
       region: data.region || '',
       city: data.city || '',
       isp: translateIsp(data.org || ''),
