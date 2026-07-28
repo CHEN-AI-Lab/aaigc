@@ -551,10 +551,6 @@
       "name": "絵文字ピッカー",
       "description": "絵文字を閲覧、検索、コピー"
     },
-    "text-to-binary": {
-      "name": "テキスト→バイナリ",
-      "description": "テキストを2進数、8進数、16進数に変換"
-    },
     "ipMyIp": "自分のIP",
     "ipLocation": "所在地",
     "ipIsp": "ISP",

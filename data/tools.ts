@@ -71,6 +71,5 @@ export const tools: ToolMeta[] = [
   { id: 'random-generator', category: 'other', icon: '🎲', component: 'RandomGenerator' },
   { id: 'cron-builder', category: 'other', icon: '⏰', component: 'CronBuilder' },
   { id: 'emoji-picker', category: 'other', icon: '😊', component: 'EmojiPicker' },
-  { id: 'text-to-binary', category: 'other', icon: '🔢', component: 'TextToBinary' },
 
 ]

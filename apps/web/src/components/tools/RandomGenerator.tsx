@@ -14,6 +14,7 @@ export default function RandomGenerator() {
   const generate = () => {
     if (mode === 'number') {
       const a = parseInt(min), b = parseInt(max)
+      if (isNaN(a) || isNaN(b)) return
       setResult(String(Math.floor(Math.random() * (b - a + 1)) + a))
     } else if (mode === 'string') {
       const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -25,29 +26,34 @@ export default function RandomGenerator() {
 
   return (
     <div className="mt-6 space-y-4">
+      <p className="text-xs text-text-secondary mb-3">生成随机数字、随机字符串或随机颜色，用于测试、密码、设计等场景</p>
+
       <div className="flex gap-2">
-        {['number', 'string', 'color'].map(m => (
-          <button key={m} onClick={() => setMode(m as any)}
-            className={`px-4 py-2 text-sm rounded-sm transition-colors ${mode === m ? 'bg-accent text-white' : 'bg-surface text-text-primary border border-[rgba(127,99,21,0.15)]'}`}>
-            {m === 'number' ? t('calcEnterNumber') : m === 'string' ? t('encode') : t('presetColors')}
-        </button>))}
+        <button onClick={() => setMode('number')}
+          className={`px-4 py-2 text-sm rounded-sm transition-colors ${mode === 'number' ? 'bg-accent text-white' : 'bg-surface text-text-primary border border-[rgba(127,99,21,0.15)]'}`}>随机数字</button>
+        <button onClick={() => setMode('string')}
+          className={`px-4 py-2 text-sm rounded-sm transition-colors ${mode === 'string' ? 'bg-accent text-white' : 'bg-surface text-text-primary border border-[rgba(127,99,21,0.15)]'}`}>随机字符串</button>
+        <button onClick={() => setMode('color')}
+          className={`px-4 py-2 text-sm rounded-sm transition-colors ${mode === 'color' ? 'bg-accent text-white' : 'bg-surface text-text-primary border border-[rgba(127,99,21,0.15)]'}`}>随机颜色</button>
       </div>
+
       <div className="flex gap-3 items-end">
         {mode === 'number' && (<>
-          <div><label className="text-xs text-text-secondary block mb-1">Min</label>
+          <div><label className="text-xs text-text-secondary block mb-1">最小值</label>
             <input value={min} onChange={e => setMin(e.target.value)} className="w-24 p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" /></div>
-          <div><label className="text-xs text-text-secondary block mb-1">Max</label>
+          <div><label className="text-xs text-text-secondary block mb-1">最大值</label>
             <input value={max} onChange={e => setMax(e.target.value)} className="w-24 p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" /></div>
         </>)}
         {mode === 'string' && (<>
-          <div><label className="text-xs text-text-secondary block mb-1">{t('length')}</label>
+          <div><label className="text-xs text-text-secondary block mb-1">字符数</label>
             <input value={len} onChange={e => setLen(e.target.value)} className="w-24 p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" /></div>
         </>)}
         <button onClick={generate} className="px-5 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{t('generate')}</button>
       </div>
+
       {result && (
         <div className="p-4 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm">
-          <p className="text-xs text-text-secondary mb-1">{t('calcResult')}</p>
+          <p className="text-xs text-text-secondary mb-1">生成结果</p>
           <p className="text-lg font-mono font-semibold text-text-primary break-all" style={mode === 'color' ? { color: result } : undefined}>{result}</p>
         </div>
       )}

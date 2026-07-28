@@ -62,7 +62,7 @@ describe('tools', () => {
   })
 
   it('each tool has valid category', () => {
-    const validCats: ToolCategoryId[] = ['dev', 'text', 'time', 'image', 'convert', 'security', 'math']
+    const validCats: ToolCategoryId[] = ['dev', 'text', 'time', 'image', 'convert', 'security', 'math', 'network', 'other']
     for (const t of tools) {
       expect(validCats).toContain(t.category)
       expect(t.id).toBeTruthy()
@@ -115,6 +115,14 @@ describe('tools', () => {
       'text-to-slug': 'TextToSlug',
       'list-sorter': 'ListSorter',
       'calculator': 'Calculator',
+      'ip-lookup': 'IpLookup',
+      'dns-lookup': 'DnsLookup',
+      'http-status-codes': 'HttpStatusCodes',
+      'user-agent-parser': 'UserAgentParser',
+      'random-generator': 'RandomGenerator',
+      'cron-builder': 'CronBuilder',
+      'emoji-picker': 'EmojiPicker',
+      'text-to-binary': 'TextToBinary',
     }
     for (const t of tools) {
       expect(slugToComponent[t.id]).toBe(t.component)
@@ -158,6 +166,14 @@ describe('tools', () => {
       TextToSlug: () => import('../../apps/web/src/components/tools/TextToSlug'),
       ListSorter: () => import('../../apps/web/src/components/tools/ListSorter'),
       Calculator: () => import('../../apps/web/src/components/tools/Calculator'),
+      IpLookup: () => import('../../apps/web/src/components/tools/IpLookup'),
+      DnsLookup: () => import('../../apps/web/src/components/tools/DnsLookup'),
+      HttpStatusCodes: () => import('../../apps/web/src/components/tools/HttpStatusCodes'),
+      UserAgentParser: () => import('../../apps/web/src/components/tools/UserAgentParser'),
+      RandomGenerator: () => import('../../apps/web/src/components/tools/RandomGenerator'),
+      CronBuilder: () => import('../../apps/web/src/components/tools/CronBuilder'),
+      EmojiPicker: () => import('../../apps/web/src/components/tools/EmojiPicker'),
+      TextToBinary: () => import('../../apps/web/src/components/tools/TextToBinary'),
     }
     for (const t of tools) {
       const loader = componentMap[t.component]
@@ -176,8 +192,8 @@ describe('tool categories', () => {
     categories = mod.toolCategories
   })
 
-  it('has 7 categories', () => {
-    expect(categories.length).toBe(7)
+  it('has 9 categories', () => {
+    expect(categories.length).toBe(9)
   })
 
   it('each category has required fields', () => {

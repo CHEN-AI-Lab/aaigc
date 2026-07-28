@@ -535,10 +535,6 @@
       "name": "Emoji 選擇器",
       "description": "瀏覽、搜尋和複製 Emoji"
     },
-    "text-to-binary": {
-      "name": "文字轉二進制",
-      "description": "將文字轉換為二進制、八進制和十六進制"
-    },
     "ipMyIp": "本機IP",
     "ipLocation": "歸屬地",
     "ipIsp": "運營商",

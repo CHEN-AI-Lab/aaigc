@@ -42,7 +42,6 @@ const toolModules: Record<string, React.LazyExoticComponent<React.ComponentType>
   'random-generator': lazy(() => import('./tools/RandomGenerator')),
   'cron-builder': lazy(() => import('./tools/CronBuilder')),
   'emoji-picker': lazy(() => import('./tools/EmojiPicker')),
-  'text-to-binary': lazy(() => import('./tools/TextToBinary')),
 }
 
 export default function ToolPageClient({ slug }: Props) {

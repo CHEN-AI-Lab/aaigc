@@ -551,10 +551,6 @@
       "name": "Emoji 选择器",
       "description": "浏览、搜索和复制 Emoji"
     },
-    "text-to-binary": {
-      "name": "文本转二进制",
-      "description": "将文本转换为二进制、八进制和十六进制"
-    },
     "ipMyIp": "本机IP",
     "ipLocation": "归属地",
     "ipIsp": "运营商",

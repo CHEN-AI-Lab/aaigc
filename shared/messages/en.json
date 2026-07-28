@@ -551,10 +551,6 @@
       "name": "Emoji Picker",
       "description": "Browse, search, and copy emojis"
     },
-    "text-to-binary": {
-      "name": "Text to Binary",
-      "description": "Convert text to binary, octal, and hexadecimal"
-    },
     "ipMyIp": "Your IP",
     "ipLocation": "Location",
     "ipIsp": "ISP",

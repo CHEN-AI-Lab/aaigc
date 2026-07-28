@@ -41,7 +41,7 @@ export default function ToolsClient() {
       'ip-lookup': 'IpLookup', 'dns-lookup': 'DnsLookup',
       'http-status-codes': 'HttpStatusCodes', 'user-agent-parser': 'UserAgentParser',
       'random-generator': 'RandomGenerator', 'cron-builder': 'CronBuilder',
-      'emoji-picker': 'EmojiPicker', 'text-to-binary': 'TextToBinary',
+      'emoji-picker': 'EmojiPicker',
     }
     tools.forEach(tool => {
       const name = componentMap[tool.id]
