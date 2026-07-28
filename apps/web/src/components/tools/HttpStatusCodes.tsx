@@ -48,14 +48,14 @@ export default function HttpStatusCodes() {
       <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm overflow-hidden">
         <table className="w-full text-sm">
           <thead><tr className="border-b border-[rgba(127,99,21,0.15)]">
-            <th className="w-16 p-3 text-left text-text-secondary font-medium">{t('httpCode')}</th>
+            <th className="p-3 text-left text-text-secondary font-medium whitespace-nowrap">{t('httpCode')}</th>
             <th className="p-3 text-left text-text-secondary font-medium">{t('httpName')}</th>
-            <th className="w-32 p-3 text-left text-text-secondary font-medium">{t('httpCategory')}</th>
+            <th className="p-3 text-left text-text-secondary font-medium whitespace-nowrap">{t('httpCategory')}</th>
           </tr></thead>
           <tbody>{filtered.map((c, i) => (
             <tr key={i} className="border-b border-[rgba(127,99,21,0.08)] hover:bg-accent/5">
-              <td className="p-3 text-text-primary font-mono font-semibold">{c.code}</td>
-              <td className="p-3 text-text-primary">
+              <td className="p-3 text-text-primary font-mono font-semibold text-right whitespace-nowrap">{c.code}</td>
+              <td className="p-3 pl-6 text-text-primary">
                 {isEn ? c.en : <>{c.en} <span className="text-text-secondary/60">({t(c.key)})</span></>}
               </td>
               <td className="p-3 text-text-secondary text-xs">{t(c.cat)}</td>
