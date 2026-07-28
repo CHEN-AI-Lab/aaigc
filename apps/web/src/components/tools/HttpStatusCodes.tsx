@@ -1,45 +1,20 @@
 'use client'
 
 import { useState } from 'react'
-import { useTranslations, useLocale } from 'next-intl'
+import { useTranslations } from 'next-intl'
 
 const CODES = [
-  { code: 100, en: 'Continue', key: 'httpStatus100', cat: 'httpInfo' },
-  { code: 101, en: 'Switching Protocols', key: 'httpStatus101', cat: 'httpInfo' },
-  { code: 102, en: 'Processing', key: 'httpStatus102', cat: 'httpInfo' },
-  { code: 200, en: 'OK', key: 'httpStatus200', cat: 'httpSuccess' },
-  { code: 201, en: 'Created', key: 'httpStatus201', cat: 'httpSuccess' },
-  { code: 202, en: 'Accepted', key: 'httpStatus202', cat: 'httpSuccess' },
-  { code: 204, en: 'No Content', key: 'httpStatus204', cat: 'httpSuccess' },
-  { code: 301, en: 'Moved Permanently', key: 'httpStatus301', cat: 'httpRedirect' },
-  { code: 302, en: 'Found', key: 'httpStatus302', cat: 'httpRedirect' },
-  { code: 304, en: 'Not Modified', key: 'httpStatus304', cat: 'httpRedirect' },
-  { code: 307, en: 'Temporary Redirect', key: 'httpStatus307', cat: 'httpRedirect' },
-  { code: 308, en: 'Permanent Redirect', key: 'httpStatus308', cat: 'httpRedirect' },
-  { code: 400, en: 'Bad Request', key: 'httpStatus400', cat: 'httpClientError' },
-  { code: 401, en: 'Unauthorized', key: 'httpStatus401', cat: 'httpClientError' },
-  { code: 403, en: 'Forbidden', key: 'httpStatus403', cat: 'httpClientError' },
-  { code: 404, en: 'Not Found', key: 'httpStatus404', cat: 'httpClientError' },
-  { code: 405, en: 'Method Not Allowed', key: 'httpStatus405', cat: 'httpClientError' },
-  { code: 408, en: 'Request Timeout', key: 'httpStatus408', cat: 'httpClientError' },
-  { code: 409, en: 'Conflict', key: 'httpStatus409', cat: 'httpClientError' },
-  { code: 410, en: 'Gone', key: 'httpStatus410', cat: 'httpClientError' },
-  { code: 422, en: 'Unprocessable Entity', key: 'httpStatus422', cat: 'httpClientError' },
-  { code: 429, en: 'Too Many Requests', key: 'httpStatus429', cat: 'httpClientError' },
-  { code: 500, en: 'Internal Server Error', key: 'httpStatus500', cat: 'httpServerError' },
-  { code: 502, en: 'Bad Gateway', key: 'httpStatus502', cat: 'httpServerError' },
-  { code: 503, en: 'Service Unavailable', key: 'httpStatus503', cat: 'httpServerError' },
-  { code: 504, en: 'Gateway Timeout', key: 'httpStatus504', cat: 'httpServerError' },
+  ...'100 Continue|101 Switching Protocols|102 Processing'.split('|').map(s => { const [c, ...r] = s.split(' '); return { code: parseInt(c), name: r.join(' '), cat: 'httpInfo' } }),
+  ...'200 OK|201 Created|202 Accepted|204 No Content|301 Moved Permanently|302 Found|304 Not Modified|307 Temporary Redirect|308 Permanent Redirect'.split('|').map(s => { const [c, ...r] = s.split(' '); return { code: parseInt(c), name: r.join(' '), cat: c.startsWith('30') ? 'httpRedirect' : 'httpSuccess' } }),
+  ...'400 Bad Request|401 Unauthorized|403 Forbidden|404 Not Found|405 Method Not Allowed|408 Request Timeout|409 Conflict|410 Gone|422 Unprocessable Entity|429 Too Many Requests'.split('|').map(s => { const [c, ...r] = s.split(' '); return { code: parseInt(c), name: r.join(' '), cat: 'httpClientError' } }),
+  ...'500 Internal Server Error|502 Bad Gateway|503 Service Unavailable|504 Gateway Timeout'.split('|').map(s => { const [c, ...r] = s.split(' '); return { code: parseInt(c), name: r.join(' '), cat: 'httpServerError' } }),
 ]
 
 export default function HttpStatusCodes() {
   const t = useTranslations('tools')
-  const locale = useLocale()
   const [q, setQ] = useState('')
 
-  const isEn = locale === 'en'
-
-  const filtered = CODES.filter(c => !q || `${c.code}`.includes(q) || c.en.toLowerCase().includes(q.toLowerCase()) || t(c.key).toLowerCase().includes(q.toLowerCase()))
+  const filtered = CODES.filter(c => !q || `${c.code}`.includes(q) || c.name.toLowerCase().includes(q.toLowerCase()))
 
   return (
     <div className="mt-6 space-y-4">
@@ -47,18 +22,15 @@ export default function HttpStatusCodes() {
         className="w-full max-w-xs p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/30" />
       <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm overflow-hidden">
         <table className="w-full text-sm">
-          <colgroup><col className="w-24" /><col /><col className="w-36" /></colgroup>
           <thead><tr className="border-b border-[rgba(127,99,21,0.15)]">
-            <th className="p-3 text-left text-text-secondary font-medium">{t('httpCode')}</th>
-            <th className="p-3 text-left text-text-secondary font-medium">{t('httpName')}</th>
-            <th className="p-3 text-left text-text-secondary font-medium">{t('httpCategory')}</th>
+            <th className="text-left p-3 text-text-secondary font-medium">{t('httpCode')}</th>
+            <th className="text-left p-3 text-text-secondary font-medium">{t('httpName')}</th>
+            <th className="text-left p-3 text-text-secondary font-medium">{t('httpCategory')}</th>
           </tr></thead>
           <tbody>{filtered.map((c, i) => (
             <tr key={i} className="border-b border-[rgba(127,99,21,0.08)] hover:bg-accent/5">
-              <td className="p-3 pr-8 text-text-primary font-mono font-semibold">{c.code}</td>
-              <td className="p-3 text-left text-text-primary">
-                {isEn ? c.en : <>{c.en} <span className="text-text-secondary/60">({t(c.key)})</span></>}
-              </td>
+              <td className="p-3 text-text-primary font-mono font-semibold">{c.code}</td>
+              <td className="p-3 text-text-primary">{c.name}</td>
               <td className="p-3 text-text-secondary text-xs">{t(c.cat)}</td>
             </tr>
           ))}</tbody>
