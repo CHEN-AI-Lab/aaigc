@@ -24,6 +24,18 @@ const ISP_NAMES: Record<string, string> = {
   'wasu': '华数宽带',
 }
 
+const ISP_NAMES_EN: Record<string, string> = {
+  'chinanet': 'China Telecom',
+  'china telecom': 'China Telecom',
+  'china mobile': 'China Mobile',
+  'china unicom': 'China Unicom',
+  'cernet': 'CERNET',
+  'china education and research network': 'CERNET',
+  'drpeng': 'Dr.Peng',
+  'greatwall': 'Greatwall Broadband',
+  'wasu': 'Wasu Broadband',
+}
+
 function countryName(code: string): string {
   return COUNTRY_NAMES[code] || code
 }
@@ -37,15 +49,16 @@ function guessUsage(org: string): string {
   return 'isp'
 }
 
-function translateIsp(name: string): string {
+function translateIsp(name: string, lang: string): string {
   const lower = name.toLowerCase().trim()
-  for (const [key, val] of Object.entries(ISP_NAMES)) {
+  const map = lang.startsWith('zh') ? ISP_NAMES : ISP_NAMES_EN
+  for (const [key, val] of Object.entries(map)) {
     if (lower.includes(key)) return val
   }
   return name
 }
 
-async function tryIpinfo(ip: string) {
+async function tryIpinfo(ip: string, lang: string) {
   const res = await fetch(`https://ipinfo.io/${ip}/json`, { signal: AbortSignal.timeout(5000) })
   const data = await res.json()
   if (data.city) {
@@ -54,14 +67,14 @@ async function tryIpinfo(ip: string) {
       country: countryName(data.country || ''),
       region: data.region || '',
       city: data.city || '',
-      isp: translateIsp(data.org || ''),
+      isp: translateIsp(data.org || '', lang),
       usage: guessUsage(data.org || ''),
     }
   }
   return null
 }
 
-async function tryIpsb(ip: string) {
+async function tryIpsb(ip: string, lang: string) {
   const res = await fetch(`https://api.ip.sb/geoip/${ip}`, { signal: AbortSignal.timeout(5000) })
   const data = await res.json()
   if (data.city) {
@@ -70,7 +83,7 @@ async function tryIpsb(ip: string) {
       country: data.country || '',
       region: data.region || '',
       city: data.city || '',
-      isp: translateIsp(data.isp || data.organization || ''),
+      isp: translateIsp(data.isp || data.organization || '', lang),
       usage: guessUsage(data.isp || data.organization || ''),
     }
   }
@@ -93,7 +106,7 @@ async function tryIpapi(ip: string, lang: string) {
       country: data.country || '',
       region: data.regionName || '',
       city: data.city || '',
-      isp: translateIsp(data.isp || data.org || ''),
+      isp: translateIsp(data.isp || data.org || '', lang),
       usage,
     }
   }
@@ -116,10 +129,10 @@ export async function GET(request: NextRequest) {
     const api = await tryIpapi(clientIp, lang).catch(() => null)
     if (api) return NextResponse.json(api)
 
-    const info = await tryIpinfo(clientIp).catch(() => null)
+    const info = await tryIpinfo(clientIp, lang).catch(() => null)
     if (info) return NextResponse.json(info)
 
-    const sb = await tryIpsb(clientIp).catch(() => null)
+    const sb = await tryIpsb(clientIp, lang).catch(() => null)
     if (sb) return NextResponse.json(sb)
 
     return NextResponse.json({ ip: clientIp })
