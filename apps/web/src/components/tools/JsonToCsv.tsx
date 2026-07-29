@@ -44,32 +44,46 @@ export default function JsonToCsv() {
     if (!input.trim()) { setOutput(''); return }
     try {
       const data = JSON.parse(input)
-      const isArray = Array.isArray(data)
-      const arr = isArray ? data : [data]
-      if (arr.length === 0) { setError(t('invalidInput')); return }
 
-      const flatRows = arr.map(row => flatten(row))
+      if (Array.isArray(data)) {
+        if (data.length === 0) { setError(t('invalidInput')); return }
 
-      if (isArray) {
-        // Array of objects → horizontal (standard CSV)
-        const headers = [...new Set(flatRows.flatMap(r => Object.keys(r)))]
-        const csv = [
-          headers.join(','),
-          ...flatRows.map(row => headers.map(h => {
-            const val = row[h] ?? ''
-            const str = String(val)
-            return str.includes(',') || str.includes('"') || str.includes('\n')
-              ? `"${str.replace(/"/g, '""')}"`
-              : str
-          }).join(','))
-        ].join('\n')
-        setOutput(csv)
-      } else {
+        const hasObjects = data.some(item => item !== null && typeof item === 'object' && !Array.isArray(item))
+
+        if (hasObjects) {
+          // Array of objects → horizontal (standard CSV)
+          const flatRows = data.map(row => flatten(row))
+          const headers = [...new Set(flatRows.flatMap(r => Object.keys(r)))]
+          const csv = [
+            headers.join(','),
+            ...flatRows.map(row => headers.map(h => {
+              const val = row[h] ?? ''
+              const str = String(val)
+              return str.includes(',') || str.includes('"') || str.includes('\n')
+                ? `"${str.replace(/"/g, '""')}"`
+                : str
+            }).join(','))
+          ].join('\n')
+          setOutput(csv)
+        } else {
+          // Array of primitives → one column
+          const csv = [
+            'Value',
+            ...data.map(v => {
+              const str = String(v)
+              return str.includes(',') || str.includes('"') || str.includes('\n')
+                ? `"${str.replace(/"/g, '""')}"`
+                : str
+            })
+          ].join('\n')
+          setOutput(csv)
+        }
+      } else if (data !== null && typeof data === 'object') {
         // Single object → vertical (key-value pairs)
-        const rows = flatRows[0]
+        const flat = flatten(data)
         const csv = [
           'Key,Value',
-          ...Object.entries(rows).map(([k, v]) => {
+          ...Object.entries(flat).map(([k, v]) => {
             const str = String(v)
             return str.includes(',') || str.includes('"') || str.includes('\n')
               ? `${k},"${str.replace(/"/g, '""')}"`
@@ -77,6 +91,9 @@ export default function JsonToCsv() {
           })
         ].join('\n')
         setOutput(csv)
+      } else {
+        // Single primitive value
+        setOutput(`Value\n${String(data)}`)
       }
     } catch {
       setError(t('invalidJson'))

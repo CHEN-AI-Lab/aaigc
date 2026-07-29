@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 /* ─── @theme: register custom colors with Tailwind v4 so utility classes are generated ─── */
 @theme {
