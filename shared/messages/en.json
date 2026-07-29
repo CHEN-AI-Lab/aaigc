@@ -942,12 +942,15 @@
     "cronDescAt": "At {minute} past {hour}",
     "cronDescAtExact": "At {hour}:{minute}",
     "cronDescDay": "day {day}",
-    "cronDescMonth": "of month {month}",
-    "cronDescDow": "on {dow}",
+    "cronDescMonth": "{month}",
+    "cronDescDow": "{dow}",
     "cronDescEveryDay": "every day",
     "cronDescUnknown": "Custom schedule",
     "cronUnitMin": "minute",
-    "cronUnitHour": "hour"
+    "cronUnitHour": "hour",
+    "cronDescAtTime": "At {hour}:{minute}",
+    "cronDescAtMin": "Minute {minute} of every hour",
+    "cronDescAtHour": "Every minute of hour {hour}"
   },
   "ui": {
     "aboutLink": "About AAIGC →",

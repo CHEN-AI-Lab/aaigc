@@ -48,11 +48,11 @@ export default function CronBuilder() {
     if (minute === '*' && hour === '*') {
       timeParts.push(t('cronDescEveryMin'))
     } else if (minute !== '*' && hour !== '*') {
-      timeParts.push(`${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`)
+      timeParts.push(t('cronDescAtTime', { hour: hour.padStart(2, '0'), minute: minute.padStart(2, '0') }))
     } else if (hour === '*') {
-      timeParts.push(t('cronDescAt', { minute, hour: t('cronEvery') + t('cronUnitHour') }))
+      timeParts.push(t('cronDescAtMin', { minute }))
     } else {
-      timeParts.push(t('cronDescAt', { minute: t('cronEvery') + t('cronUnitMin'), hour }))
+      timeParts.push(t('cronDescAtHour', { hour }))
     }
 
     return timeParts.join(' ') + ' ' + dateParts.join(' ') || t('cronDescUnknown')

@@ -942,12 +942,15 @@
     "cronDescAt": "{hour}:{minute}",
     "cronDescAtExact": "{hour}:{minute}",
     "cronDescDay": "{day} 日",
-    "cronDescMonth": "{month}月",
-    "cronDescDow": "週{dow}",
+    "cronDescMonth": "{month} 月",
+    "cronDescDow": "{dow}",
     "cronDescEveryDay": "毎日",
     "cronDescUnknown": "カスタムスケジュール",
     "cronUnitMin": "分",
-    "cronUnitHour": "時"
+    "cronUnitHour": "時",
+    "cronDescAtTime": "{hour}:{minute}",
+    "cronDescAtMin": "毎時 {minute} 分",
+    "cronDescAtHour": "毎分 {hour} 時"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

@@ -943,11 +943,14 @@
     "cronDescAtExact": "{hour}:{minute}",
     "cronDescDay": "{day} 日",
     "cronDescMonth": "{month} 月",
-    "cronDescDow": "週{dow}",
+    "cronDescDow": "{dow}",
     "cronDescEveryDay": "每天",
     "cronDescUnknown": "自訂計劃",
     "cronUnitMin": "分鐘",
-    "cronUnitHour": "小時"
+    "cronUnitHour": "小時",
+    "cronDescAtTime": "{hour}:{minute}",
+    "cronDescAtMin": "每小時的 {minute} 分",
+    "cronDescAtHour": "每小時的第 {hour} 時"
   },
   "ui": {
     "toolLinks": {
