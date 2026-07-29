@@ -8,6 +8,7 @@ dist
 .DS_Store
 *.log
 .vercel
-playwright-report/
+# Test artifacts
 test-results/
-_research_*
+playwright-report/
+coverage/
