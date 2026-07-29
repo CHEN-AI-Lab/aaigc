@@ -8,3 +8,6 @@ dist
 .DS_Store
 *.log
 .vercel
+playwright-report/
+test-results/
+_research_*
