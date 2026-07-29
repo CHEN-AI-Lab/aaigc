@@ -32,18 +32,14 @@ const TABS: { id: Tab }[] = [
 export default function Calculator() {
   const [tab, setTab] = useState<Tab>('calc')
   const t = useTranslations('tools')
-  const CHINA_ONLY_TABS = new Set<Tab>(['tax', 'mortgage', 'title'])
   return (
     <div className="mt-6 space-y-4">
       <div className="flex gap-1 overflow-x-auto pb-1 scrollbar-none border-b border-[rgba(127,99,21,0.15)]">
         {TABS.map(tb => (
           <button key={tb.id} onClick={() => setTab(tb.id)}
-            className={`px-3 py-1.5 text-xs rounded-t-sm whitespace-nowrap transition-colors shrink-0 flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 text-xs rounded-t-sm whitespace-nowrap transition-colors shrink-0 ${
               tab === tb.id ? 'bg-accent text-white' : 'text-text-secondary hover:text-text-primary hover:bg-surface'
             }`}>{t(`tab${tb.id.charAt(0).toUpperCase() + tb.id.slice(1)}`)}
-            {CHINA_ONLY_TABS.has(tb.id) && (
-              <span className="text-[10px] px-1 rounded-sm bg-white/20 text-white/90 font-medium">{t('chinaOnlyLabel')}</span>
-            )}
           </button>
         ))}
       </div>
