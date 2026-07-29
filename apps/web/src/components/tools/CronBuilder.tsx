@@ -123,7 +123,6 @@ export default function CronBuilder() {
       <div className="p-4 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-center">
         <p className="text-xs text-text-secondary mb-1">{t('cronResult')}</p>
         <p className="text-lg font-mono font-semibold text-accent">{expression}</p>
-        {description && <p className="text-xs text-text-secondary mt-1">{description}</p>}
         <div className="mt-2 flex items-center justify-center gap-2">
           <button onClick={() => { navigator.clipboard.writeText(expression); setCopied(true); setTimeout(() => setCopied(false), 2000) }}
             className="px-4 py-1.5 bg-accent text-white text-xs rounded-sm hover:opacity-90">{copied ? t('cronCopied') : t('cronCopy')}</button>

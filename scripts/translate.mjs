@@ -227,7 +227,7 @@ function checkTargetStatus(sourceFile, targetFile, sourceLang = null, targetLang
     const tgtPaths = new Set(flattenKeys(target).map((k) => k.keyPath))
     let allPresent = [...srcPaths].every((p) => tgtPaths.has(p))
 
-    // 检测英文占位符：目标值等于源值（未翻译的复制品）
+    // 检测英文占位符：目标值等于源值（未翻译的复制品），但跳过空字符串和数组
     let placeholderCount = 0
     if (allPresent && sourceLang && targetLang && !SOURCE_LANGUAGES.includes(targetLang)) {
       const srcFlat = flattenKeys(source)
@@ -237,7 +237,7 @@ function checkTargetStatus(sourceFile, targetFile, sourceLang = null, targetLang
         tgtMap[keyPath] = value
       }
       for (const { keyPath, value: srcVal } of srcFlat) {
-        if (tgtMap[keyPath] !== undefined && String(tgtMap[keyPath]) === String(srcVal)) {
+        if (tgtMap[keyPath] !== undefined && String(tgtMap[keyPath]) === String(srcVal) && String(srcVal).trim() !== "") {
           placeholderCount++
         }
       }
@@ -1403,11 +1403,19 @@ function findMissing(src, tgt, prefix = "") {
     if (typeof src[k] === "object" && src[k] !== null && !Array.isArray(src[k])) {
       if (!tgt[k] || typeof tgt[k] !== "object") tgt[k] = {}
       findMissing(src[k], tgt[k], keyPath)
+    } else if (Array.isArray(src[k])) {
+      // 数组处理：以 JSON 格式传给 AI，保留数组结构
+      if (tgt[k] === undefined) {
+        missing.push({ keyPath, text: JSON.stringify(src[k]), isArray: true })
+      } else if (!IS_SOURCE_LANG && Array.isArray(tgt[k]) && JSON.stringify(tgt[k]) === JSON.stringify(src[k])) {
+        delete tgt[k]
+        missing.push({ keyPath, text: JSON.stringify(src[k]), isArray: true })
+        placeholderFoundCount++
+      }
     } else if (tgt[k] === undefined) {
       missing.push({ keyPath, text: String(src[k]) })
-    } else if (!IS_SOURCE_LANG && String(tgt[k]) === String(src[k])) {
-      // 英文占位符：目标值等于源值（未翻译的复制品）
-      // 清除占位符，让 AI 重新翻译
+    } else if (!IS_SOURCE_LANG && String(tgt[k]) === String(src[k]) && String(src[k]).trim() !== "") {
+      // 仅非空字符串才视为英文占位符（空字符串是故意留空的）
       delete tgt[k]
       missing.push({ keyPath, text: String(src[k]) })
       placeholderFoundCount++
@@ -1497,6 +1505,7 @@ Rules:
 - Preserve any {placeholder} variables exactly as-is (e.g. {name}, {count}, {title})
 - Preserve HTML tags if present
 - Return the translations in the exact same format: key: translated_value
+- If the value is a JSON array (e.g. ["a", "b", "c"]), translate each element and return it as a JSON array: key: ["translated_a", "translated_b", "translated_c"]
 - Do NOT translate pricing numbers, currency symbols, or technical terms like URLs`
 
   const response = await fetch(`${API_BASE}/chat/completions`, {
@@ -1527,15 +1536,23 @@ Rules:
   const lines = result.split("\n").filter(Boolean)
 
   for (const line of lines) {
-    const colonIdx = line.indexOf(":")
-    if (colonIdx === -1) continue
-    const key = line.substring(0, colonIdx).trim()
-    const value = line.substring(colonIdx + 1).trim()
+    // 用 ": "（冒号+空格）分割，key 不含空格，value 可以含 ": "
+    const sepIdx = line.indexOf(": ")
+    if (sepIdx === -1) continue
+    const key = line.substring(0, sepIdx).trim()
+    const value = line.substring(sepIdx + 2).trim()
     if (key && value) {
-      setNested(target, key, value)
+      // 尝试解析 JSON 数组（AI 返回的数组格式）
+      let parsedValue
+      try {
+        parsedValue = JSON.parse(value)
+      } catch {
+        parsedValue = value
+      }
+      setNested(target, key, parsedValue)
       const originalItem = items.find((i) => i.keyPath === key)
       if (originalItem) {
-        setMemory(memory, SOURCE_LANG, LANG, originalItem.text, value)
+        setMemory(memory, SOURCE_LANG, LANG, originalItem.text, typeof parsedValue === 'string' ? parsedValue : JSON.stringify(parsedValue))
       }
     }
   }
