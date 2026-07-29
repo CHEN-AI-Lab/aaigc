@@ -29,37 +29,6 @@ export default function CronBuilder() {
   const expression = `${minute} ${hour} ${day} ${month} ${dow}`
   const currentPreset = PRESETS.find(p => p.expr === expression)
 
-  // Generate human-readable description for any expression
-  const describe = () => {
-    if (currentPreset) return t(currentPreset.desc)
-    const dateParts: string[] = []
-    const timeParts: string[] = []
-
-    // Date parts (in natural order)
-    if (month !== '*') dateParts.push(t('cronDescMonth', { month }))
-    if (day !== '*') dateParts.push(t('cronDescDay', { day }))
-    if (dow !== '*') {
-      const dowNames = ['cronSun','cronMon','cronTue','cronWed','cronThu','cronFri','cronSat']
-      dateParts.push(t('cronDescDow', { dow: t('cronWeekPrefix') + t(dowNames[parseInt(dow)] || 'cronSun') }))
-    }
-    if (dateParts.length === 0) dateParts.push(t('cronDescEveryDay'))
-
-    // Time parts
-    if (minute === '*' && hour === '*') {
-      timeParts.push(t('cronDescEveryMin'))
-    } else if (minute !== '*' && hour !== '*') {
-      timeParts.push(t('cronDescAtTime', { hour: hour.padStart(2, '0'), minute: minute.padStart(2, '0') }))
-    } else if (hour === '*') {
-      timeParts.push(t('cronDescAtMin', { minute }))
-    } else {
-      timeParts.push(t('cronDescAtHour', { hour }))
-    }
-
-    return timeParts.join(' ') + ' ' + dateParts.join(' ') || t('cronDescUnknown')
-  }
-
-  const description = describe()
-
   // Warn when specific day/week/month is set but minute/hour are wildcard
   const dangerous = (day !== '*' || dow !== '*' || month !== '*') && (minute === '*' || hour === '*')
 
