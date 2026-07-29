@@ -945,7 +945,9 @@
     "cronDescMonth": "{month}月",
     "cronDescDow": "週{dow}",
     "cronDescEveryDay": "毎日",
-    "cronDescUnknown": "カスタムスケジュール"
+    "cronDescUnknown": "カスタムスケジュール",
+    "cronUnitMin": "分",
+    "cronUnitHour": "時"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

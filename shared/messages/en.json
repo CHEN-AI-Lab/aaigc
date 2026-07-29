@@ -945,7 +945,9 @@
     "cronDescMonth": "of month {month}",
     "cronDescDow": "on {dow}",
     "cronDescEveryDay": "every day",
-    "cronDescUnknown": "Custom schedule"
+    "cronDescUnknown": "Custom schedule",
+    "cronUnitMin": "minute",
+    "cronUnitHour": "hour"
   },
   "ui": {
     "aboutLink": "About AAIGC →",

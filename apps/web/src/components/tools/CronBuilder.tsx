@@ -36,18 +36,19 @@ export default function CronBuilder() {
     if (minute === '*' && hour === '*') {
       if (day === '*' && month === '*' && dow === '*') return t('cronDescEveryMin')
       parts.push(t('cronDescEveryMin'))
-    } else if (minute === '*') {
-      parts.push(t('cronDescEvery', { unit: t('cronHour')?.toLowerCase() || 'hour' }))
+    } else if (minute !== '*' && hour !== '*') {
+      parts.push(`${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`)
     } else if (hour === '*') {
-      parts.push(t('cronDescEvery', { unit: t('cronMinute')?.toLowerCase() || 'minute' }))
+      parts.push(t('cronDescAt', { minute, hour: t('cronEvery') + t('cronUnitHour') }))
     } else {
-      const m = minute.padStart(2, '0')
-      const h = hour.padStart(2, '0')
-      parts.push(t('cronDescAtExact', { hour: h, minute: m }))
+      parts.push(t('cronDescAt', { minute: t('cronEvery') + t('cronUnitMin'), hour }))
     }
     if (day !== '*') parts.push(t('cronDescDay', { day }))
     if (month !== '*') parts.push(t('cronDescMonth', { month }))
-    if (dow !== '*') parts.push(t('cronDescDow', { dow: t('cronWeekPrefix') + t(dow === '0' ? 'cronSun' : dow === '1' ? 'cronMon' : dow === '2' ? 'cronTue' : dow === '3' ? 'cronWed' : dow === '4' ? 'cronThu' : dow === '5' ? 'cronFri' : 'cronSat') }))
+    if (dow !== '*') {
+      const dowNames = ['cronSun','cronMon','cronTue','cronWed','cronThu','cronFri','cronSat']
+      parts.push(t('cronDescDow', { dow: t('cronWeekPrefix') + t(dowNames[parseInt(dow)] || 'cronSun') }))
+    }
     if (day === '*' && month === '*' && dow === '*' && minute !== '*' && hour !== '*') {
       return t('cronDescEveryDay') + ' ' + parts.join(' ')
     }

@@ -945,7 +945,9 @@
     "cronDescMonth": "{month} 月",
     "cronDescDow": "週{dow}",
     "cronDescEveryDay": "每天",
-    "cronDescUnknown": "自訂計劃"
+    "cronDescUnknown": "自訂計劃",
+    "cronUnitMin": "分鐘",
+    "cronUnitHour": "小時"
   },
   "ui": {
     "toolLinks": {

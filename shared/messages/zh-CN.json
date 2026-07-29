@@ -945,7 +945,9 @@
     "cronDescMonth": "{month} 月",
     "cronDescDow": "周{dow}",
     "cronDescEveryDay": "每天",
-    "cronDescUnknown": "自定义计划"
+    "cronDescUnknown": "自定义计划",
+    "cronUnitMin": "分钟",
+    "cronUnitHour": "小时"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",
