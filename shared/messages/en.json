@@ -941,7 +941,7 @@
     "cronDescEvery": "Every {unit}",
     "cronDescAt": "At {minute} past {hour}",
     "cronDescAtExact": "At {hour}:{minute}",
-    "cronDescDay": "on day {day}",
+    "cronDescDay": "day {day}",
     "cronDescMonth": "of month {month}",
     "cronDescDow": "on {dow}",
     "cronDescEveryDay": "every day",

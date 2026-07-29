@@ -941,7 +941,7 @@
     "cronDescEvery": "每 {unit}",
     "cronDescAt": "{hour}:{minute}",
     "cronDescAtExact": "{hour}:{minute}",
-    "cronDescDay": "每月 {day} 號",
+    "cronDescDay": "{day} 日",
     "cronDescMonth": "{month} 月",
     "cronDescDow": "週{dow}",
     "cronDescEveryDay": "每天",

@@ -941,7 +941,7 @@
     "cronDescEvery": "毎{unit}",
     "cronDescAt": "{hour}:{minute}",
     "cronDescAtExact": "{hour}:{minute}",
-    "cronDescDay": "{day}日",
+    "cronDescDay": "{day} 日",
     "cronDescMonth": "{month}月",
     "cronDescDow": "週{dow}",
     "cronDescEveryDay": "毎日",
