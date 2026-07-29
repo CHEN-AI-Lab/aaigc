@@ -15,7 +15,7 @@ export default async function HomePage({ params }: Props) {
   const tt = await getTranslations({ locale, namespace: 'tools' })
 
   const featuredProducts = products.slice(0, 4)
-  const popularTools = ['json-formatter', 'base64', 'qrcode', 'timestamp', 'password-generator', 'calculator', 'word-counter', 'url-encode', 'markdown-preview', 'color-picker', 'regex-tester', 'ip-lookup']
+  const popularTools = ['json-formatter', 'base64', 'qrcode', 'timestamp', 'password-generator', 'calculator', 'word-counter', 'url-encode', 'markdown-preview', 'color-picker', 'regex-tester', 'ip-lookup', 'html-preview', 'http-status-codes', 'emoji-picker']
 
   return (
     <div>
@@ -84,12 +84,12 @@ export default async function HomePage({ params }: Props) {
           {/* Popular tools quick links */}
           <div className="mt-12 text-center">
             <p className="text-xs text-text-secondary mb-4">{t('popularTools')}</p>
-            <div className="flex flex-wrap justify-center gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 max-w-2xl mx-auto">
               {popularTools.map((toolId) => (
                 <Link
                   key={toolId}
                   href={`/tools/${toolId}`}
-                  className="text-xs px-3 py-1.5 bg-bg text-text-secondary hover:text-accent hover:bg-accent/5 rounded-sm transition-colors border border-[rgba(127,99,21,0.1)]"
+                  className="text-xs px-2 py-1.5 bg-bg text-text-secondary hover:text-accent hover:bg-accent/5 rounded-sm transition-colors border border-[rgba(127,99,21,0.1)] truncate"
                 >
                   {tt(`${toolId}.name`)}
                 </Link>
