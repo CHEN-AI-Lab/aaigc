@@ -10,8 +10,8 @@
     "inDevelopment": "開発中",
     "all": "すべて",
     "aboutLink": "AAIGCについて →",
-    "appName": "AAIGC",
-    "taglineZh": "AI があなたの仕事と生活を強化します"
+    "taglineZh": "AI があなたの仕事と生活を強化します",
+    "appName": "AAIGC"
   },
   "home": {
     "heroTitle": "AI 駆動ツール集",
@@ -266,8 +266,7 @@
       "description": "テキストの大文字/小文字/タイトルケースを変換"
     },
     "lorem-ipsum": {
-      "description": "プレースホルダーテキストを生成",
-      "name": "Lorem Ipsum"
+      "description": "プレースホルダーテキストを生成"
     },
     "text-to-slug": {
       "name": "テキスト→スラグ変換",
@@ -636,10 +635,26 @@
     "emojiName1F414": "鶏肉",
     "emojiName1F966": "ブロッコリー",
     "emojiName1F9C4": "ニンニク",
+    "cronWeekPrefix": "",
+    "cronWarning": "警告：分と時が「毎」で特定の日付が指定されています——その日は毎分実行されます（1440回）！",
+    "cronFix": "0:00 に設定",
+    "cronDescEveryMin": "毎分実行",
+    "cronDescEvery": "毎{unit}",
+    "cronDescAt": "{hour}:{minute}",
+    "cronDescAtExact": "{hour}:{minute}",
+    "cronDescDay": "{day} 日",
+    "cronDescMonth": "{month} 月",
+    "cronDescEveryDay": "毎日",
+    "cronDescUnknown": "カスタムスケジュール",
+    "cronUnitMin": "分",
+    "cronUnitHour": "時",
+    "cronDescAtTime": "{hour}:{minute}",
+    "cronDescAtMin": "毎時 {minute} 分",
+    "cronDescAtHour": "毎分 {hour} 時",
     "calcBmi": "BMI",
     "calcMortgageLPR": "LPR (%)",
+    "cronDescDow": "{dow}",
     "cronUsageCmd": "crontab -e",
-    "cronWeekPrefix": "",
     "dnsPlaceholder": "example.com",
     "dnsTtl": "TTL",
     "emojiName1F194": "Squared Id",
@@ -934,23 +949,7 @@
     "hex": "HEX",
     "ipIsp": "ISP",
     "tabBmi": "BMI",
-    "usageCdn": "CDN",
-    "cronWarning": "警告：分と時が「毎」で特定の日付が指定されています——その日は毎分実行されます（1440回）！",
-    "cronFix": "0:00 に設定",
-    "cronDescEveryMin": "毎分実行",
-    "cronDescEvery": "毎{unit}",
-    "cronDescAt": "{hour}:{minute}",
-    "cronDescAtExact": "{hour}:{minute}",
-    "cronDescDay": "{day} 日",
-    "cronDescMonth": "{month} 月",
-    "cronDescDow": "{dow}",
-    "cronDescEveryDay": "毎日",
-    "cronDescUnknown": "カスタムスケジュール",
-    "cronUnitMin": "分",
-    "cronUnitHour": "時",
-    "cronDescAtTime": "{hour}:{minute}",
-    "cronDescAtMin": "毎時 {minute} 分",
-    "cronDescAtHour": "毎分 {hour} 時"
+    "usageCdn": "CDN"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",
@@ -993,8 +992,8 @@
     "more": "もっと見る...",
     "updates": "更新情報",
     "privacy": "プライバシー",
-    "email": "chen@aaigc.online",
-    "copyright": "AAIGC. 無断複写・転載を禁じます。"
+    "copyright": "AAIGC. 無断複写・転載を禁じます。",
+    "email": "chen@aaigc.online"
   },
   "privacy": {
     "title": "プライバシーポリシー",

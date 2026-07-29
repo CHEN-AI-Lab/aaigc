@@ -28,10 +28,9 @@ test.describe('Tool functionality', () => {
     await textarea.fill('{"name":"test","value":123}')
     // Click format button
     await page.locator('button', { hasText: 'Format' }).click()
-    // Check output textarea contains formatted JSON
-    const output = page.locator('textarea[readonly]')
-    await expect(output).toContainText('"name"')
-    await expect(output).toContainText('"test"')
+    // Check output contains formatted JSON with line numbers
+    await expect(page.locator('text=name').first()).toBeVisible()
+    await expect(page.locator('text=test').first()).toBeVisible()
   })
 
   test('base64 encoder encodes text', async ({ page }) => {

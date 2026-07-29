@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useRef, useEffect } from 'react'
+import { useState, useCallback, useMemo, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 
 export default function JsonFormatter() {
@@ -10,27 +10,18 @@ export default function JsonFormatter() {
   const [error, setError] = useState('')
   const [copied, setCopied] = useState(false)
   const [downloadUrl, setDownloadUrl] = useState('')
-  const outputRef = useRef<HTMLTextAreaElement>(null)
+  const scrollRef = useRef<HTMLDivElement>(null)
 
-  const autoResize = useCallback(() => {
-    const el = outputRef.current
-    if (!el) return
-    el.style.height = '0'
-    el.style.height = `${el.scrollHeight}px`
-  }, [])
-
-  useEffect(() => { autoResize() }, [output, autoResize])
+  // Split output into lines for line-number rendering
+  const lines = useMemo(() => {
+    if (!output) return []
+    return output.split('\n')
+  }, [output])
 
   // Revoke previous blob URL before creating a new one, and on unmount
   const revokeUrl = useCallback((url: string) => {
     if (url) URL.revokeObjectURL(url)
   }, [])
-
-  useEffect(() => {
-    return () => {
-      if (downloadUrl) URL.revokeObjectURL(downloadUrl)
-    }
-  }, [downloadUrl])
 
   const generateDownloadUrl = useCallback((content: string) => {
     if (downloadUrl) revokeUrl(downloadUrl)
@@ -94,6 +85,7 @@ export default function JsonFormatter() {
 
   const handleCopy = useCallback(async () => {
     try {
+      // Copy only the code text, not line numbers
       await navigator.clipboard.writeText(output)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
@@ -110,8 +102,8 @@ export default function JsonFormatter() {
       />
       <div className="flex gap-2 flex-wrap items-center">
         <button onClick={format} className="px-4 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{t('format')}</button>
-        <button onClick={validate} className="px-4 py-2 bg-surface text-text-primary text-sm rounded-sm hover:bg-accent/10 border border-[rgba(127,99,21,0.15)]">{t('validate')}</button>
-        <button onClick={minify} className="px-4 py-2 bg-surface text-text-primary text-sm rounded-sm hover:bg-accent/10 border border-[rgba(127,99,21,0.15)]">{t('minify')}</button>
+        <button onClick={validate} className="px-4 py-2 bg-surface text-text-primary text-sm rounded-sm hover:opacity-90 border border-[rgba(127,99,21,0.15)]">{t('validate')}</button>
+        <button onClick={minify} className="px-4 py-2 bg-surface text-text-primary text-sm rounded-sm hover:opacity-90 border border-[rgba(127,99,21,0.15)]">{t('minify')}</button>
         {downloadUrl && (
           <a
             href={downloadUrl}
@@ -125,15 +117,34 @@ export default function JsonFormatter() {
       {error && <p className="text-red-500 text-sm">{error}</p>}
       {output && (
         <div className="relative">
-          <textarea
-            ref={outputRef}
-            readOnly
-            value={output}
-            className="w-full min-h-[200px] max-h-[60vh] p-3 pr-16 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary resize-none overflow-y-auto"
-          />
+          {/* Single scrollable container: both line numbers + code scroll together */}
+          <div
+            ref={scrollRef}
+            className="max-h-[60vh] overflow-auto bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm"
+          >
+            {/* Each line is a grid row: line-number column + code column */}
+            {lines.map((line, i) => (
+              <div
+                key={i}
+                className="grid grid-cols-[3.5em_1fr] min-h-[1.35em] hover:bg-[rgba(0,0,0,0.03)]"
+              >
+                {/* Line number — cannot be selected/copied */}
+                <div
+                  className="text-right pr-3 pl-2 text-text-secondary/50 text-xs leading-[1.5] select-none border-r border-[rgba(127,99,21,0.1)] py-px"
+                  aria-hidden="true"
+                >
+                  {i + 1}
+                </div>
+                {/* Code text — preserves whitespace/indentation */}
+                <pre className="m-0 pl-3 whitespace-pre text-sm font-mono text-text-primary leading-[1.5] min-w-0 overflow-x-auto py-px">
+                  {line || '\u00A0'}
+                </pre>
+              </div>
+            ))}
+          </div>
           <button
             onClick={handleCopy}
-            className={`absolute top-2 right-6 text-xs px-2.5 py-1.5 rounded-sm transition-all duration-200 min-w-[4.5rem] text-center ${
+            className={`absolute top-2 right-2 text-xs px-2.5 py-1.5 rounded-sm transition-all duration-200 min-w-[4.5rem] text-center ${
               copied
                 ? 'bg-green-500 text-white scale-105'
                 : 'bg-accent text-white hover:opacity-90'
