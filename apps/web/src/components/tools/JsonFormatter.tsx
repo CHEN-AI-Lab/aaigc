@@ -120,7 +120,7 @@ export default function JsonFormatter() {
           {/* Single scrollable container: both line numbers + code scroll together */}
           <div
             ref={scrollRef}
-            className="max-h-[60vh] overflow-auto bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm"
+            className="max-h-[60vh] overflow-auto bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm pr-10"
           >
             {/* Each line is a grid row: line-number column + code column */}
             {lines.map((line, i) => (
@@ -136,7 +136,7 @@ export default function JsonFormatter() {
                   {i + 1}
                 </div>
                 {/* Code text — preserves whitespace/indentation */}
-                <pre className="m-0 pl-3 whitespace-pre text-sm font-mono text-text-primary leading-[1.5] min-w-0 overflow-x-auto py-px">
+                <pre className="m-0 pl-3 whitespace-pre text-sm font-mono text-text-primary leading-[1.5] min-w-0 py-px">
                   {line || '\u00A0'}
                 </pre>
               </div>
@@ -144,7 +144,7 @@ export default function JsonFormatter() {
           </div>
           <button
             onClick={handleCopy}
-            className={`absolute top-2 right-2 text-xs px-2.5 py-1.5 rounded-sm transition-all duration-200 min-w-[4.5rem] text-center ${
+            className={`absolute top-2 right-8 text-xs px-2.5 py-1.5 rounded-sm transition-all duration-200 min-w-[4.5rem] text-center ${
               copied
                 ? 'bg-green-500 text-white scale-105'
                 : 'bg-accent text-white hover:opacity-90'
