@@ -8,9 +8,8 @@ test.describe('Tool edge cases & error handling', () => {
     await page.goto('/en/tools/json-formatter')
     // Empty input, try to format
     await page.locator('button:has-text("Format")').click()
-    // Should not crash, output should remain empty
-    const output = page.locator('textarea[readonly]')
-    await expect(output).not.toBeVisible()
+    // Should show error (empty input is invalid JSON)
+    await expect(page.locator('text=/invalid/i')).toBeVisible()
   })
 
   test('json formatter handles invalid JSON', async ({ page }) => {

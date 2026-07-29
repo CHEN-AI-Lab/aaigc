@@ -28,8 +28,8 @@ test.describe('Tool functionality', () => {
     await textarea.fill('{"name":"test","value":123}')
     // Click format button
     await page.locator('button', { hasText: 'Format' }).click()
-    // Check output textarea contains formatted JSON
-    const output = page.locator('textarea[readonly]')
+    // Check output contains formatted JSON
+    const output = page.locator('[class*="font-mono"]').last()
     await expect(output).toContainText('"name"')
     await expect(output).toContainText('"test"')
   })
