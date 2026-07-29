@@ -29,6 +29,33 @@ export default function CronBuilder() {
   const expression = `${minute} ${hour} ${day} ${month} ${dow}`
   const currentPreset = PRESETS.find(p => p.expr === expression)
 
+  // Generate human-readable description for any expression
+  const describe = () => {
+    if (currentPreset) return t(currentPreset.desc)
+    const parts: string[] = []
+    if (minute === '*' && hour === '*') {
+      if (day === '*' && month === '*' && dow === '*') return t('cronDescEveryMin')
+      parts.push(t('cronDescEveryMin'))
+    } else if (minute === '*') {
+      parts.push(t('cronDescEvery', { unit: t('cronHour')?.toLowerCase() || 'hour' }))
+    } else if (hour === '*') {
+      parts.push(t('cronDescEvery', { unit: t('cronMinute')?.toLowerCase() || 'minute' }))
+    } else {
+      const m = minute.padStart(2, '0')
+      const h = hour.padStart(2, '0')
+      parts.push(t('cronDescAtExact', { hour: h, minute: m }))
+    }
+    if (day !== '*') parts.push(t('cronDescDay', { day }))
+    if (month !== '*') parts.push(t('cronDescMonth', { month }))
+    if (dow !== '*') parts.push(t('cronDescDow', { dow: t('cronWeekPrefix') + t(dow === '0' ? 'cronSun' : dow === '1' ? 'cronMon' : dow === '2' ? 'cronTue' : dow === '3' ? 'cronWed' : dow === '4' ? 'cronThu' : dow === '5' ? 'cronFri' : 'cronSat') }))
+    if (day === '*' && month === '*' && dow === '*' && minute !== '*' && hour !== '*') {
+      return t('cronDescEveryDay') + ' ' + parts.join(' ')
+    }
+    return parts.join(' ') || t('cronDescUnknown')
+  }
+
+  const description = describe()
+
   // Warn when specific day/week/month is set but minute/hour are wildcard
   const dangerous = (day !== '*' || dow !== '*' || month !== '*') && (minute === '*' || hour === '*')
 
@@ -92,7 +119,7 @@ export default function CronBuilder() {
       <div className="p-4 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-center">
         <p className="text-xs text-text-secondary mb-1">{t('cronResult')}</p>
         <p className="text-lg font-mono font-semibold text-accent">{expression}</p>
-        {currentPreset && <p className="text-xs text-text-secondary mt-1">{t(currentPreset.desc)}</p>}
+        {description && <p className="text-xs text-text-secondary mt-1">{description}</p>}
         <div className="mt-2 flex items-center justify-center gap-2">
           <button onClick={() => { navigator.clipboard.writeText(expression); setCopied(true); setTimeout(() => setCopied(false), 2000) }}
             className="px-4 py-1.5 bg-accent text-white text-xs rounded-sm hover:opacity-90">{copied ? t('cronCopied') : t('cronCopy')}</button>

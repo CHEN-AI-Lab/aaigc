@@ -936,7 +936,16 @@
     "emojiName2B55": "Heavy Large Circle",
     "emojiName3030": "Wavy Dash",
     "cronWarning": "Warning: minute/hour set to Every with a specific day — this runs every minute on that day (1440 times)!",
-    "cronFix": "Set to 0:00"
+    "cronFix": "Set to 0:00",
+    "cronDescEveryMin": "Every minute",
+    "cronDescEvery": "Every {unit}",
+    "cronDescAt": "At {minute} past {hour}",
+    "cronDescAtExact": "At {hour}:{minute}",
+    "cronDescDay": "on day {day}",
+    "cronDescMonth": "of month {month}",
+    "cronDescDow": "on {dow}",
+    "cronDescEveryDay": "every day",
+    "cronDescUnknown": "Custom schedule"
   },
   "ui": {
     "aboutLink": "About AAIGC →",

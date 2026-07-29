@@ -936,7 +936,16 @@
     "cronUsageCmd": "crontab -e",
     "emojiDesc": "点击任意 Emoji 即可复制到剪贴板，粘贴到聊天、文档或社交媒体中使用",
     "cronWarning": "警告：分钟和小时设为每但指定了具体日期——当天每分钟执行一次（共1440次）！",
-    "cronFix": "设为 0:00"
+    "cronFix": "设为 0:00",
+    "cronDescEveryMin": "每分钟执行",
+    "cronDescEvery": "每 {unit}",
+    "cronDescAt": "{hour}:{minute}",
+    "cronDescAtExact": "{hour}:{minute}",
+    "cronDescDay": "每月 {day} 号",
+    "cronDescMonth": "{month} 月",
+    "cronDescDow": "周{dow}",
+    "cronDescEveryDay": "每天",
+    "cronDescUnknown": "自定义计划"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",

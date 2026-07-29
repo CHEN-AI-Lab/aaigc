@@ -936,7 +936,16 @@
     "cronSat": "六",
     "cronUsageCmd": "crontab -e",
     "cronWarning": "警告：分鐘和小時設為每但指定了具體日期——當天每分鐘執行一次（共1440次）！",
-    "cronFix": "設為 0:00"
+    "cronFix": "設為 0:00",
+    "cronDescEveryMin": "每分鐘執行",
+    "cronDescEvery": "每 {unit}",
+    "cronDescAt": "{hour}:{minute}",
+    "cronDescAtExact": "{hour}:{minute}",
+    "cronDescDay": "每月 {day} 號",
+    "cronDescMonth": "{month} 月",
+    "cronDescDow": "週{dow}",
+    "cronDescEveryDay": "每天",
+    "cronDescUnknown": "自訂計劃"
   },
   "ui": {
     "toolLinks": {
