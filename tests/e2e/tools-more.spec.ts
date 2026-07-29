@@ -91,7 +91,8 @@ test.describe('More tool functionality', () => {
     const textarea = page.locator('textarea').first()
     await expect(textarea).toBeVisible()
     await textarea.fill('<h1>Hello World</h1>')
-    await expect(page.locator('h1:has-text("Hello World")')).toBeVisible()
+    const frame = page.frameLocator('iframe')
+    await expect(frame.locator('h1')).toContainText('Hello World')
   })
 
   test('css minifier formats CSS', async ({ page }) => {

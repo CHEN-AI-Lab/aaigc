@@ -39,7 +39,7 @@ export default function HtmlPreview() {
       </div>
       <div className="flex flex-col gap-2">
         <span className="text-xs font-semibold text-text-secondary uppercase tracking-wider">{t('preview')}</span>
-        <div className="flex-1 min-h-[400px] p-3 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm" dangerouslySetInnerHTML={{ __html: html }} />
+        <iframe sandbox="allow-scripts" srcDoc={html} className="w-full flex-1 min-h-[400px] bg-white border border-[rgba(127,99,21,0.15)] rounded-sm" />
       </div>
     </div>
   )

@@ -285,4 +285,30 @@ test.describe('Tool edge cases & error handling', () => {
     const output = page.locator('textarea[readonly]')
     await expect(output).toContainText('HELLO WORLD 123 !@#')
   })
+
+  // ─── HTML Preview ───
+
+  test('html preview handles empty input', async ({ page }) => {
+    await page.goto('/en/tools/html-preview')
+    await page.locator('textarea').first().fill('')
+    const frame = page.frameLocator('iframe')
+    await expect(frame.locator('body')).toBeAttached()
+  })
+
+  test('html preview CSS does not leak to main page', async ({ page }) => {
+    await page.goto('/en/tools/html-preview')
+    await page.locator('textarea').first().fill('<style>body { background: red !important; }</style><p>test</p>')
+    const frame = page.frameLocator('iframe')
+    await expect(frame.locator('p')).toContainText('test')
+    // Main page body should not be red
+    const bodyBg = await page.locator('body').evaluate(el => window.getComputedStyle(el).backgroundColor)
+    expect(bodyBg).not.toBe('rgb(255, 0, 0)')
+  })
+
+  test('html preview renders Chinese characters', async ({ page }) => {
+    await page.goto('/en/tools/html-preview')
+    await page.locator('textarea').first().fill('<p>你好世界</p>')
+    const frame = page.frameLocator('iframe')
+    await expect(frame.locator('p')).toContainText('你好世界')
+  })
 })
