@@ -66,7 +66,7 @@ export default function PasswordGenerator() {
         <div className="space-y-2">
           <div className="relative">
             <textarea readOnly value={password} className="w-full h-16 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary resize-none" />
-            <button onClick={() => navigator.clipboard.writeText(password)} className="absolute top-2 right-2 text-xs px-2 py-1 bg-accent text-white rounded-sm hover:opacity-90 min-w-[4.5rem] text-center">{t('copy')}</button>
+            <button onClick={() => navigator.clipboard.writeText(password)} className="absolute top-2 right-6 text-xs px-2 py-1 bg-accent text-white rounded-sm hover:opacity-90 min-w-[4.5rem] text-center">{t('copy')}</button>
           </div>
           <div className="flex items-center gap-3">
             <div className="flex-1 h-2 bg-surface rounded-full overflow-hidden">

@@ -175,12 +175,32 @@ test.describe('More tool functionality', () => {
 
   // ─── Security Tools ───
 
-  test('markdown preview renders markdown', async ({ page }) => {
+  test('markdown preview renders multiple formats', async ({ page }) => {
     await page.goto('/en/tools/markdown-preview')
     const textarea = page.locator('textarea').first()
     await expect(textarea).toBeVisible()
-    await textarea.fill('# Hello World')
+
+    // Fill with sample markdown that covers all features
+    await textarea.fill('# Hello World\n\n**Bold** *italic* `code`\n\n- List item\n\n> Blockquote')
+
+    // Rendered tab (default)
     await expect(page.locator('h1:has-text("Hello World")')).toBeVisible()
+    await expect(page.locator('strong:has-text("Bold")')).toBeVisible()
+
+    // HTML Source tab
+    await page.locator('button:has-text("HTML Source")').click()
+    await expect(page.locator('pre').first()).toContainText('<h1>')
+
+    // Plain Text tab
+    await page.locator('button:has-text("Plain Text")').click()
+    await expect(page.locator('pre').first()).toContainText('Hello World')
+    await expect(page.locator('pre').first()).not.toContainText('**Bold**')
+
+    // Stats tab
+    await page.locator('button:has-text("Stats")').click()
+    await expect(page.locator('text=Characters').first()).toBeVisible()
+    await expect(page.locator('text=Lines').first()).toBeVisible()
+    await expect(page.locator('text=Reading time').first()).toBeVisible()
   })
 
   // ─── Network Tools ───

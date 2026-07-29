@@ -30,7 +30,7 @@ export default function UuidGenerator() {
       {uuid && (
         <div className="relative">
           <textarea readOnly value={uuid} className="w-full h-36 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary resize-none" />
-          <button onClick={() => navigator.clipboard.writeText(uuid)} className="absolute top-2 right-2 text-xs px-2 py-1 bg-accent text-white rounded-sm hover:opacity-90 min-w-[4.5rem] text-center">{t('copy')}</button>
+          <button onClick={() => navigator.clipboard.writeText(uuid)} className="absolute top-2 right-6 text-xs px-2 py-1 bg-accent text-white rounded-sm hover:opacity-90 min-w-[4.5rem] text-center">{t('copy')}</button>
         </div>
       )}
     </div>
