@@ -32,27 +32,30 @@ export default function CronBuilder() {
   // Generate human-readable description for any expression
   const describe = () => {
     if (currentPreset) return t(currentPreset.desc)
-    const parts: string[] = []
-    if (minute === '*' && hour === '*') {
-      if (day === '*' && month === '*' && dow === '*') return t('cronDescEveryMin')
-      parts.push(t('cronDescEveryMin'))
-    } else if (minute !== '*' && hour !== '*') {
-      parts.push(`${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`)
-    } else if (hour === '*') {
-      parts.push(t('cronDescAt', { minute, hour: t('cronEvery') + t('cronUnitHour') }))
-    } else {
-      parts.push(t('cronDescAt', { minute: t('cronEvery') + t('cronUnitMin'), hour }))
-    }
-    if (day !== '*') parts.push(t('cronDescDay', { day }))
-    if (month !== '*') parts.push(t('cronDescMonth', { month }))
+    const dateParts: string[] = []
+    const timeParts: string[] = []
+
+    // Date parts (in natural order)
+    if (month !== '*') dateParts.push(t('cronDescMonth', { month }))
+    if (day !== '*') dateParts.push(t('cronDescDay', { day }))
     if (dow !== '*') {
       const dowNames = ['cronSun','cronMon','cronTue','cronWed','cronThu','cronFri','cronSat']
-      parts.push(t('cronDescDow', { dow: t('cronWeekPrefix') + t(dowNames[parseInt(dow)] || 'cronSun') }))
+      dateParts.push(t('cronDescDow', { dow: t('cronWeekPrefix') + t(dowNames[parseInt(dow)] || 'cronSun') }))
     }
-    if (day === '*' && month === '*' && dow === '*' && minute !== '*' && hour !== '*') {
-      return t('cronDescEveryDay') + ' ' + parts.join(' ')
+    if (dateParts.length === 0) dateParts.push(t('cronDescEveryDay'))
+
+    // Time parts
+    if (minute === '*' && hour === '*') {
+      timeParts.push(t('cronDescEveryMin'))
+    } else if (minute !== '*' && hour !== '*') {
+      timeParts.push(`${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`)
+    } else if (hour === '*') {
+      timeParts.push(t('cronDescAt', { minute, hour: t('cronEvery') + t('cronUnitHour') }))
+    } else {
+      timeParts.push(t('cronDescAt', { minute: t('cronEvery') + t('cronUnitMin'), hour }))
     }
-    return parts.join(' ') || t('cronDescUnknown')
+
+    return timeParts.join(' ') + ' ' + dateParts.join(' ') || t('cronDescUnknown')
   }
 
   const description = describe()
