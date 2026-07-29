@@ -120,10 +120,10 @@ export default function EmojiPicker() {
   const isCn = locale.startsWith('zh')
 
   const emojiName = (item: { emoji: string; name: string }) => {
-    if (isCn) {
+    if (locale !== 'en') {
       const hex = item.emoji.codePointAt(0)?.toString(16).toUpperCase() || ''
-      const cn = t('emojiName' + hex)
-      if (cn && !cn.startsWith('emojiName')) return cn
+      const localized = t('emojiName' + hex)
+      if (localized && !localized.startsWith('emojiName')) return localized
     }
     return item.name
   }
