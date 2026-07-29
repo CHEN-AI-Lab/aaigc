@@ -44,6 +44,18 @@ const toolModules: Record<string, React.LazyExoticComponent<React.ComponentType>
   'emoji-picker': lazy(() => import('./tools/EmojiPicker')),
 }
 
+function LoadingFallback() {
+  const tu = useTranslations('ui')
+  return (
+    <div className="flex items-center justify-center h-64 text-text-secondary">
+      <div className="flex flex-col items-center gap-3">
+        <div className="w-6 h-6 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
+        <span className="text-sm">{tu('loading')}</span>
+      </div>
+    </div>
+  )
+}
+
 export default function ToolPageClient({ slug }: Props) {
   const t = useTranslations('tools')
   const tu = useTranslations('ui')
@@ -64,11 +76,7 @@ export default function ToolPageClient({ slug }: Props) {
           {t(`${slug}.name`)}
         </h1>
         <div className="min-h-[400px]">
-          <Suspense fallback={
-            <div className="flex items-center justify-center h-64 text-text-secondary">
-              {tu('loading')}
-            </div>
-          }>
+          <Suspense fallback={<LoadingFallback />}>
             {Component && <Component />}
           </Suspense>
         </div>
