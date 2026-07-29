@@ -8,6 +8,12 @@ const PRESETS = [
   { label: 'cronPreset2', desc: 'cronDesc2', expr: '0 9 * * 1-5' },
   { label: 'cronPreset3', desc: 'cronDesc3', expr: '*/5 * * * *' },
   { label: 'cronPreset4', desc: 'cronDesc4', expr: '0 0 1 * *' },
+  { label: 'cronPreset5', desc: 'cronDesc5', expr: '* * * * *' },
+  { label: 'cronPreset6', desc: 'cronDesc6', expr: '*/10 * * * *' },
+  { label: 'cronPreset7', desc: 'cronDesc7', expr: '0 */2 * * *' },
+  { label: 'cronPreset8', desc: 'cronDesc8', expr: '0 0 * * *' },
+  { label: 'cronPreset9', desc: 'cronDesc9', expr: '0 0 * * 1' },
+  { label: 'cronPreset10', desc: 'cronDesc10', expr: '0 0 15 * *' },
 ]
 
 const DOW = ['cronSun', 'cronMon', 'cronTue', 'cronWed', 'cronThu', 'cronFri', 'cronSat']

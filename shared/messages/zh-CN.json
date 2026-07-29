@@ -950,7 +950,19 @@
     "cronUnitHour": "小时",
     "cronDescAtTime": "{hour}:{minute}",
     "cronDescAtMin": "每小时的 {minute} 分",
-    "cronDescAtHour": "每小时的第 {hour} 时"
+    "cronDescAtHour": "每小时的第 {hour} 时",
+    "cronPreset5": "每分钟",
+    "cronPreset6": "每10分钟",
+    "cronPreset7": "每2小时",
+    "cronPreset8": "每天0点",
+    "cronPreset9": "每周一",
+    "cronPreset10": "每月15号",
+    "cronDesc5": "每分钟执行一次",
+    "cronDesc6": "每10分钟执行一次",
+    "cronDesc7": "每2小时执行一次",
+    "cronDesc8": "每天午夜0点执行",
+    "cronDesc9": "每周一午夜执行",
+    "cronDesc10": "每月15号午夜执行"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",

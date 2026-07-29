@@ -950,7 +950,19 @@
     "cronDescMonth": "{month} 月",
     "cronDescDow": "{dow}",
     "cronDescEveryDay": "每天",
-    "cronDescAtTime": "{hour}:{minute}"
+    "cronDescAtTime": "{hour}:{minute}",
+    "cronPreset5": "每分鐘",
+    "cronPreset6": "每10分鐘",
+    "cronPreset7": "每2小時",
+    "cronPreset8": "每天0點",
+    "cronPreset9": "每週一",
+    "cronPreset10": "每月15號",
+    "cronDesc5": "每分鐘執行一次",
+    "cronDesc6": "每10分鐘執行一次",
+    "cronDesc7": "每2小時執行一次",
+    "cronDesc8": "每天午夜0點執行",
+    "cronDesc9": "每週一午夜執行",
+    "cronDesc10": "每月15號午夜執行"
   },
   "ui": {
     "toolLinks": {

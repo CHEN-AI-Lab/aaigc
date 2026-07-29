@@ -266,7 +266,8 @@
       "description": "テキストの大文字/小文字/タイトルケースを変換"
     },
     "lorem-ipsum": {
-      "description": "プレースホルダーテキストを生成"
+      "description": "プレースホルダーテキストを生成",
+      "name": "Lorem Ipsum"
     },
     "text-to-slug": {
       "name": "テキスト→スラグ変換",
@@ -949,7 +950,19 @@
     "hex": "HEX",
     "ipIsp": "ISP",
     "tabBmi": "BMI",
-    "usageCdn": "CDN"
+    "usageCdn": "CDN",
+    "cronPreset5": "毎分",
+    "cronPreset6": "10分ごと",
+    "cronPreset7": "2時間ごと",
+    "cronPreset8": "毎日0時",
+    "cronPreset9": "毎週月曜",
+    "cronPreset10": "毎月15日",
+    "cronDesc5": "毎分実行",
+    "cronDesc6": "10分ごとに実行",
+    "cronDesc7": "2時間ごとに実行",
+    "cronDesc8": "毎日午前0時に実行",
+    "cronDesc9": "毎週月曜午前0時に実行",
+    "cronDesc10": "毎月15日午前0時に実行"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

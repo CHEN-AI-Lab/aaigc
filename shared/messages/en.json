@@ -950,7 +950,19 @@
     "cronUnitHour": "hour",
     "cronDescAtTime": "At {hour}:{minute}",
     "cronDescAtMin": "Minute {minute} of every hour",
-    "cronDescAtHour": "Every minute of hour {hour}"
+    "cronDescAtHour": "Every minute of hour {hour}",
+    "cronPreset5": "Every minute",
+    "cronPreset6": "Every 10 min",
+    "cronPreset7": "Every 2 hours",
+    "cronPreset8": "Daily 0:00",
+    "cronPreset9": "Weekly Mon",
+    "cronPreset10": "Monthly 15th",
+    "cronDesc5": "Runs every minute",
+    "cronDesc6": "Runs every 10 minutes",
+    "cronDesc7": "Runs every 2 hours",
+    "cronDesc8": "Runs at midnight every day",
+    "cronDesc9": "Runs at midnight every Monday",
+    "cronDesc10": "Runs at midnight on the 15th"
   },
   "ui": {
     "aboutLink": "About AAIGC →",

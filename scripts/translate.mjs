@@ -1536,13 +1536,10 @@ Rules:
   const lines = result.split("\n").filter(Boolean)
 
   for (const line of lines) {
-    // 优先用 ": "（冒号+空格）分割，key 不含空格所以第一个 ": " 就是分隔符
-    // 如果 AI 没加空格，fallback 到 ":"
-    let sepIdx = line.indexOf(": ")
-    if (sepIdx === -1) sepIdx = line.indexOf(":")
-    if (sepIdx === -1) continue
-    const key = line.substring(0, sepIdx).trim()
-    const value = line.substring(sepIdx + (line[sepIdx + 1] === " " ? 2 : 1)).trim()
+    const colonIdx = line.indexOf(":")
+    if (colonIdx === -1) continue
+    const key = line.substring(0, colonIdx).trim()
+    const value = line.substring(colonIdx + 1).trim()
     if (key && value) {
       // 尝试解析 JSON 数组（AI 返回的数组格式）
       let parsedValue
