@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi } from 'vitest'
-import { render } from '@testing-library/react'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { render, cleanup } from '@testing-library/react'
 import React from 'react'
 
 vi.mock('next-intl', () => {
@@ -17,6 +17,8 @@ vi.mock('next/navigation', () => ({
 }))
 
 describe('Calculator', () => {
+  beforeEach(() => cleanup())
+
   it('renders the calculator component', async () => {
     const Calculator = (await import('../../../apps/web/src/components/tools/Calculator')).default
     const { container } = render(React.createElement(Calculator))

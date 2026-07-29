@@ -1,5 +1,8 @@
 import { defineConfig, devices } from '@playwright/test'
 
+const CHROMIUM_PATH = process.env.PLAYWRIGHT_CHROMIUM_PATH ||
+  '/home/ubuntu/.cloakbrowser/chromium-146.0.7680.177.5/chrome'
+
 export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: true,
@@ -12,8 +15,14 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   projects: [
-    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
-    // Uncomment and install browsers (npx playwright install firefox webkit) to enable:
+    {
+      name: 'chromium',
+      use: {
+        ...devices['Desktop Chrome'],
+        launchOptions: { executablePath: CHROMIUM_PATH },
+      },
+    },
+    // Install additional browsers (npx playwright install firefox webkit) to enable:
     // { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
     // { name: 'webkit', use: { ...devices['Desktop Safari'] } },
     // { name: 'Mobile Chrome', use: { ...devices['Pixel 5'] } },

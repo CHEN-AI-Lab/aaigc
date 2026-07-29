@@ -7,6 +7,13 @@ export default defineConfig({
     environment: 'node',
     setupFiles: ['./tests/setup.ts'],
     css: true,
+    // WSL 资源限制：单 fork 模式，避免撑爆 CPU/内存
+    pool: 'forks',
+    poolOptions: {
+      forks: { singleFork: true },
+    },
+    maxWorkers: 1,
+    maxConcurrency: 5,
   },
   resolve: {
     alias: {
