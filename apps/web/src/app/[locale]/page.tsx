@@ -15,7 +15,7 @@ export default async function HomePage({ params }: Props) {
   const tt = await getTranslations({ locale, namespace: 'tools' })
 
   const featuredProducts = products.slice(0, 4)
-  const popularTools = ['json-formatter', 'timestamp', 'qrcode', 'base64', 'regex-tester', 'markdown-preview', 'color-picker', 'text-diff']
+  const popularTools = ['json-formatter', 'base64', 'qrcode', 'timestamp', 'password-generator', 'calculator', 'word-counter', 'url-encode', 'markdown-preview', 'color-picker', 'regex-tester', 'ip-lookup']
 
   return (
     <div>

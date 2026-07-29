@@ -1,8 +1,10 @@
 'use client'
 
-import { useState, useCallback, useRef, useMemo } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import { useTranslations } from 'next-intl'
 import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import remarkBreaks from 'remark-breaks'
 import { unified } from 'unified'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
@@ -60,13 +62,14 @@ export default function MarkdownPreview() {
   const t = useTranslations('tools')
   const [input, setInput] = useState(DEFAULT_MARKDOWN)
   const [activeTab, setActiveTab] = useState<PreviewTab>('rendered')
-  const downloadRef = useRef<HTMLAnchorElement>(null)
 
   // Convert Markdown to HTML string
   const htmlString = useMemo(() => {
     try {
       const file = unified()
         .use(remarkParse)
+        .use(remarkGfm)
+        .use(remarkBreaks)
         .use(remarkRehype)
         .use(rehypeStringify)
         .processSync(input)
@@ -178,8 +181,8 @@ export default function MarkdownPreview() {
 
           <div className="flex-1 min-h-[500px] overflow-y-auto p-3 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
             {activeTab === 'rendered' && (
-              <div className="prose prose-sm max-w-none">
-                <ReactMarkdown>{input}</ReactMarkdown>
+              <div className="prose prose-sm max-w-none [&_blockquote]:!border-l-2 [&_blockquote]:!border-accent/30 [&_blockquote]:!pl-4 [&_blockquote]:!italic [&_blockquote]:!text-text-secondary [&_blockquote_p::before]:!content-none [&_blockquote_p::after]:!content-none [&_pre]:!text-sm [&_code]:!text-sm">
+                <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{input}</ReactMarkdown>
               </div>
             )}
 
