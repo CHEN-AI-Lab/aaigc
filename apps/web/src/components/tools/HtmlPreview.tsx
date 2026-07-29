@@ -6,16 +6,24 @@ import { useTranslations } from 'next-intl'
 const DEFAULT_HTML = `<!DOCTYPE html>
 <html>
 <head>
-  <title>Demo</title>
+  <title>My Page</title>
   <style>
-    body { font-family: sans-serif; padding: 2rem; background: #f5f5f5; }
-    h1 { color: #333; }
-    p { color: #666; line-height: 1.6; }
+    body { margin: 0; font-family: sans-serif; }
+    header { background: #333; color: #fff; padding: 1rem 2rem; }
+    header h1 { margin: 0; font-size: 1.2rem; }
+    main { padding: 2rem; max-width: 640px; margin: 0 auto; }
+    main h2 { color: #333; }
+    main p { color: #666; line-height: 1.6; }
+    footer { background: #f0f0f0; text-align: center; padding: 1rem; font-size: 0.8rem; color: #999; }
   </style>
 </head>
 <body>
-  <h1>Hello</h1>
-  <p>Edit the HTML code on the left to see live preview here.</p>
+  <header><h1>My Website</h1></header>
+  <main>
+    <h2>Welcome</h2>
+    <p>This is a simple webpage preview. Edit the HTML code on the left to see changes here.</p>
+  </main>
+  <footer>&copy; 2025</footer>
 </body>
 </html>`
 
