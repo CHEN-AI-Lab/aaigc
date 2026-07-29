@@ -1,21 +1,110 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
-/* ─── Mistral warm color palette ─── */
-
+/* ─── @theme: register custom colors with Tailwind v4 so utility classes are generated ─── */
 @theme {
-  --color-bg: #fffaeb;
-  --color-surface: #fff0c2;
-  --color-accent: #fa520f;
-  --color-accent-light: #ffa110;
-  --color-accent-gradient: linear-gradient(180deg, #ffd900, #ffe295, #ffa110, #ff8105, #fb6424, #fa520f);
-  --color-text-primary: #1f1f1f;
-  --color-text-secondary: #767d88;
-  --color-dark: #1f1f1f;
+  --color-bg: #f6f9f4;
+  --color-surface: #eef5ea;
+  --color-card: #ffffff;
+  --color-hover: rgba(0, 0, 0, 0.05);
+  --color-border: rgba(127, 99, 21, 0.15);
+  --color-accent: #2d6b2d;
+  --color-accent-light: #4a8a4a;
+  --color-error: #dc2626;
+  --color-text-primary: #1e2a1e;
+  --color-text-secondary: #4a6b4a;
+  --color-dark: #1e2a1e;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
-/* ─── Base styles ─── */
+/* ─── Default theme: 苔绿 (#8) ─── */
+:root,
+.theme-8 {
+  --color-bg: #f6f9f4;
+  --color-surface: #eef5ea;
+  --color-card: #ffffff;
+  --color-hover: rgba(0, 0, 0, 0.05);
+  --color-border: rgba(127, 99, 21, 0.15);
+  --color-accent: #2d6b2d;
+  --color-accent-light: #4a8a4a;
+  --color-error: #dc2626;
+  --color-text-primary: #1e2a1e;
+  --color-text-secondary: #4a6b4a;
+  --color-dark: #1e2a1e;
+  --color-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --color-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
 
+/* ─── Theme 12: 暖沙陶土 ─── */
+.theme-12 {
+  --color-bg: #faf6ee;
+  --color-surface: #f5ede0;
+  --color-card: #ffffff;
+  --color-hover: rgba(0, 0, 0, 0.05);
+  --color-border: rgba(127, 99, 21, 0.15);
+  --color-accent: #a0522d;
+  --color-accent-light: #c07050;
+  --color-error: #dc2626;
+  --color-text-primary: #2d2818;
+  --color-text-secondary: #6b5d4a;
+  --color-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --color-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --color-dark: #2d2818;
+}
+
+/* ─── Theme 11: 石板蓝+青绿 ─── */
+.theme-11 {
+  --color-bg: #f4f6f8;
+  --color-surface: #eef1f5;
+  --color-card: #ffffff;
+  --color-hover: rgba(0, 0, 0, 0.05);
+  --color-border: rgba(127, 99, 21, 0.15);
+  --color-accent: #0d9488;
+  --color-accent-light: #14b8a6;
+  --color-error: #dc2626;
+  --color-text-primary: #1e293b;
+  --color-text-secondary: #475569;
+  --color-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --color-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --color-dark: #1e293b;
+}
+
+/* ─── Theme 4: 深色模式 ─── */
+.theme-4 {
+  --color-bg: #0a0a0a;
+  --color-surface: #1a1a1a;
+  --color-card: #222222;
+  --color-hover: rgba(255, 255, 255, 0.08);
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-accent: #38bdf8;
+  --color-accent-light: #7dd3fc;
+  --color-error: #f87171;
+  --color-text-primary: #f0f0f0;
+  --color-text-secondary: #999999;
+  --color-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --color-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --color-dark: #2a2a2a;
+}
+
+/* ─── Theme 6: 极简灰 ─── */
+.theme-6 {
+  --color-bg: #fafafa;
+  --color-surface: #f0f0f0;
+  --color-card: #ffffff;
+  --color-hover: rgba(0, 0, 0, 0.05);
+  --color-border: rgba(0, 0, 0, 0.1);
+  --color-accent: #111111;
+  --color-accent-light: #444444;
+  --color-error: #dc2626;
+  --color-text-primary: #111111;
+  --color-text-secondary: #666666;
+  --color-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --color-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --color-dark: #111111;
+}
+
+/* ─── Base styles ─── */
 body {
   font-family: var(--font-sans);
   background-color: var(--color-bg);
@@ -25,33 +114,28 @@ body {
 }
 
 /* ─── Typography ─── */
-
 .display-hero {
   font-size: 56px;
-  line-height: 1.0;
+  line-height: 1;
   letter-spacing: -1.4px;
   font-weight: 400;
 }
-
 .section-title {
   font-size: 36px;
   line-height: 1.1;
   letter-spacing: -0.9px;
   font-weight: 400;
 }
-
 .card-title {
   font-size: 24px;
   line-height: 1.3;
   font-weight: 500;
 }
-
 .body-text {
   font-size: 16px;
   line-height: 1.5;
   font-weight: 400;
 }
-
 .label-text {
   font-size: 14px;
   line-height: 1.4;
@@ -59,8 +143,6 @@ body {
   font-weight: 500;
   text-transform: uppercase;
 }
-
-/* ─── Responsive typography ─── */
 
 @media (max-width: 768px) {
   .display-hero {

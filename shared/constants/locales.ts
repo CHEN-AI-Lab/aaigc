@@ -1,6 +1,6 @@
 import type { Locale } from '../types'
 
-export const locales = ['zh-CN', 'en'] as const
+export const locales = ['en', 'zh-CN', 'zh-TW', 'ja'] as const
 export const defaultLocale: Locale = 'en'
 
 export function isLocale(value: string): value is Locale {
@@ -8,6 +8,8 @@ export function isLocale(value: string): value is Locale {
 }
 
 export const localeNames: Record<Locale, string> = {
-  'zh-CN': '中文',
+  'zh-CN': '简体中文',
   'en': 'English',
+  'ja': '日本語',
+  'zh-TW': '繁體中文',
 }

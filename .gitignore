@@ -7,3 +7,8 @@ dist
 .env.production
 .DS_Store
 *.log
+.vercel
+# Test artifacts
+test-results/
+playwright-report/
+coverage/

@@ -1,6 +1,6 @@
 // ─── Locale ────────────────────────────────────
 
-export type Locale = 'zh-CN' | 'en'
+export type Locale = 'zh-CN' | 'en' | 'ja' | 'zh-TW'
 
 // ─── Product status ────────────────────────────
 
@@ -10,26 +10,17 @@ export type ProductStatus = 'live' | 'beta' | 'wip' | 'planned'
 
 export interface Product {
   id: string
-  name: string
-  nameEn: string
-  description: string
-  descriptionEn: string
   icon: string
-  screenshot?: string
-  tags: string[]
   status: ProductStatus
-  url: string
-  features: string[]
-  featuresEn: string[]
+  url?: string
 }
 
 // ─── Tool category ─────────────────────────────
 
-export type ToolCategoryId = 'dev' | 'text' | 'time' | 'image' | 'convert'
+export type ToolCategoryId = 'dev' | 'text' | 'time' | 'image' | 'convert' | 'security' | 'math' | 'network' | 'other'
 
 export interface CategoryInfo {
   id: ToolCategoryId
-  name: string
   nameEn: string
   icon: string
   order: number

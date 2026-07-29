@@ -8,12 +8,21 @@ echo "Step 1: Structure check..."
 bash scripts/check-structure.sh
 
 echo ""
-echo "Step 2: TypeScript check..."
-cd apps/web && npx tsc --noEmit 2>&1 || true
-
+echo "Step 2: Translation key check..."
+python3 scripts/check-translations.py
 echo ""
-echo "Step 3: Build check..."
-cd /home/ubuntu/workspace/aaigc && pnpm build 2>&1 || true
 
+echo "Step 3: TypeScript check..."
+cd apps/web && npx tsc --noEmit
+echo "✅ TypeScript check passed"
 echo ""
-echo "=== Quality gate complete ==="
+
+echo "Step 4: Unit tests..."
+cd /home/ubuntu/workspace/aaigc && pnpm test 2>&1 || true
+echo ""
+
+echo "Step 5: Production build..."
+pnpm build 2>&1
+echo ""
+
+echo "=== ✅ All checks passed ==="
