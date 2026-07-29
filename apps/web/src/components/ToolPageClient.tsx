@@ -1,47 +1,11 @@
 'use client'
 
-import { lazy, Suspense } from 'react'
+import dynamic from 'next/dynamic'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 
 type Props = {
   slug: string
-}
-
-const toolModules: Record<string, React.LazyExoticComponent<React.ComponentType>> = {
-  'url-encode': lazy(() => import('./tools/UrlEncoder')),
-  'base64': lazy(() => import('./tools/Base64Codec')),
-  'word-counter': lazy(() => import('./tools/WordCounter')),
-  'html-entities': lazy(() => import('./tools/HtmlEntities')),
-  'timestamp': lazy(() => import('./tools/TimestampConverter')),
-  'color-picker': lazy(() => import('./tools/ColorPicker')),
-  'json-formatter': lazy(() => import('./tools/JsonFormatter')),
-  'regex-tester': lazy(() => import('./tools/RegexTester')),
-  'jwt-decoder': lazy(() => import('./tools/JwtDecoder')),
-  'date-calculator': lazy(() => import('./tools/DateCalculator')),
-  'qrcode': lazy(() => import('./tools/QrCodeGenerator')),
-  'markdown-preview': lazy(() => import('./tools/MarkdownPreview')),
-  'yaml-json': lazy(() => import('./tools/YamlJsonConverter')),
-  'text-diff': lazy(() => import('./tools/TextDiff')),
-  'uuid-generator': lazy(() => import('./tools/UuidGenerator')),
-  'html-preview': lazy(() => import('./tools/HtmlPreview')),
-  'case-converter': lazy(() => import('./tools/CaseConverter')),
-  'lorem-ipsum': lazy(() => import('./tools/LoremIpsum')),
-  'password-generator': lazy(() => import('./tools/PasswordGenerator')),
-  'image-to-base64': lazy(() => import('./tools/ImageToBase64')),
-  'number-base': lazy(() => import('./tools/NumberBaseConverter')),
-  'css-minifier': lazy(() => import('./tools/CssMinifier')),
-  'json-to-csv': lazy(() => import('./tools/JsonToCsv')),
-  'text-to-slug': lazy(() => import('./tools/TextToSlug')),
-  'list-sorter': lazy(() => import('./tools/ListSorter')),
-  'calculator': lazy(() => import('./tools/Calculator')),
-  'ip-lookup': lazy(() => import('./tools/IpLookup')),
-  'dns-lookup': lazy(() => import('./tools/DnsLookup')),
-  'http-status-codes': lazy(() => import('./tools/HttpStatusCodes')),
-  'user-agent-parser': lazy(() => import('./tools/UserAgentParser')),
-  'random-generator': lazy(() => import('./tools/RandomGenerator')),
-  'cron-builder': lazy(() => import('./tools/CronBuilder')),
-  'emoji-picker': lazy(() => import('./tools/EmojiPicker')),
 }
 
 function LoadingFallback() {
@@ -54,6 +18,42 @@ function LoadingFallback() {
       </div>
     </div>
   )
+}
+
+const toolModules: Record<string, ReturnType<typeof dynamic>> = {
+  'url-encode': dynamic(() => import('./tools/UrlEncoder'), { ssr: false, loading: LoadingFallback }),
+  'base64': dynamic(() => import('./tools/Base64Codec'), { ssr: false, loading: LoadingFallback }),
+  'word-counter': dynamic(() => import('./tools/WordCounter'), { ssr: false, loading: LoadingFallback }),
+  'html-entities': dynamic(() => import('./tools/HtmlEntities'), { ssr: false, loading: LoadingFallback }),
+  'timestamp': dynamic(() => import('./tools/TimestampConverter'), { ssr: false, loading: LoadingFallback }),
+  'color-picker': dynamic(() => import('./tools/ColorPicker'), { ssr: false, loading: LoadingFallback }),
+  'json-formatter': dynamic(() => import('./tools/JsonFormatter'), { ssr: false, loading: LoadingFallback }),
+  'regex-tester': dynamic(() => import('./tools/RegexTester'), { ssr: false, loading: LoadingFallback }),
+  'jwt-decoder': dynamic(() => import('./tools/JwtDecoder'), { ssr: false, loading: LoadingFallback }),
+  'date-calculator': dynamic(() => import('./tools/DateCalculator'), { ssr: false, loading: LoadingFallback }),
+  'qrcode': dynamic(() => import('./tools/QrCodeGenerator'), { ssr: false, loading: LoadingFallback }),
+  'markdown-preview': dynamic(() => import('./tools/MarkdownPreview'), { ssr: false, loading: LoadingFallback }),
+  'yaml-json': dynamic(() => import('./tools/YamlJsonConverter'), { ssr: false, loading: LoadingFallback }),
+  'text-diff': dynamic(() => import('./tools/TextDiff'), { ssr: false, loading: LoadingFallback }),
+  'uuid-generator': dynamic(() => import('./tools/UuidGenerator'), { ssr: false, loading: LoadingFallback }),
+  'html-preview': dynamic(() => import('./tools/HtmlPreview'), { ssr: false, loading: LoadingFallback }),
+  'case-converter': dynamic(() => import('./tools/CaseConverter'), { ssr: false, loading: LoadingFallback }),
+  'lorem-ipsum': dynamic(() => import('./tools/LoremIpsum'), { ssr: false, loading: LoadingFallback }),
+  'password-generator': dynamic(() => import('./tools/PasswordGenerator'), { ssr: false, loading: LoadingFallback }),
+  'image-to-base64': dynamic(() => import('./tools/ImageToBase64'), { ssr: false, loading: LoadingFallback }),
+  'number-base': dynamic(() => import('./tools/NumberBaseConverter'), { ssr: false, loading: LoadingFallback }),
+  'css-minifier': dynamic(() => import('./tools/CssMinifier'), { ssr: false, loading: LoadingFallback }),
+  'json-to-csv': dynamic(() => import('./tools/JsonToCsv'), { ssr: false, loading: LoadingFallback }),
+  'text-to-slug': dynamic(() => import('./tools/TextToSlug'), { ssr: false, loading: LoadingFallback }),
+  'list-sorter': dynamic(() => import('./tools/ListSorter'), { ssr: false, loading: LoadingFallback }),
+  'calculator': dynamic(() => import('./tools/Calculator'), { ssr: false, loading: LoadingFallback }),
+  'ip-lookup': dynamic(() => import('./tools/IpLookup'), { ssr: false, loading: LoadingFallback }),
+  'dns-lookup': dynamic(() => import('./tools/DnsLookup'), { ssr: false, loading: LoadingFallback }),
+  'http-status-codes': dynamic(() => import('./tools/HttpStatusCodes'), { ssr: false, loading: LoadingFallback }),
+  'user-agent-parser': dynamic(() => import('./tools/UserAgentParser'), { ssr: false, loading: LoadingFallback }),
+  'random-generator': dynamic(() => import('./tools/RandomGenerator'), { ssr: false, loading: LoadingFallback }),
+  'cron-builder': dynamic(() => import('./tools/CronBuilder'), { ssr: false, loading: LoadingFallback }),
+  'emoji-picker': dynamic(() => import('./tools/EmojiPicker'), { ssr: false, loading: LoadingFallback }),
 }
 
 export default function ToolPageClient({ slug }: Props) {
@@ -76,9 +76,7 @@ export default function ToolPageClient({ slug }: Props) {
           {t(`${slug}.name`)}
         </h1>
         <div className="min-h-[400px]">
-          <Suspense fallback={<LoadingFallback />}>
-            {Component && <Component />}
-          </Suspense>
+          {Component && <Component />}
         </div>
       </div>
     </div>

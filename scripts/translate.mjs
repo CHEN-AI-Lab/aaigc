@@ -202,12 +202,6 @@ function normalizeSource(text) {
 }
 
 /**
- * 检查目标翻译文件是否已完整（file exists + all keys present）
- * @param {string} sourceFile - 源语言文件路径
- * @param {string} targetFile - 目标语言文件路径
- * @returns {{ exists: boolean, complete: boolean, sourceCount: number, targetCount: number }}
- */
-/**
  * 检查目标翻译文件是否已完整（file exists + all keys present + 没有英文占位符）
  * @param {string} sourceFile - 源语言文件路径
  * @param {string} targetFile - 目标语言文件路径
