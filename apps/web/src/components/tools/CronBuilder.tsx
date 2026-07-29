@@ -29,6 +29,9 @@ export default function CronBuilder() {
   const expression = `${minute} ${hour} ${day} ${month} ${dow}`
   const currentPreset = PRESETS.find(p => p.expr === expression)
 
+  // Warn when specific day/week/month is set but minute/hour are wildcard
+  const dangerous = (day !== '*' || dow !== '*' || month !== '*') && (minute === '*' || hour === '*')
+
   return (
     <div className="mt-6 space-y-4">
       <div className="p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-xs text-text-secondary leading-relaxed">
@@ -49,6 +52,14 @@ export default function CronBuilder() {
             title={t(p.desc)}>{t(p.label)}</button>
         ))}
       </div>
+
+      {dangerous && (
+        <div className="p-3 bg-red-50 border border-red-200 rounded-sm text-xs text-red-700 leading-relaxed">
+          <p className="font-semibold mb-1">⚠️ {t('cronWarning')}</p>
+          <button onClick={() => { setMinute('0'); setHour('0') }}
+            className="mt-1 px-3 py-1 bg-red-500 text-white rounded-sm hover:opacity-90">{t('cronFix')}</button>
+        </div>
+      )}
 
       <div className="grid grid-cols-5 gap-3">
         <div><label className="text-xs text-text-secondary block mb-1">{t('cronMinute')}</label>

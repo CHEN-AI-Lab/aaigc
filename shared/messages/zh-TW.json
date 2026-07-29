@@ -35,22 +35,38 @@
   "products": {
     "cookmate": {
       "description": "AI 智慧食譜與餐食規劃平台。輸入食材，AI 自動生成菜譜，支援週計劃、購物清單、飲食定製。",
-      "features": "AI 菜譜生成，輸入冰箱裡的食材即可,智慧週計劃與購物清單,支援飲食偏好定製",
+      "features": [
+        "AI 菜譜生成，輸入冰箱裡的食材即可",
+        "智慧週計劃與購物清單",
+        "支援飲食偏好定製"
+      ],
       "name": "CookMate"
     },
     "aihub": {
       "description": "中文 AI 工具導航與評測平台。收錄數百款 AI 工具的真實用戶評測。",
-      "features": "收錄 50+ 類別、數百款 AI 工具,真實用戶評分與評測,分類導航與搜尋",
+      "features": [
+        "收錄 50+ 類別、數百款 AI 工具",
+        "真實用戶評分與評測",
+        "分類導航與搜尋"
+      ],
       "name": "AIHub"
     },
     "short-drama": {
       "description": "AI 短劇腳本生成器。輸入題材，AI 自動生成分集大綱、場景拆解和完整劇本。",
-      "features": "支援霸總、穿越、甜寵等 10+ 題材,分集大綱 + 場景拆分 + 完整劇本,人物弧光自動生成",
+      "features": [
+        "支援霸總、穿越、甜寵等 10+ 題材",
+        "分集大綱 + 場景拆分 + 完整劇本",
+        "人物弧光自動生成"
+      ],
       "name": "Short Drama"
     },
     "resume-optimizer": {
       "description": "AI 履歷優化工具。智慧分析履歷內容，提供優化建議，提升面試通過率。",
-      "features": "AI 智慧分析履歷內容,針對目標崗位定製優化建議,多種履歷模板",
+      "features": [
+        "AI 智慧分析履歷內容",
+        "針對目標崗位定製優化建議",
+        "多種履歷模板"
+      ],
       "name": "Resume Optimizer"
     },
     "copycraft": {
@@ -918,7 +934,9 @@
     "cronThu": "四",
     "cronFri": "五",
     "cronSat": "六",
-    "cronUsageCmd": "crontab -e"
+    "cronUsageCmd": "crontab -e",
+    "cronWarning": "警告：分鐘和小時設為每但指定了具體日期——當天每分鐘執行一次（共1440次）！",
+    "cronFix": "設為 0:00"
   },
   "ui": {
     "toolLinks": {

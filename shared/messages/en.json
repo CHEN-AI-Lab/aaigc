@@ -934,7 +934,9 @@
     "emojiName2797": "Heavy Division Sign",
     "emojiName27B0": "Curly Loop",
     "emojiName2B55": "Heavy Large Circle",
-    "emojiName3030": "Wavy Dash"
+    "emojiName3030": "Wavy Dash",
+    "cronWarning": "Warning: minute/hour set to Every with a specific day — this runs every minute on that day (1440 times)!",
+    "cronFix": "Set to 0:00"
   },
   "ui": {
     "aboutLink": "About AAIGC →",

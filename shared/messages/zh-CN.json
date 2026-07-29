@@ -934,7 +934,9 @@
     "cronCopied": "✓ 已复制",
     "cronUsage": "使用方式：在 Linux 服务器上运行",
     "cronUsageCmd": "crontab -e",
-    "emojiDesc": "点击任意 Emoji 即可复制到剪贴板，粘贴到聊天、文档或社交媒体中使用"
+    "emojiDesc": "点击任意 Emoji 即可复制到剪贴板，粘贴到聊天、文档或社交媒体中使用",
+    "cronWarning": "警告：分钟和小时设为每但指定了具体日期——当天每分钟执行一次（共1440次）！",
+    "cronFix": "设为 0:00"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",
