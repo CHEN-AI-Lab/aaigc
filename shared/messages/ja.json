@@ -1,8 +1,6 @@
 {
   "common": {
-    "appName": "AAIGC",
     "tagline": "AIで仕事と生活を強化",
-    "taglineZh": "让 AI 赋能你的工作与生活",
     "products": "製品",
     "tools": "ツール",
     "about": "概要",
@@ -11,7 +9,9 @@
     "live": "公開中",
     "inDevelopment": "開発中",
     "all": "すべて",
-    "aboutLink": "AAIGCについて →"
+    "aboutLink": "AAIGCについて →",
+    "appName": "AAIGC",
+    "taglineZh": "AI があなたの仕事と生活を強化します"
   },
   "home": {
     "heroTitle": "AI 駆動ツール集",
@@ -41,68 +41,68 @@
     "visit": "アクセス",
     "learnMore": "詳細を見る",
     "cookmate": {
-      "name": "CookMate",
       "description": "AIを活用したレシピプランニング。食材を入力するだけでAIがレシピを生成、週間計画や買い物リストも自動作成。",
       "features": [
         "冷蔵庫の食材を入力するだけでAIがレシピを生成",
         "スマートな週間計画と買い物リスト",
         "食事の好みに合わせたカスタマイズ対応"
-      ]
+      ],
+      "name": "クックメイト"
     },
     "aihub": {
-      "name": "AIHub",
       "description": "AIツールのディレクトリ＆レビュープラットフォーム。数百のAIツールを実際のユーザーレビューとともに発見・比較。",
       "features": [
         "50以上のカテゴリ、数百のAIツールを収録",
         "実際のユーザーによる評価とレビュー",
         "カテゴリ別ブラウズと検索"
-      ]
+      ],
+      "name": "AIハブ"
     },
     "short-drama": {
-      "name": "Short Drama",
       "description": "AI駆動のショートドラマ脚本生成ツール。テーマを入力するだけで、AIがエピソード概要、シーン分解、完全な脚本を自動生成。",
       "features": [
         "CEOロマンス、タイムトラベル、仙侠など10+ジャンル",
         "エピソード概要、シーン分解、完全な脚本",
         "キャラクターアークの自動生成"
-      ]
+      ],
+      "name": "ショートドラマ"
     },
     "resume-optimizer": {
-      "name": "Resume Optimizer",
       "description": "AI履歴書最適化ツール。履歴書の内容を分析し、面接通過率を高める最適化提案を提供。",
       "features": [
         "AIによる履歴書内容の分析",
         "対象職種に特化した最適化提案",
         "複数の履歴書テンプレート"
-      ]
+      ],
+      "name": "履歴書最適化ツール"
     },
     "copycraft": {
-      "name": "CopyCraft",
-      "description": "AI駆動のコピーライティングツール。マーケティングコピー、商品説明、広告コンテンツを生成。"
+      "description": "AI駆動のコピーライティングツール。マーケティングコピー、商品説明、広告コンテンツを生成。",
+      "name": "コピークラフト"
     },
     "contentforge": {
-      "name": "ContentForge",
-      "description": "ブログ、記事、ソーシャルメディア向けのAIコンテンツ生成プラットフォーム。"
+      "description": "ブログ、記事、ソーシャルメディア向けのAIコンテンツ生成プラットフォーム。",
+      "name": "コンテンツフォージ"
     },
     "postforge": {
-      "name": "PostForge",
-      "description": "AI搭載のソーシャルメディア投稿生成・スケジュール管理ツール。"
+      "description": "AI搭載のソーシャルメディア投稿生成・スケジュール管理ツール。",
+      "name": "ポストフォージ"
     },
     "maestro": {
-      "name": "Maestro",
-      "description": "AI音楽作曲・オーディオ処理ツール。"
+      "description": "AI音楽作曲・オーディオ処理ツール。",
+      "name": "マエストロ"
     },
     "ai-portfolio-studio": {
-      "name": "AI Portfolio Studio",
-      "description": "クリエイター向けのAIポートフォリオサイトビルダー。"
+      "description": "クリエイター向けのAIポートフォリオサイトビルダー。",
+      "name": "AIポートフォリオスタジオ"
     },
     "ai-toolbox": {
-      "name": "AI Toolbox",
-      "description": "AI搭載ユーティリティとツールのコレクション。"
+      "description": "AI搭載ユーティリティとツールのコレクション。",
+      "name": "AIツールボックス"
     },
     "content-ai-site": {
-      "name": "Content AI Site",
-      "description": "AI駆動のコンテンツ管理・公開プラットフォーム。"
+      "description": "AI駆動のコンテンツ管理・公開プラットフォーム。",
+      "name": "コンテンツAIサイト"
     }
   },
   "tools": {
@@ -214,7 +214,6 @@
     "day": "日",
     "supportsTimestamp": "秒（10桁）またはミリ秒（13桁）のタイムスタンプに対応",
     "selectDateTime": "日付、時刻、ミリ秒を選択（ローカルタイムゾーン）",
-    "hex": "HEX",
     "input": "入力",
     "output": "出力",
     "placeholder": "ここに入力...",
@@ -267,7 +266,6 @@
       "description": "テキストの大文字/小文字/タイトルケースを変換"
     },
     "lorem-ipsum": {
-      "name": "Lorem Ipsum",
       "description": "プレースホルダーテキストを生成"
     },
     "text-to-slug": {
@@ -310,10 +308,7 @@
       "name": "HTML エンティティ変換",
       "description": "HTML特殊文字のエスケープとアンエスケープ"
     },
-    "json-to-csv": {
-      "name": "JSON to CSV",
-      "description": "Convert JSON data to CSV format"
-    },
+    "json-to-csv": {},
     "password-generator": {
       "name": "パスワード生成",
       "description": "安全なランダムパスワードを生成"
@@ -342,7 +337,6 @@
     "calcBasic": "基本",
     "calcScientific": "科学",
     "calcPercent": "パーセント",
-    "calcBmi": "BMI",
     "calcDiscount": "割引",
     "calcAge": "年齢",
     "calcValueA": "値 A",
@@ -366,7 +360,6 @@
     "calcChange": "変化: {pct}%",
     "timeDesc": "1年=365日 | 1四半期=91日 | 1月=30日",
     "tabCalc": "電卓",
-    "tabBmi": "BMI",
     "tabTax": "税金",
     "tabMortgage": "住宅ローン",
     "tabChinese": "数字",
@@ -468,7 +461,6 @@
     "calcMortgageYears": "返済年数",
     "calcMortgageCommercialYears": "商業ローン年数",
     "calcMortgageFundYears": "公积金年数",
-    "calcMortgageLPR": "LPR (%)",
     "calcMortgageBP": "ベーシスポイント (BP)",
     "calcMortgageFundRate": "公积金利率 (%)",
     "calcMortgageFirstPayment": "初回返済日",
@@ -553,21 +545,17 @@
     },
     "ipMyIp": "自分のIP",
     "ipLocation": "所在地",
-    "ipIsp": "ISP",
     "ipUsage": "利用形態",
     "dnsName": "名前",
     "dnsType": "タイプ",
-    "dnsTtl": "TTL",
     "dnsData": "データ",
     "loading": "読み込み中...",
     "noResultsFound": "結果が見つかりません",
-    "dnsPlaceholder": "example.com",
     "dnsNote": "{type} レコードなし — SOA/NS を表示",
     "usageDatacenter": "データセンター/クラウド",
     "usageBroadband": "ブロードバンド",
     "usageProxy": "プロキシ/VPN",
     "usageMobile": "モバイルネットワーク",
-    "usageCdn": "CDN",
     "usageEducation": "教育",
     "usageGovernment": "政府",
     "usageIsp": "固定ブロードバンド",
@@ -636,13 +624,20 @@
     "cronThu": "木",
     "cronFri": "金",
     "cronSat": "土",
-    "cronWeekPrefix": "",
     "cronResult": "生成された Cron 式",
     "cronCopy": "📋 コピー",
     "cronCopied": "✓ コピー完了",
     "cronUsage": "使い方：Linux サーバーで実行",
-    "cronUsageCmd": "crontab -e",
     "emojiDesc": "絵文字をクリックしてクリップボードにコピー、チャットや文書に貼り付け",
+    "emojiName1F414": "鶏肉",
+    "emojiName1F966": "ブロッコリー",
+    "emojiName1F9C4": "ニンニク",
+    "calcBmi": "BMI",
+    "calcMortgageLPR": "LPR (%)",
+    "cronUsageCmd": "crontab -e",
+    "cronWeekPrefix": "",
+    "dnsPlaceholder": "example.com",
+    "dnsTtl": "TTL",
     "emojiName1F194": "Squared Id",
     "emojiName1F32D": "Hot Dog",
     "emojiName1F32E": "Taco",
@@ -704,7 +699,6 @@
     "emojiName1F40B": "Whale",
     "emojiName1F40C": "Snail",
     "emojiName1F40D": "Snake",
-    "emojiName1F414": "Chicken",
     "emojiName1F417": "Boar",
     "emojiName1F418": "Elephant",
     "emojiName1F419": "Octopus",
@@ -847,7 +841,6 @@
     "emojiName1F95F": "Dumpling",
     "emojiName1F960": "Fortune Cookie",
     "emojiName1F965": "Coconut",
-    "emojiName1F966": "Broccoli",
     "emojiName1F967": "Pie",
     "emojiName1F968": "Pretzel",
     "emojiName1F969": "Cut Of Meat",
@@ -883,7 +876,6 @@
     "emojiName1F9AA": "Oyster",
     "emojiName1F9C0": "Cheese Wedge",
     "emojiName1F9C1": "Cupcake",
-    "emojiName1F9C4": "Garlic",
     "emojiName1F9C5": "Onion",
     "emojiName1F9C7": "Waffle",
     "emojiName1F9E1": "Orange Heart",
@@ -934,7 +926,11 @@
     "emojiName2797": "Heavy Division Sign",
     "emojiName27B0": "Curly Loop",
     "emojiName2B55": "Heavy Large Circle",
-    "emojiName3030": "Wavy Dash"
+    "emojiName3030": "Wavy Dash",
+    "hex": "HEX",
+    "ipIsp": "ISP",
+    "tabBmi": "BMI",
+    "usageCdn": "CDN"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",
@@ -946,11 +942,11 @@
       "jsonFormatter": "JSON フォーマッター",
       "timestamp": "タイムスタンプ",
       "qrcode": "QRコード",
-      "base64": "Base64",
       "regexTester": "正規表現テスター",
-      "markdownPreview": "Markdown",
       "colorPicker": "カラーピッカー",
-      "textDiff": "テキスト差分"
+      "textDiff": "テキスト差分",
+      "base64": "Base64",
+      "markdownPreview": "Markdown"
     }
   },
   "about": {
@@ -978,7 +974,7 @@
     "updates": "更新情報",
     "privacy": "プライバシー",
     "email": "chen@aaigc.online",
-    "copyright": "AAIGC. All rights reserved."
+    "copyright": "AAIGC. 無断複写・転載を禁じます。"
   },
   "privacy": {
     "title": "プライバシーポリシー",
