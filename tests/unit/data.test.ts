@@ -123,7 +123,7 @@ describe('tools', () => {
       'random-generator': 'RandomGenerator',
       'cron-builder': 'CronBuilder',
       'emoji-picker': 'EmojiPicker',
-      'prompt-generator': 'PromptGenerator',
+      'pdf-tool': 'PdfTool',
       'text-to-binary': 'TextToBinary',
     }
     for (const t of tools) {
@@ -176,7 +176,7 @@ describe('tools', () => {
       RandomGenerator: () => import('../../apps/web/src/components/tools/RandomGenerator'),
       CronBuilder: () => import('../../apps/web/src/components/tools/CronBuilder'),
       EmojiPicker: () => import('../../apps/web/src/components/tools/EmojiPicker'),
-      PromptGenerator: () => import('../../apps/web/src/components/tools/PromptGenerator'),
+      PdfTool: () => import('../../apps/web/src/components/tools/PdfTool'),
       TextToBinary: () => import('../../apps/web/src/components/tools/TextToBinary'),
     }
     for (const t of tools) {
