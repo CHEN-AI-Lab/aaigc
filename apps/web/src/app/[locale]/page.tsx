@@ -27,7 +27,7 @@ export default async function HomePage({ params }: Props) {
           <div className="flex items-center justify-center mb-8">
             <div className="relative w-36 h-24">
               <div className="absolute w-12 h-12 rounded-full border-2 border-accent/20 bg-accent/5 top-1 left-2" />
-              <div className="absolute w-9 h-9 border-2 border-accent/15 bg-accent/5 top-5 left-14 rounded-md rotate-12" />
+              <div className="absolute w-9 h-9 border-2 border-accent/15 bg-accent/5 top-5 left-14 rounded-sm rotate-12" />
               <div className="absolute w-0 h-0 border-l-[14px] border-r-[14px] border-b-[24px] border-l-transparent border-r-transparent border-b-accent/10 top-2 left-24" />
             </div>
           </div>
@@ -41,13 +41,13 @@ export default async function HomePage({ params }: Props) {
           <div className="flex items-center justify-center gap-4">
             <Link
               href="/products"
-              className="inline-flex items-center gap-2 px-7 py-3 bg-accent text-white text-sm font-medium rounded-md hover:opacity-90 transition-opacity shadow-sm"
+              className="inline-flex items-center gap-2 px-7 py-3 bg-accent text-white text-sm font-medium rounded-sm hover:opacity-90 transition-opacity shadow-sm"
             >
               {t('heroProducts')}
             </Link>
             <Link
               href="/tools"
-              className="inline-flex items-center gap-2 px-7 py-3 border border-accent/30 text-text-secondary text-sm font-medium rounded-md hover:bg-accent/5 hover:text-accent transition-colors"
+              className="inline-flex items-center gap-2 px-7 py-3 border border-accent/30 text-text-secondary text-sm font-medium rounded-sm hover:bg-accent/5 hover:text-accent transition-colors"
             >
               {t('heroTools')}
             </Link>
@@ -90,7 +90,7 @@ export default async function HomePage({ params }: Props) {
               <Link
                 key={cat.id}
                 href={`/tools#category-${cat.id}`}
-                className="bg-bg rounded-md p-5 shadow-warm-sm hover:shadow-warm transition-all text-center group hover:-translate-y-0.5"
+                className="bg-bg rounded-sm p-5 shadow-warm-sm hover:shadow-warm transition-all text-center group hover:-translate-y-0.5"
               >
                 <div className="text-3xl mb-2">{cat.icon}</div>
                 <h3 className="text-sm font-semibold text-text-primary">
@@ -109,7 +109,7 @@ export default async function HomePage({ params }: Props) {
                 <Link
                   key={toolId}
                   href={`/tools/${toolId}`}
-                  className="text-xs px-2 py-1.5 bg-bg text-text-secondary hover:text-accent hover:bg-accent/5 rounded-md transition-colors border border-[rgba(127,99,21,0.1)] truncate"
+                  className="text-xs px-2 py-1.5 bg-bg text-text-secondary hover:text-accent hover:bg-accent/5 rounded-sm transition-colors border border-[rgba(127,99,21,0.1)] truncate"
                 >
                   {tt(`${toolId}.name`)}
                 </Link>
@@ -123,7 +123,7 @@ export default async function HomePage({ params }: Props) {
       <section className="bg-surface py-14 px-6 text-center">
         <Link
           href="/about"
-          className="inline-flex items-center gap-2 px-8 py-3 bg-dark text-white text-sm font-medium rounded-md hover:opacity-90 transition-opacity shadow-warm-sm"
+          className="inline-flex items-center gap-2 px-8 py-3 bg-dark text-white text-sm font-medium rounded-sm hover:opacity-90 transition-opacity shadow-warm-sm"
         >
           {tc('aboutLink')}
         </Link>
