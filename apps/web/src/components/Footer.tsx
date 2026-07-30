@@ -24,11 +24,7 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div>
             <h3 className="text-sm font-semibold text-text-primary mb-3 flex items-center gap-1.5">
-            <div className="relative w-5 h-5 shrink-0">
-              <div className="absolute w-2 h-2 rounded-full border border-accent/30 bg-accent/10 top-0 left-0" />
-              <div className="absolute w-[7px] h-[7px] border border-accent/20 bg-accent/10 top-[5px] left-[7px] rounded-sm rotate-12" />
-              <div className="absolute w-0 h-0 border-l-[4px] border-r-[4px] border-b-[7px] border-l-transparent border-r-transparent border-b-accent/15 top-[1px] left-[13px]" />
-            </div>
+            <img src="/icon.svg" alt="AAIGC" className="w-5 h-5 shrink-0" />
             AAIGC</h3>
             <p className="text-xs text-text-secondary leading-relaxed">
               {t('tagline')}
