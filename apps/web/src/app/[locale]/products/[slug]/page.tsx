@@ -36,13 +36,13 @@ export default async function ProductDetailPage({ params }: Props) {
         </a>
       </div>
 
-      <div className="bg-surface rounded-lg p-8 shadow-warm-sm">
+      <div className="bg-surface rounded-md p-8 shadow-warm-sm">
         <div className="flex items-start gap-6 mb-6">
           <div className="text-6xl shrink-0">{product.icon}</div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 mb-3">
               <h1 className="text-3xl font-semibold text-text-primary">{name}</h1>
-              <span className={`shrink-0 text-xs px-2.5 py-0.5 rounded-lg font-medium ${
+              <span className={`shrink-0 text-xs px-2.5 py-0.5 rounded-md font-medium ${
                 isLive ? 'bg-green-500 text-white' : 'bg-surface text-text-secondary'
               }`}>
                 {isLive ? tc('live') : tc('comingSoon')}
@@ -71,7 +71,7 @@ export default async function ProductDetailPage({ params }: Props) {
             href={product.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center w-full px-6 py-3.5 bg-accent text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity"
+            className="flex items-center justify-center w-full px-6 py-3.5 bg-accent text-white text-sm font-medium rounded-md hover:opacity-90 transition-opacity"
           >
             {t('visit')} →
           </a>

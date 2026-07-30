@@ -37,7 +37,7 @@ export default function LanguageSwitcher() {
     <div ref={ref} className="relative">
       <button
         onClick={toggle}
-        className="flex items-center justify-center w-8 h-8 rounded-lg text-text-secondary hover:text-accent hover:bg-surface transition-colors"
+        className="flex items-center justify-center w-8 h-8 rounded-md text-text-secondary hover:text-accent hover:bg-surface transition-colors"
         title={current}
       >
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -47,7 +47,7 @@ export default function LanguageSwitcher() {
         </svg>
       </button>
       {open && (
-        <div className="absolute right-0 top-full mt-1 bg-card border border-[rgba(127,99,21,0.15)] rounded-lg shadow-md z-[60] w-max">
+        <div className="absolute right-0 top-full mt-1 bg-card border border-[rgba(127,99,21,0.15)] rounded-md shadow-md z-[60] w-max">
           {locales.map((l) => (
             <button
               key={l}

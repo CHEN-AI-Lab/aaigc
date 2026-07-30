@@ -35,7 +35,7 @@ function ClampInput({ value, onChange, min, max, label, field, hint }: {
           else if (n < min) { onChange(String(min)) }
           else { onChange(trimmed) }
         }}
-        className="w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-sm text-text-primary text-center focus:outline-none focus:border-accent/30 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
+        className="w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-md text-sm text-text-primary text-center focus:outline-none focus:border-accent/30 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
       {hintFor(field) && (
         <div className="absolute -bottom-4 left-0 right-0 text-[10px] text-red-500 text-center whitespace-nowrap">{hintFor(field)}</div>
       )}
@@ -113,27 +113,27 @@ export default function TimestampConverter() {
   return (
     <div className="mt-6 space-y-6">
       {/* Timestamp → Date */}
-      <div className="p-4 bg-surface rounded-lg border border-[rgba(127,99,21,0.15)]">
+      <div className="p-4 bg-surface rounded-md border border-[rgba(127,99,21,0.15)]">
         <h3 className="text-sm font-medium text-text-primary mb-2">{t('timestampToDate')}</h3>
         <p className="text-xs text-text-secondary mb-2">{t('supportsTimestamp')}</p>
         <div className="flex gap-2">
-          <input value={ts} onChange={e => setTs(e.target.value)} placeholder="1700000000" className="flex-1 p-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/30 font-mono" />
+          <input value={ts} onChange={e => setTs(e.target.value)} placeholder="1700000000" className="flex-1 p-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-md text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/30 font-mono" />
         </div>
         <div className="flex gap-2 mt-2">
-          <button onClick={toDate} className="px-4 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('convert')}</button>
-          <button onClick={() => { const d = new Date(); setTs(String(d.getTime())); setDateResult('') }} className="px-3 py-2 bg-accent text-white text-xs rounded-lg hover:opacity-90">
+          <button onClick={toDate} className="px-4 py-2 bg-accent text-white text-sm rounded-md hover:opacity-90">{t('convert')}</button>
+          <button onClick={() => { const d = new Date(); setTs(String(d.getTime())); setDateResult('') }} className="px-3 py-2 bg-accent text-white text-xs rounded-md hover:opacity-90">
             🔄 {t('now')}
           </button>
         </div>
         {dateResult && (
-          <div className="mt-2 p-2 bg-bg rounded-lg border border-[rgba(127,99,21,0.1)]">
+          <div className="mt-2 p-2 bg-bg rounded-md border border-[rgba(127,99,21,0.1)]">
             <p className="text-sm text-text-primary font-mono">{dateResult}</p>
           </div>
         )}
       </div>
 
       {/* Date → Timestamp */}
-      <div className="p-4 bg-surface rounded-lg border border-[rgba(127,99,21,0.15)]">
+      <div className="p-4 bg-surface rounded-md border border-[rgba(127,99,21,0.15)]">
         <h3 className="text-sm font-medium text-text-primary mb-2">{t('dateToTimestamp')}</h3>
         <p className="text-xs text-text-secondary mb-3">{t('selectDateTime')}</p>
 
@@ -142,21 +142,21 @@ export default function TimestampConverter() {
           {/* Year */}
           <div className="w-20">
             <label className="block text-[10px] text-text-secondary mb-0.5">{t('year')}</label>
-            <select value={year} onChange={e => setYear(e.target.value)} className="w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
+            <select value={year} onChange={e => setYear(e.target.value)} className="w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-md text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
               {years.map(y => <option key={y} value={y}>{y}</option>)}
             </select>
           </div>
           {/* Month */}
           <div className="w-16">
             <label className="block text-[10px] text-text-secondary mb-0.5">{t('month')}</label>
-            <select value={month} onChange={e => setMonth(e.target.value)} className="w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
+            <select value={month} onChange={e => setMonth(e.target.value)} className="w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-md text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
               {months.map(m => <option key={m} value={m}>{pad(m, 2)}</option>)}
             </select>
           </div>
           {/* Day */}
           <div className="w-16">
             <label className="block text-[10px] text-text-secondary mb-0.5">{t('day')}</label>
-            <select value={day} onChange={e => setDay(e.target.value)} className="w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
+            <select value={day} onChange={e => setDay(e.target.value)} className="w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-md text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
               {days.map(d => <option key={d} value={d}>{pad(d, 2)}</option>)}
             </select>
           </div>
@@ -187,19 +187,19 @@ export default function TimestampConverter() {
         </div>
 
         <div className="flex gap-2 flex-wrap items-center">
-          <button onClick={toTs} className="px-4 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('convert')}</button>
-          <button onClick={() => { const d = new Date(); setYear(String(d.getFullYear())); setMonth(String(d.getMonth() + 1)); setDay(String(d.getDate())); setHh(String(d.getHours())); setMm(String(d.getMinutes())); setSs(String(d.getSeconds())); setMs(String(d.getMilliseconds())); setTsResultSec(''); setTsResultMs('') }} className="px-3 py-2 bg-accent text-white text-xs rounded-lg hover:opacity-90">
+          <button onClick={toTs} className="px-4 py-2 bg-accent text-white text-sm rounded-md hover:opacity-90">{t('convert')}</button>
+          <button onClick={() => { const d = new Date(); setYear(String(d.getFullYear())); setMonth(String(d.getMonth() + 1)); setDay(String(d.getDate())); setHh(String(d.getHours())); setMm(String(d.getMinutes())); setSs(String(d.getSeconds())); setMs(String(d.getMilliseconds())); setTsResultSec(''); setTsResultMs('') }} className="px-3 py-2 bg-accent text-white text-xs rounded-md hover:opacity-90">
             🔄 {t('now')}
           </button>
         </div>
 
         {tsResultSec && (
           <div className="mt-2 space-y-1">
-            <div className="p-2 bg-bg rounded-lg border border-[rgba(127,99,21,0.1)] flex items-center justify-between">
+            <div className="p-2 bg-bg rounded-md border border-[rgba(127,99,21,0.1)] flex items-center justify-between">
               <span className="text-xs text-text-secondary">{t('secondsLabel')}</span>
               <span className="text-sm text-text-primary font-mono">{tsResultSec}</span>
             </div>
-            <div className="p-2 bg-bg rounded-lg border border-[rgba(127,99,21,0.1)] flex items-center justify-between">
+            <div className="p-2 bg-bg rounded-md border border-[rgba(127,99,21,0.1)] flex items-center justify-between">
               <span className="text-xs text-text-secondary">{t('millisecondsLabel')}</span>
               <span className="text-sm text-text-primary font-mono">{tsResultMs}</span>
             </div>

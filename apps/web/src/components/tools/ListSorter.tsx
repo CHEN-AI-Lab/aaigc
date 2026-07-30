@@ -22,17 +22,17 @@ export default function ListSorter() {
 
   return (
     <div className="mt-6 space-y-4">
-      <textarea value={input} onChange={e => setInput(e.target.value)} placeholder={t('enterText')} className="w-full h-32 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-lg text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
+      <textarea value={input} onChange={e => setInput(e.target.value)} placeholder={t('enterText')} className="w-full h-32 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-md text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
       <div className="flex gap-2 flex-wrap">
-        <button onClick={() => sortLines('asc')} className="px-4 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('sortAsc')}</button>
-        <button onClick={() => sortLines('desc')} className="px-4 py-2 bg-surface text-text-primary text-sm rounded-lg hover:bg-accent/10 border border-[rgba(127,99,21,0.15)]">{t('sortDesc')}</button>
-        <button onClick={() => sortLines('unique')} className="px-4 py-2 bg-surface text-text-primary text-sm rounded-lg hover:bg-accent/10 border border-[rgba(127,99,21,0.15)]">{t('dedup')}</button>
-        <button onClick={() => sortLines('shuffle')} className="px-4 py-2 bg-surface text-text-primary text-sm rounded-lg hover:bg-accent/10 border border-[rgba(127,99,21,0.15)]">{t('shuffle')}</button>
+        <button onClick={() => sortLines('asc')} className="px-4 py-2 bg-accent text-white text-sm rounded-md hover:opacity-90">{t('sortAsc')}</button>
+        <button onClick={() => sortLines('desc')} className="px-4 py-2 bg-surface text-text-primary text-sm rounded-md hover:bg-accent/10 border border-[rgba(127,99,21,0.15)]">{t('sortDesc')}</button>
+        <button onClick={() => sortLines('unique')} className="px-4 py-2 bg-surface text-text-primary text-sm rounded-md hover:bg-accent/10 border border-[rgba(127,99,21,0.15)]">{t('dedup')}</button>
+        <button onClick={() => sortLines('shuffle')} className="px-4 py-2 bg-surface text-text-primary text-sm rounded-md hover:bg-accent/10 border border-[rgba(127,99,21,0.15)]">{t('shuffle')}</button>
       </div>
       {output && (
         <div className="relative">
-          <textarea readOnly value={output} className="w-full h-32 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-lg text-sm text-text-primary resize-none" />
-          <button onClick={() => navigator.clipboard.writeText(output)} className="absolute top-2 right-6 text-xs px-2 py-1 bg-accent text-white rounded-lg hover:opacity-90 min-w-[4.5rem] text-center">{t('copy')}</button>
+          <textarea readOnly value={output} className="w-full h-32 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-md text-sm text-text-primary resize-none" />
+          <button onClick={() => navigator.clipboard.writeText(output)} className="absolute top-2 right-6 text-xs px-2 py-1 bg-accent text-white rounded-md hover:opacity-90 min-w-[4.5rem] text-center">{t('copy')}</button>
         </div>
       )}
     </div>
