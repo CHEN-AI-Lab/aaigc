@@ -20,27 +20,22 @@ export default async function HomePage({ params }: Props) {
   return (
     <div>
       {/* Hero */}
-      <section className="relative overflow-hidden py-14 px-6 text-center bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e]">
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-3xl pointer-events-none" />
+      <section className="relative overflow-hidden py-14 px-6 text-center">
+        <div className="absolute inset-0 bg-gradient-to-b from-accent/5 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-accent/3 rounded-full blur-3xl pointer-events-none" />
         <div className="relative">
           <div className="flex items-center justify-center mb-6">
-            <div className="relative w-40 h-24">
-              <div className="absolute w-12 h-12 rounded-full bg-yellow-300/20 top-2 left-14 blur-md" />
-              <div className="absolute w-1 h-1 rounded-full bg-white/80 top-4 left-8" />
-              <div className="absolute w-[3px] h-[3px] rounded-full bg-white/60 top-12 left-20" />
-              <div className="absolute w-1 h-1 rounded-full bg-white/50 top-3 left-28" />
-              <div className="absolute w-[2px] h-[2px] rounded-full bg-white/70 top-14 left-10" />
-              <div className="absolute w-1 h-1 rounded-full bg-white/40 top-7 left-32" />
-              <div className="absolute w-[2px] h-[2px] rounded-full bg-white/60 top-16 left-28" />
-              <div className="absolute w-1 h-1 rounded-full bg-white/50 top-8 left-18" />
-              <div className="absolute h-[2px] w-10 bg-gradient-to-r from-yellow-300/60 to-transparent top-5 left-4 -rotate-30" />
+            <div className="relative w-40 h-16 overflow-hidden">
+              <div className="absolute w-[200%] h-full rounded-[50%] border-2 border-accent/20 top-[-20px] left-[-30px]" />
+              <div className="absolute w-[200%] h-full rounded-[50%] border-2 border-accent/12 top-[-35px] left-[-50px]" />
+              <div className="absolute w-[200%] h-full rounded-[50%] border-2 border-accent/8 top-[-50px] left-[-10px]" />
             </div>
           </div>
-          <h1 className="display-hero text-white mb-4">AAIGC</h1>
-          <p className="text-xl text-white/70 max-w-xl mx-auto mb-8 leading-relaxed">
+          <h1 className="display-hero text-text-primary mb-4">AAIGC</h1>
+          <p className="text-xl text-text-secondary max-w-xl mx-auto mb-8 leading-relaxed">
             {t('heroSubtitle')}
           </p>
-          <p className="text-lg text-yellow-300/80 font-medium">
+          <p className="text-lg text-accent font-medium">
             {tc('tagline')}
           </p>
         </div>
