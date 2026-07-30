@@ -25,11 +25,19 @@ export default async function HomePage({ params }: Props) {
         <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-accent/3 rounded-full blur-3xl pointer-events-none" />
         <div className="relative">
           <div className="flex items-center justify-center mb-6">
-            <div className="relative w-28 h-20">
-              <div className="absolute w-16 h-16 rounded-full border-2 border-accent/20 bg-accent/5 top-0 left-2" />
-              <div className="absolute w-12 h-12 rounded-full border-2 border-accent/20 bg-accent/5 top-4 left-14" />
-              <div className="absolute w-10 h-10 rounded-full border-2 border-accent/20 bg-accent/5 top-2 left-20" />
-              <div className="absolute w-8 h-8 rounded-full border-2 border-accent/20 bg-accent/5 top-8 left-8" />
+            <div className="relative w-40 h-24">
+              {/* Star glow */}
+              <div className="absolute w-12 h-12 rounded-full bg-yellow-300/20 top-2 left-14 blur-md" />
+              {/* Stars */}
+              <div className="absolute w-1 h-1 rounded-full bg-accent/60 top-4 left-8" />
+              <div className="absolute w-[3px] h-[3px] rounded-full bg-accent/40 top-12 left-20" />
+              <div className="absolute w-1 h-1 rounded-full bg-accent/50 top-3 left-28" />
+              <div className="absolute w-[2px] h-[2px] rounded-full bg-accent/60 top-14 left-10" />
+              <div className="absolute w-1 h-1 rounded-full bg-accent/40 top-7 left-32" />
+              <div className="absolute w-[2px] h-[2px] rounded-full bg-accent/50 top-16 left-28" />
+              <div className="absolute w-1 h-1 rounded-full bg-accent/40 top-8 left-18" />
+              {/* Shooting star */}
+              <div className="absolute h-[2px] w-10 bg-gradient-to-r from-accent/60 to-transparent top-5 left-4 -rotate-30" />
             </div>
           </div>
           <h1 className="display-hero text-text-primary mb-4">AAIGC</h1>
