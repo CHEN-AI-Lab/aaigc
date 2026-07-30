@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { PDFDocument } from 'pdf-lib'
+import JSZip from 'jszip'
 
 type Mode = 'merge' | 'split'
 
@@ -19,23 +20,37 @@ export default function PdfTool() {
   const [files, setFiles] = useState<PdfFile[]>([])
   const [processing, setProcessing] = useState(false)
   const [error, setError] = useState('')
+  const [pagesPerGroup, setPagesPerGroup] = useState(1)
+  const [dragOver, setDragOver] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
 
-  const addFiles = useCallback(async (fileList: FileList | null) => {
-    if (!fileList) return
+  const isDuplicate = useCallback((file: File) => {
+    return files.some(f => f.name === file.name && f.data.byteLength === file.size)
+  }, [files])
+
+  const addFiles = useCallback(async (list: FileList) => {
     setError('')
     const newFiles: PdfFile[] = []
-    for (let i = 0; i < fileList.length; i++) {
-      const file = fileList[i]
+    for (let i = 0; i < list.length; i++) {
+      const file = list[i]
       if (file.type !== 'application/pdf') {
         setError(`"${file.name}" ${t('pdfNotPdf')}`)
         continue
       }
+      if (isDuplicate(file)) continue
       const data = await file.arrayBuffer()
       const doc = await PDFDocument.load(data, { ignoreEncryption: true })
       newFiles.push({ id: crypto.randomUUID(), name: file.name, data, pageCount: doc.getPageCount() })
     }
     setFiles(prev => [...prev, ...newFiles])
-  }, [t])
+  }, [t, isDuplicate])
+
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      if (mode === 'split' && files.length >= 1) return
+      addFiles(e.target.files)
+    }
+  }, [addFiles, mode, files.length])
 
   const removeFile = useCallback((id: string) => {
     setFiles(prev => prev.filter(f => f.id !== id))
@@ -53,8 +68,10 @@ export default function PdfTool() {
         pages.forEach(p => merged.addPage(p))
       }
       const bytes = await merged.save()
-      downloadBlob(bytes, 'merged.pdf')
-    } catch (e) {
+      // Use first file's name + _merged
+      const baseName = files[0].name.replace(/\.pdf$/i, '')
+      downloadBlob(bytes, `${baseName}_merged.pdf`)
+    } catch {
       setError(t('pdfError'))
     }
     setProcessing(false)
@@ -67,18 +84,29 @@ export default function PdfTool() {
     try {
       const doc = await PDFDocument.load(files[0].data, { ignoreEncryption: true })
       const total = doc.getPageCount()
-      for (let i = 0; i < total; i++) {
+      const baseName = files[0].name.replace(/\.pdf$/i, '')
+      const groupSize = Math.max(1, pagesPerGroup)
+      const zip = new JSZip()
+      let groupIndex = 0
+
+      for (let i = 0; i < total; i += groupSize) {
+        groupIndex++
+        const end = Math.min(i + groupSize, total)
         const newDoc = await PDFDocument.create()
-        const [page] = await newDoc.copyPages(doc, [i])
-        newDoc.addPage(page)
+        const pages = await newDoc.copyPages(doc, Array.from({ length: end - i }, (_, k) => i + k))
+        pages.forEach(p => newDoc.addPage(p))
         const bytes = await newDoc.save()
-        downloadBlob(bytes, `${files[0].name.replace('.pdf', '')}_page_${i + 1}.pdf`)
+        const label = groupSize === 1 ? `page_${i + 1}` : `pages_${i + 1}-${end}`
+        zip.file(`${baseName}_${label}.pdf`, Buffer.from(bytes))
       }
-    } catch (e) {
+
+      const zipBytes = await zip.generateAsync({ type: 'uint8array' })
+      downloadBlob(zipBytes, `${baseName}.zip`)
+    } catch {
       setError(t('pdfError'))
     }
     setProcessing(false)
-  }, [files, t])
+  }, [files, pagesPerGroup, t])
 
   return (
     <div className="mt-6 max-w-2xl mx-auto space-y-6">
@@ -100,23 +128,43 @@ export default function PdfTool() {
 
       {/* Upload area */}
       <div
-        onDragOver={e => e.preventDefault()}
-        onDrop={e => { e.preventDefault(); addFiles(e.dataTransfer.files) }}
-        className="border-2 border-dashed border-accent/20 rounded-lg p-8 text-center hover:border-accent/40 transition-colors cursor-pointer"
-        onClick={() => document.getElementById('pdf-input')?.click()}
+        onDragOver={e => { e.preventDefault(); setDragOver(true) }}
+        onDragLeave={e => {
+          e.preventDefault()
+          // Only set false if mouse actually left the drop zone, not entering a child
+          if (!e.currentTarget.contains(e.relatedTarget as Node)) setDragOver(false)
+        }}
+        onDrop={e => { e.preventDefault(); setDragOver(false); if (mode === 'split' && files.length >= 1) { setError(t('pdfSplitLimit')); return }; addFiles(e.dataTransfer.files) }}
+        onClick={() => {
+          if (mode === 'split' && files.length >= 1) {
+            setError(t('pdfSplitLimit'))
+            return
+          }
+          inputRef.current?.click()
+        }}
+        className={`border-2 border-dashed rounded-lg p-8 text-center transition-all cursor-pointer ${
+          dragOver ? 'border-accent bg-accent/5 scale-[1.02]' : 'border-accent/20 hover:border-accent/40'
+        }`}
       >
-        <input
-          id="pdf-input" type="file" accept=".pdf" multiple
-          onChange={e => addFiles(e.target.files)}
-          className="hidden"
-        />
+        <input ref={inputRef} type="file" accept=".pdf" multiple={mode === 'merge'} onChange={handleChange} className="hidden" />
         <p className="text-sm text-text-secondary">{mode === 'merge' ? t('pdfDropMerge') : t('pdfDropSplit')}</p>
-        <p className="text-xs text-text-secondary/50 mt-1">{t('pdfClickOrDrag')}</p>
+        <p className="text-xs text-text-secondary/50 mt-1">{mode === 'merge' ? t('pdfClickOrDrag') : t('pdfSplitSingle')}</p>
       </div>
 
       {/* File list */}
       {files.length > 0 && (
         <div className="space-y-2">
+          {mode === 'split' && (
+            <div className="flex items-center justify-center gap-2 text-sm">
+              <span className="text-text-secondary">{t('pdfSplitPerGroup')}</span>
+              <input
+                type="number" min="1" max="100" value={pagesPerGroup}
+                onChange={e => setPagesPerGroup(Math.max(1, parseInt(e.target.value) || 1))}
+                className="w-16 p-1.5 text-center bg-surface border border-[rgba(127,99,21,0.15)] rounded-lg text-sm text-text-primary"
+              />
+              <span className="text-text-secondary">{t('pdfPages')}</span>
+            </div>
+          )}
           {files.map(f => (
             <div key={f.id} className="flex items-center justify-between px-3 py-2 bg-surface rounded-lg text-sm">
               <div className="flex items-center gap-2 min-w-0">
@@ -159,7 +207,7 @@ export default function PdfTool() {
 }
 
 function downloadBlob(data: Uint8Array, filename: string) {
-  const blob = new Blob([Buffer.from(data)], { type: 'application/pdf' })
+  const blob = new Blob([Buffer.from(data)], { type: 'application/octet-stream' })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
