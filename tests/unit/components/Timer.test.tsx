@@ -60,9 +60,9 @@ describe('Timer', () => {
     expect(screen.getByText('Start')).toBeInTheDocument()
   })
 
-  it('has a Reset button', async () => {
+  it('does not show Reset button when not started', async () => {
     await renderTimer()
-    expect(screen.getByText('Reset')).toBeInTheDocument()
+    expect(screen.queryByText('Reset')).not.toBeInTheDocument()
   })
 
   it('switches to stopwatch mode when clicking Stopwatch button', async () => {
@@ -89,9 +89,11 @@ describe('Timer', () => {
   it('shows Resume after clicking Pause', async () => {
     await renderTimer()
     fireEvent.click(screen.getByText('Start'))
-    // Pause is visible when running
+    // Pause is visible when running, Resume is not visible
     expect(screen.getByText('Pause')).toBeInTheDocument()
-    // Resume is also visible when running
+    expect(screen.queryByText('Resume')).not.toBeInTheDocument()
+    // Click Pause, now Resume appears
+    fireEvent.click(screen.getByText('Pause'))
     expect(screen.getByText('Resume')).toBeInTheDocument()
   })
 
@@ -106,11 +108,14 @@ describe('Timer', () => {
     await renderTimer()
     fireEvent.click(screen.getByText('Start'))
     fireEvent.click(screen.getByText('Pause'))
+    // Reset is visible when paused
+    expect(screen.getByText('Reset')).toBeInTheDocument()
     fireEvent.click(screen.getByText('Reset'))
     expect(screen.getByText('Start')).toBeInTheDocument()
-    // No Resume when paused
     expect(screen.queryByText('Resume')).not.toBeInTheDocument()
     expect(screen.getByText('00:00')).toBeInTheDocument()
+    // Reset hidden when back to initial state
+    expect(screen.queryByText('Reset')).not.toBeInTheDocument()
   })
 
   it('preset button sets minutes', async () => {
