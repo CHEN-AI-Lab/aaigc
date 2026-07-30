@@ -86,6 +86,7 @@ export default async function HomePage({ params }: Props) {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {toolCategories.map((cat) => {
               const count = tools.filter((t) => t.category === cat.id).length
+              if (count === 0) return null
               return (
               <Link
                 key={cat.id}
