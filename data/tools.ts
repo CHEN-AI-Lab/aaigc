@@ -9,7 +9,8 @@ export const toolCategories: CategoryInfo[] = [
   { id: 'math', nameEn: 'Math Tools', icon: '🔢', order: 6 },
   { id: 'convert', nameEn: 'Converters', icon: '🔀', order: 7 },
   { id: 'network', nameEn: 'Network Tools', icon: '📡', order: 8 },
-  { id: 'other', nameEn: 'Other Tools', icon: '🧩', order: 9 },
+  { id: 'ai', nameEn: 'AI Tools', icon: '🧙', order: 9 },
+  { id: 'other', nameEn: 'Other Tools', icon: '🧩', order: 10 },
 ]
 
 export interface ToolMeta {
@@ -67,6 +68,9 @@ export const tools: ToolMeta[] = [
   { id: 'dns-lookup', category: 'network', icon: '🌐', component: 'DnsLookup' },
   { id: 'http-status-codes', category: 'network', icon: 'ℹ️', component: 'HttpStatusCodes' },
   { id: 'user-agent-parser', category: 'network', icon: '🖥️', component: 'UserAgentParser' },
+
+  // ─── AI Tools ───
+  { id: 'prompt-generator', category: 'ai', icon: '💡', component: 'PromptGenerator' },
 
   // ─── Other Tools ───
   { id: 'random-generator', category: 'other', icon: '🎲', component: 'RandomGenerator' },

@@ -62,7 +62,7 @@ describe('tools', () => {
   })
 
   it('each tool has valid category', () => {
-    const validCats: ToolCategoryId[] = ['dev', 'text', 'time', 'image', 'convert', 'security', 'math', 'network', 'other']
+    const validCats: ToolCategoryId[] = ['dev', 'text', 'time', 'image', 'convert', 'security', 'math', 'network', 'ai', 'other']
     for (const t of tools) {
       expect(validCats).toContain(t.category)
       expect(t.id).toBeTruthy()
@@ -123,6 +123,7 @@ describe('tools', () => {
       'random-generator': 'RandomGenerator',
       'cron-builder': 'CronBuilder',
       'emoji-picker': 'EmojiPicker',
+      'prompt-generator': 'PromptGenerator',
       'text-to-binary': 'TextToBinary',
     }
     for (const t of tools) {
@@ -175,6 +176,7 @@ describe('tools', () => {
       RandomGenerator: () => import('../../apps/web/src/components/tools/RandomGenerator'),
       CronBuilder: () => import('../../apps/web/src/components/tools/CronBuilder'),
       EmojiPicker: () => import('../../apps/web/src/components/tools/EmojiPicker'),
+      PromptGenerator: () => import('../../apps/web/src/components/tools/PromptGenerator'),
       TextToBinary: () => import('../../apps/web/src/components/tools/TextToBinary'),
     }
     for (const t of tools) {
@@ -194,8 +196,8 @@ describe('tool categories', () => {
     categories = mod.toolCategories
   })
 
-  it('has 9 categories', () => {
-    expect(categories.length).toBe(9)
+  it('has 10 categories', () => {
+    expect(categories.length).toBe(10)
   })
 
   it('each category has required fields', () => {

@@ -26,7 +26,7 @@ export default function LanguageSwitcher() {
   const switchLocale = useCallback(
     (nextLocale: string) => {
       setOpen(false)
-      router.push(pathname, { locale: nextLocale })
+      router.replace(pathname, { locale: nextLocale })
     },
     [pathname, router]
   )

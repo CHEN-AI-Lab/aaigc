@@ -5,20 +5,47 @@ import { useTranslations } from 'next-intl'
 
 type Mode = 'countdown' | 'stopwatch'
 
+const clampHours = (v: string) => {
+  const n = parseInt(v)
+  if (isNaN(n) || n < 0) return '0'
+  if (n > 99) return '99'
+  return String(n)
+}
+
+const clampMinutes = (v: string) => {
+  const n = parseInt(v)
+  if (isNaN(n) || n < 0) return '0'
+  if (n > 59) return '59'
+  return String(n)
+}
+
+const clampSeconds = (v: string) => {
+  const n = parseInt(v)
+  if (isNaN(n) || n < 0) return '0'
+  if (n > 59) return '59'
+  return String(n)
+}
+
 export default function Timer() {
   const t = useTranslations('tools')
   const [mode, setMode] = useState<Mode>('countdown')
+  const [hours, setHours] = useState('0')
   const [minutes, setMinutes] = useState('5')
   const [seconds, setSeconds] = useState('00')
   const [remaining, setRemaining] = useState(0)
   const [running, setRunning] = useState(false)
   const [elapsed, setElapsed] = useState(0)
-  const [laps, setLaps] = useState<number[]>([])
+  const [laps, setLaps] = useState<{ lap: number; total: number }[]>([])
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const startTimeRef = useRef(0)
   const remainingRef = useRef(0)
   const initialTotalRef = useRef(0)
   const elapsedRef = useRef(0)
+  const lastLapTimeRef = useRef(0)
+
+  const getTotal = useCallback(() => {
+    return parseInt(hours) * 3600 + parseInt(minutes) * 60 + parseInt(seconds)
+  }, [hours, minutes, seconds])
 
   const stopTimer = useCallback(() => {
     if (intervalRef.current) {
@@ -82,16 +109,15 @@ export default function Timer() {
   }, [running, mode])
 
   const startCountdown = useCallback(() => {
-    const total = parseInt(minutes) * 60 + parseInt(seconds)
+    const total = getTotal()
     if (total <= 0) return
     remainingRef.current = total
     initialTotalRef.current = total
     setRemaining(total)
     setRunning(true)
-  }, [minutes, seconds])
+  }, [getTotal])
 
   const resumeCountdown = useCallback(() => {
-    // Resume from current remaining value
     remainingRef.current = remaining
     setRunning(true)
   }, [remaining])
@@ -126,17 +152,22 @@ export default function Timer() {
     } else {
       setElapsed(0)
       elapsedRef.current = 0
+      lastLapTimeRef.current = 0
       setLaps([])
     }
   }, [mode, stopTimer])
 
   const handleLap = useCallback(() => {
-    setLaps(prev => [...prev, elapsed])
+    const lapDuration = elapsed - lastLapTimeRef.current
+    lastLapTimeRef.current = elapsed
+    setLaps(prev => [{ lap: lapDuration, total: elapsed }, ...prev])
   }, [elapsed])
 
   const formatTime = (totalSecs: number) => {
-    const m = Math.floor(totalSecs / 60)
+    const h = Math.floor(totalSecs / 3600)
+    const m = Math.floor((totalSecs % 3600) / 60)
     const s = totalSecs % 60
+    if (h > 0) return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
     return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
   }
 
@@ -150,8 +181,10 @@ export default function Timer() {
 
   const displayTime = mode === 'countdown' ? formatTime(remaining) : formatMs(elapsed)
   const isCountdown = mode === 'countdown'
+  const hasHours = isCountdown && remaining >= 3600
+  const totalSet = isCountdown ? initialTotalRef.current : 0
   const progress = isCountdown && initialTotalRef.current > 0 ? 1 - remaining / initialTotalRef.current : 0
-  const circumference = 2 * Math.PI * 80
+  const circumference = 2 * Math.PI * 90
   const strokeDashoffset = circumference * (1 - progress)
 
   return (
@@ -173,38 +206,53 @@ export default function Timer() {
       </div>
 
       {/* Timer display + circle */}
-      <div className="relative flex items-center justify-center py-16">
+      <div className="relative flex items-center justify-center min-h-[16rem]">
         {isCountdown && (
-          <svg className="absolute w-56 h-56 -rotate-90" viewBox="0 0 200 200" style={{ zIndex: 0 }}>
-            <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(127,99,21,0.1)" strokeWidth="6" />
+          <svg className="absolute w-64 h-64" viewBox="0 0 220 220" style={{ zIndex: 0 }}>
+            <circle cx="110" cy="110" r="90" fill="none" stroke="rgba(127,99,21,0.1)" strokeWidth="6" />
             <circle
-              cx="100" cy="100" r="80" fill="none" stroke="var(--color-accent, #c89b3c)" strokeWidth="6"
+              cx="110" cy="110" r="90" fill="none" stroke="var(--color-accent, #c89b3c)" strokeWidth="6"
               strokeDasharray={circumference}
               strokeDashoffset={strokeDashoffset}
               strokeLinecap="round"
               className="transition-all duration-300"
+              style={{ transform: 'rotate(-90deg)', transformOrigin: '110px 110px' }}
             />
           </svg>
         )}
-        <div className="text-6xl font-light tracking-widest text-text-primary tabular-nums relative z-10">
-          {displayTime}
+        <div className="text-center relative z-10">
+          <div className={`font-light tracking-widest text-text-primary tabular-nums ${hasHours ? 'text-4xl' : isCountdown ? 'text-5xl' : 'text-4xl'}`}>
+            {displayTime}
+          </div>
+          {isCountdown && (running || remaining > 0) && totalSet > 0 && (
+            <div className="text-xs text-text-secondary/50 mt-2 tabular-nums tracking-normal">
+              {formatTime(totalSet)}
+            </div>
+          )}
         </div>
       </div>
 
       {/* Countdown input */}
       {isCountdown && !running && remaining === 0 && (
-        <div className="flex items-center justify-center gap-3 relative z-10">
+        <div className="flex items-center justify-center gap-2 relative z-10">
           <input
-            type="number" min="0" max="999" value={minutes}
-            onChange={e => setMinutes(e.target.value)}
-            className="w-20 p-2 text-center bg-surface border border-[rgba(127,99,21,0.15)] rounded-lg text-sm text-text-primary"
+            type="number" min="0" max="99" value={hours}
+            onChange={e => setHours(clampHours(e.target.value))}
+            className="w-16 p-2 text-center bg-surface border border-[rgba(127,99,21,0.15)] rounded-lg text-sm text-text-primary"
+            placeholder="0"
+          />
+          <span className="text-sm text-text-secondary">:</span>
+          <input
+            type="number" min="0" max="59" value={minutes}
+            onChange={e => setMinutes(clampMinutes(e.target.value))}
+            className="w-16 p-2 text-center bg-surface border border-[rgba(127,99,21,0.15)] rounded-lg text-sm text-text-primary"
             placeholder="0"
           />
           <span className="text-sm text-text-secondary">:</span>
           <input
             type="number" min="0" max="59" value={seconds}
-            onChange={e => setSeconds(e.target.value)}
-            className="w-20 p-2 text-center bg-surface border border-[rgba(127,99,21,0.15)] rounded-lg text-sm text-text-primary"
+            onChange={e => setSeconds(clampSeconds(e.target.value))}
+            className="w-16 p-2 text-center bg-surface border border-[rgba(127,99,21,0.15)] rounded-lg text-sm text-text-primary"
             placeholder="00"
           />
         </div>
@@ -212,40 +260,45 @@ export default function Timer() {
 
       {/* Preset buttons */}
       {isCountdown && !running && remaining === 0 && (
-        <div className="flex justify-center gap-2 relative z-10">
-          {[1, 3, 5, 10].map(m => (
+        <div className="flex flex-wrap justify-center gap-2 relative z-10">
+          {[
+            { label: '1min', h: 0, m: 1 },
+            { label: '3min', h: 0, m: 3 },
+            { label: '5min', h: 0, m: 5 },
+            { label: '10min', h: 0, m: 10 },
+            { label: '30min', h: 0, m: 30 },
+          ].map(p => (
             <button
-              key={m}
-              onClick={() => { setMinutes(String(m)); setSeconds('00') }}
-              className={`px-4 py-1.5 text-xs rounded-lg transition-colors ${
-                parseInt(minutes) === m && seconds === '00'
+              key={p.label}
+              onClick={() => { setHours(String(p.h)); setMinutes(String(p.m)); setSeconds('00') }}
+              className={`px-3 py-1.5 text-xs rounded-lg transition-colors ${
+                parseInt(hours) === p.h && parseInt(minutes) === p.m && seconds === '00'
                   ? 'bg-accent text-white'
                   : 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.15)]'
               }`}
-            >{m}{t('timerMin')}</button>
+            >{p.label}</button>
           ))}
         </div>
       )}
 
       {/* Action buttons */}
       <div className="flex flex-wrap justify-center gap-3 relative z-10">
-        {!running ? (
+        {!running && (isCountdown ? remaining === 0 : elapsed === 0) ? (
           <button
             onClick={handleStart}
-            disabled={isCountdown && (parseInt(minutes) * 60 + parseInt(seconds)) <= 0}
+            disabled={isCountdown && getTotal() <= 0}
             className="px-8 py-3 bg-accent text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity disabled:opacity-30"
           >{t('timerStart')}</button>
+        ) : !running ? (
+          <button
+            onClick={handleResume}
+            className="px-8 py-3 bg-green-500 text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity"
+          >{t('timerResume')}</button>
         ) : (
           <button
             onClick={stopTimer}
             className="px-8 py-3 bg-yellow-500 text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity"
           >{t('timerPause')}</button>
-        )}
-        {running && (
-          <button
-            onClick={handleResume}
-            className="px-8 py-3 bg-green-500 text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity"
-          >{t('timerResume')}</button>
         )}
         {!isCountdown && running && (
           <button
@@ -253,22 +306,28 @@ export default function Timer() {
             className="px-6 py-3 bg-surface text-text-primary text-sm font-medium rounded-lg border border-[rgba(127,99,21,0.15)] hover:bg-accent/5 transition-colors"
           >{t('timerLap')}</button>
         )}
-        <button
-          onClick={handleReset}
-          disabled={!running && ((isCountdown && remaining === 0) || (!isCountdown && elapsed === 0))}
-          className="px-6 py-3 bg-surface text-text-primary text-sm font-medium rounded-lg border border-[rgba(127,99,21,0.15)] hover:bg-accent/5 transition-colors disabled:opacity-30"
-        >{t('timerReset')}</button>
+        {running && isCountdown ? (
+          <button
+            onClick={handleReset}
+            className="px-6 py-3 bg-surface text-text-primary text-sm font-medium rounded-lg border border-[rgba(127,99,21,0.15)] hover:bg-accent/5 transition-colors"
+          >{t('timerReset')}</button>
+        ) : !running && (isCountdown ? remaining > 0 : elapsed > 0) ? (
+          <button
+            onClick={handleReset}
+            className="px-6 py-3 bg-surface text-text-primary text-sm font-medium rounded-lg border border-[rgba(127,99,21,0.15)] hover:bg-accent/5 transition-colors"
+          >{t('timerReset')}</button>
+        ) : null}
       </div>
 
       {/* Lap times */}
       {!isCountdown && laps.length > 0 && (
         <div className="space-y-1 relative z-10">
-          <p className="text-xs text-text-secondary font-medium">{t('timerLaps')}</p>
-          <div className="max-h-40 overflow-y-auto space-y-1">
-            {laps.map((lap, i) => (
-              <div key={i} className="flex justify-between px-3 py-1.5 bg-surface rounded-lg text-sm">
-                <span className="text-text-secondary">#{i + 1}</span>
-                <span className="text-text-primary tabular-nums">{formatMs(lap)}</span>
+          <div className="max-h-80 overflow-y-auto space-y-1">
+            {laps.map((item, i) => (
+              <div key={i} className="grid grid-cols-3 items-center px-3 py-1.5 bg-surface rounded-lg text-sm">
+                <span className="text-text-secondary">{String(laps.length - i).padStart(2, '0')}</span>
+                <span className="text-text-primary tabular-nums text-center">{formatMs(item.lap)}</span>
+                <span className="text-text-secondary/50 tabular-nums text-right">{formatMs(item.total)}</span>
               </div>
             ))}
           </div>

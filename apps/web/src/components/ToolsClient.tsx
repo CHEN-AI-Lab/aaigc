@@ -42,6 +42,7 @@ export default function ToolsClient() {
       'http-status-codes': 'HttpStatusCodes', 'user-agent-parser': 'UserAgentParser',
       'random-generator': 'RandomGenerator', 'cron-builder': 'CronBuilder',
       'emoji-picker': 'EmojiPicker',
+      'prompt-generator': 'PromptGenerator', 'ai-models': 'AiModelsGuide',
     }
     tools.forEach(tool => {
       const name = componentMap[tool.id]
