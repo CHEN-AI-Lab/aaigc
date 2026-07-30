@@ -18,6 +18,7 @@ export default function Timer() {
   const startTimeRef = useRef(0)
   const remainingRef = useRef(0)
   const initialTotalRef = useRef(0)
+  const elapsedRef = useRef(0)
 
   const stopTimer = useCallback(() => {
     if (intervalRef.current) {
@@ -66,15 +67,17 @@ export default function Timer() {
     return () => { if (intervalRef.current) clearInterval(intervalRef.current) }
   }, [running, mode, stopTimer, beep])
 
-  // Stopwatch logic (no state deps)
+  // Stopwatch logic
   useEffect(() => {
     if (!running || mode !== 'stopwatch') return
-    startTimeRef.current = Date.now() - elapsed
+    startTimeRef.current = Date.now() - elapsedRef.current
     intervalRef.current = setInterval(() => {
-      setElapsed(Date.now() - startTimeRef.current)
+      const now = Date.now()
+      setElapsed(now - startTimeRef.current)
+      elapsedRef.current = now - startTimeRef.current
     }, 10)
     return () => { if (intervalRef.current) clearInterval(intervalRef.current) }
-  }, [running, mode, elapsed])
+  }, [running, mode])
 
   const startCountdown = useCallback(() => {
     const total = parseInt(minutes) * 60 + parseInt(seconds)
@@ -86,6 +89,7 @@ export default function Timer() {
   }, [minutes, seconds])
 
   const startStopwatch = useCallback(() => {
+    elapsedRef.current = elapsed
     startTimeRef.current = Date.now() - elapsed
     setRunning(true)
   }, [elapsed])
@@ -102,6 +106,7 @@ export default function Timer() {
       setRemaining(0)
     } else {
       setElapsed(0)
+      elapsedRef.current = 0
       setLaps([])
     }
   }, [mode, stopTimer])
@@ -126,8 +131,7 @@ export default function Timer() {
 
   const displayTime = mode === 'countdown' ? formatTime(remaining) : formatMs(elapsed)
   const isCountdown = mode === 'countdown'
-  const totalInitial = isCountdown ? (parseInt(minutes) * 60 + parseInt(seconds)) : 100
-  const progress = isCountdown && initialTotalRef.current > 0 ? remaining / initialTotalRef.current : 0
+  const progress = isCountdown && initialTotalRef.current > 0 ? 1 - remaining / initialTotalRef.current : 0
   const circumference = 2 * Math.PI * 80
   const strokeDashoffset = circumference * (1 - progress)
 
