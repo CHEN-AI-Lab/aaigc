@@ -24,7 +24,14 @@ export default async function HomePage({ params }: Props) {
         <div className="absolute inset-0 bg-gradient-to-b from-accent/5 via-transparent to-transparent pointer-events-none" />
         <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-accent/3 rounded-full blur-3xl pointer-events-none" />
         <div className="relative">
-          <div className="text-6xl mb-6">🚀</div>
+          <div className="flex items-center justify-center mb-6">
+            <div className="relative w-28 h-20">
+              <div className="absolute w-[70px] h-[70px] rounded-full border-2 border-accent/30 top-1 left-1" />
+              <div className="absolute w-[50px] h-[50px] rounded-full border-2 border-accent/20 top-[22px] left-[50px]" />
+              <div className="absolute w-3 h-3 rounded-full bg-accent/60 top-3 left-[90px]" />
+              <div className="absolute w-2 h-2 rounded-full bg-accent/40 top-[38px] left-[115px]" />
+            </div>
+          </div>
           <h1 className="display-hero text-text-primary mb-4">AAIGC</h1>
           <p className="text-xl text-text-secondary max-w-xl mx-auto mb-8 leading-relaxed">
             {t('heroSubtitle')}
