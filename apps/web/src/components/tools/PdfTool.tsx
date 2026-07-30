@@ -32,6 +32,10 @@ export default function PdfTool() {
     setError('')
     const newFiles: PdfFile[] = []
     for (let i = 0; i < list.length; i++) {
+      if (mode === 'split' && (files.length + newFiles.length) >= 1) {
+        setError(t('pdfSplitLimit'))
+        break
+      }
       const file = list[i]
       if (file.type !== 'application/pdf') {
         setError(`"${file.name}" ${t('pdfNotPdf')}`)
@@ -43,7 +47,7 @@ export default function PdfTool() {
       newFiles.push({ id: crypto.randomUUID(), name: file.name, data, pageCount: doc.getPageCount() })
     }
     setFiles(prev => [...prev, ...newFiles])
-  }, [t, isDuplicate])
+  }, [t, isDuplicate, mode, files.length])
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
