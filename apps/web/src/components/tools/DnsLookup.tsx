@@ -35,19 +35,19 @@ export default function DnsLookup() {
     <div className="mt-6 space-y-4">
       <div className="flex gap-3">
         <input value={domain} onChange={e => setDomain(e.target.value)} placeholder={t('dnsPlaceholder')}
-          className="flex-1 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-lg text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/30" />
+          className="flex-1 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-md text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/30" />
         <select value={type} onChange={e => setType(e.target.value)}
-          className="px-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-lg text-sm text-text-primary focus:outline-none">
+          className="px-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-md text-sm text-text-primary focus:outline-none">
           {TYPES.map(t => <option key={t} value={t}>{t}</option>)}
         </select>
         <button onClick={lookup} disabled={loading}
-          className="px-5 py-3 bg-accent text-white text-sm rounded-lg hover:opacity-90 disabled:opacity-50">{t('search')}</button>
+          className="px-5 py-3 bg-accent text-white text-sm rounded-md hover:opacity-90 disabled:opacity-50">{t('search')}</button>
       </div>
       {loading && <p className="text-text-secondary text-sm">{t('loading')}</p>}
       {error && <p className="text-red-500 text-sm">{error}</p>}
       {note && <p className="text-xs text-text-secondary mb-1">{note}</p>}
       {result && (
-        <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-lg overflow-hidden">
+        <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-md overflow-hidden">
           <table className="w-full text-sm">
             <thead><tr className="border-b border-[rgba(127,99,21,0.15)]">
               <th className="text-left p-3 text-text-secondary font-medium">{t('dnsName')}</th>

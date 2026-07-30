@@ -17,11 +17,11 @@ export default function TextDiff() {
   return (
     <div className="mt-6 space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <textarea value={left} onChange={e => setLeft(e.target.value)} placeholder={t('originalText')} className="w-full h-48 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-lg text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
-        <textarea value={right} onChange={e => setRight(e.target.value)} placeholder={t('modifiedText')} className="w-full h-48 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-lg text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
+        <textarea value={left} onChange={e => setLeft(e.target.value)} placeholder={t('originalText')} className="w-full h-48 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-md text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
+        <textarea value={right} onChange={e => setRight(e.target.value)} placeholder={t('modifiedText')} className="w-full h-48 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-md text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
       </div>
       {diffResult && (
-        <div className="border border-[rgba(127,99,21,0.15)] rounded-lg overflow-hidden">
+        <div className="border border-[rgba(127,99,21,0.15)] rounded-md overflow-hidden">
           <div className="text-xs font-mono">
             {diffResult.map((part, i) => {
               const lines = part.value.split('\n')

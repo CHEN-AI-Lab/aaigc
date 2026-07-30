@@ -16,7 +16,7 @@ export default async function AboutPage({ params }: Props) {
         <p>{t('desc2')}</p>
       </div>
 
-      <div className="mt-16 p-6 bg-surface rounded-lg border border-[rgba(127,99,21,0.1)]">
+      <div className="mt-16 p-6 bg-surface rounded-md border border-[rgba(127,99,21,0.1)]">
         <h2 className="text-sm font-semibold text-text-primary mb-3 uppercase tracking-wider">{t('contact')}</h2>
         <div className="space-y-2 text-sm">
           <a href="mailto:chen@aaigc.online" className="block text-accent hover:underline">
