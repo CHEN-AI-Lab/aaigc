@@ -13,7 +13,7 @@ export default function LocaleNotFound() {
         <p className="text-sm text-text-secondary mb-8">{t('notFoundDesc')}</p>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-dark text-white text-sm font-medium rounded-md hover:opacity-90 transition-opacity"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-dark text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity"
         >
           {t('backHome')}
         </Link>

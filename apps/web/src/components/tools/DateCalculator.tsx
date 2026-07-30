@@ -27,7 +27,7 @@ function ClampInput({ value, onChange, min, max, label, field, hint }: {
           if (isNaN(n)) { onChange('0'); return }
           onChange(String(Math.max(min, Math.min(max, n))))
         }}
-        className="w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-md text-sm text-text-primary text-center focus:outline-none focus:border-accent/30 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
+        className="w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-sm text-text-primary text-center focus:outline-none focus:border-accent/30 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
       {hintFor(field) && (
         <div className="absolute -bottom-4 left-0 right-0 text-[10px] text-red-500 text-center whitespace-nowrap">{hintFor(field)}</div>
       )}
@@ -43,17 +43,17 @@ function DateSelect({ year, month, day, onYear, onMonth, onDay, years, months, d
   return (
     <div className="flex gap-1.5">
       <div className="w-20">
-        <select value={year} onChange={e => onYear(e.target.value)} className="w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-md text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
+        <select value={year} onChange={e => onYear(e.target.value)} className="w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
           {years.map(y => <option key={y} value={y}>{y}</option>)}
         </select>
       </div>
       <div className="w-16">
-        <select value={month} onChange={e => onMonth(e.target.value)} className="w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-md text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
+        <select value={month} onChange={e => onMonth(e.target.value)} className="w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
           {months.map(m => <option key={m} value={m}>{pad(m, 2)}</option>)}
         </select>
       </div>
       <div className="w-16">
-        <select value={day} onChange={e => onDay(e.target.value)} className="w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-md text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
+        <select value={day} onChange={e => onDay(e.target.value)} className="w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
           {days.map(d => <option key={d} value={d}>{pad(d, 2)}</option>)}
         </select>
       </div>
@@ -159,7 +159,7 @@ export default function DateCalculator() {
 
   return (
     <div className="mt-6 space-y-6">
-      <div className="p-4 bg-surface rounded-md border border-[rgba(127,99,21,0.15)]">
+      <div className="p-4 bg-surface rounded-lg border border-[rgba(127,99,21,0.15)]">
         <h3 className="text-sm font-medium text-text-primary mb-1">{t('dateDifference')}</h3>
         <p className="text-xs text-text-secondary mb-3">{t('calculateDiffDesc')}</p>
 
@@ -211,16 +211,16 @@ export default function DateCalculator() {
           </div>
         </div>
 
-        <button onClick={calcDiff} className="px-4 py-2 bg-accent text-white text-sm rounded-md hover:opacity-90">{t('calculate')}</button>
+        <button onClick={calcDiff} className="px-4 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('calculate')}</button>
 
         {diff && (
-          <div className="mt-2 p-2 bg-bg rounded-md border border-[rgba(127,99,21,0.1)]">
+          <div className="mt-2 p-2 bg-bg rounded-lg border border-[rgba(127,99,21,0.1)]">
             <p className="text-sm text-text-primary">{diff}</p>
           </div>
         )}
       </div>
 
-      <div className="p-4 bg-surface rounded-md border border-[rgba(127,99,21,0.15)]">
+      <div className="p-4 bg-surface rounded-lg border border-[rgba(127,99,21,0.15)]">
         <h3 className="text-sm font-medium text-text-primary mb-1">{t('addSubtractDays')}</h3>
         <p className="text-xs text-text-secondary mb-3">{t('addDaysDesc')}</p>
         <div className="flex flex-wrap gap-2 mb-3 items-end">
@@ -235,12 +235,12 @@ export default function DateCalculator() {
           </div>
           <div className="w-24">
             <label className="block text-[10px] text-text-secondary mb-0.5">{t('days')}</label>
-            <input type="number" value={addDays} onChange={e => setAddDays(e.target.value)} placeholder={t('days')} className="w-full p-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-md text-sm text-text-primary text-center focus:outline-none focus:border-accent/30 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
+            <input type="number" value={addDays} onChange={e => setAddDays(e.target.value)} placeholder={t('days')} className="w-full p-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-sm text-text-primary text-center focus:outline-none focus:border-accent/30 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
           </div>
         </div>
-        <button onClick={calcAdd} className="px-4 py-2 bg-accent text-white text-sm rounded-md hover:opacity-90">{t('calculate')}</button>
+        <button onClick={calcAdd} className="px-4 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('calculate')}</button>
         {addResult && (
-          <div className="mt-2 p-2 bg-bg rounded-md border border-[rgba(127,99,21,0.1)]">
+          <div className="mt-2 p-2 bg-bg rounded-lg border border-[rgba(127,99,21,0.1)]">
             <p className="text-sm text-text-primary">{t('result')}: {addResult}</p>
           </div>
         )}
