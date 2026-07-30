@@ -101,7 +101,7 @@ export default function CronBuilder() {
         {currentPreset && <p className="text-xs text-text-secondary mt-1">{t(currentPreset.desc)}</p>}
         <div className="mt-2 flex items-center justify-center gap-2">
           <button onClick={() => { navigator.clipboard.writeText(expression); setCopied(true); setTimeout(() => setCopied(false), 2000) }}
-            className="px-4 py-1.5 bg-accent text-white text-xs rounded-sm hover:opacity-90">{copied ? t('cronCopied') : t('cronCopy')}</button>
+            className="px-4 py-1.5 bg-accent text-white text-xs rounded-lg hover:opacity-90">{copied ? t('cronCopied') : t('cronCopy')}</button>
         </div>
         <p className="text-xs text-text-secondary/60 mt-2">{t('cronUsage')} <code className="text-accent font-mono text-xs">{t('cronUsageCmd')}</code></p>
       </div>

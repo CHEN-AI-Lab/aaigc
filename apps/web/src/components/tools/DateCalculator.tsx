@@ -211,7 +211,7 @@ export default function DateCalculator() {
           </div>
         </div>
 
-        <button onClick={calcDiff} className="px-4 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{t('calculate')}</button>
+        <button onClick={calcDiff} className="px-4 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('calculate')}</button>
 
         {diff && (
           <div className="mt-2 p-2 bg-bg rounded-sm border border-[rgba(127,99,21,0.1)]">
@@ -238,7 +238,7 @@ export default function DateCalculator() {
             <input type="number" value={addDays} onChange={e => setAddDays(e.target.value)} placeholder={t('days')} className="w-full p-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary text-center focus:outline-none focus:border-accent/30 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
           </div>
         </div>
-        <button onClick={calcAdd} className="px-4 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{t('calculate')}</button>
+        <button onClick={calcAdd} className="px-4 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('calculate')}</button>
         {addResult && (
           <div className="mt-2 p-2 bg-bg rounded-sm border border-[rgba(127,99,21,0.1)]">
             <p className="text-sm text-text-primary">{t('result')}: {addResult}</p>

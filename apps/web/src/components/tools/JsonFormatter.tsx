@@ -101,14 +101,14 @@ export default function JsonFormatter() {
         className="w-full h-36 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30"
       />
       <div className="flex gap-2 flex-wrap items-center">
-        <button onClick={format} className="px-4 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{t('format')}</button>
+        <button onClick={format} className="px-4 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('format')}</button>
         <button onClick={validate} className="px-4 py-2 bg-surface text-text-primary text-sm rounded-sm hover:opacity-90 border border-[rgba(127,99,21,0.15)]">{t('validate')}</button>
         <button onClick={minify} className="px-4 py-2 bg-surface text-text-primary text-sm rounded-sm hover:opacity-90 border border-[rgba(127,99,21,0.15)]">{t('minify')}</button>
         {downloadUrl && (
           <a
             href={downloadUrl}
             download="formatted.json"
-            className="px-4 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90 transition-opacity"
+            className="px-4 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90 transition-opacity"
           >
             {t('downloadJson')}
           </a>

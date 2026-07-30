@@ -41,7 +41,7 @@ export default function DnsLookup() {
           {TYPES.map(t => <option key={t} value={t}>{t}</option>)}
         </select>
         <button onClick={lookup} disabled={loading}
-          className="px-5 py-3 bg-accent text-white text-sm rounded-sm hover:opacity-90 disabled:opacity-50">{t('search')}</button>
+          className="px-5 py-3 bg-accent text-white text-sm rounded-lg hover:opacity-90 disabled:opacity-50">{t('search')}</button>
       </div>
       {loading && <p className="text-text-secondary text-sm">{t('loading')}</p>}
       {error && <p className="text-red-500 text-sm">{error}</p>}

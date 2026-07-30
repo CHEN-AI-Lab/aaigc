@@ -25,7 +25,7 @@ export default function UuidGenerator() {
         <label className="text-sm text-text-secondary">{t('count')}</label>
         <input type="number" min={1} max={100} value={count} onChange={e => setCount(Math.min(100, Math.max(1, parseInt(e.target.value) || 1)))}
           className="w-20 p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary text-center focus:outline-none focus:border-accent/30" />
-        <button onClick={generate} className="px-6 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{t('generate')}</button>
+        <button onClick={generate} className="px-6 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('generate')}</button>
       </div>
       {uuid && (
         <div className="relative">

@@ -56,7 +56,7 @@ export default function CssMinifier() {
         <button onClick={() => setMode('format')} className={`px-4 py-1.5 text-sm rounded-sm transition-colors ${mode === 'format' ? 'bg-accent text-white' : 'bg-surface text-text-primary'}`}>{t('format')}</button>
       </div>
       <textarea value={input} onChange={e => setInput(e.target.value)} placeholder="body { margin: 0; color: #333; }" className="w-full h-32 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
-      <button onClick={convert} className="px-6 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{mode === 'minify' ? t('minify') : t('format')}</button>
+      <button onClick={convert} className="px-6 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{mode === 'minify' ? t('minify') : t('format')}</button>
       {error && <p className="text-red-500 text-sm">{error}</p>}
       {output && (
         <div className="relative">

@@ -68,7 +68,7 @@ export default function JwtDecoder() {
   return (
     <div className="mt-6 space-y-4">
       <textarea value={input} onChange={e => setInput(e.target.value)} placeholder="eyJhbG...NiIs..." className="w-full h-24 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
-      <button onClick={decode} className="px-6 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{t('decode')}</button>
+      <button onClick={decode} className="px-6 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('decode')}</button>
       {error && <p className="text-red-500 text-sm">{error}</p>}
       {header && (
         <div className="space-y-3">

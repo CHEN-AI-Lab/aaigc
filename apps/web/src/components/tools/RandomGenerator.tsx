@@ -48,7 +48,7 @@ export default function RandomGenerator() {
           <div><label className="text-xs text-text-secondary block mb-1">字符数</label>
             <input value={len} onChange={e => setLen(e.target.value)} className="w-24 p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" /></div>
         </>)}
-        <button onClick={generate} className="px-5 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{t('generate')}</button>
+        <button onClick={generate} className="px-5 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('generate')}</button>
       </div>
 
       {result && (

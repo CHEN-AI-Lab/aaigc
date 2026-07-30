@@ -112,8 +112,8 @@ export default function JsonToCsv() {
     <div className="mt-6 space-y-4">
       <textarea value={input} onChange={e => setInput(e.target.value)} placeholder='[{"name":"Alice","age":30}]' className="w-full h-32 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
       <div className="flex gap-2">
-        <button onClick={convert} className="px-6 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{t('convert')}</button>
-        {output && <button onClick={handleDownload} className="px-6 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{t('downloadCsv')}</button>}
+        <button onClick={convert} className="px-6 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('convert')}</button>
+        {output && <button onClick={handleDownload} className="px-6 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('downloadCsv')}</button>}
       </div>
       {error && <p className="text-red-500 text-sm">{error}</p>}
       {output && (
