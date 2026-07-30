@@ -213,7 +213,7 @@ export default function MarkdownPreview() {
             <span className="text-xs text-text-secondary font-medium">{t('editor')}</span>
             <button
               onClick={handleDownload}
-              className="text-xs px-2.5 py-1 bg-accent text-white rounded-sm hover:opacity-90 transition-opacity"
+              className="text-xs px-2.5 py-1 bg-accent text-white rounded-md hover:opacity-90 transition-opacity"
             >
               {t('downloadMarkdown')}
             </button>
@@ -222,7 +222,7 @@ export default function MarkdownPreview() {
             value={input}
             onChange={e => setInput(e.target.value)}
             placeholder={t('enterMarkdown')}
-            className="w-full flex-1 min-h-[500px] p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30"
+            className="w-full flex-1 min-h-[500px] p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-md text-sm font-mono text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30"
           />
         </div>
 
@@ -244,7 +244,7 @@ export default function MarkdownPreview() {
             ))}
           </div>
 
-          <div className={`flex-1 min-h-[500px] overflow-y-auto p-3 border border-[rgba(127,99,21,0.15)] rounded-sm text-sm ${isDark ? 'bg-[#0d1117] text-[#e0e0e0]' : 'bg-card text-text-primary'}`}>
+          <div className={`flex-1 min-h-[500px] overflow-y-auto p-3 border border-[rgba(127,99,21,0.15)] rounded-md text-sm ${isDark ? 'bg-[#0d1117] text-[#e0e0e0]' : 'bg-card text-text-primary'}`}>
             {isDark && (
               <style>{`
 .markdown-preview-dark h1, .markdown-preview-dark h2, .markdown-preview-dark h3,
@@ -310,7 +310,7 @@ export default function MarkdownPreview() {
 
 function StatCard({ label, value }: { label: string; value: string | number }) {
   return (
-    <div className="bg-surface rounded-sm p-3 text-center">
+    <div className="bg-surface rounded-md p-3 text-center">
       <div className="text-lg font-semibold text-text-primary">{value}</div>
       <div className="text-xs text-text-secondary mt-0.5">{label}</div>
     </div>

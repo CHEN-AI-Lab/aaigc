@@ -18,7 +18,7 @@ export default function CopyButton({ text, className }: { text: string; classNam
   return (
     <button
       onClick={handleCopy}
-      className={`text-xs px-2 py-1 rounded-sm transition-all duration-200 shrink-0 ${
+      className={`text-xs px-2 py-1 rounded-md transition-all duration-200 shrink-0 ${
         copied
           ? 'bg-green-500 text-white scale-105'
           : 'bg-accent text-white hover:opacity-90'
