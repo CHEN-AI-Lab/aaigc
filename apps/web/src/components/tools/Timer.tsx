@@ -10,13 +10,27 @@ export default function Timer() {
   const [mode, setMode] = useState<Mode>('countdown')
   const [minutes, setMinutes] = useState('5')
   const [seconds, setSeconds] = useState('00')
-  const [remaining, setRemaining] = useState(0) // total seconds
+  const [remaining, setRemaining] = useState(0)
   const [running, setRunning] = useState(false)
-  const [elapsed, setElapsed] = useState(0) // ms for stopwatch
+  const [elapsed, setElapsed] = useState(0)
   const [laps, setLaps] = useState<number[]>([])
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const startTimeRef = useRef(0)
-  const progressRef = useRef(0)
+  const remainingRef = useRef(0)
+  const initialTotalRef = useRef(0)
+
+  const stopTimer = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current)
+      intervalRef.current = null
+    }
+    setRunning(false)
+  }, [])
+
+  // Cleanup
+  useEffect(() => {
+    return () => { if (intervalRef.current) clearInterval(intervalRef.current) }
+  }, [])
 
   const beep = useCallback(() => {
     try {
@@ -31,44 +45,28 @@ export default function Timer() {
       gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5)
       osc.start()
       osc.stop(ctx.currentTime + 0.5)
-    } catch { /* audio not supported */ }
+    } catch { /* silent */ }
   }, [])
 
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => { if (intervalRef.current) clearInterval(intervalRef.current) }
-  }, [])
-
-  const stopTimer = useCallback(() => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current)
-      intervalRef.current = null
-    }
-    setRunning(false)
-  }, [])
-
-  // Countdown tick
+  // Countdown logic (no state deps to avoid re-creating interval)
   useEffect(() => {
     if (!running || mode !== 'countdown') return
     const start = Date.now()
-    const initialRemaining = remaining
     intervalRef.current = setInterval(() => {
       const elapsed = Math.floor((Date.now() - start) / 1000)
-      const newRemaining = Math.max(0, initialRemaining - elapsed)
+      const newRemaining = Math.max(0, remainingRef.current - elapsed)
       setRemaining(newRemaining)
-      progressRef.current = newRemaining
       if (newRemaining <= 0) {
         stopTimer()
         beep()
-        // Beep 3 times
         setTimeout(() => beep(), 500)
         setTimeout(() => beep(), 1000)
       }
     }, 100)
     return () => { if (intervalRef.current) clearInterval(intervalRef.current) }
-  }, [running, mode, remaining, stopTimer, beep])
+  }, [running, mode, stopTimer, beep])
 
-  // Stopwatch tick
+  // Stopwatch logic (no state deps)
   useEffect(() => {
     if (!running || mode !== 'stopwatch') return
     startTimeRef.current = Date.now() - elapsed
@@ -81,15 +79,13 @@ export default function Timer() {
   const startCountdown = useCallback(() => {
     const total = parseInt(minutes) * 60 + parseInt(seconds)
     if (total <= 0) return
+    remainingRef.current = total
+    initialTotalRef.current = total
     setRemaining(total)
-    progressRef.current = total
     setRunning(true)
   }, [minutes, seconds])
 
   const startStopwatch = useCallback(() => {
-    if (elapsed === 0) {
-      setElapsed(0)
-    }
     startTimeRef.current = Date.now() - elapsed
     setRunning(true)
   }, [elapsed])
@@ -102,6 +98,7 @@ export default function Timer() {
   const handleReset = useCallback(() => {
     stopTimer()
     if (mode === 'countdown') {
+      remainingRef.current = 0
       setRemaining(0)
     } else {
       setElapsed(0)
@@ -113,7 +110,6 @@ export default function Timer() {
     setLaps(prev => [...prev, elapsed])
   }, [elapsed])
 
-  // Format time
   const formatTime = (totalSecs: number) => {
     const m = Math.floor(totalSecs / 60)
     const s = totalSecs % 60
@@ -122,24 +118,16 @@ export default function Timer() {
 
   const formatMs = (ms: number) => {
     const totalSecs = Math.floor(ms / 1000)
-    const centiseconds = Math.floor((ms % 1000) / 10)
+    const cs = Math.floor((ms % 1000) / 10)
     const m = Math.floor(totalSecs / 60)
     const s = totalSecs % 60
-    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}.${String(centiseconds).padStart(2, '0')}`
+    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}.${String(cs).padStart(2, '0')}`
   }
 
-  const displayTime = mode === 'countdown'
-    ? formatTime(remaining)
-    : formatMs(elapsed)
-
+  const displayTime = mode === 'countdown' ? formatTime(remaining) : formatMs(elapsed)
   const isCountdown = mode === 'countdown'
-  const isRunning = running
-
-  // Circular progress
   const totalInitial = isCountdown ? (parseInt(minutes) * 60 + parseInt(seconds)) : 100
-  const progress = isCountdown
-    ? (totalInitial > 0 ? remaining / totalInitial : 0)
-    : 0
+  const progress = isCountdown && initialTotalRef.current > 0 ? remaining / initialTotalRef.current : 0
   const circumference = 2 * Math.PI * 80
   const strokeDashoffset = circumference * (1 - progress)
 
@@ -148,7 +136,7 @@ export default function Timer() {
       {/* Mode toggle */}
       <div className="flex justify-center gap-2">
         <button
-          onClick={() => { stopTimer(); setMode('countdown'); setRemaining(0) }}
+          onClick={() => { stopTimer(); setMode('countdown'); setRemaining(0); remainingRef.current = 0 }}
           className={`px-5 py-2 text-sm rounded-lg transition-colors ${
             isCountdown ? 'bg-accent text-white' : 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.15)]'
           }`}
@@ -161,9 +149,8 @@ export default function Timer() {
         >{t('timerStopwatch')}</button>
       </div>
 
-      {/* Timer display */}
+      {/* Timer display + circle */}
       <div className="relative flex items-center justify-center py-8">
-        {/* Circular progress (countdown only) */}
         {isCountdown && (
           <svg className="absolute w-56 h-56 -rotate-90" viewBox="0 0 200 200">
             <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(127,99,21,0.1)" strokeWidth="6" />
@@ -182,7 +169,7 @@ export default function Timer() {
       </div>
 
       {/* Countdown input */}
-      {isCountdown && !isRunning && remaining === 0 && (
+      {isCountdown && !running && remaining === 0 && (
         <div className="flex items-center justify-center gap-3">
           <input
             type="number" min="0" max="999" value={minutes}
@@ -200,8 +187,8 @@ export default function Timer() {
         </div>
       )}
 
-      {/* Preset buttons (countdown) */}
-      {isCountdown && !isRunning && remaining === 0 && (
+      {/* Preset buttons */}
+      {isCountdown && !running && remaining === 0 && (
         <div className="flex justify-center gap-2">
           {[1, 3, 5, 10].map(m => (
             <button
@@ -218,11 +205,11 @@ export default function Timer() {
       )}
 
       {/* Action buttons */}
-      <div className="flex justify-center gap-3">
-        {!isRunning ? (
+      <div className="flex flex-wrap justify-center gap-3">
+        {!running ? (
           <button
             onClick={handleStart}
-            disabled={isCountdown && remaining === 0 && (parseInt(minutes) * 60 + parseInt(seconds)) <= 0}
+            disabled={isCountdown && (parseInt(minutes) * 60 + parseInt(seconds)) <= 0}
             className="px-8 py-3 bg-accent text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity disabled:opacity-30"
           >{t('timerStart')}</button>
         ) : (
@@ -231,13 +218,13 @@ export default function Timer() {
             className="px-8 py-3 bg-yellow-500 text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity"
           >{t('timerPause')}</button>
         )}
-        {isRunning && (
+        {running && (
           <button
             onClick={handleStart}
             className="px-8 py-3 bg-green-500 text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity"
           >{t('timerResume')}</button>
         )}
-        {!isCountdown && isRunning && (
+        {!isCountdown && running && (
           <button
             onClick={handleLap}
             className="px-6 py-3 bg-surface text-text-primary text-sm font-medium rounded-lg border border-[rgba(127,99,21,0.15)] hover:bg-accent/5 transition-colors"
@@ -245,7 +232,7 @@ export default function Timer() {
         )}
         <button
           onClick={handleReset}
-          disabled={!isRunning && ((isCountdown && remaining === 0) || (!isCountdown && elapsed === 0))}
+          disabled={!running && ((isCountdown && remaining === 0) || (!isCountdown && elapsed === 0))}
           className="px-6 py-3 bg-surface text-text-primary text-sm font-medium rounded-lg border border-[rgba(127,99,21,0.15)] hover:bg-accent/5 transition-colors disabled:opacity-30"
         >{t('timerReset')}</button>
       </div>
