@@ -21,7 +21,7 @@ export default function ProductsClient({ products }: { products: Product[] }) {
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-4 py-1.5 text-sm rounded-md transition-colors ${
+            className={`px-4 py-1.5 text-sm rounded-lg transition-colors ${
               filter === f ? 'bg-accent text-white' : 'bg-surface text-text-primary hover:bg-accent/10'
             }`}
           >

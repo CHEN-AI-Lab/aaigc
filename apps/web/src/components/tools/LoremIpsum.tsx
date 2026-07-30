@@ -48,13 +48,13 @@ export default function LoremIpsum() {
 
   return (
     <div className="mt-6 space-y-4">
-      <div className="p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-md text-xs text-text-secondary leading-relaxed">
+      <div className="p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-secondary leading-relaxed">
         {t('loremDesc')}
       </div>
       <div className="flex items-center gap-3 flex-wrap">
         <div className="flex gap-1">
           {(['paragraphs', 'sentences', 'words'] as const).map((mode) => (
-            <button key={mode} onClick={() => setType(mode)} className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+            <button key={mode} onClick={() => setType(mode)} className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
               type === mode ? 'bg-accent text-white' : 'bg-surface text-text-primary hover:bg-accent/10'
             }`}>
               {t(`lorem${mode.charAt(0).toUpperCase() + mode.slice(1)}`)}
@@ -62,15 +62,15 @@ export default function LoremIpsum() {
           ))}
         </div>
         <input type="number" min={1} max={100} value={count} onChange={e => setCount(Math.min(100, Math.max(1, parseInt(e.target.value) || 1)))}
-          className="w-20 p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-md text-sm text-text-primary text-center focus:outline-none focus:border-accent/30" />
+          className="w-20 p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-lg text-sm text-text-primary text-center focus:outline-none focus:border-accent/30" />
         <span className="text-xs text-text-secondary">{t('count')}</span>
-        <button onClick={generate} className="px-6 py-2 bg-accent text-white text-sm rounded-md hover:opacity-90">{t('generate')}</button>
+        <button onClick={generate} className="px-6 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('generate')}</button>
       </div>
       {output && (
         <div className="relative">
-          <textarea readOnly value={output} className="w-full h-48 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-md text-sm text-text-primary resize-none" />
+          <textarea readOnly value={output} className="w-full h-48 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-lg text-sm text-text-primary resize-none" />
           <button onClick={handleCopy}
-            className={`text-xs px-2 py-1 rounded-md transition-all duration-200 min-w-[4.5rem] text-center absolute top-2 right-6 ${
+            className={`text-xs px-2 py-1 rounded-lg transition-all duration-200 min-w-[4.5rem] text-center absolute top-2 right-6 ${
               copied
                 ? 'bg-green-500 text-white scale-105'
                 : 'bg-accent text-white hover:opacity-90'

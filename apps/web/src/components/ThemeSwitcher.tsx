@@ -38,13 +38,13 @@ export default function ThemeSwitcher() {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen(v => !v)}
-        className="flex items-center justify-center w-8 h-8 rounded-md text-text-secondary hover:text-accent hover:bg-surface transition-colors"
+        className="flex items-center justify-center w-8 h-8 rounded-lg text-text-secondary hover:text-accent hover:bg-surface transition-colors"
         title={t(`theme${current}`)}
       >
         🎨
       </button>
       {open && (
-        <div className="absolute top-full right-0 mt-1 bg-card border border-[rgba(127,99,21,0.15)] rounded-md shadow-md z-[60] w-max">
+        <div className="absolute top-full right-0 mt-1 bg-card border border-[rgba(127,99,21,0.15)] rounded-lg shadow-md z-[60] w-max">
           {THEMES.map(id => (
             <button
               key={id}
