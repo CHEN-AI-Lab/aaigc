@@ -183,6 +183,15 @@
     "addSubtractDays": "日期加减",
     "calculateDiffDesc": "计算两个日期之间的时间差",
     "addDaysDesc": "在指定日期上加减天数",
+    "timerCountdown": "倒计时",
+    "timerStopwatch": "秒表",
+    "timerStart": "开始",
+    "timerPause": "暂停",
+    "timerResume": "继续",
+    "timerReset": "重置",
+    "timerLap": "计次",
+    "timerLaps": "计次记录",
+    "timerMin": "分钟",
     "startDate": "开始日期",
     "endDate": "结束日期",
     "date": "日期",
@@ -301,6 +310,10 @@
     "date-calculator": {
       "name": "日期计算器",
       "description": "日期间隔计算与日期加减"
+    },
+    "timer": {
+      "name": "计时器",
+      "description": "倒计时与秒表"
     },
     "qrcode": {
       "name": "二维码生成",

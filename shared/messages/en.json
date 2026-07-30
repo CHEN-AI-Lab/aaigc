@@ -183,6 +183,15 @@
     "addSubtractDays": "Add / Subtract Days",
     "calculateDiffDesc": "Calculate the time difference between two dates",
     "addDaysDesc": "Add or subtract days from a date",
+    "timerCountdown": "Countdown",
+    "timerStopwatch": "Stopwatch",
+    "timerStart": "Start",
+    "timerPause": "Pause",
+    "timerResume": "Resume",
+    "timerReset": "Reset",
+    "timerLap": "Lap",
+    "timerLaps": "Lap Times",
+    "timerMin": "min",
     "startDate": "Start date",
     "endDate": "End date",
     "date": "Date",
@@ -301,6 +310,10 @@
     "date-calculator": {
       "name": "Date Calculator",
       "description": "Calculate date differences and add/subtract days"
+    },
+    "timer": {
+      "name": "Timer",
+      "description": "Countdown & Stopwatch"
     },
     "qrcode": {
       "name": "QR Code Generator",

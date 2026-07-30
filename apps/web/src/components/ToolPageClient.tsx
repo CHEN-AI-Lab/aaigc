@@ -19,6 +19,7 @@ const toolModules: Record<string, React.LazyExoticComponent<React.ComponentType>
   'regex-tester': lazy(() => import('./tools/RegexTester')),
   'jwt-decoder': lazy(() => import('./tools/JwtDecoder')),
   'date-calculator': lazy(() => import('./tools/DateCalculator')),
+  'timer': lazy(() => import('./tools/Timer')),
   'qrcode': lazy(() => import('./tools/QrCodeGenerator')),
   'markdown-preview': lazy(() => import('./tools/MarkdownPreview')),
   'yaml-json': lazy(() => import('./tools/YamlJsonConverter')),
