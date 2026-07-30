@@ -176,6 +176,10 @@
       "name": "日期計算器",
       "description": "日期間隔計算與日期加減"
     },
+    "timer": {
+      "name": "計時器",
+      "description": "倒數計時與碼錶"
+    },
     "qrcode": {
       "name": "二維碼生成",
       "description": "輸入文字生成二維碼圖片"
@@ -278,6 +282,15 @@
     "addSubtractDays": "日期加減",
     "calculateDiffDesc": "計算兩個日期之間的時間差",
     "addDaysDesc": "在指定日期上加減天數",
+    "timerCountdown": "倒數計時",
+    "timerStopwatch": "碼錶",
+    "timerStart": "開始",
+    "timerPause": "暫停",
+    "timerResume": "繼續",
+    "timerReset": "重置",
+    "timerLap": "計次",
+    "timerLaps": "計次記錄",
+    "timerMin": "分鐘",
     "startDate": "開始日期",
     "endDate": "結束日期",
     "days": "天數",

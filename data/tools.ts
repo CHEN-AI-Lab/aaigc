@@ -50,6 +50,7 @@ export const tools: ToolMeta[] = [
   // ─── Time Tools ───
   { id: 'timestamp', category: 'time', icon: '⏱️', component: 'TimestampConverter' },
   { id: 'date-calculator', category: 'time', icon: '📅', component: 'DateCalculator' },
+  { id: 'timer', category: 'time', icon: '⌛', component: 'Timer' },
 
   // ─── Image Tools ───
   { id: 'qrcode', category: 'image', icon: '📲', component: 'QrCodeGenerator', npmDeps: ['qrcode'] },

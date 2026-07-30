@@ -183,6 +183,15 @@
     "addSubtractDays": "日付の加算/減算",
     "calculateDiffDesc": "2つの日付の時間差を計算",
     "addDaysDesc": "日付に日数を加算または減算",
+    "timerCountdown": "カウントダウン",
+    "timerStopwatch": "ストップウォッチ",
+    "timerStart": "スタート",
+    "timerPause": "一時停止",
+    "timerResume": "再開",
+    "timerReset": "リセット",
+    "timerLap": "ラップ",
+    "timerLaps": "ラップ記録",
+    "timerMin": "分",
     "startDate": "開始日",
     "endDate": "終了日",
     "date": "日付",
@@ -300,6 +309,10 @@
     "date-calculator": {
       "name": "日付計算機",
       "description": "日付の差の計算と加算/減算"
+    },
+    "timer": {
+      "name": "タイマー",
+      "description": "カウントダウン & ストップウォッチ"
     },
     "qrcode": {
       "name": "QRコード生成",
