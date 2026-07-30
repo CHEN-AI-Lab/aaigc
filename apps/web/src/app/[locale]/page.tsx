@@ -43,13 +43,13 @@ export default async function HomePage({ params }: Props) {
               href="/products"
               className="inline-flex items-center gap-2 px-7 py-3 bg-accent text-white text-sm font-medium rounded-sm hover:opacity-90 transition-opacity shadow-sm"
             >
-              {t('productsTitle')}
+              {t('heroProducts')}
             </Link>
             <Link
               href="/tools"
               className="inline-flex items-center gap-2 px-7 py-3 border border-accent/30 text-text-secondary text-sm font-medium rounded-sm hover:bg-accent/5 hover:text-accent transition-colors"
             >
-              {t('toolsTitle')}
+              {t('heroTools')}
             </Link>
           </div>
         </div>
