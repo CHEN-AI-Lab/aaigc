@@ -25,11 +25,10 @@ export default async function HomePage({ params }: Props) {
         <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-accent/3 rounded-full blur-3xl pointer-events-none" />
         <div className="relative">
           <div className="flex items-center justify-center mb-6">
-            <div className="relative w-40 h-16 overflow-hidden">
-              <div className="absolute w-[200%] h-full rounded-[50%] border-2 border-accent/20 top-[-20px] left-[-30px]" />
-              <div className="absolute w-[200%] h-full rounded-[50%] border-2 border-accent/12 top-[-35px] left-[-50px]" />
-              <div className="absolute w-[200%] h-full rounded-[50%] border-2 border-accent/8 top-[-50px] left-[-10px]" />
-            </div>
+            <div className="w-24 h-24 rounded-full" style={{
+              background: 'radial-gradient(circle at 30% 30%, rgba(250,180,80,0.4), rgba(250,180,80,0.05) 60%, transparent)',
+              boxShadow: '0 0 80px rgba(250,180,80,0.15)'
+            }} />
           </div>
           <h1 className="display-hero text-text-primary mb-4">AAIGC</h1>
           <p className="text-xl text-text-secondary max-w-xl mx-auto mb-8 leading-relaxed">
