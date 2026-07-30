@@ -45,7 +45,7 @@ export default function PasswordGenerator() {
       <div className="flex items-center gap-3">
         <label className="text-sm text-text-secondary">{t('length')}</label>
         <input type="number" min={4} max={128} value={length} onChange={e => setLength(Math.min(128, Math.max(4, parseInt(e.target.value) || 4)))}
-          className="w-20 p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary text-center focus:outline-none focus:border-accent/30" />
+          className="w-20 p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-md text-sm text-text-primary text-center focus:outline-none focus:border-accent/30" />
       </div>
       <div className="flex gap-4 flex-wrap">
         <label className="flex items-center gap-2 text-sm text-text-secondary cursor-pointer">
@@ -61,12 +61,12 @@ export default function PasswordGenerator() {
           <input type="checkbox" checked={symbols} onChange={e => setSymbols(e.target.checked)} className="accent-accent" /> !@#$
         </label>
       </div>
-      <button onClick={generate} className="px-6 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{t('generate')}</button>
+      <button onClick={generate} className="px-6 py-2 bg-accent text-white text-sm rounded-md hover:opacity-90">{t('generate')}</button>
       {password && (
         <div className="space-y-2">
           <div className="relative">
-            <textarea readOnly value={password} className="w-full h-16 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary resize-none" />
-            <button onClick={() => navigator.clipboard.writeText(password)} className="absolute top-2 right-6 text-xs px-2 py-1 bg-accent text-white rounded-sm hover:opacity-90 min-w-[4.5rem] text-center">{t('copy')}</button>
+            <textarea readOnly value={password} className="w-full h-16 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-md text-sm font-mono text-text-primary resize-none" />
+            <button onClick={() => navigator.clipboard.writeText(password)} className="absolute top-2 right-6 text-xs px-2 py-1 bg-accent text-white rounded-md hover:opacity-90 min-w-[4.5rem] text-center">{t('copy')}</button>
           </div>
           <div className="flex items-center gap-3">
             <div className="flex-1 h-2 bg-surface rounded-full overflow-hidden">

@@ -98,17 +98,17 @@ export default function JsonFormatter() {
         value={input}
         onChange={e => setInput(e.target.value)}
         placeholder='{"key": "value"}'
-        className="w-full h-36 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30"
+        className="w-full h-36 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-md text-sm font-mono text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30"
       />
       <div className="flex gap-2 flex-wrap items-center">
-        <button onClick={format} className="px-4 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{t('format')}</button>
-        <button onClick={validate} className="px-4 py-2 bg-surface text-text-primary text-sm rounded-sm hover:opacity-90 border border-[rgba(127,99,21,0.15)]">{t('validate')}</button>
-        <button onClick={minify} className="px-4 py-2 bg-surface text-text-primary text-sm rounded-sm hover:opacity-90 border border-[rgba(127,99,21,0.15)]">{t('minify')}</button>
+        <button onClick={format} className="px-4 py-2 bg-accent text-white text-sm rounded-md hover:opacity-90">{t('format')}</button>
+        <button onClick={validate} className="px-4 py-2 bg-surface text-text-primary text-sm rounded-md hover:opacity-90 border border-[rgba(127,99,21,0.15)]">{t('validate')}</button>
+        <button onClick={minify} className="px-4 py-2 bg-surface text-text-primary text-sm rounded-md hover:opacity-90 border border-[rgba(127,99,21,0.15)]">{t('minify')}</button>
         {downloadUrl && (
           <a
             href={downloadUrl}
             download="formatted.json"
-            className="px-4 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90 transition-opacity"
+            className="px-4 py-2 bg-accent text-white text-sm rounded-md hover:opacity-90 transition-opacity"
           >
             {t('downloadJson')}
           </a>
@@ -120,7 +120,7 @@ export default function JsonFormatter() {
           {/* Single scrollable container: both line numbers + code scroll together */}
           <div
             ref={scrollRef}
-            className="max-h-[60vh] overflow-auto bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm pr-10"
+            className="max-h-[60vh] overflow-auto bg-surface border border-[rgba(127,99,21,0.15)] rounded-md pr-10"
           >
             {/* Each line is a grid row: line-number column + code column */}
             {lines.map((line, i) => (
@@ -144,7 +144,7 @@ export default function JsonFormatter() {
           </div>
           <button
             onClick={handleCopy}
-            className={`absolute top-2 right-8 text-xs px-2.5 py-1.5 rounded-sm transition-all duration-200 min-w-[4.5rem] text-center ${
+            className={`absolute top-2 right-8 text-xs px-2.5 py-1.5 rounded-md transition-all duration-200 min-w-[4.5rem] text-center ${
               copied
                 ? 'bg-green-500 text-white scale-105'
                 : 'bg-accent text-white hover:opacity-90'
