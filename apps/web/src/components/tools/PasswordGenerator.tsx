@@ -61,7 +61,7 @@ export default function PasswordGenerator() {
           <input type="checkbox" checked={symbols} onChange={e => setSymbols(e.target.checked)} className="accent-accent" /> !@#$
         </label>
       </div>
-      <button onClick={generate} className="px-6 py-2 bg-accent text-white text-sm rounded-sm hover:opacity-90">{t('generate')}</button>
+      <button onClick={generate} className="px-6 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('generate')}</button>
       {password && (
         <div className="space-y-2">
           <div className="relative">

@@ -41,13 +41,13 @@ export default async function HomePage({ params }: Props) {
           <div className="flex items-center justify-center gap-4">
             <Link
               href="/products"
-              className="inline-flex items-center gap-2 px-7 py-3 bg-accent text-white text-sm font-medium rounded-sm hover:opacity-90 transition-opacity shadow-sm"
+              className="inline-flex items-center gap-2 px-7 py-3 bg-accent text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity shadow-sm"
             >
               {t('heroProducts')}
             </Link>
             <Link
               href="/tools"
-              className="inline-flex items-center gap-2 px-7 py-3 border border-accent/30 text-text-secondary text-sm font-medium rounded-sm hover:bg-accent/5 hover:text-accent transition-colors"
+              className="inline-flex items-center gap-2 px-7 py-3 border border-accent/30 text-text-secondary text-sm font-medium rounded-lg hover:bg-accent/5 hover:text-accent transition-colors"
             >
               {t('heroTools')}
             </Link>
@@ -123,7 +123,7 @@ export default async function HomePage({ params }: Props) {
       <section className="bg-surface py-14 px-6 text-center">
         <Link
           href="/about"
-          className="inline-flex items-center gap-2 px-8 py-3 bg-dark text-white text-sm font-medium rounded-sm hover:opacity-90 transition-opacity shadow-warm-sm"
+          className="inline-flex items-center gap-2 px-8 py-3 bg-dark text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity shadow-warm-sm"
         >
           {tc('aboutLink')}
         </Link>
