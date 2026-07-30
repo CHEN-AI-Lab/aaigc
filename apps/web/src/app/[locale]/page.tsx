@@ -31,7 +31,7 @@ export default async function HomePage({ params }: Props) {
               <div className="absolute w-0 h-0 border-l-[14px] border-r-[14px] border-b-[24px] border-l-transparent border-r-transparent border-b-accent/10 top-2 left-24" />
             </div>
           </div>
-          <h1 className="text-5xl md:text-6xl font-semibold text-text-primary mb-5 tracking-tight">AAIGC</h1>
+          <h1 className="text-5xl md:text-6xl font-normal text-text-primary mb-5 tracking-tight">AAIGC</h1>
           <p className="text-lg md:text-xl text-text-secondary max-w-md mx-auto mb-4 leading-relaxed">
             {t('heroSubtitle')}
           </p>
