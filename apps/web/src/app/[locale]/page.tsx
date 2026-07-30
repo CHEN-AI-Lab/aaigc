@@ -26,10 +26,10 @@ export default async function HomePage({ params }: Props) {
         <div className="relative">
           <div className="flex items-center justify-center mb-6">
             <div className="relative w-28 h-20">
-              <div className="absolute w-[70px] h-[70px] rounded-full border-2 border-accent/30 top-1 left-1" />
-              <div className="absolute w-[50px] h-[50px] rounded-full border-2 border-accent/20 top-[22px] left-[50px]" />
-              <div className="absolute w-3 h-3 rounded-full bg-accent/60 top-3 left-[90px]" />
-              <div className="absolute w-2 h-2 rounded-full bg-accent/40 top-[38px] left-[115px]" />
+              <div className="absolute w-16 h-16 rounded-full border-2 border-accent/20 bg-accent/5 top-0 left-2" />
+              <div className="absolute w-12 h-12 rounded-full border-2 border-accent/20 bg-accent/5 top-4 left-14" />
+              <div className="absolute w-10 h-10 rounded-full border-2 border-accent/20 bg-accent/5 top-2 left-20" />
+              <div className="absolute w-8 h-8 rounded-full border-2 border-accent/20 bg-accent/5 top-8 left-8" />
             </div>
           </div>
           <h1 className="display-hero text-text-primary mb-4">AAIGC</h1>
