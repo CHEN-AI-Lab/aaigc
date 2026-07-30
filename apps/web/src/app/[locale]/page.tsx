@@ -25,16 +25,10 @@ export default async function HomePage({ params }: Props) {
         <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-accent/3 rounded-full blur-3xl pointer-events-none" />
         <div className="relative">
           <div className="flex items-center justify-center mb-6">
-            <div className="relative w-40 h-24">
-              <div className="absolute w-12 h-12 rounded-full bg-yellow-300/20 top-2 left-14 blur-md" />
-              <div className="absolute w-1 h-1 rounded-full bg-accent/80 top-4 left-8" />
-              <div className="absolute w-[3px] h-[3px] rounded-full bg-accent/60 top-12 left-20" />
-              <div className="absolute w-1 h-1 rounded-full bg-accent/50 top-3 left-28" />
-              <div className="absolute w-[2px] h-[2px] rounded-full bg-accent/70 top-14 left-10" />
-              <div className="absolute w-1 h-1 rounded-full bg-accent/40 top-7 left-32" />
-              <div className="absolute w-[2px] h-[2px] rounded-full bg-accent/60 top-16 left-28" />
-              <div className="absolute w-1 h-1 rounded-full bg-accent/50 top-8 left-18" />
-              <div className="absolute h-[2px] w-10 bg-gradient-to-r from-accent/60 to-transparent top-5 left-4 -rotate-30" />
+            <div className="relative w-36 h-24">
+              <div className="absolute w-12 h-12 rounded-full border-2 border-accent/20 bg-accent/5 top-1 left-2" />
+              <div className="absolute w-9 h-9 border-2 border-accent/15 bg-accent/5 top-5 left-14 rounded-sm rotate-12" />
+              <div className="absolute w-0 h-0 border-l-[14px] border-r-[14px] border-b-[24px] border-l-transparent border-r-transparent border-b-accent/10 top-2 left-24" />
             </div>
           </div>
           <h1 className="display-hero text-text-primary mb-4">AAIGC</h1>
