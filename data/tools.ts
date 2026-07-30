@@ -71,5 +71,5 @@ export const tools: ToolMeta[] = [
   { id: 'emoji-picker', category: 'other', icon: '😊', component: 'EmojiPicker' },
   { id: 'random-generator', category: 'other', icon: '🎲', component: 'RandomGenerator' },
   { id: 'cron-builder', category: 'other', icon: '⏳', component: 'CronBuilder' },
-  { id: 'pdf-tool', category: 'other', icon: '📄', component: 'PdfTool', npmDeps: ['pdf-lib'] },
+  { id: 'pdf-tool', category: 'other', icon: '📄', component: 'PdfTool', npmDeps: ['pdf-lib', 'jszip'] },
 ]
