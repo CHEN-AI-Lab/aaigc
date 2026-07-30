@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head><title>AAIGC Hero - Final Options</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #faf9f7; }
+  .container { max-width: 800px; margin: 0 auto; padding: 40px 24px; display: flex; flex-direction: column; gap: 50px; }
+  section {
+    position: relative; overflow: hidden; padding: 70px 24px; text-align: center;
+    border-radius: 16px;
+  }
+  .content { position: relative; z-index: 1; }
+  .visual { position: relative; margin: 0 auto 24px; }
+  h1 { font-size: 48px; font-weight: 800; margin-bottom: 12px; letter-spacing: -1px; }
+  p { font-size: 18px; max-width: 500px; margin: 0 auto; line-height: 1.6; }
+  .label { font-size: 13px; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+
+  /* 方案2: 渐变光晕 */
+  .s2 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+  .s2 h1 { color: white; }
+  .s2 p { color: rgba(255,255,255,0.8); }
+  .s2 .glow { width: 100px; height: 100px; border-radius: 50%; margin: 0 auto; background: radial-gradient(circle at 30% 30%, rgba(255,215,0,0.4), rgba(255,215,0,0.05) 60%, transparent); box-shadow: 0 0 80px rgba(255,215,0,0.15); }
+
+  /* 方案4: 波浪线条 */
+  .s4 { background: linear-gradient(135deg, #fefcf8 0%, #fdf6e8 100%); }
+  .s4 h1 { color: #1a1a1a; }
+  .s4 p { color: #666; }
+  .s4 .wave { width: 160px; height: 60px; margin: 0 auto; position: relative; overflow: hidden; }
+  .s4 .w { position: absolute; width: 200%; height: 100%; border-radius: 50%; }
+  .s4 .w1 { border: 2px solid rgba(250,180,80,0.2); top: -20px; left: -30px; }
+  .s4 .w2 { border: 2px solid rgba(250,180,80,0.12); top: -35px; left: -50px; }
+  .s4 .w3 { border: 2px solid rgba(250,180,80,0.08); top: -50px; left: -10px; }
+
+  /* 方案7: 三大几何体 */
+  .s7 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+  .s7 h1 { color: white; }
+  .s7 p { color: rgba(255,255,255,0.8); }
+  .s7 .shapes { width: 150px; height: 80px; margin: 0 auto; position: relative; }
+  .s7 .item { position: absolute; }
+  .s7 .circle { width: 45px; height: 45px; border-radius: 50%; background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.15); top: 0; left: 5px; }
+  .s7 .square { width: 35px; height: 35px; background: rgba(255,255,255,0.06); border: 2px solid rgba(255,255,255,0.12); border-radius: 4px; top: 20px; left: 50px; transform: rotate(15deg); }
+  .s7 .triangle { width: 0; height: 0; border-left: 22px solid transparent; border-right: 22px solid transparent; border-bottom: 38px solid rgba(255,255,255,0.08); top: 5px; left: 95px; }
+
+  /* 星空流星 */
+  .sk { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); }
+  .sk h1 { color: white; }
+  .sk p { color: rgba(255,255,255,0.7); }
+  .sk .stars { width: 160px; height: 90px; margin: 0 auto; position: relative; }
+  .sk .st { position: absolute; border-radius: 50%; }
+  .sk .st1 { width: 30px; height: 30px; background: radial-gradient(circle, rgba(255,215,0,0.5), transparent); top: 10px; left: 65px; filter: blur(2px); }
+  .sk .st2 { width: 3px; height: 3px; background: rgba(255,255,255,0.8); top: 25px; left: 30px; }
+  .sk .st3 { width: 2px; height: 2px; background: rgba(255,255,255,0.6); top: 50px; left: 100px; }
+  .sk .st4 { width: 2px; height: 2px; background: rgba(255,255,255,0.5); top: 15px; left: 120px; }
+  .sk .st5 { width: 3px; height: 3px; background: rgba(255,255,255,0.7); top: 60px; left: 50px; }
+  .sk .st6 { width: 2px; height: 2px; background: rgba(255,255,255,0.5); top: 40px; left: 15px; }
+  .sk .st7 { width: 2px; height: 2px; background: rgba(255,255,255,0.4); top: 70px; left: 130px; }
+  .sk .shooting { position: absolute; width: 40px; height: 2px; background: linear-gradient(to right, rgba(255,255,255,0.6), transparent); transform: rotate(-30deg); top: 20px; left: 10px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <section class="s2">
+    <div class="content">
+      <div class="label">方案2 · 渐变光晕</div>
+      <div class="visual glow"></div>
+      <h1>AAIGC</h1>
+      <p>AI 应用与在线工具的集合</p>
+    </div>
+  </section>
+
+  <section class="s4">
+    <div class="content">
+      <div class="label">方案4 · 波浪线条</div>
+      <div class="visual wave">
+        <div class="w w1"></div><div class="w w2"></div><div class="w w3"></div>
+      </div>
+      <h1>AAIGC</h1>
+      <p>AI 应用与在线工具的集合</p>
+    </div>
+  </section>
+
+  <section class="s7">
+    <div class="content">
+      <div class="label">方案7 · 三大几何体</div>
+      <div class="visual shapes">
+        <div class="item circle"></div><div class="item square"></div><div class="item triangle"></div>
+      </div>
+      <h1>AAIGC</h1>
+      <p>AI 应用与在线工具的集合</p>
+    </div>
+  </section>
+
+  <section class="sk">
+    <div class="content">
+      <div class="label">星空流星</div>
+      <div class="visual stars">
+        <div class="st st1"></div><div class="st st2"></div><div class="st st3"></div>
+        <div class="st st4"></div><div class="st st5"></div><div class="st st6"></div><div class="st st7"></div>
+        <div class="shooting"></div>
+      </div>
+      <h1>AAIGC</h1>
+      <p>AI 应用与在线工具的集合</p>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
