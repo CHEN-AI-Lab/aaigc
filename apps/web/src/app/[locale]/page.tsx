@@ -25,10 +25,17 @@ export default async function HomePage({ params }: Props) {
         <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-accent/3 rounded-full blur-3xl pointer-events-none" />
         <div className="relative">
           <div className="flex items-center justify-center mb-6">
-            <div className="w-24 h-24 rounded-full" style={{
-              background: 'radial-gradient(circle at 30% 30%, rgba(250,180,80,0.4), rgba(250,180,80,0.05) 60%, transparent)',
-              boxShadow: '0 0 80px rgba(250,180,80,0.15)'
-            }} />
+            <div className="relative w-40 h-24">
+              <div className="absolute w-12 h-12 rounded-full bg-yellow-300/20 top-2 left-14 blur-md" />
+              <div className="absolute w-1 h-1 rounded-full bg-accent/80 top-4 left-8" />
+              <div className="absolute w-[3px] h-[3px] rounded-full bg-accent/60 top-12 left-20" />
+              <div className="absolute w-1 h-1 rounded-full bg-accent/50 top-3 left-28" />
+              <div className="absolute w-[2px] h-[2px] rounded-full bg-accent/70 top-14 left-10" />
+              <div className="absolute w-1 h-1 rounded-full bg-accent/40 top-7 left-32" />
+              <div className="absolute w-[2px] h-[2px] rounded-full bg-accent/60 top-16 left-28" />
+              <div className="absolute w-1 h-1 rounded-full bg-accent/50 top-8 left-18" />
+              <div className="absolute h-[2px] w-10 bg-gradient-to-r from-accent/60 to-transparent top-5 left-4 -rotate-30" />
+            </div>
           </div>
           <h1 className="display-hero text-text-primary mb-4">AAIGC</h1>
           <p className="text-xl text-text-secondary max-w-xl mx-auto mb-8 leading-relaxed">
