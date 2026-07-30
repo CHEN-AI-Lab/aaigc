@@ -35,9 +35,23 @@ export default async function HomePage({ params }: Props) {
           <p className="text-xl text-text-secondary max-w-xl mx-auto mb-8 leading-relaxed">
             {t('heroSubtitle')}
           </p>
-          <p className="text-lg text-accent font-medium">
+          <p className="text-lg text-accent font-medium mb-8">
             {tc('tagline')}
           </p>
+          <div className="flex items-center justify-center gap-3">
+            <Link
+              href="/tools"
+              className="inline-flex items-center gap-2 px-6 py-2.5 bg-accent text-white text-sm font-medium rounded-sm hover:opacity-90 transition-opacity"
+            >
+              {t('toolsTitle')}
+            </Link>
+            <Link
+              href="/products"
+              className="inline-flex items-center gap-2 px-6 py-2.5 bg-dark text-white text-sm font-medium rounded-sm hover:opacity-90 transition-opacity"
+            >
+              {t('productsTitle')}
+            </Link>
+          </div>
         </div>
       </section>
 
