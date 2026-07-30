@@ -63,7 +63,7 @@ describe('Footer', () => {
 
   it('displays the company name in the hero section', async () => {
     await renderFooter()
-    expect(screen.getByText(/🚀 AAIGC/)).toBeInTheDocument()
+    expect(screen.getByAltText('AAIGC')).toBeInTheDocument()
   })
 
   it('has a mailto link with the email address', async () => {
