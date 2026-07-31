@@ -52,6 +52,8 @@ export const tools: ToolMeta[] = [
   { id: 'qrcode', category: 'image', icon: '📲', component: 'QrCodeGenerator', npmDeps: ['qrcode'] },
   { id: 'color-picker', category: 'image', icon: '🎯', component: 'ColorPicker' },
   { id: 'image-to-base64', category: 'image', icon: '🖼️', component: 'ImageToBase64' },
+  { id: 'image-converter', category: 'image', icon: '🔄', component: 'ImageConverter' },
+  { id: 'image-editor', category: 'image', icon: '✂️', component: 'ImageEditor' },
 
   // ─── Math Tools ───
   { id: 'calculator', category: 'math', icon: '🧮', component: 'Calculator' },
@@ -72,4 +74,5 @@ export const tools: ToolMeta[] = [
   { id: 'random-generator', category: 'other', icon: '🎲', component: 'RandomGenerator' },
   { id: 'cron-builder', category: 'other', icon: '⏳', component: 'CronBuilder' },
   { id: 'pdf-tool', category: 'other', icon: '📄', component: 'PdfTool', npmDeps: ['pdf-lib', 'jszip'] },
+  { id: 'file-renamer', category: 'other', icon: '🏷️', component: 'FileRenamer' },
 ]
