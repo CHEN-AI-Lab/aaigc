@@ -30,6 +30,7 @@ const toolModules: Record<string, React.LazyExoticComponent<React.ComponentType>
   'lorem-ipsum': lazy(() => import('./tools/LoremIpsum')),
   'password-generator': lazy(() => import('./tools/PasswordGenerator')),
   'image-to-base64': lazy(() => import('./tools/ImageToBase64')),
+  'image-converter': lazy(() => import('./tools/ImageConverter')),
   'number-base': lazy(() => import('./tools/NumberBaseConverter')),
   'css-minifier': lazy(() => import('./tools/CssMinifier')),
   'json-to-csv': lazy(() => import('./tools/JsonToCsv')),
@@ -44,6 +45,8 @@ const toolModules: Record<string, React.LazyExoticComponent<React.ComponentType>
   'cron-builder': lazy(() => import('./tools/CronBuilder')),
   'emoji-picker': lazy(() => import('./tools/EmojiPicker')),
   'pdf-tool': lazy(() => import('./tools/PdfTool')),
+  'file-renamer': lazy(() => import('./tools/FileRenamer')),
+  'image-editor': lazy(() => import('./tools/ImageEditor')),
 }
 
 export default function ToolPageClient({ slug }: Props) {

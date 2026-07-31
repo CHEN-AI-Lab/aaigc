@@ -110,6 +110,8 @@ describe('tools', () => {
       'lorem-ipsum': 'LoremIpsum',
       'password-generator': 'PasswordGenerator',
       'image-to-base64': 'ImageToBase64',
+      'image-converter': 'ImageConverter',
+      'image-editor': 'ImageEditor',
       'number-base': 'NumberBaseConverter',
       'css-minifier': 'CssMinifier',
       'json-to-csv': 'JsonToCsv',
@@ -125,6 +127,7 @@ describe('tools', () => {
       'emoji-picker': 'EmojiPicker',
       'pdf-tool': 'PdfTool',
       'text-to-binary': 'TextToBinary',
+      'file-renamer': 'FileRenamer',
     }
     for (const t of tools) {
       expect(slugToComponent[t.id]).toBe(t.component)
@@ -178,6 +181,9 @@ describe('tools', () => {
       EmojiPicker: () => import('../../apps/web/src/components/tools/EmojiPicker'),
       PdfTool: () => import('../../apps/web/src/components/tools/PdfTool'),
       TextToBinary: () => import('../../apps/web/src/components/tools/TextToBinary'),
+      FileRenamer: () => import('../../apps/web/src/components/tools/FileRenamer'),
+      ImageEditor: () => import('../../apps/web/src/components/tools/ImageEditor'),
+      ImageConverter: () => import('../../apps/web/src/components/tools/ImageConverter'),
     }
     for (const t of tools) {
       const loader = componentMap[t.component]
