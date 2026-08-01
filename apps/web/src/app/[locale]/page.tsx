@@ -15,7 +15,7 @@ export default async function HomePage({ params }: Props) {
   const tt = await getTranslations({ locale, namespace: 'tools' })
 
   const featuredProducts = products.slice(0, 4)
-  const popularTools = ['json-formatter', 'base64', 'qrcode', 'timestamp', 'password-generator', 'calculator', 'word-counter', 'url-encode', 'markdown-preview', 'color-picker', 'regex-tester', 'ip-lookup', 'html-preview', 'emoji-picker', 'http-status-codes']
+  const popularTools = ['color-picker', 'qrcode', 'calculator', 'json-formatter', 'markdown-preview', 'http-status-codes']
 
   return (
     <div>
@@ -83,7 +83,7 @@ export default async function HomePage({ params }: Props) {
           <p className="text-text-secondary text-center mb-12 max-w-lg mx-auto">{t('toolsDesc')}</p>
 
           {/* Category grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
             {toolCategories.map((cat) => {
               const count = tools.filter((t) => t.category === cat.id).length
               if (count === 0) return null
@@ -105,7 +105,7 @@ export default async function HomePage({ params }: Props) {
           {/* Popular tools quick links */}
           <div className="mt-12 text-center">
             <p className="text-xs text-text-secondary mb-4">{t('popularTools')}</p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 max-w-2xl mx-auto">
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 max-w-3xl mx-auto">
               {popularTools.map((toolId) => (
                 <Link
                   key={toolId}

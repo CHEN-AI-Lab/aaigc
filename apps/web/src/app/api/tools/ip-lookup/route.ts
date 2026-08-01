@@ -122,7 +122,7 @@ export async function GET(request: NextRequest) {
   const clientIp = forwarded?.split(',')[0]?.trim() || realIp || ''
 
   if (clientIp) {
-    if (clientIp.startsWith('127.') || clientIp.startsWith('10.') || clientIp.startsWith('192.168.') || clientIp.startsWith('172.16.')) {
+    if (clientIp === '::1' || clientIp.startsWith('127.') || clientIp.startsWith('10.') || clientIp.startsWith('192.168.') || clientIp.startsWith('172.16.')) {
       return NextResponse.json({ ip: clientIp })
     }
 

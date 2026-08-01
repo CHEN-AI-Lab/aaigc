@@ -35,26 +35,28 @@ export default function IpLookup() {
               <p className="text-xs text-text-secondary mb-1">{t('ipMyIp')}</p>
               <p className="text-2xl font-mono font-semibold text-text-primary">{data.ip}</p>
             </div>
-            <div className="border-t border-[rgba(127,99,21,0.1)] pt-4 space-y-3 text-sm">
-              {locStr && (
-                <div className="flex">
-                  <span className="w-20 text-text-secondary shrink-0">{t('ipLocation')}</span>
-                  <span className="text-text-primary">{locStr}</span>
-                </div>
-              )}
-              {data.isp && (
-                <div className="flex">
-                  <span className="w-20 text-text-secondary shrink-0">{t('ipIsp')}</span>
-                  <span className="text-text-primary">{data.isp}</span>
-                </div>
-              )}
-              {data.usage && (
-                <div className="flex">
-                  <span className="w-20 text-text-secondary shrink-0">{t('ipUsage')}</span>
-                  <span className="text-text-primary">{t('usage' + data.usage.charAt(0).toUpperCase() + data.usage.slice(1))}</span>
-                </div>
-              )}
-            </div>
+            {data.country || data.isp ? (
+              <div className="border-t border-[rgba(127,99,21,0.1)] pt-4 space-y-3 text-sm">
+                {locStr && (
+                  <div className="flex">
+                    <span className="w-20 text-text-secondary shrink-0">{t('ipLocation')}</span>
+                    <span className="text-text-primary">{locStr}</span>
+                  </div>
+                )}
+                {data.isp && (
+                  <div className="flex">
+                    <span className="w-20 text-text-secondary shrink-0">{t('ipIsp')}</span>
+                    <span className="text-text-primary">{data.isp}</span>
+                  </div>
+                )}
+                {data.usage && (
+                  <div className="flex">
+                    <span className="w-20 text-text-secondary shrink-0">{t('ipUsage')}</span>
+                    <span className="text-text-primary">{t('usage' + data.usage.charAt(0).toUpperCase() + data.usage.slice(1))}</span>
+                  </div>
+                )}
+              </div>
+            ) : null}
           </div>
         )}
       </div>
