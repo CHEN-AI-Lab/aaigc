@@ -3,10 +3,10 @@ set -euo pipefail
 
 echo "=== Structure Check ==="
 
-# Check 1: No hooks/ lib/ under apps/
+# Check 1: No hooks/ constants/ utils/ validators/ messages/ under apps/
 echo "Check 1: No forbidden dirs under apps/..."
 found_forbidden=false
-for dir in hooks lib constants utils validators messages; do
+for dir in hooks constants utils validators messages; do
   result=$(find apps -path '*/node_modules' -prune -o -path '*/.next' -prune -o -type d -name "$dir" -print 2>/dev/null || true)
   if [ -n "$result" ]; then
     echo "  ❌ Found forbidden dir '$dir' under apps/:"

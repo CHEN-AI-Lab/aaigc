@@ -1,12 +1,15 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
+import { useSession } from '@/lib/auth-client'
 import { Link } from '@/i18n/navigation'
 import LanguageSwitcher from './LanguageSwitcher'
 import ThemeSwitcher from './ThemeSwitcher'
 
 export default function Header() {
   const t = useTranslations('common')
+  const authT = useTranslations('auth')
+  const { data: session } = useSession()
 
   return (
     <header className="border-b border-[rgba(127,99,21,0.1)] bg-bg/80 backdrop-blur-md sticky top-0 z-50">
@@ -29,6 +32,15 @@ export default function Header() {
         <div className="flex items-center gap-2">
           <ThemeSwitcher />
           <LanguageSwitcher />
+          {session?.user ? (
+            <Link href="/account" className="text-sm text-text-secondary hover:text-accent transition-colors ml-3">
+              {authT('account')}
+            </Link>
+          ) : (
+            <Link href="/login" className="text-sm text-text-secondary hover:text-accent transition-colors ml-3">
+              {authT('login')}
+            </Link>
+          )}
         </div>
       </div>
     </header>

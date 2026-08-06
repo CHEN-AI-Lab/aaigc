@@ -1,14 +1,14 @@
 'use client'
 
 import { useState, useMemo, useEffect } from 'react'
-import { useTranslations, useLocale } from 'next-intl'
+import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { tools, toolCategories } from 'data/tools'
 
 export default function ToolsClient() {
   const t = useTranslations('tools')
-  const locale = useLocale()
   const [query, setQuery] = useState('')
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({})
 
   // Scroll to category section on initial load if hash is present
   useEffect(() => {
@@ -98,23 +98,40 @@ export default function ToolsClient() {
       {filtered === null && toolCategories.map((cat) => {
         const catTools = tools.filter((tool) => tool.category === cat.id)
         if (catTools.length === 0) return null
+        const isOpen = expanded[cat.id] !== false // default true
         return (
-          <div key={cat.id} className="mb-12">
-            <h2 id={`category-${cat.id}`} className="flex items-center gap-2 text-lg font-semibold text-text-primary mb-4 scroll-mt-20">
-              <span>{cat.icon}</span>
+          <div key={cat.id} className="mb-8">
+            <button
+              onClick={() => setExpanded(prev => ({ ...prev, [cat.id]: !isOpen }))}
+              className="flex items-center gap-2 w-full text-left text-lg font-semibold text-text-primary mb-1 scroll-mt-20 group"
+              id={`category-${cat.id}`}
+            >
+              <span className="text-lg">{cat.icon}</span>
               <span>{t(`${cat.id}Tools`)}</span>
-            </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-              {catTools.map((tool) => (
-                <Link key={tool.id} href={`/tools/${tool.id}`}
-                  className="block bg-card rounded-sm p-4 shadow-warm-sm hover:shadow-warm transition-shadow border border-[rgba(127,99,21,0.05)]">
-                  <div className="text-xs font-mono text-accent mb-2">{tool.icon}</div>
-                  <h3 className="text-sm font-medium text-text-primary">{t(`${tool.id}.name`)}</h3>
-                  <p className="text-xs text-text-secondary mt-1 line-clamp-2">
-                    {t(`${tool.id}.description`)}
-                  </p>
-                </Link>
-              ))}
+              <span className="text-xs text-text-secondary/50 font-normal">{catTools.length}</span>
+              <span className="ml-auto text-text-secondary/40 transition-transform duration-200"
+                style={{ transform: isOpen ? 'rotate(0deg)' : 'rotate(-90deg)' }}>
+                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 9l6 6 6-6"/>
+                </svg>
+              </span>
+            </button>
+            <div
+              className="overflow-hidden transition-all duration-200"
+              style={{ maxHeight: isOpen ? '2000px' : '0px', opacity: isOpen ? 1 : 0 }}
+            >
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 pt-3">
+                {catTools.map((tool) => (
+                  <Link key={tool.id} href={`/tools/${tool.id}`}
+                    className="block bg-card rounded-sm p-4 shadow-warm-sm hover:shadow-warm transition-shadow border border-[rgba(127,99,21,0.05)]">
+                    <div className="text-xs font-mono text-accent mb-2">{tool.icon}</div>
+                    <h3 className="text-sm font-medium text-text-primary">{t(`${tool.id}.name`)}</h3>
+                    <p className="text-xs text-text-secondary mt-1 line-clamp-2">
+                      {t(`${tool.id}.description`)}
+                    </p>
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         )

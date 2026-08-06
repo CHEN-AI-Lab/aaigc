@@ -18,61 +18,62 @@ export interface ToolMeta {
   category: ToolCategoryId
   icon: string
   component: string
+  createdAt: string
   npmDeps?: string[]
 }
 
 export const tools: ToolMeta[] = [
   // ─── Developer Tools ───
-  { id: 'json-formatter', category: 'dev', icon: '📋', component: 'JsonFormatter' },
-  { id: 'base64', category: 'dev', icon: '🔐', component: 'Base64Codec' },
-  { id: 'url-encode', category: 'dev', icon: '🔗', component: 'UrlEncoder' },
-  { id: 'regex-tester', category: 'dev', icon: '🔍', component: 'RegexTester' },
-  { id: 'jwt-decoder', category: 'dev', icon: '🛡️', component: 'JwtDecoder' },
-  { id: 'uuid-generator', category: 'dev', icon: '🆔', component: 'UuidGenerator' },
-  { id: 'yaml-json', category: 'dev', icon: '🔀', component: 'YamlJsonConverter', npmDeps: ['js-yaml'] },
-  { id: 'json-to-csv', category: 'dev', icon: '📊', component: 'JsonToCsv' },
-  { id: 'html-preview', category: 'dev', icon: '🖥️', component: 'HtmlPreview' },
-  { id: 'html-entities', category: 'dev', icon: '🔣', component: 'HtmlEntities' },
-  { id: 'css-minifier', category: 'dev', icon: '✂️', component: 'CssMinifier' },
-  { id: 'number-base', category: 'dev', icon: '🔢', component: 'NumberBaseConverter' },
+  { id: 'json-formatter', category: 'dev', icon: '📋', component: 'JsonFormatter', createdAt: '2026-07-18' },
+  { id: 'base64', category: 'dev', icon: '🔐', component: 'Base64Codec', createdAt: '2026-07-18' },
+  { id: 'url-encode', category: 'dev', icon: '🔗', component: 'UrlEncoder', createdAt: '2026-07-18' },
+  { id: 'regex-tester', category: 'dev', icon: '🔍', component: 'RegexTester', createdAt: '2026-07-18' },
+  { id: 'jwt-decoder', category: 'dev', icon: '🛡️', component: 'JwtDecoder', createdAt: '2026-07-18' },
+  { id: 'uuid-generator', category: 'dev', icon: '🆔', component: 'UuidGenerator', createdAt: '2026-07-18' },
+  { id: 'html-preview', category: 'dev', icon: '🖥️', component: 'HtmlPreview', createdAt: '2026-07-18' },
+  { id: 'html-entities', category: 'dev', icon: '🔣', component: 'HtmlEntities', createdAt: '2026-07-27' },
+  { id: 'css-minifier', category: 'dev', icon: '✂️', component: 'CssMinifier', createdAt: '2026-07-19' },
+  { id: 'number-base', category: 'dev', icon: '🔢', component: 'NumberBaseConverter', createdAt: '2026-07-27' },
+  { id: 'yaml-json', category: 'dev', icon: '🔀', component: 'YamlJsonConverter', npmDeps: ['js-yaml'], createdAt: '2026-07-27' },
+  { id: 'json-to-csv', category: 'dev', icon: '📊', component: 'JsonToCsv', createdAt: '2026-07-27' },
 
   // ─── Text Tools ───
-  { id: 'word-counter', category: 'text', icon: '📝', component: 'WordCounter' },
-  { id: 'markdown-preview', category: 'text', icon: '📄', component: 'MarkdownPreview', npmDeps: ['react-markdown'] },
-  { id: 'case-converter', category: 'text', icon: '🔤', component: 'CaseConverter' },
-  { id: 'text-diff', category: 'text', icon: '📑', component: 'TextDiff', npmDeps: ['diff'] },
-  { id: 'lorem-ipsum', category: 'text', icon: '📜', component: 'LoremIpsum' },
-  { id: 'text-to-slug', category: 'text', icon: '🏷️', component: 'TextToSlug' },
-  { id: 'list-sorter', category: 'text', icon: '📌', component: 'ListSorter' },
+  { id: 'word-counter', category: 'text', icon: '📝', component: 'WordCounter', createdAt: '2026-07-18' },
+  { id: 'markdown-preview', category: 'text', icon: '📄', component: 'MarkdownPreview', npmDeps: ['react-markdown'], createdAt: '2026-07-18' },
+  { id: 'case-converter', category: 'text', icon: '🔤', component: 'CaseConverter', createdAt: '2026-07-18' },
+  { id: 'text-diff', category: 'text', icon: '📑', component: 'TextDiff', npmDeps: ['diff'], createdAt: '2026-07-18' },
+  { id: 'lorem-ipsum', category: 'text', icon: '📜', component: 'LoremIpsum', createdAt: '2026-07-18' },
+  { id: 'text-to-slug', category: 'text', icon: '🏷️', component: 'TextToSlug', createdAt: '2026-07-19' },
+  { id: 'list-sorter', category: 'text', icon: '📌', component: 'ListSorter', createdAt: '2026-07-19' },
 
   // ─── Security Tools ───
-  { id: 'password-generator', category: 'security', icon: '🔑', component: 'PasswordGenerator' },
+  { id: 'password-generator', category: 'security', icon: '🔑', component: 'PasswordGenerator', createdAt: '2026-07-18' },
 
   // ─── Image Tools ───
-  { id: 'qrcode', category: 'image', icon: '📲', component: 'QrCodeGenerator', npmDeps: ['qrcode'] },
-  { id: 'color-picker', category: 'image', icon: '🎯', component: 'ColorPicker' },
-  { id: 'image-to-base64', category: 'image', icon: '🖼️', component: 'ImageToBase64' },
-  { id: 'image-converter', category: 'image', icon: '🔄', component: 'ImageConverter' },
-  { id: 'image-editor', category: 'image', icon: '✂️', component: 'ImageEditor' },
+  { id: 'qrcode', category: 'image', icon: '📲', component: 'QrCodeGenerator', npmDeps: ['qrcode'], createdAt: '2026-07-18' },
+  { id: 'color-picker', category: 'image', icon: '🎯', component: 'ColorPicker', createdAt: '2026-07-18' },
+  { id: 'image-to-base64', category: 'image', icon: '🖼️', component: 'ImageToBase64', createdAt: '2026-07-18' },
+  { id: 'image-converter', category: 'image', icon: '🔄', component: 'ImageConverter', createdAt: '2026-07-31' },
+  { id: 'image-editor', category: 'image', icon: '✂️', component: 'ImageEditor', createdAt: '2026-07-31' },
 
   // ─── Math Tools ───
-  { id: 'calculator', category: 'math', icon: '🧮', component: 'Calculator' },
+  { id: 'calculator', category: 'math', icon: '🧮', component: 'Calculator', createdAt: '2026-07-19' },
 
   // ─── Network Tools ───
-  { id: 'ip-lookup', category: 'network', icon: '📍', component: 'IpLookup' },
-  { id: 'dns-lookup', category: 'network', icon: '🌐', component: 'DnsLookup' },
-  { id: 'http-status-codes', category: 'network', icon: 'ℹ️', component: 'HttpStatusCodes' },
-  { id: 'user-agent-parser', category: 'network', icon: '🖥️', component: 'UserAgentParser' },
+  { id: 'ip-lookup', category: 'network', icon: '📍', component: 'IpLookup', createdAt: '2026-07-27' },
+  { id: 'dns-lookup', category: 'network', icon: '🌐', component: 'DnsLookup', createdAt: '2026-07-27' },
+  { id: 'http-status-codes', category: 'network', icon: 'ℹ️', component: 'HttpStatusCodes', createdAt: '2026-07-27' },
+  { id: 'user-agent-parser', category: 'network', icon: '🖥️', component: 'UserAgentParser', createdAt: '2026-07-27' },
 
   // ─── Time Tools ───
-  { id: 'timestamp', category: 'time', icon: '⏱️', component: 'TimestampConverter' },
-  { id: 'date-calculator', category: 'time', icon: '📅', component: 'DateCalculator' },
-  { id: 'timer', category: 'time', icon: '⌛', component: 'Timer' },
+  { id: 'timestamp', category: 'time', icon: '⏱️', component: 'TimestampConverter', createdAt: '2026-07-18' },
+  { id: 'date-calculator', category: 'time', icon: '📅', component: 'DateCalculator', createdAt: '2026-07-18' },
+  { id: 'timer', category: 'time', icon: '⌛', component: 'Timer', createdAt: '2026-07-30' },
 
   // ─── Other Tools ───
-  { id: 'emoji-picker', category: 'other', icon: '😊', component: 'EmojiPicker' },
-  { id: 'random-generator', category: 'other', icon: '🎲', component: 'RandomGenerator' },
-  { id: 'cron-builder', category: 'other', icon: '⏳', component: 'CronBuilder' },
-  { id: 'pdf-tool', category: 'other', icon: '📄', component: 'PdfTool', npmDeps: ['pdf-lib', 'jszip'] },
-  { id: 'file-renamer', category: 'other', icon: '🏷️', component: 'FileRenamer' },
+  { id: 'emoji-picker', category: 'other', icon: '😊', component: 'EmojiPicker', createdAt: '2026-07-27' },
+  { id: 'random-generator', category: 'other', icon: '🎲', component: 'RandomGenerator', createdAt: '2026-07-27' },
+  { id: 'cron-builder', category: 'other', icon: '⏳', component: 'CronBuilder', createdAt: '2026-07-27' },
+  { id: 'pdf-tool', category: 'other', icon: '📄', component: 'PdfTool', npmDeps: ['pdf-lib', 'jszip'], createdAt: '2026-07-30' },
+  { id: 'file-renamer', category: 'other', icon: '🏷️', component: 'FileRenamer', createdAt: '2026-07-31' },
 ]

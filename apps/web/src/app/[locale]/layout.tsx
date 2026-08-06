@@ -3,6 +3,8 @@ import { getMessages, setRequestLocale } from 'next-intl/server'
 import { routing } from '../../i18n/routing'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
+import VisitTracker from '../../components/VisitTracker'
+import AuthProvider from '../../components/AuthProvider'
 
 type Props = {
   children: React.ReactNode
@@ -20,11 +22,14 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <NextIntlClientProvider key={locale} locale={locale} messages={messages}>
-      <div className="flex flex-col min-h-screen">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
-      </div>
+      <AuthProvider>
+        <VisitTracker />
+        <div className="flex flex-col min-h-screen">
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </div>
+      </AuthProvider>
     </NextIntlClientProvider>
   )
 }
