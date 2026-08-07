@@ -1128,7 +1128,14 @@
     "aiTools": "AI 工具",
     "pdfSplit": "拆分 PDF",
     "pdfSplitBtn": "拆分",
-    "pdfRemove": "移除"
+    "pdfRemove": "移除",
+    "favorite": "收藏",
+    "favorited": "已收藏",
+    "like": "點讚",
+    "liked": "已點讚",
+    "myFavorites": "我的收藏",
+    "noFavorites": "暫無收藏",
+    "favoritesCount": "收藏"
   },
   "ui": {
     "toolLinks": {
@@ -1311,7 +1318,8 @@
     "and": "和",
     "agreeTermsRequired": "请同意服务条款和隐私政策",
     "termsOfService": "服务条款",
-    "privacyPolicy": "隐私政策"
+    "privacyPolicy": "隐私政策",
+    "view": "查看"
   },
   "terms": {
     "tools": "線上工具",

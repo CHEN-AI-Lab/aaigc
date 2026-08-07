@@ -3,6 +3,8 @@
 import { lazy, Suspense } from 'react'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
+import FavoriteButton from './FavoriteButton'
+import LikeButton from './LikeButton'
 
 type Props = {
   slug: string
@@ -68,6 +70,10 @@ export default function ToolPageClient({ slug }: Props) {
         <h1 className="text-2xl font-semibold text-text-primary mb-1">
           {t(`${slug}.name`)}
         </h1>
+        <div className="flex items-center gap-2 mb-6">
+          <FavoriteButton toolId={slug} />
+          <LikeButton toolId={slug} />
+        </div>
         <div className="min-h-[400px]">
           <Suspense fallback={null}>
             {Component && <Component />}

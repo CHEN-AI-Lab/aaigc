@@ -4,11 +4,37 @@ import { useTranslations } from 'next-intl'
 import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from '@/i18n/navigation'
 import Link from 'next/link'
+import { useCallback, useEffect, useState } from 'react'
+import type { FavoriteItem } from 'shared/types'
 
 export default function AccountClient() {
   const t = useTranslations('auth')
+  const tt = useTranslations('tools')
   const { data: session, status } = useSession()
   const router = useRouter()
+  const [favorites, setFavorites] = useState<FavoriteItem[]>([])
+  const [favoritesLoading, setFavoritesLoading] = useState(false)
+
+  const fetchFavorites = useCallback(async () => {
+    setFavoritesLoading(true)
+    try {
+      const res = await fetch('/api/favorites')
+      if (res.ok) {
+        const data = await res.json()
+        setFavorites(data.favorites || [])
+      }
+    } catch {
+      // ignore
+    } finally {
+      setFavoritesLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (session) {
+      fetchFavorites()
+    }
+  }, [session, fetchFavorites])
 
   if (status === 'loading') {
     return (
@@ -84,6 +110,37 @@ export default function AccountClient() {
           >
             {t('logout')}
           </button>
+        </div>
+
+        {/* My Favorites */}
+        <div className="mt-8">
+          <h2 className="text-lg font-semibold text-text-primary mb-4">
+            {tt('myFavorites')}
+          </h2>
+          {favoritesLoading ? (
+            <p className="text-sm text-text-secondary">...</p>
+          ) : favorites.length === 0 ? (
+            <p className="text-sm text-text-secondary">{tt('noFavorites')}</p>
+          ) : (
+            <ul className="space-y-2">
+              {favorites.map((f) => (
+                <li
+                  key={f.id}
+                  className="flex items-center justify-between bg-bg rounded-sm border border-[rgba(127,99,21,0.1)] px-4 py-3"
+                >
+                  <span className="text-sm text-text-primary">
+                    {tt(`${f.toolId}.name`)}
+                  </span>
+                  <Link
+                    href={`/tools/${f.toolId}`}
+                    className="text-xs text-accent hover:underline"
+                  >
+                    {t('view')}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </div>

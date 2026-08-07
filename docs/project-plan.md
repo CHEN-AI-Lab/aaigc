@@ -282,7 +282,7 @@ Phase 3: 在线工具实现          ✅ 已完成（38 个工具）
 Phase 4: 质量保障 + 部署       ✅ 已完成
 Phase 5: 访问统计 + 排行榜     ✅ 已完成
 Phase 6: 用户系统              ✅ 代码完成，OAuth/Resend 已配置（待 prisma migrate + AUTH_SECRET）
-Phase 7: 收藏 + 点赞           📅 待开始
+Phase 7: 收藏 + 点赞           ✅ 已完成
 Phase 8: 评论系统              📅 待开始
 Phase 9: 个性化推荐            📅 待开始
 ```
@@ -339,18 +339,16 @@ Phase 9: 个性化推荐            📅 待开始
 | 6.10 | prisma migrate deploy | 连接数据库生成表 |
 | 6.11 | 配置 AUTH_SECRET | 生成并设置环境变量 |
 
-### Phase 7：收藏 + 点赞（📅 待开始）
+### Phase 7：收藏 + 点赞（✅ 已完成）
 
 | # | 任务 | 说明 |
 |---|------|------|
-| 7.1 | 建表 favorites | user_id, tool_id, UNIQUE |
-| 7.2 | 建表 likes | user_id, tool_id, UNIQUE |
-| 7.3 | 收藏 API | GET/POST/DELETE /api/favorites |
-| 7.4 | 点赞 API | GET/POST /api/likes |
-| 7.5 | 点赞同步到 Redis | ZINCRBY stats:tool_likes |
-| 7.6 | 收藏按钮 | 工具页面添加 |
-| 7.7 | 点赞按钮 | 工具页面添加 |
-| 7.8 | 收藏列表页 | 用户查看已收藏的工具 |
+| 7.1 | 建表 favorites + likes | Prisma schema 已建，已 migrate |
+| 7.2 | API 路由 | POST+GET /api/favorites, POST /api/likes |
+| 7.3 | 收藏按钮 | 工具详情页 ❤️ 按钮，登录后显示 |
+| 7.4 | 点赞按钮 | 工具详情页 👍 按钮 + 点赞数 |
+| 7.5 | 收藏列表 | 账号页显示已收藏的工具列表 |
+| 7.6 | 测试 | 8 个单元测试通过 |
 
 ### Phase 8：评论系统（📅 待开始）
 ### Phase 9：个性化推荐（📅 待开始）

@@ -1129,7 +1129,14 @@
     "cronDesc7": "Runs every 2 hours",
     "cronDesc8": "Runs at midnight every day",
     "cronDesc9": "Runs at midnight every Monday",
-    "cronDesc10": "Runs at midnight on the 15th"
+    "cronDesc10": "Runs at midnight on the 15th",
+    "favorite": "Favorite",
+    "favorited": "Favorited",
+    "like": "Like",
+    "liked": "Liked",
+    "myFavorites": "My Favorites",
+    "noFavorites": "No favorites yet",
+    "favoritesCount": "Favorites"
   },
   "ui": {
     "aboutLink": "About AAIGC →",
@@ -1312,7 +1319,8 @@
     "and": "and",
     "agreeTermsRequired": "Please agree to the Terms of Service and Privacy Policy",
     "termsOfService": "Terms of Service",
-    "privacyPolicy": "Privacy Policy"
+    "privacyPolicy": "Privacy Policy",
+    "view": "View"
   },
   "terms": {
     "title": "Terms of Service",

@@ -1129,7 +1129,14 @@
     "cronDesc7": "每2小时执行一次",
     "cronDesc8": "每天午夜0点执行",
     "cronDesc9": "每周一午夜执行",
-    "cronDesc10": "每月15号午夜执行"
+    "cronDesc10": "每月15号午夜执行",
+    "favorite": "收藏",
+    "favorited": "已收藏",
+    "like": "点赞",
+    "liked": "已点赞",
+    "myFavorites": "我的收藏",
+    "noFavorites": "暂无收藏",
+    "favoritesCount": "收藏"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",
@@ -1312,7 +1319,8 @@
     "and": "和",
     "agreeTermsRequired": "请同意服务条款和隐私政策",
     "termsOfService": "服务条款",
-    "privacyPolicy": "隐私政策"
+    "privacyPolicy": "隐私政策",
+    "view": "查看"
   },
   "terms": {
     "title": "服务条款",

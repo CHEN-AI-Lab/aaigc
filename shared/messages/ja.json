@@ -1129,7 +1129,14 @@
     "emojiName27B0": "环",
     "emojiName2B55": "空心圆",
     "emojiName3030": "波浪",
-    "cronDescDow": "{dow}"
+    "cronDescDow": "{dow}",
+    "favorite": "お気に入り",
+    "favorited": "お気に入り済み",
+    "like": "いいね",
+    "liked": "いいね済み",
+    "myFavorites": "お気に入り",
+    "noFavorites": "お気に入りはまだありません",
+    "favoritesCount": "お気に入り"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",
@@ -1312,7 +1319,8 @@
     "and": "and",
     "agreeTermsRequired": "Please agree to the Terms of Service and Privacy Policy",
     "termsOfService": "Terms of Service",
-    "privacyPolicy": "Privacy Policy"
+    "privacyPolicy": "Privacy Policy",
+    "view": "表示"
   },
   "terms": {
     "title": "利用規約",
