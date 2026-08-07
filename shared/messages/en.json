@@ -1301,10 +1301,16 @@
     "verifyFailed": "Invalid or expired code",
     "emailVerified": "Email verified ✓",
     "emailAlreadyRegistered": "This email is already registered",
-    "agreeTerms": "I agree to the <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>",
+    "agreeTerms": "I agree to the",
     "oauthAgree": "By continuing, you agree to our <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>",
     "terms": "Terms",
-    "privacy": "Privacy"
+    "privacy": "Privacy",
+    "continueAgree": "By continuing, you agree to our",
+    "continueAgreeOAuth": "By signing in, you agree to our",
+    "signupWithGoogle": "Sign up with Google",
+    "signupWithGithub": "Sign up with GitHub",
+    "and": "and",
+    "agreeTermsRequired": "Please agree to the Terms of Service and Privacy Policy"
   },
   "terms": {
     "title": "Terms of Service",

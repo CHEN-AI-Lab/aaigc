@@ -1301,9 +1301,15 @@
     "emailVerified": "邮箱已验证 ✓",
     "emailAlreadyRegistered": "该邮箱已注册",
     "privacy": "隱私政策",
-    "agreeTerms": "我已閱讀並同意<terms>服務條款</terms>和<privacy>隱私政策</privacy>",
+    "agreeTerms": "我已阅读并同意",
     "oauthAgree": "繼續操作即表示您同意我們的<terms>服務條款</terms>和<privacy>隱私政策</privacy>",
-    "terms": "服務條款"
+    "terms": "服務條款",
+    "continueAgree": "继续操作即表示您同意我们的",
+    "continueAgreeOAuth": "登录即表示您同意我们的",
+    "signupWithGoogle": "Google 注册",
+    "signupWithGithub": "GitHub 注册",
+    "and": "和",
+    "agreeTermsRequired": "请同意服务条款和隐私政策"
   },
   "terms": {
     "tools": "線上工具",

@@ -175,11 +175,12 @@ export default function LoginClient() {
             {t('register')}
           </Link>
         </p>
-        <div className="flex items-center justify-center gap-4 mt-4 text-xs text-text-secondary">
-          <Link href={`/${locale}/terms`} className="hover:text-accent transition-colors">{t('terms')}</Link>
-          <span className="text-text-secondary/30">·</span>
-          <Link href={`/${locale}/privacy`} className="hover:text-accent transition-colors">{t('privacy')}</Link>
-        </div>
+        <p className="text-center text-xs text-text-secondary mt-4 leading-relaxed">
+          {t('continueAgree')}{' '}
+          <Link href={`/${locale}/terms`} className="text-accent hover:underline">Terms of Service</Link>{' '}
+          {t('and')}{' '}
+          <Link href={`/${locale}/privacy`} className="text-accent hover:underline">Privacy Policy</Link>
+        </p>
       </div>
     </div>
   )

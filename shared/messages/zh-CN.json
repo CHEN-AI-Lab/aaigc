@@ -1301,10 +1301,16 @@
     "verifyFailed": "验证码错误或已过期",
     "emailVerified": "邮箱已验证 ✓",
     "emailAlreadyRegistered": "该邮箱已注册",
-    "agreeTerms": "我已阅读并同意<terms>服务条款</terms>和<privacy>隐私政策</privacy>",
+    "agreeTerms": "我已阅读并同意",
     "oauthAgree": "继续操作即表示您同意我们的<terms>服务条款</terms>和<privacy>隐私政策</privacy>",
     "terms": "服务条款",
-    "privacy": "隐私政策"
+    "privacy": "隐私政策",
+    "continueAgree": "继续操作即表示您同意我们的",
+    "continueAgreeOAuth": "登录即表示您同意我们的",
+    "signupWithGoogle": "Google 注册",
+    "signupWithGithub": "GitHub 注册",
+    "and": "和",
+    "agreeTermsRequired": "请同意服务条款和隐私政策"
   },
   "terms": {
     "title": "服务条款",

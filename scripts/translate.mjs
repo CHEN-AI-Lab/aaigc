@@ -1496,7 +1496,11 @@ const SRC_LANG_NAME = SOURCE_LANG === "en" ? "English" : LANG_NAME_MAP[SOURCE_LA
 const TGT_LANG_NAME = LANG_NAME_MAP[LANG] || LANG
 
 for (const [section, items] of Object.entries(groups)) {
-  const pairs = items.map((i) => `${i.keyPath}: ${i.text}`).join("\n")
+  // Split into chunks of 50 to avoid token limit truncation
+  const CHUNK_SIZE = 50
+  for (let chunkStart = 0; chunkStart < items.length; chunkStart += CHUNK_SIZE) {
+    const chunk = items.slice(chunkStart, chunkStart + CHUNK_SIZE)
+    const pairs = chunk.map((i) => `${i.keyPath}: ${i.text}`).join("\n")
   const systemPrompt = `You are a professional translator. Translate the following translation keys from ${SRC_LANG_NAME} to ${TGT_LANG_NAME}.
 
 Rules:
@@ -1556,7 +1560,8 @@ Rules:
     }
   }
 
-  console.log(`  ✅ ${section}: ${items.length} 个已翻译`)
+  console.log(`  ✅ ${section}: ${chunk.length}/${items.length} 个已翻译`)
+  }
 }
 
 saveMemory(memory)

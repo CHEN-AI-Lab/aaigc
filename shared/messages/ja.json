@@ -1260,7 +1260,7 @@
     "visits": "訪問"
   },
   "auth": {
-    "agreeTerms": "私は<terms>利用規約</terms>および<privacy>プライバシーポリシー</privacy>に同意します。",
+    "agreeTerms": "I agree to the",
     "oauthAgree": "続行すると、<terms>利用規約</terms>および<privacy>プライバシーポリシー</privacy>に同意したことになります。",
     "terms": "利用規約",
     "privacy": "プライバシー",
@@ -1304,7 +1304,13 @@
     "sendFailed": "Failed to send code",
     "verifyFailed": "Invalid or expired code",
     "emailVerified": "Email verified ✓",
-    "emailAlreadyRegistered": "This email is already registered"
+    "emailAlreadyRegistered": "This email is already registered",
+    "continueAgree": "By continuing, you agree to our",
+    "continueAgreeOAuth": "By signing in, you agree to our",
+    "signupWithGoogle": "Sign up with Google",
+    "signupWithGithub": "Sign up with GitHub",
+    "and": "and",
+    "agreeTermsRequired": "Please agree to the Terms of Service and Privacy Policy"
   },
   "terms": {
     "title": "利用規約",
