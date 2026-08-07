@@ -71,6 +71,7 @@ export default function Footer() {
         <div className="border-t border-[rgba(127,99,21,0.1)] mt-8 pt-8 flex items-center justify-center gap-6 text-xs text-text-secondary">
           <span>&copy; {new Date().getFullYear()} {t('copyright')}</span>
           <Link href="/privacy" className="hover:text-accent transition-colors">{t('privacy')}</Link>
+          <Link href="/terms" className="hover:text-accent transition-colors">{t('terms')}</Link>
         </div>
       </div>
     </footer>

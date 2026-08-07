@@ -1173,12 +1173,61 @@
     "updates": "更新情報",
     "privacy": "プライバシー",
     "copyright": "AAIGC. 無断複写・転載を禁じます。",
-    "email": "chen@aaigc.online"
+    "email": "chen@aaigc.online",
+    "terms": "Terms of Service"
   },
   "privacy": {
-    "title": "プライバシーポリシー",
-    "desc": "AAIGC は静的ウェブサイトです。個人データを収集、保存、処理することはありません。すべてのツールはブラウザ内で実行され、サーバーにデータが送信されることはありません。言語設定を記憶するための機能的な Cookie を使用しています。トラッキングや分析は使用していません。",
-    "contact": "お問い合わせは chen@aaigc.online まで。"
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: August 2026",
+    "intro": "AAIGC (\"we\", \"our\", \"us\") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our website and services.",
+    "dataCollect": "Information We Collect",
+    "dataCollectDesc": "We collect only the information you voluntarily provide:",
+    "dataCollectItems": [
+      "Account information: email address, display name, and avatar (when you register or log in via Google/GitHub OAuth)",
+      "Usage data: page views and tool usage counts for analytics purposes (anonymized)",
+      "Communication data: email address when you contact us"
+    ],
+    "dataUse": "How We Use Your Information",
+    "dataUseDesc": "We use your information for:",
+    "dataUseItems": [
+      "Providing and maintaining your account",
+      "Authenticating your identity via OAuth providers (Google, GitHub)",
+      "Improving our services through anonymized usage analytics",
+      "Responding to your inquiries"
+    ],
+    "dataStorage": "Data Storage and Security",
+    "dataStorageDesc": "Your data is stored on Neon Postgres servers in Singapore (AWS Asia Pacific). We implement reasonable security measures to protect your data, including encryption in transit (TLS) and at rest.",
+    "dataRetention": "Data Retention",
+    "dataRetentionDesc": "We retain your account data until you delete your account. Usage analytics data is retained for 12 months. You can request deletion of your data by contacting us.",
+    "thirdParty": "Third-Party Services",
+    "thirdPartyDesc": "We use the following third-party services:",
+    "thirdPartyItems": [
+      "Neon (Postgres database) - Singapore region",
+      "Google OAuth - for authentication",
+      "GitHub OAuth - for authentication",
+      "Resend - for email delivery",
+      "Vercel - for hosting",
+      "Cloudflare Workers - for analytics"
+    ],
+    "cookies": "Cookies",
+    "cookiesDesc": "We use a functional cookie to remember your language preference. We do not use tracking cookies or third-party analytics cookies. Our usage analytics are anonymized and do not involve cookies.",
+    "rights": "Your Rights",
+    "rightsDesc": "Depending on your jurisdiction, you may have the right to:",
+    "rightsItems": [
+      "Access your personal data",
+      "Correct inaccurate data",
+      "Delete your data (right to be forgotten)",
+      "Export your data (data portability)",
+      "Withdraw consent at any time"
+    ],
+    "contact": "Contact Us",
+    "contactDesc": "For questions about this Privacy Policy, contact us at: chen@aaigc.online",
+    "gdpr": "GDPR Compliance (EU Users)",
+    "gdprDesc": "If you are in the European Economic Area, you have additional rights under GDPR. Our legal basis for processing your data is your consent (when you register) and legitimate interest (for analytics).",
+    "ccpa": "CCPA Compliance (California Users)",
+    "ccpaDesc": "California residents have the right to request disclosure of collected data, request deletion, and opt out of data sales. We do not sell your personal data.",
+    "pip": "PIPL Compliance (China Users)",
+    "pipDesc": "If you are in China, your personal data is processed in accordance with the Personal Information Protection Law (PIPL). Your data is stored in Singapore."
   },
   "updates": {
     "title": "更新情報",
@@ -1251,6 +1300,38 @@
     "sendFailed": "Failed to send code",
     "verifyFailed": "Invalid or expired code",
     "emailVerified": "Email verified ✓",
-    "emailAlreadyRegistered": "This email is already registered"
+    "emailAlreadyRegistered": "This email is already registered",
+    "agreeTerms": "I agree to the <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>",
+    "oauthAgree": "By continuing, you agree to our <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>",
+    "terms": "Terms",
+    "privacy": "Privacy"
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: August 2026",
+    "intro": "By accessing or using AAIGC, you agree to be bound by these Terms of Service.",
+    "use": "Use of Service",
+    "useDesc": "AAIGC provides free online tools and access to affiliated products. You agree to use the service only for lawful purposes and in accordance with these terms.",
+    "accounts": "Accounts",
+    "accountsDesc": "When you create an account, you are responsible for maintaining its security. You must not share your password or allow unauthorized access. You must be at least 13 years old to use this service.",
+    "oauth": "OAuth Authentication",
+    "oauthDesc": "By signing in with Google or GitHub, you authorize us to access your basic profile information (name, email, avatar) from those providers. We do not post on your behalf.",
+    "tools": "Online Tools",
+    "toolsDesc": "All tools provided on AAIGC are free to use. Tools run in your browser; no data is uploaded to our servers unless explicitly stated.",
+    "prohibited": "Prohibited Conduct",
+    "prohibitedDesc": "You agree not to:",
+    "prohibitedItems": [
+      "Use the service for any illegal purpose",
+      "Attempt to disrupt or overload the service",
+      "Create multiple accounts for abusive purposes",
+      "Reverse engineer or attempt to extract source code of our tools",
+      "Use automated scripts to mass-register accounts"
+    ],
+    "liability": "Limitation of Liability",
+    "liabilityDesc": "AAIGC is provided \"as is\" without warranties. We are not liable for damages arising from your use of the service.",
+    "changes": "Changes to Terms",
+    "changesDesc": "We may update these terms at any time. Continued use after changes constitutes acceptance.",
+    "contact": "Contact",
+    "contactDesc": "For questions, contact: chen@aaigc.online"
   }
 }

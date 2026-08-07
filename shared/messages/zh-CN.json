@@ -1173,12 +1173,61 @@
     "updates": "更新日志",
     "privacy": "隐私政策",
     "email": "chen@aaigc.online",
-    "copyright": "AAIGC. 保留所有权利。"
+    "copyright": "AAIGC. 保留所有权利。",
+    "terms": "服务条款"
   },
   "privacy": {
     "title": "隐私政策",
-    "desc": "AAIGC 是一个静态网站。我们不收集、存储或处理任何个人数据。所有工具均在您的浏览器中运行 — 不会有数据发送到我们的服务器。我们使用一个功能性 Cookie 来记住您的语言偏好。不使用任何跟踪或分析工具。",
-    "contact": "如有疑问，请联系 chen@aaigc.online。"
+    "lastUpdated": "最后更新：2026年8月",
+    "intro": "AAIGC（\"我们\"）致力于保护您的隐私。本隐私政策说明了我们如何收集、使用和保护您的信息。",
+    "dataCollect": "我们收集的信息",
+    "dataCollectDesc": "我们只收集您主动提供的信息：",
+    "dataCollectItems": [
+      "账户信息：邮箱地址、显示名称和头像（注册或通过 Google/GitHub 登录时）",
+      "使用数据：页面浏览量和工具使用统计（匿名化）",
+      "联系信息：您联系我们时提供的邮箱地址"
+    ],
+    "dataUse": "我们如何使用您的信息",
+    "dataUseDesc": "我们将您的信息用于：",
+    "dataUseItems": [
+      "提供和维护您的账户",
+      "通过 OAuth 提供商（Google、GitHub）验证您的身份",
+      "通过匿名化使用统计改进服务",
+      "回复您的咨询"
+    ],
+    "dataStorage": "数据存储与安全",
+    "dataStorageDesc": "您的数据存储在新加坡的 Neon Postgres 服务器上（AWS 亚太区域）。我们采取合理的安全措施保护您的数据，包括传输加密（TLS）和静态加密。",
+    "dataRetention": "数据保留",
+    "dataRetentionDesc": "我们保留您的账户数据直到您删除账户。使用统计数据保留12个月。您可以通过联系我们请求删除您的数据。",
+    "thirdParty": "第三方服务",
+    "thirdPartyDesc": "我们使用以下第三方服务：",
+    "thirdPartyItems": [
+      "Neon（Postgres 数据库）- 新加坡区域",
+      "Google OAuth - 身份验证",
+      "GitHub OAuth - 身份验证",
+      "Resend - 邮件发送",
+      "Vercel - 网站托管",
+      "Cloudflare Workers - 统计分析"
+    ],
+    "cookies": "Cookie",
+    "cookiesDesc": "我们使用一个功能性 Cookie 来记住您的语言偏好。我们不使用跟踪 Cookie 或第三方分析 Cookie。我们的使用统计是匿名化的，不涉及 Cookie。",
+    "rights": "您的权利",
+    "rightsDesc": "根据您所在地区，您可能拥有以下权利：",
+    "rightsItems": [
+      "访问您的个人数据",
+      "更正不准确的数据",
+      "删除您的数据（被遗忘权）",
+      "导出您的数据（数据可携带权）",
+      "随时撤回同意"
+    ],
+    "contact": "联系我们",
+    "contactDesc": "如对本隐私政策有疑问，请联系：chen@aaigc.online",
+    "gdpr": "GDPR 合规（欧盟用户）",
+    "gdprDesc": "如果您在欧洲经济区，您在 GDPR 下有额外权利。我们处理您数据的法律依据是您的同意（注册时）和合法利益（统计分析）。",
+    "ccpa": "CCPA 合规（加州用户）",
+    "ccpaDesc": "加州居民有权请求披露已收集的数据、请求删除数据以及选择不出售数据。我们不出售您的个人数据。",
+    "pip": "PIPL 合规（中国用户）",
+    "pipDesc": "如果您在中国，您的个人数据将按照《个人信息保护法》（PIPL）处理。您的数据存储在新加坡。"
   },
   "updates": {
     "title": "更新日志",
@@ -1251,6 +1300,38 @@
     "sendFailed": "验证码发送失败",
     "verifyFailed": "验证码错误或已过期",
     "emailVerified": "邮箱已验证 ✓",
-    "emailAlreadyRegistered": "该邮箱已注册"
+    "emailAlreadyRegistered": "该邮箱已注册",
+    "agreeTerms": "我已阅读并同意<terms>服务条款</terms>和<privacy>隐私政策</privacy>",
+    "oauthAgree": "继续操作即表示您同意我们的<terms>服务条款</terms>和<privacy>隐私政策</privacy>",
+    "terms": "服务条款",
+    "privacy": "隐私政策"
+  },
+  "terms": {
+    "title": "服务条款",
+    "lastUpdated": "最后更新：2026年8月",
+    "intro": "访问或使用 AAIGC 即表示您同意受本服务条款的约束。",
+    "use": "服务使用",
+    "useDesc": "AAIGC 提供免费在线工具和相关产品入口。您同意仅出于合法目的使用本服务。",
+    "accounts": "账户",
+    "accountsDesc": "创建账户时，您负责维护其安全。不得分享密码或允许未经授权的访问。您必须年满13周岁才能使用本服务。",
+    "oauth": "OAuth 认证",
+    "oauthDesc": "通过 Google 或 GitHub 登录，即表示您授权我们从这些提供商处获取您的基本资料信息（姓名、邮箱、头像）。我们不会代您发布内容。",
+    "tools": "在线工具",
+    "toolsDesc": "AAIGC 上提供的所有工具均可免费使用。工具在您的浏览器中运行；除非明确说明，否则没有数据上传到我们的服务器。",
+    "prohibited": "禁止行为",
+    "prohibitedDesc": "您同意不进行以下行为：",
+    "prohibitedItems": [
+      "将服务用于任何非法目的",
+      "试图破坏或超载服务",
+      "为滥用目的创建多个账户",
+      "逆向工程或试图提取我们工具的源代码",
+      "使用自动化脚本批量注册账户"
+    ],
+    "liability": "责任限制",
+    "liabilityDesc": "AAIGC 按\"现状\"提供，不提供任何担保。我们对您使用服务产生的损害不承担责任。",
+    "changes": "条款变更",
+    "changesDesc": "我们可能随时更新本条款。变更后继续使用即构成接受。",
+    "contact": "联系方式",
+    "contactDesc": "如有疑问，请联系：chen@aaigc.online"
   }
 }

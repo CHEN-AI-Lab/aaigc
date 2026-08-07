@@ -175,6 +175,11 @@ export default function LoginClient() {
             {t('register')}
           </Link>
         </p>
+        <div className="flex items-center justify-center gap-4 mt-4 text-xs text-text-secondary">
+          <Link href={`/${locale}/terms`} className="hover:text-accent transition-colors">{t('terms')}</Link>
+          <span className="text-text-secondary/30">·</span>
+          <Link href={`/${locale}/privacy`} className="hover:text-accent transition-colors">{t('privacy')}</Link>
+        </div>
       </div>
     </div>
   )

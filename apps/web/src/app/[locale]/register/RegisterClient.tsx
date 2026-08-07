@@ -22,6 +22,8 @@ export default function RegisterClient() {
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [agreeTerms, setAgreeTerms] = useState(false)
+  const [termsError, setTermsError] = useState('')
 
   const [error, setError] = useState('')
   const [loading, setLoading] = useState<string | null>(null)
@@ -247,9 +249,25 @@ export default function RegisterClient() {
 
               {error && <p className="text-xs text-red-500 text-center">{error}</p>}
 
+              {/* Terms checkbox */}
+              <label className="flex items-start gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={agreeTerms}
+                  onChange={(e) => { setAgreeTerms(e.target.checked); setTermsError('') }}
+                  className="mt-0.5 w-4 h-4 rounded border-gray-300 text-accent focus:ring-accent"
+                />
+                <span className="text-xs text-text-secondary leading-relaxed">
+                  <Link href={`/${locale}/terms`} className="text-accent hover:underline" target="_blank">Terms of Service</Link>
+                  {' and '}
+                  <Link href={`/${locale}/privacy`} className="text-accent hover:underline" target="_blank">Privacy Policy</Link>
+                </span>
+              </label>
+              {termsError && <p className="text-xs text-red-500">{termsError}</p>}
+
               <button
                 onClick={handleRegister}
-                disabled={loading === 'register'}
+                disabled={loading === 'register' || !agreeTerms}
                 className="w-full px-4 py-2.5 rounded-md bg-[#1f1f1f] text-white text-sm font-medium hover:bg-[#333] transition-colors disabled:opacity-50"
               >
                 {loading === 'register' ? (
