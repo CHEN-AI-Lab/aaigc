@@ -38,6 +38,9 @@ importers:
       next-intl:
         specifier: ^4.13.2
         version: 4.13.2(next@16.2.10(@playwright/test@1.61.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)(typescript@5.9.3)
+      prisma:
+        specifier: ^6.19.3
+        version: 6.19.3(typescript@5.9.3)
       react:
         specifier: ^19.2.7
         version: 19.2.7
