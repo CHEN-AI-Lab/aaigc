@@ -13,20 +13,23 @@ AI-powered tools and applications. Product portal and online utility collection.
 
 ## Online Tools
 
-14 free online utilities — no sign-up required.
+38 free online utilities — no sign-up required.
 
-**Developer Tools:** JSON Formatter, Regex Tester, Base64 Codec, URL Encoder, JWT Decoder
-**Text Tools:** Markdown Preview, Word Counter, Text Diff
-**Time Tools:** Timestamp Converter, Date Calculator
-**Image Tools:** QR Code Generator, Color Picker
-**Converters:** YAML↔JSON, HTML Entities
+**Developer Tools:** JSON Formatter, Regex Tester, Base64 Codec, URL Encoder, JWT Decoder, UUID Generator, HTML Preview, HTML Entities, CSS Minifier, Number Base Converter, YAML↔JSON, JSON→CSV
+**Text Tools:** Markdown Preview, Word Counter, Text Diff, Case Converter, Lorem Ipsum Generator, Text to Slug, List Sorter
+**Security:** Password Generator
+**Image Tools:** QR Code Generator, Color Picker, Image to Base64, Image Converter, Image Editor
+**Math:** Calculator
+**Network:** IP Lookup, DNS Lookup, HTTP Status Codes, User-Agent Parser
+**Time:** Timestamp Converter, Date Calculator, Timer
+**Other:** Emoji Picker, Random Generator, Cron Builder, PDF Tool, File Renamer
 
 ## Tech Stack
 
 - **Framework:** Next.js 16 (App Router)
 - **Language:** TypeScript (strict)
 - **Styling:** Tailwind CSS 4
-- **i18n:** next-intl v4 (zh-CN + en)
+- **i18n:** next-intl v4 (en, zh-CN, zh-TW, ja)
 - **Build:** pnpm workspace monorepo
 - **Deploy:** Vercel
 

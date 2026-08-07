@@ -177,9 +177,9 @@ export default function LoginClient() {
         </p>
         <p className="text-center text-xs text-text-secondary mt-4 leading-relaxed">
           {t('continueAgree')}{' '}
-          <Link href={`/${locale}/terms`} className="text-accent hover:underline">Terms of Service</Link>{' '}
+          <Link href={`/${locale}/terms`} className="text-accent hover:underline">{t('termsOfService')}</Link>{' '}
           {t('and')}{' '}
-          <Link href={`/${locale}/privacy`} className="text-accent hover:underline">Privacy Policy</Link>
+          <Link href={`/${locale}/privacy`} className="text-accent hover:underline">{t('privacyPolicy')}</Link>
         </p>
       </div>
     </div>

@@ -1310,7 +1310,9 @@
     "signupWithGoogle": "Sign up with Google",
     "signupWithGithub": "Sign up with GitHub",
     "and": "and",
-    "agreeTermsRequired": "Please agree to the Terms of Service and Privacy Policy"
+    "agreeTermsRequired": "Please agree to the Terms of Service and Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Privacy Policy"
   },
   "terms": {
     "title": "利用規約",

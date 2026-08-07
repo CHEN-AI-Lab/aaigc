@@ -3,7 +3,7 @@
 > 项目名称：aaigc
 > 创建日期：2026-07-17
 > 最后更新：2026-08-05
-> 状态：Phase 0-4 完成，Phase 5 代码就绪待部署，Phase 6-9 待开始
+> 状态：Phase 0-5 完成，Phase 6 代码完成，Phase 7-9 待开始
 
 ---
 
@@ -43,7 +43,7 @@ AAIGC 是一个**产品矩阵门户 + 在线工具箱**。主站 `aaigc.online` 
 | 包管理 | pnpm | workspace monorepo |
 | 测试 | Vitest + Playwright | 单元测试 + E2E |
 | 部署 | Vercel | 独立项目 |
-| 统计 | Cloudflare Worker + Upstash Redis | 代码就绪，待部署 |
+| 统计 | Cloudflare Worker + Upstash Redis | 已部署上线 |
 
 ### 2.2 项目结构
 
@@ -280,8 +280,8 @@ Phase 1: 设计系统 + 国际化     ✅ 已完成
 Phase 2: 核心页面开发          ✅ 已完成
 Phase 3: 在线工具实现          ✅ 已完成（38 个工具）
 Phase 4: 质量保障 + 部署       ✅ 已完成
-Phase 5: 访问统计 + 排行榜     🔧 前端就绪，待部署 Worker
-Phase 6: 用户系统              ✅ 代码完成（待注册数据库 + OAuth 凭据后部署）
+Phase 5: 访问统计 + 排行榜     ✅ 已完成
+Phase 6: 用户系统              ✅ 代码完成，OAuth/Resend 已配置（待 prisma migrate + AUTH_SECRET）
 Phase 7: 收藏 + 点赞           📅 待开始
 Phase 8: 评论系统              📅 待开始
 Phase 9: 个性化推荐            📅 待开始
@@ -291,7 +291,7 @@ Phase 9: 个性化推荐            📅 待开始
 
 详见下方各阶段任务清单（已全部完成，从略）。
 
-### Phase 5：访问统计 + 首页排行榜（🔧 代码就绪，待部署 Worker）
+### Phase 5：访问统计 + 首页排行榜（✅ 已完成）
 
 **架构：** Cloudflare Worker（统计网关）+ Upstash Redis（计数）
 
@@ -309,31 +309,35 @@ Phase 9: 个性化推荐            📅 待开始
 | 5.9 | 新工具区 | 首页展示最新 4 个工具 |
 | 5.10 | 热门工具区 | 首页展示按访问量排序的工具排行 |
 
+**已完成：**
+| 5.11 | 部署 Cloudflare Worker | 已部署至 stats.aaigc.workers.dev（已验证在线） |
+| 5.12 | 配置 Upstash Redis | 已配置 Worker 环境变量 |
+| 5.13 | 管理员鉴权 | 与 Phase 6 用户系统一起做，或加临时密码锁 |
+
+### Phase 6：用户系统（✅ 代码完成）
+
+**目标：** 注册、登录、OAuth 认证（Google/GitHub）、邮箱验证码
+
+**架构：** Neon Postgres + Prisma + NextAuth.js v5
+
+**已完成：**
+| # | 任务 | 说明 |
+|---|------|------|
+| 6.1 | 注册 Neon 账号 | 已创建数据库（新加坡，PG18） |
+| 6.2 | 安装依赖 | Prisma, NextAuth, bcryptjs, @auth/prisma-adapter 等已安装 |
+| 6.3 | 建表 User/Account/Session/VerificationCode | Prisma schema 完整（5 个模型） |
+| 6.4 | 注册 API | POST /api/auth/register（密码注册） |
+| 6.5 | 登录 API | NextAuth Credentials 密码登录 + OAuth |
+| 6.6 | 用户信息 API | GET /api/user/profile |
+| 6.7 | 前端登录/注册/账号页面 | 表单 + 校验 + 邮箱验证码 + OAuth 按钮 |
+| 6.8 | 前端用户状态管理 | NextAuth SessionProvider + useSession |
+
 **待完成：**
 | # | 任务 | 说明 |
 |---|------|------|
-| 5.11 | 部署 Cloudflare Worker | 将 worker-code.md 的代码部署到 Cloudflare Workers |
-| 5.12 | 配置 Upstash Redis | 将 UPSTASH_URL 和 UPSTASH_TOKEN 设为 Worker 环境变量 |
-| 5.13 | 管理员鉴权 | 与 Phase 6 用户系统一起做，或加临时密码锁 |
-
-### Phase 6：用户系统（📅 待开始）
-
-**目标：** 注册、登录、JWT 认证
-
-**架构：** Neon Postgres + Next.js API Route
-
-**任务清单：**
-| # | 任务 | 说明 |
-|---|------|------|
-| 6.1 | 注册 Neon 账号 | 创建免费 Postgres 数据库 |
-| 6.2 | 安装依赖 | @neondatabase/serverless, bcryptjs, jsonwebtoken |
-| 6.3 | 建表 users | 邮箱、密码、昵称、头像、角色 |
-| 6.4 | 注册 API | POST /api/auth/register |
-| 6.5 | 登录 API | POST /api/auth/login + JWT |
-| 6.6 | 用户信息 API | GET /api/auth/me |
-| 6.7 | 前端登录/注册页面 | 表单 + 校验 |
-| 6.8 | 前端用户状态管理 | Context / Provider |
 | 6.9 | 统计页面鉴权 | 管理员角色访问 /stats |
+| 6.10 | prisma migrate deploy | 连接数据库生成表 |
+| 6.11 | 配置 AUTH_SECRET | 生成并设置环境变量 |
 
 ### Phase 7：收藏 + 点赞（📅 待开始）
 

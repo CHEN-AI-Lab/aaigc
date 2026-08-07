@@ -1310,7 +1310,9 @@
     "signupWithGoogle": "Google 注册",
     "signupWithGithub": "GitHub 注册",
     "and": "和",
-    "agreeTermsRequired": "请同意服务条款和隐私政策"
+    "agreeTermsRequired": "请同意服务条款和隐私政策",
+    "termsOfService": "服务条款",
+    "privacyPolicy": "隐私政策"
   },
   "terms": {
     "title": "服务条款",

@@ -15,7 +15,7 @@ AI-powered tools and product portal. 38 free online utilities + 4 product showca
 | Build | pnpm workspace monorepo | |
 | Test | Vitest + Playwright | Unit + E2E |
 | Deploy | Vercel | Production + Preview |
-| Stats | Cloudflare Worker + Upstash Redis | Phase 5, pending Worker deploy |
+| Stats | Cloudflare Worker + Upstash Redis | Phase 5, Live |
 
 ## Project Structure
 
@@ -100,6 +100,6 @@ CI: Structure check + Lint + Test + Build
 ## Stats Architecture
 
 Cloudflare Worker (stats gateway) → Upstash Redis (counters, rankings, online)
-- Worker URL: https://stats.aaigc.workers.dev (pending deployment)
+- Worker URL: https://stats.aaigc.workers.dev (deployed)
 - All projects share 1 Worker + 1 Redis instance, key prefix `{project}:`
 - Stats requests go to Worker, not Vercel (save function invocations)

@@ -11,7 +11,6 @@ export default function RegisterClient() {
   const locale = useLocale()
   const router = useRouter()
 
-  // Step 1: Email verification
   const [email, setEmail] = useState('')
   const [code, setCode] = useState('')
   const [codeSent, setCodeSent] = useState(false)
@@ -19,7 +18,6 @@ export default function RegisterClient() {
   const [countdown, setCountdown] = useState(0)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Step 2: User info
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -39,6 +37,11 @@ export default function RegisterClient() {
 
   const handleSendCode = async () => {
     setError('')
+    setTermsError('')
+    if (!agreeTerms) {
+      setTermsError(t('agreeTermsRequired') || 'Please agree to the Terms of Service and Privacy Policy')
+      return
+    }
     if (!email) {
       setError(t('fillRequired'))
       return
@@ -96,7 +99,7 @@ export default function RegisterClient() {
     setError('')
 
     if (!agreeTerms) {
-      setTermsError(t('agreeTermsRequired') || 'Please agree to the Terms of Service')
+      setTermsError(t('agreeTermsRequired') || 'Please agree to the Terms of Service and Privacy Policy')
       return
     }
 
@@ -195,7 +198,7 @@ export default function RegisterClient() {
           </div>
 
           {!codeVerified ? (
-            /* Step 1: Email verification */
+            /* Step 1: Email + Terms */
             <div className="flex flex-col gap-4">
               <div>
                 <label className="block text-xs font-medium text-text-secondary mb-1.5">
@@ -210,6 +213,20 @@ export default function RegisterClient() {
                   className="w-full px-3.5 py-2.5 rounded-md border border-[rgba(127,99,21,0.15)] text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors disabled:opacity-50"
                 />
               </div>
+
+              {/* Terms checkbox - always visible */}
+              <label className="flex items-start gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={agreeTerms}
+                  onChange={(e) => { setAgreeTerms(e.target.checked); setTermsError('') }}
+                  className="mt-0.5 w-4 h-4 rounded border-gray-300 text-accent focus:ring-accent"
+                />
+                <span className="text-xs text-text-secondary leading-relaxed">
+                  {t('agreeTerms')} <Link href={`/${locale}/terms`} className="text-accent hover:underline" target="_blank">{t('termsOfService')}</Link> {t('and')} <Link href={`/${locale}/privacy`} className="text-accent hover:underline" target="_blank">{t('privacyPolicy')}</Link>
+                </span>
+              </label>
+              {termsError && <p className="text-xs text-red-500">{termsError}</p>}
 
               {!codeSent ? (
                 <button
@@ -301,25 +318,9 @@ export default function RegisterClient() {
 
               {error && <p className="text-xs text-red-500 text-center">{error}</p>}
 
-              {/* Terms checkbox */}
-              <label className="flex items-start gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={agreeTerms}
-                  onChange={(e) => { setAgreeTerms(e.target.checked); setTermsError('') }}
-                  className="mt-0.5 w-4 h-4 rounded border-gray-300 text-accent focus:ring-accent"
-                />
-                <span className="text-xs text-text-secondary leading-relaxed">
-                  <Link href={`/${locale}/terms`} className="text-accent hover:underline" target="_blank">Terms of Service</Link>
-                  {' and '}
-                  <Link href={`/${locale}/privacy`} className="text-accent hover:underline" target="_blank">Privacy Policy</Link>
-                </span>
-              </label>
-              {termsError && <p className="text-xs text-red-500">{termsError}</p>}
-
               <button
                 onClick={handleRegister}
-                disabled={loading === 'register' || !agreeTerms}
+                disabled={loading === 'register'}
                 className="w-full px-4 py-2.5 rounded-md bg-[#1f1f1f] text-white text-sm font-medium hover:bg-[#333] transition-colors disabled:opacity-50"
               >
                 {loading === 'register' ? (
@@ -334,15 +335,16 @@ export default function RegisterClient() {
               </button>
             </div>
           )}
-        <p className="text-center text-xs text-text-secondary mt-6">
-            {t('continueAgree')}{' '}
-            <Link href={`/${locale}/terms`} className="text-accent hover:underline">Terms of Service</Link>{' '}
-            {t('and')}{' '}
-            <Link href={`/${locale}/privacy`} className="text-accent hover:underline">Privacy Policy</Link>
-          </p>
         </div>
 
-        <p className="text-center text-sm text-text-secondary mt-6">
+        <p className="text-center text-xs text-text-secondary mt-6">
+            {t('continueAgree')}{' '}
+            <Link href={`/${locale}/terms`} className="text-accent hover:underline">{t('termsOfService')}</Link>{' '}
+            {t('and')}{' '}
+            <Link href={`/${locale}/privacy`} className="text-accent hover:underline">{t('privacyPolicy')}</Link>
+          </p>
+
+        <p className="text-center text-sm text-text-secondary mt-4">
           {t('hasAccount')}{' '}
           <Link href={`/${locale}/login`} className="text-text-primary font-medium hover:underline">
             {t('login')}
