@@ -24,17 +24,21 @@ if [ -n "$SOURCE_FILES" ]; then
   echo ""
 
   echo "📝 检测到源语言文件新增了 key，需要翻译其他语言"
-  read -p "   是否立即自动翻译所有语言？(y/N) " ANSWER
-  case "$ANSWER" in
-    [yY]|[yY][eE][sS])
-      echo "   🌐 正在翻译所有语言..."
-      node scripts/translate.mjs --all 2>&1 | sed 's/^/     /'
-      echo "   ✅ 翻译完成"
-      # 重新暂存被翻译更新的文件
-      git add shared/messages/*.json 2>/dev/null || true
-      ;;
-    *)
-      echo "   💡 跳过翻译，后续可手动执行: node scripts/translate.mjs --all"
-      ;;
-  esac
+  if [ -t 0 ]; then
+    read -p "   是否立即自动翻译所有语言？(y/N) " ANSWER
+    case "$ANSWER" in
+      [yY]|[yY][eE][sS])
+        echo "   🌐 正在翻译所有语言..."
+        node scripts/translate.mjs --all 2>&1 | sed 's/^/     /'
+        echo "   ✅ 翻译完成"
+        # 重新暂存被翻译更新的文件
+        git add shared/messages/*.json 2>/dev/null || true
+        ;;
+      *)
+        echo "   💡 跳过翻译，后续可手动执行: node scripts/translate.mjs --all"
+        ;;
+    esac
+  else
+    echo "   💡 非交互环境，跳过翻译（后续可手动执行: node scripts/translate.mjs --all）"
+  fi
 fi
