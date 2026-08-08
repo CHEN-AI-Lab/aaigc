@@ -50,11 +50,11 @@ export default function FavoriteButton({ itemId, type = 'tool', initialFavorited
   }, [session, itemId, type, router, showToast, t])
 
   return (
-    <div className="relative inline-block">
+    <>
       {toast && (
         <div
           key={toast.key}
-          className="absolute -top-10 left-1/2 -translate-x-1/2 z-20 text-xs text-white bg-accent/90 rounded-sm px-4 py-2 shadow-md whitespace-nowrap"
+          className="fixed top-5 left-1/2 -translate-x-1/2 z-[100] text-xs text-white bg-accent/95 rounded-md px-4 py-2.5 shadow-lg whitespace-nowrap"
         >
           {toast.message}
         </div>
@@ -65,7 +65,7 @@ export default function FavoriteButton({ itemId, type = 'tool', initialFavorited
         className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-md border transition-all duration-200 ${
           isFavorited
             ? 'bg-accent/10 text-accent border-accent/20'
-            : 'bg-surface text-text-secondary/50 border-[rgba(127,99,21,0.15)] hover:text-accent hover:border-accent/30 hover:bg-accent/5'
+            : 'bg-surface text-text-secondary/50 border-border hover:text-accent hover:border-accent/30 hover:bg-accent/5'
         }`}
         title={t(isFavorited ? 'favorited' : 'favorite')}
       >
@@ -83,6 +83,6 @@ export default function FavoriteButton({ itemId, type = 'tool', initialFavorited
         </svg>
         <span>{t(isFavorited ? 'favorited' : 'favorite')}</span>
       </button>
-    </div>
+    </>
   )
 }
