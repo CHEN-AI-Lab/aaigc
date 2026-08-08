@@ -22,16 +22,17 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "请先登录" }, { status: 401 })
   }
 
-  const { toolId } = await req.json()
+  const { toolId, type } = await req.json()
   if (!toolId) {
     return NextResponse.json({ error: "缺少工具 ID" }, { status: 400 })
   }
 
   const userId = session.user.id
+  const itemType = type || "tool"
 
   // Toggle favorite
   const existing = await prisma.favorite.findUnique({
-    where: { userId_toolId: { userId, toolId } },
+    where: { userId_toolId_type: { userId, toolId, type: itemType } },
   })
 
   if (existing) {
@@ -39,6 +40,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ isFavorited: false })
   }
 
-  await prisma.favorite.create({ data: { userId, toolId } })
+  await prisma.favorite.create({ data: { userId, toolId, type: itemType } })
   return NextResponse.json({ isFavorited: true })
 }

@@ -20,7 +20,6 @@ model User {
   accounts Account[]
   sessions Session[]
   favorites Favorite[]
-  likes Like[]
 }
 
 model Account {
@@ -75,22 +74,11 @@ model Favorite {
   id        String   @id @default(cuid())
   userId    String
   toolId    String
+  type      String   @default("tool")
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, toolId])
+  @@unique([userId, toolId, type])
   @@index([userId])
-}
-
-model Like {
-  id        String   @id @default(cuid())
-  userId    String
-  toolId    String
-  createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, toolId])
-  @@index([toolId])
 }

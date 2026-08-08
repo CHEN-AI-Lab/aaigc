@@ -10,6 +10,7 @@ import type { FavoriteItem } from 'shared/types'
 export default function AccountClient() {
   const t = useTranslations('auth')
   const tt = useTranslations('tools')
+  const tp = useTranslations('products')
   const { data: session, status } = useSession()
   const router = useRouter()
   const [favorites, setFavorites] = useState<FavoriteItem[]>([])
@@ -129,10 +130,10 @@ export default function AccountClient() {
                   className="flex items-center justify-between bg-bg rounded-sm border border-[rgba(127,99,21,0.1)] px-4 py-3"
                 >
                   <span className="text-sm text-text-primary">
-                    {tt(`${f.toolId}.name`)}
+                    {f.type === 'product' ? tp(`${f.toolId}.name`) : tt(`${f.toolId}.name`)}
                   </span>
                   <Link
-                    href={`/tools/${f.toolId}`}
+                    href={f.type === 'product' ? `/products/${f.toolId}` : `/tools/${f.toolId}`}
                     className="text-xs text-accent hover:underline"
                   >
                     {t('view')}

@@ -1,44 +1,37 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { FavoriteItem, LikeStatus } from '../../shared/types/index'
-
-// Mock auth module
-vi.mock('../../apps/web/src/lib/auth-client', () => ({
-  useSession: vi.fn(),
-  SessionProvider: ({ children }: { children: React.ReactNode }) => children,
-}))
+import { describe, it, expect, vi } from 'vitest'
+import { FavoriteItem } from '../../shared/types/index'
 
 describe('FavoriteItem type', () => {
-  it('should accept valid favorite item', () => {
+  it('should accept valid favorite item with type', () => {
     const item: FavoriteItem = {
       id: 'abc123',
       toolId: 'json-formatter',
+      type: 'tool',
       createdAt: '2026-08-07T10:00:00Z',
     }
     expect(item.toolId).toBe('json-formatter')
+    expect(item.type).toBe('tool')
+  })
+
+  it('should support product type', () => {
+    const item: FavoriteItem = {
+      id: 'abc123',
+      toolId: 'cookmate',
+      type: 'product',
+      createdAt: '2026-08-07T10:00:00Z',
+    }
+    expect(item.type).toBe('product')
   })
 
   it('should not require toolName field', () => {
     const item: FavoriteItem = {
       id: 'abc123',
       toolId: 'base64',
+      type: 'tool',
       createdAt: '2026-08-07T10:00:00Z',
     }
     // @ts-expect-error - toolName should not exist
     expect(item.toolName).toBeUndefined()
-  })
-})
-
-describe('LikeStatus type', () => {
-  it('should accept valid like status', () => {
-    const status: LikeStatus = { liked: true, count: 5 }
-    expect(status.liked).toBe(true)
-    expect(status.count).toBe(5)
-  })
-
-  it('should accept zero count', () => {
-    const status: LikeStatus = { liked: false, count: 0 }
-    expect(status.liked).toBe(false)
-    expect(status.count).toBe(0)
   })
 })
 
@@ -54,7 +47,7 @@ describe('Favorites API', () => {
     const res = await fetch('/api/favorites', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ toolId: 'json-formatter' }),
+      body: JSON.stringify({ toolId: 'json-formatter', type: 'tool' }),
     })
 
     expect(res.status).toBe(401)
@@ -78,44 +71,40 @@ describe('Favorites API', () => {
     expect(res.status).toBe(400)
     vi.unstubAllGlobals()
   })
-})
 
-describe('Likes API', () => {
-  it('should return 401 when not authenticated', async () => {
-    const mockFetch = vi.fn().mockResolvedValue({
-      ok: false,
-      status: 401,
-      json: async () => ({ error: '请先登录' }),
-    })
-    vi.stubGlobal('fetch', mockFetch)
-
-    const res = await fetch('/api/likes', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ toolId: 'qrcode' }),
-    })
-
-    expect(res.status).toBe(401)
-    vi.unstubAllGlobals()
-  })
-
-  it('should return like status and count on success', async () => {
-    const mockResponse = { liked: true, count: 42 }
+  it('should toggle favorite on success', async () => {
     const mockFetch = vi.fn().mockResolvedValue({
       ok: true,
-      json: async () => mockResponse,
+      json: async () => ({ isFavorited: true }),
     })
     vi.stubGlobal('fetch', mockFetch)
 
-    const res = await fetch('/api/likes', {
+    const res = await fetch('/api/favorites', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ toolId: 'qrcode' }),
+      body: JSON.stringify({ toolId: 'qrcode', type: 'tool' }),
     })
     const data = await res.json()
 
-    expect(data.liked).toBe(true)
-    expect(data.count).toBe(42)
+    expect(data.isFavorited).toBe(true)
+    vi.unstubAllGlobals()
+  })
+
+  it('should pass type to API request', async () => {
+    const mockFetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ isFavorited: true }),
+    })
+    vi.stubGlobal('fetch', mockFetch)
+
+    await fetch('/api/favorites', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ toolId: 'cookmate', type: 'product' }),
+    })
+
+    const body = JSON.parse(mockFetch.mock.calls[0][1].body)
+    expect(body.type).toBe('product')
     vi.unstubAllGlobals()
   })
 })

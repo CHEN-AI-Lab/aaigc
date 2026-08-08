@@ -46,6 +46,7 @@ export interface Tool {
 export interface FavoriteItem {
   id: string
   toolId: string
+  type: string
   createdAt: string
 }
 

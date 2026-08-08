@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { products } from 'data/products'
+import FavoriteButton from '@/components/FavoriteButton'
 
 type Props = { params: Promise<{ locale: string; slug: string }> }
 
@@ -50,6 +51,10 @@ export default async function ProductDetailPage({ params }: Props) {
             </div>
             {desc && <p className="text-text-secondary leading-relaxed">{desc}</p>}
           </div>
+        </div>
+
+        <div className="mb-6">
+          <FavoriteButton itemId={slug} type="product" />
         </div>
 
         {features && features.length > 0 && (
