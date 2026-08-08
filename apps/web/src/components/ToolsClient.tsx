@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { tools, toolCategories } from 'data/tools'
+import FavoriteStar from './FavoriteStar'
 
 export default function ToolsClient() {
   const t = useTranslations('tools')
@@ -86,7 +87,10 @@ export default function ToolsClient() {
               {filtered.map((tool) => (
                 <Link key={tool.id} href={`/tools/${tool.id}`}
                   className="block bg-card rounded-sm p-4 shadow-warm-sm hover:shadow-warm transition-shadow border border-[rgba(127,99,21,0.05)]">
-                  <div className="text-xs font-mono text-accent mb-2">{tool.icon}</div>
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="text-xs font-mono text-accent">{tool.icon}</div>
+                    <FavoriteStar itemId={tool.id} type="tool" />
+                  </div>
                   <h3 className="text-sm font-medium text-text-primary">{t(`${tool.id}.name`)}</h3>
                 </Link>
               ))}
@@ -124,7 +128,10 @@ export default function ToolsClient() {
                 {catTools.map((tool) => (
                   <Link key={tool.id} href={`/tools/${tool.id}`}
                     className="block bg-card rounded-sm p-4 shadow-warm-sm hover:shadow-warm transition-shadow border border-[rgba(127,99,21,0.05)]">
-                    <div className="text-xs font-mono text-accent mb-2">{tool.icon}</div>
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="text-xs font-mono text-accent">{tool.icon}</div>
+                      <FavoriteStar itemId={tool.id} type="tool" />
+                    </div>
                     <h3 className="text-sm font-medium text-text-primary">{t(`${tool.id}.name`)}</h3>
                     <p className="text-xs text-text-secondary mt-1 line-clamp-2">
                       {t(`${tool.id}.description`)}
