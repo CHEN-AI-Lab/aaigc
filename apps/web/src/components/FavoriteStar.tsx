@@ -53,11 +53,11 @@ export default function FavoriteStar({ itemId, type = 'tool' }: Props) {
   }, [session, itemId, type, router, showToast, t])
 
   return (
-    <div className="relative inline-block">
+    <>
       {toast && (
         <div
           key={toast.key}
-          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-50 text-xs text-white bg-accent/95 rounded-md px-4 py-2.5 shadow-lg whitespace-nowrap"
+          className="fixed top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[100] text-xs text-white bg-accent/95 rounded-md px-4 py-2.5 shadow-lg whitespace-nowrap"
         >
           {toast.message}
         </div>
@@ -85,6 +85,6 @@ export default function FavoriteStar({ itemId, type = 'tool' }: Props) {
           <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
         </svg>
       </button>
-    </div>
+    </>
   )
 }
