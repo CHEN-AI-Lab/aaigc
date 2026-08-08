@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from 'next-intl'
 
 export default function IpLookup() {
   const t = useTranslations('tools')
+  const err = useTranslations('errors')
   const locale = useLocale()
   const [data, setData] = useState<{ ip: string; country: string; region: string; city: string; isp: string; usage: string } | null>(null)
   const [loading, setLoading] = useState(true)
@@ -15,7 +16,7 @@ export default function IpLookup() {
       .then(r => r.json())
       .then(d => {
         if (d.ip) setData(d)
-        else setError(d.error || t('conversionFailed'))
+        else setError(d.error ? err(d.error) : t('conversionFailed'))
         setLoading(false)
       })
       .catch(() => { setError(t('conversionFailed')); setLoading(false) })

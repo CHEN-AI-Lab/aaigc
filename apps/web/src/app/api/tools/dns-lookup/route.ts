@@ -28,11 +28,11 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const name = searchParams.get('name')
   const type = searchParams.get('type') || 'A'
-  if (!name) return NextResponse.json({ error: 'Missing domain name' }, { status: 400 })
+  if (!name) return NextResponse.json({ error: "missingDomain" }, { status: 400 })
 
   // Strip protocol if user pastes a full URL
   const clean = name.replace(/^https?:\/\//, '').split('/')[0].split('?')[0]
-  if (!clean.includes('.')) return NextResponse.json({ error: 'Invalid domain' }, { status: 400 })
+  if (!clean.includes('.')) return NextResponse.json({ error: "invalidDomain" }, { status: 400 })
 
   const answer = await queryDns(clean, type)
   if (answer) return NextResponse.json({ Answer: answer })
@@ -45,5 +45,5 @@ export async function GET(request: NextRequest) {
     const fb = await fallback.json()
     if (fb.Authority?.length) return NextResponse.json({ Answer: fb.Authority, note: `No ${type} records — showing SOA/NS instead` })
   } catch {}
-  return NextResponse.json({ error: `No ${type} records found for ${clean}` }, { status: 404 })
+  return NextResponse.json({ error: "dnsNoRecords" }, { status: 404 })
 }

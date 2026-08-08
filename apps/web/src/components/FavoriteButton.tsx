@@ -26,7 +26,7 @@ export default function FavoriteButton({ itemId, type = 'tool', initialFavorited
 
   const handleClick = useCallback(async () => {
     if (!session) {
-      showToast('请先登录后收藏')
+      showToast(t('loginRequired'))
       setTimeout(() => router.push('/login'), 1500)
       return
     }
@@ -47,7 +47,7 @@ export default function FavoriteButton({ itemId, type = 'tool', initialFavorited
     } finally {
       setLoading(false)
     }
-  }, [session, itemId, type, router, showToast])
+  }, [session, itemId, type, router, showToast, t])
 
   return (
     <div className="relative inline-block">

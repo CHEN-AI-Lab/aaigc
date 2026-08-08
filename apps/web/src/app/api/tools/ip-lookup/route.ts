@@ -143,6 +143,6 @@ export async function GET(request: NextRequest) {
     const data = await res.json()
     return NextResponse.json({ ip: data.ip })
   } catch {
-    return NextResponse.json({ error: 'Failed to look up IP' }, { status: 500 })
+    return NextResponse.json({ error: "ipLookupFailed" }, { status: 500 })
   }
 }

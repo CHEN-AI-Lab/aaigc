@@ -8,6 +8,7 @@ import Link from 'next/link'
 
 export default function RegisterClient() {
   const t = useTranslations('auth')
+  const err = useTranslations('errors')
   const locale = useLocale()
   const router = useRouter()
 
@@ -56,7 +57,7 @@ export default function RegisterClient() {
       })
       const data = await res.json()
       if (!res.ok) {
-        setError(data.error || t('sendFailed'))
+        setError(data.error ? err(data.error) : t('sendFailed'))
         return
       }
       setCodeSent(true)
@@ -84,7 +85,7 @@ export default function RegisterClient() {
       })
       const data = await res.json()
       if (!res.ok) {
-        setError(data.error || t('verifyFailed'))
+        setError(data.error ? err(data.error) : t('verifyFailed'))
         return
       }
       setCodeVerified(true)
@@ -128,7 +129,7 @@ export default function RegisterClient() {
 
       const data = await res.json()
       if (!res.ok) {
-        setError(data.error || t('registerFailed'))
+        setError(data.error ? err(data.error) : t('registerFailed'))
         return
       }
 

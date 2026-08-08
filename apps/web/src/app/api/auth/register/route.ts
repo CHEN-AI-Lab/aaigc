@@ -8,22 +8,22 @@ export async function POST(req: Request) {
 
     // Validate email
     if (!email || !isValidEmail(email)) {
-      return NextResponse.json({ error: "请输入有效的邮箱地址" }, { status: 400 })
+      return NextResponse.json({ error: "invalidEmail" }, { status: 400 })
     }
 
     // Validate password
     if (!password || password.length < 8) {
-      return NextResponse.json({ error: "密码至少 8 位" }, { status: 400 })
+      return NextResponse.json({ error: "passwordTooShort" }, { status: 400 })
     }
 
     // Validate name
     if (!name || name.trim().length === 0) {
-      return NextResponse.json({ error: "请输入昵称" }, { status: 400 })
+      return NextResponse.json({ error: "nameRequired" }, { status: 400 })
     }
 
     // Verify code
     if (!code) {
-      return NextResponse.json({ error: "请先验证邮箱" }, { status: 400 })
+      return NextResponse.json({ error: "verifyEmailFirst" }, { status: 400 })
     }
 
     const verification = await prisma.verificationCode.findFirst({
@@ -37,13 +37,13 @@ export async function POST(req: Request) {
     })
 
     if (!verification) {
-      return NextResponse.json({ error: "验证码错误或已过期" }, { status: 401 })
+      return NextResponse.json({ error: "verifyFailed" }, { status: 401 })
     }
 
     // Check email not already registered
     const existing = await prisma.user.findUnique({ where: { email } })
     if (existing) {
-      return NextResponse.json({ error: "该邮箱已注册" }, { status: 409 })
+      return NextResponse.json({ error: "emailRegistered" }, { status: 409 })
     }
 
     // Create user
@@ -69,6 +69,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error("Register error:", error)
-    return NextResponse.json({ error: "注册失败" }, { status: 500 })
+    return NextResponse.json({ error: "registerFailed" }, { status: 500 })
   }
 }

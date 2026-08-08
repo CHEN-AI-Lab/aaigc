@@ -8,6 +8,7 @@ const TYPE_NAMES: Record<number, string> = { 1: 'A', 2: 'NS', 5: 'CNAME', 6: 'SO
 
 export default function DnsLookup() {
   const t = useTranslations('tools')
+  const err = useTranslations('errors')
   const [domain, setDomain] = useState('')
   const [type, setType] = useState('A')
   const [result, setResult] = useState<any[] | null>(null)
@@ -26,7 +27,7 @@ export default function DnsLookup() {
         if (d.note) setNote(t('dnsNote', { type }))
         else setNote('')
       }
-      else setError(d.error || t('noResultsFound'))
+      else setError(d.error ? err(d.error) : t('noResultsFound'))
     } catch { setError(t('conversionFailed')) }
     setLoading(false)
   }

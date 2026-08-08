@@ -8,14 +8,14 @@ export async function POST(req: Request) {
     const { email, code } = await req.json()
 
     if (!email || !code) {
-      return NextResponse.json({ error: "参数不完整" }, { status: 400 })
+      return NextResponse.json({ error: "invalidParams" }, { status: 400 })
     }
 
     // Rate limit verification attempts
     const ip = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "unknown"
     const rateCheck = checkRateLimit(`verify-attempt:${ip}`, 5, 60_000)
     if (!rateCheck.allowed) {
-      return NextResponse.json({ error: "验证次数过多，请稍后再试" }, { status: 429 })
+      return NextResponse.json({ error: "tooManyAttempts" }, { status: 429 })
     }
 
     // Find the code
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     })
 
     if (!record) {
-      return NextResponse.json({ error: "验证码错误或已过期" }, { status: 401 })
+      return NextResponse.json({ error: "verifyFailed" }, { status: 401 })
     }
 
     // Mark as used
@@ -42,6 +42,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true, verified: true })
   } catch (error) {
     console.error("Verify email error:", error)
-    return NextResponse.json({ error: "验证失败" }, { status: 500 })
+    return NextResponse.json({ error: "verifyError" }, { status: 500 })
   }
 }

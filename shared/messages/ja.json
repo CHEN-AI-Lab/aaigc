@@ -1137,7 +1137,8 @@
     "myFavorites": "お気に入り",
     "noFavorites": "お気に入りはまだありません",
     "favoritesCount": "お気に入り",
-    "markdownParseError": "Markdownの解析に失敗しました"
+    "markdownParseError": "Markdownの解析に失敗しました",
+    "loginRequired": "ログインしてお気に入りに追加してください"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",
@@ -1166,7 +1167,26 @@
     "notFound": "ページが見つかりません",
     "notFoundDesc": "お探しのページは存在しません。",
     "backHome": "ホームに戻る",
-    "requestFailed": "リクエストに失敗しました。後でもう一度お試しください。"
+    "requestFailed": "リクエストに失敗しました。後でもう一度お試しください。",
+    "invalidParams": "パラメータが不完全です",
+    "tooManyAttempts": "試行回数が多すぎます。しばらくしてから再試行してください",
+    "verifyFailed": "認証コードが間違っているか期限切れです",
+    "verifyError": "認証に失敗しました",
+    "invalidEmail": "有効なメールアドレスを入力してください",
+    "realEmail": "実際のメールアドレスを使用してください",
+    "rateLimited": "リクエストが多すぎます。しばらくしてから再試行してください",
+    "emailRegistered": "このメールアドレスは既に登録されています",
+    "sendFailed": "認証コードの送信に失敗しました",
+    "passwordTooShort": "パスワードは8文字以上必要です",
+    "nameRequired": "表示名を入力してください",
+    "verifyEmailFirst": "先にメールを認証してください",
+    "registerFailed": "登録に失敗しました",
+    "loginRequired": "ログインしてください",
+    "missingToolId": "ツールIDが不足しています",
+    "missingDomain": "ドメイン名が不足しています",
+    "invalidDomain": "無効なドメイン名です",
+    "dnsNoRecords": "レコードが見つかりません",
+    "ipLookupFailed": "IPアドレスの検索に失敗しました"
   },
   "footer": {
     "tagline": "AI 駆動ツールとアプリケーション",

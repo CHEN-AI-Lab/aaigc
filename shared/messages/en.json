@@ -1137,7 +1137,8 @@
     "myFavorites": "My Favorites",
     "noFavorites": "No favorites yet",
     "favoritesCount": "Favorites",
-    "markdownParseError": "Failed to parse Markdown"
+    "markdownParseError": "Failed to parse Markdown",
+    "loginRequired": "Please log in to save favorites"
   },
   "ui": {
     "aboutLink": "About AAIGC →",
@@ -1166,7 +1167,26 @@
     "notFound": "Page not found",
     "notFoundDesc": "The page you're looking for doesn't exist.",
     "backHome": "Back to Home",
-    "requestFailed": "Request failed, please try again later"
+    "requestFailed": "Request failed, please try again later",
+    "invalidParams": "Invalid parameters",
+    "tooManyAttempts": "Too many attempts, please try again later",
+    "verifyFailed": "Invalid or expired code",
+    "verifyError": "Verification failed",
+    "invalidEmail": "Please enter a valid email address",
+    "realEmail": "Please use a real email address",
+    "rateLimited": "Too many requests, please try again later",
+    "emailRegistered": "This email is already registered",
+    "sendFailed": "Failed to send verification code",
+    "passwordTooShort": "Password must be at least 8 characters",
+    "nameRequired": "Please enter a display name",
+    "verifyEmailFirst": "Please verify your email first",
+    "registerFailed": "Registration failed",
+    "loginRequired": "Please log in first",
+    "missingToolId": "Missing tool ID",
+    "missingDomain": "Missing domain name",
+    "invalidDomain": "Invalid domain name",
+    "dnsNoRecords": "No records found",
+    "ipLookupFailed": "Failed to look up IP address"
   },
   "footer": {
     "tagline": "AI-powered tools and applications",

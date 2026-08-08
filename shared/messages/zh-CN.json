@@ -1137,7 +1137,8 @@
     "myFavorites": "我的收藏",
     "noFavorites": "暂无收藏",
     "favoritesCount": "收藏",
-    "markdownParseError": "Markdown 解析失败"
+    "markdownParseError": "Markdown 解析失败",
+    "loginRequired": "请先登录后收藏"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",
@@ -1166,7 +1167,26 @@
     "notFound": "页面未找到",
     "notFoundDesc": "您访问的页面不存在。",
     "backHome": "返回首页",
-    "requestFailed": "请求失败，请稍后重试"
+    "requestFailed": "请求失败，请稍后重试",
+    "invalidParams": "参数不完整",
+    "tooManyAttempts": "验证次数过多，请稍后再试",
+    "verifyFailed": "验证码错误或已过期",
+    "verifyError": "验证失败",
+    "invalidEmail": "请输入有效的邮箱地址",
+    "realEmail": "请使用真实邮箱地址",
+    "rateLimited": "请求过于频繁，请稍后再试",
+    "emailRegistered": "该邮箱已注册",
+    "sendFailed": "验证码发送失败",
+    "passwordTooShort": "密码至少 8 位",
+    "nameRequired": "请输入昵称",
+    "verifyEmailFirst": "请先验证邮箱",
+    "registerFailed": "注册失败",
+    "loginRequired": "请先登录",
+    "missingToolId": "缺少工具 ID",
+    "missingDomain": "缺少域名",
+    "invalidDomain": "无效的域名",
+    "dnsNoRecords": "未找到记录",
+    "ipLookupFailed": "IP 查询失败"
   },
   "footer": {
     "tagline": "AI 驱动工具与应用的集合",

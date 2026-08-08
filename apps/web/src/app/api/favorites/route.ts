@@ -5,7 +5,7 @@ import { auth } from "@/lib/auth"
 export async function GET() {
   const session = await auth()
   if (!session?.user?.id) {
-    return NextResponse.json({ error: "请先登录" }, { status: 401 })
+    return NextResponse.json({ error: "loginRequired" }, { status: 401 })
   }
 
   const favorites = await prisma.favorite.findMany({
@@ -19,12 +19,12 @@ export async function GET() {
 export async function POST(req: Request) {
   const session = await auth()
   if (!session?.user?.id) {
-    return NextResponse.json({ error: "请先登录" }, { status: 401 })
+    return NextResponse.json({ error: "loginRequired" }, { status: 401 })
   }
 
   const { toolId, type } = await req.json()
   if (!toolId) {
-    return NextResponse.json({ error: "缺少工具 ID" }, { status: 400 })
+    return NextResponse.json({ error: "missingToolId" }, { status: 400 })
   }
 
   const userId = session.user.id

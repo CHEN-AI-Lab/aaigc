@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from 'react'
 import { useSession } from '@/lib/auth-client'
+import { useTranslations } from 'next-intl'
 import { useRouter } from '@/i18n/navigation'
 
 type Props = {
@@ -10,6 +11,7 @@ type Props = {
 }
 
 export default function FavoriteStar({ itemId, type = 'tool' }: Props) {
+  const t = useTranslations('tools')
   const { data: session } = useSession()
   const router = useRouter()
   const [isFavorited, setIsFavorited] = useState(false)
@@ -27,7 +29,7 @@ export default function FavoriteStar({ itemId, type = 'tool' }: Props) {
     e.stopPropagation()
 
     if (!session) {
-      showToast('请先登录后收藏')
+      showToast(t('loginRequired'))
       setTimeout(() => router.push('/login'), 1500)
       return
     }
@@ -48,7 +50,7 @@ export default function FavoriteStar({ itemId, type = 'tool' }: Props) {
     } finally {
       setLoading(false)
     }
-  }, [session, itemId, type, router, showToast])
+  }, [session, itemId, type, router, showToast, t])
 
   return (
     <div className="relative inline-block">

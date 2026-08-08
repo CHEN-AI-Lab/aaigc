@@ -1136,7 +1136,8 @@
     "myFavorites": "我的收藏",
     "noFavorites": "暫無收藏",
     "favoritesCount": "收藏",
-    "markdownParseError": "Markdown 解析失敗"
+    "markdownParseError": "Markdown 解析失敗",
+    "loginRequired": "請先登入後收藏"
   },
   "ui": {
     "toolLinks": {
@@ -1165,7 +1166,26 @@
     "notFound": "頁面未找到",
     "notFoundDesc": "您訪問的頁面不存在。",
     "backHome": "返回首頁",
-    "requestFailed": "請求失敗，請稍後重試"
+    "requestFailed": "請求失敗，請稍後重試",
+    "invalidParams": "參數不完整",
+    "tooManyAttempts": "驗證次數過多，請稍後再試",
+    "verifyFailed": "驗證碼錯誤或已過期",
+    "verifyError": "驗證失敗",
+    "invalidEmail": "請輸入有效的郵箱地址",
+    "realEmail": "請使用真實郵箱地址",
+    "rateLimited": "請求過於頻繁，請稍後再試",
+    "emailRegistered": "該郵箱已註冊",
+    "sendFailed": "驗證碼發送失敗",
+    "passwordTooShort": "密碼至少 8 位",
+    "nameRequired": "請輸入暱稱",
+    "verifyEmailFirst": "請先驗證郵箱",
+    "registerFailed": "註冊失敗",
+    "loginRequired": "請先登入",
+    "missingToolId": "缺少工具 ID",
+    "missingDomain": "缺少域名",
+    "invalidDomain": "無效的域名",
+    "dnsNoRecords": "未找到記錄",
+    "ipLookupFailed": "IP 查詢失敗"
   },
   "footer": {
     "tagline": "AI 驅動工具與應用程式的集合",
