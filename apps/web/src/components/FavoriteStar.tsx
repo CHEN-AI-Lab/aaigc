@@ -14,6 +14,12 @@ export default function FavoriteStar({ itemId, type = 'tool' }: Props) {
   const router = useRouter()
   const [isFavorited, setIsFavorited] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [toast, setToast] = useState<{ message: string; key: number } | null>(null)
+
+  const showToast = useCallback((message: string) => {
+    setToast({ message, key: Date.now() })
+    setTimeout(() => setToast(null), 2000)
+  }, [])
 
   const handleClick = useCallback(async (e: React.MouseEvent) => {
     // 阻止冒泡，避免触发卡片 Link 跳转
@@ -21,7 +27,8 @@ export default function FavoriteStar({ itemId, type = 'tool' }: Props) {
     e.stopPropagation()
 
     if (!session) {
-      router.push('/login')
+      showToast('请先登录后收藏')
+      setTimeout(() => router.push('/login'), 1500)
       return
     }
 
@@ -41,31 +48,41 @@ export default function FavoriteStar({ itemId, type = 'tool' }: Props) {
     } finally {
       setLoading(false)
     }
-  }, [session, itemId, type, router])
+  }, [session, itemId, type, router, showToast])
 
   return (
-    <button
-      onClick={handleClick}
-      disabled={loading}
-      aria-label="favorite"
-      className={`p-1.5 rounded-sm transition-colors ${
-        isFavorited
-          ? 'text-accent'
-          : 'text-text-secondary/40 hover:text-accent'
-      }`}
-    >
-      {/* Star SVG */}
-      <svg
-        className="w-4 h-4"
-        viewBox="0 0 24 24"
-        fill={isFavorited ? 'currentColor' : 'none'}
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+    <div className="relative inline-block">
+      {toast && (
+        <div
+          key={toast.key}
+          className="absolute -top-9 left-1/2 -translate-x-1/2 z-20 text-xs text-white bg-accent/90 rounded-sm px-3 py-1.5 shadow-md whitespace-nowrap"
+        >
+          {toast.message}
+        </div>
+      )}
+      <button
+        onClick={handleClick}
+        disabled={loading}
+        aria-label="favorite"
+        className={`p-1.5 rounded-sm transition-colors ${
+          isFavorited
+            ? 'text-accent'
+            : 'text-text-secondary/40 hover:text-accent'
+        }`}
       >
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-      </svg>
-    </button>
+        {/* Star SVG */}
+        <svg
+          className="w-4 h-4"
+          viewBox="0 0 24 24"
+          fill={isFavorited ? 'currentColor' : 'none'}
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+      </button>
+    </div>
   )
 }
