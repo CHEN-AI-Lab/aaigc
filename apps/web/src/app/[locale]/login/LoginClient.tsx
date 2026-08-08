@@ -65,7 +65,7 @@ export default function LoginClient() {
     <div className="min-h-[calc(100vh-200px)] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-sm">
         {/* Card */}
-        <div className="bg-white rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.06)] border border-[rgba(127,99,21,0.08)] p-8">
+        <div className="bg-card rounded-xl shadow-sm border border-border p-8">
           {/* Logo */}
           <div className="flex justify-center mb-6">
             <img src="/icon.svg" alt="AAIGC" className="w-10 h-10" />
@@ -87,7 +87,7 @@ export default function LoginClient() {
             <button
               onClick={() => handleOAuth('google')}
               disabled={!!loading || !!oauthProvider}
-              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-md border border-[rgba(127,99,21,0.15)] text-sm text-text-primary hover:bg-[rgba(127,99,21,0.04)] transition-colors disabled:opacity-50"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-md border border-border text-sm text-text-primary hover:bg-hover transition-colors disabled:opacity-50"
             >
               <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/>
@@ -100,7 +100,7 @@ export default function LoginClient() {
             <button
               onClick={() => handleOAuth('github')}
               disabled={!!loading || !!oauthProvider}
-              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-md border border-[rgba(127,99,21,0.15)] text-sm text-text-primary hover:bg-[rgba(127,99,21,0.04)] transition-colors disabled:opacity-50"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-md border border-border text-sm text-text-primary hover:bg-hover transition-colors disabled:opacity-50"
             >
               <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
@@ -111,9 +111,9 @@ export default function LoginClient() {
 
           {/* Divider */}
           <div className="flex items-center gap-3 mb-6">
-            <div className="flex-1 h-px bg-[rgba(127,99,21,0.1)]" />
+            <div className="flex-1 h-px bg-border" />
             <span className="text-xs text-text-secondary">{t('or')}</span>
-            <div className="flex-1 h-px bg-[rgba(127,99,21,0.1)]" />
+            <div className="flex-1 h-px bg-border" />
           </div>
 
           {/* Email + Password form */}
@@ -127,7 +127,7 @@ export default function LoginClient() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="name@example.com"
-                className="w-full px-3.5 py-2.5 rounded-md border border-[rgba(127,99,21,0.15)] text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors"
+                className="w-full px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors"
               />
             </div>
             <div>
@@ -142,18 +142,18 @@ export default function LoginClient() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full px-3.5 py-2.5 rounded-md border border-[rgba(127,99,21,0.15)] text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors"
+                className="w-full px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors"
               />
             </div>
 
             {error && (
-              <p className="text-xs text-red-500 text-center">{error}</p>
+              <p className="text-xs text-error text-center">{error}</p>
             )}
 
             <button
               onClick={handlePasswordLogin}
               disabled={loading === 'password' || !!oauthProvider}
-              className="w-full px-4 py-2.5 rounded-md bg-[#1f1f1f] text-white text-sm font-medium hover:bg-[#333] transition-colors disabled:opacity-50"
+              className="w-full px-4 py-2.5 rounded-md bg-accent text-white text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
             >
               {loading === 'password' ? (
                 <span className="inline-flex items-center gap-1.5">
