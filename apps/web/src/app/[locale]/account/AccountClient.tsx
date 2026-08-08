@@ -52,7 +52,7 @@ export default function AccountClient() {
           <p className="text-text-secondary text-sm mb-4">{t('notLoggedIn')}</p>
           <Link
             href="/login"
-            className="inline-block px-4 py-2 rounded-sm bg-[#1f1f1f] text-white text-sm"
+            className="inline-block px-4 py-2 rounded-sm bg-accent text-white text-sm"
           >
             {t('login')}
           </Link>

@@ -1135,7 +1135,8 @@
     "liked": "已點讚",
     "myFavorites": "我的收藏",
     "noFavorites": "暫無收藏",
-    "favoritesCount": "收藏"
+    "favoritesCount": "收藏",
+    "markdownParseError": "Markdown 解析失敗"
   },
   "ui": {
     "toolLinks": {

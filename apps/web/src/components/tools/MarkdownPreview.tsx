@@ -115,9 +115,9 @@ export default function MarkdownPreview() {
         .processSync(input)
       return String(file)
     } catch {
-      return '<p>Failed to parse Markdown</p>'
+      return `<p>${t('markdownParseError')}</p>`
     }
-  }, [input])
+  }, [input, t])
 
   // Strip Markdown to plain text
   const plainText = useMemo(() => {
@@ -222,13 +222,13 @@ export default function MarkdownPreview() {
             value={input}
             onChange={e => setInput(e.target.value)}
             placeholder={t('enterMarkdown')}
-            className="w-full flex-1 min-h-[500px] p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30"
+            className="w-full flex-1 min-h-[500px] p-3 bg-surface border border-border rounded-sm text-sm font-mono text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30"
           />
         </div>
 
         {/* Preview */}
         <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-1 border-b border-[rgba(127,99,21,0.15)]">
+          <div className="flex items-center gap-1 border-b border-border">
             {tabs.map(tab => (
               <button
                 key={tab.key}
@@ -244,7 +244,7 @@ export default function MarkdownPreview() {
             ))}
           </div>
 
-          <div className={`flex-1 min-h-[500px] overflow-y-auto p-3 border border-[rgba(127,99,21,0.15)] rounded-sm text-sm ${isDark ? 'bg-[#0d1117] text-[#e0e0e0]' : 'bg-card text-text-primary'}`}>
+          <div className={`flex-1 min-h-[500px] overflow-y-auto p-3 border border-border rounded-sm text-sm ${isDark ? 'bg-[#0d1117] text-[#e0e0e0]' : 'bg-card text-text-primary'}`}>
             {isDark && (
               <style>{`
 .markdown-preview-dark h1, .markdown-preview-dark h2, .markdown-preview-dark h3,
@@ -288,7 +288,7 @@ export default function MarkdownPreview() {
                   />
                 </div>
 
-                <div className="border-t border-[rgba(127,99,21,0.15)] pt-3">
+                <div className="border-t border-border pt-3">
                   <span className="text-xs font-medium text-text-secondary block mb-2">{t('structure')}</span>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     <StatCard label={t('headings')} value={stats.headings.toLocaleString()} />

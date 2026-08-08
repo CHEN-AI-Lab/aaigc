@@ -1136,7 +1136,8 @@
     "liked": "Liked",
     "myFavorites": "My Favorites",
     "noFavorites": "No favorites yet",
-    "favoritesCount": "Favorites"
+    "favoritesCount": "Favorites",
+    "markdownParseError": "Failed to parse Markdown"
   },
   "ui": {
     "aboutLink": "About AAIGC →",

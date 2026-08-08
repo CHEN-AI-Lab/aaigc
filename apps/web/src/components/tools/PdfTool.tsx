@@ -119,13 +119,13 @@ export default function PdfTool() {
         <button
           onClick={() => { setMode('merge'); setFiles([]); setError('') }}
           className={`px-5 py-2 text-sm rounded-lg transition-colors ${
-            mode === 'merge' ? 'bg-accent text-white' : 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.15)]'
+            mode === 'merge' ? 'bg-accent text-white' : 'bg-surface text-text-secondary border border-border'
           }`}
         >{t('pdfMerge')}</button>
         <button
           onClick={() => { setMode('split'); setFiles([]); setError('') }}
           className={`px-5 py-2 text-sm rounded-lg transition-colors ${
-            mode === 'split' ? 'bg-accent text-white' : 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.15)]'
+            mode === 'split' ? 'bg-accent text-white' : 'bg-surface text-text-secondary border border-border'
           }`}
         >{t('pdfSplit')}</button>
       </div>
@@ -164,7 +164,7 @@ export default function PdfTool() {
               <input
                 type="number" min="1" max="100" value={pagesPerGroup}
                 onChange={e => setPagesPerGroup(Math.max(1, parseInt(e.target.value) || 1))}
-                className="w-16 p-1.5 text-center bg-surface border border-[rgba(127,99,21,0.15)] rounded-lg text-sm text-text-primary"
+                className="w-16 p-1.5 text-center bg-surface border border-border rounded-lg text-sm text-text-primary"
               />
               <span className="text-text-secondary">{t('pdfPages')}</span>
             </div>
@@ -202,7 +202,7 @@ export default function PdfTool() {
         )}
         {files.length > 0 && (
           <button onClick={() => { setFiles([]); setError('') }}
-            className="px-6 py-3 bg-surface text-text-primary text-sm font-medium rounded-lg border border-[rgba(127,99,21,0.15)] hover:bg-accent/5 transition-colors"
+            className="px-6 py-3 bg-surface text-text-primary text-sm font-medium rounded-lg border border-border hover:bg-accent/5 transition-colors"
           >{t('pdfClear')}</button>
         )}
       </div>

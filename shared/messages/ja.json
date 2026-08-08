@@ -1136,7 +1136,8 @@
     "liked": "いいね済み",
     "myFavorites": "お気に入り",
     "noFavorites": "お気に入りはまだありません",
-    "favoritesCount": "お気に入り"
+    "favoritesCount": "お気に入り",
+    "markdownParseError": "Markdownの解析に失敗しました"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

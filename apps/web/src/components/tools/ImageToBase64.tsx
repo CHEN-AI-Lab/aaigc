@@ -44,11 +44,11 @@ export default function ImageToBase64() {
       {base64 && (
         <div className="space-y-3">
           <div className="flex items-center gap-4">
-            <img src={base64} alt="Preview" className="w-16 h-16 object-cover rounded-sm border border-[rgba(127,99,21,0.15)]" />
+            <img src={base64} alt="Preview" className="w-16 h-16 object-cover rounded-sm border border-border" />
             <span className="text-xs text-text-secondary">{fileName}</span>
           </div>
           <div className="relative">
-            <textarea readOnly value={base64} className="w-full h-36 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary resize-none text-[11px]" />
+            <textarea readOnly value={base64} className="w-full h-36 p-3 bg-surface border border-border rounded-sm text-sm font-mono text-text-primary resize-none text-[11px]" />
             <button onClick={handleCopy}
               className={`text-xs px-2 py-1 rounded-sm transition-all duration-200 min-w-[4.5rem] text-center absolute top-2 right-6 ${
                 copied

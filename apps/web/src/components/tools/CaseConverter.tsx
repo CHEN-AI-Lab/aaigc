@@ -41,7 +41,7 @@ export default function CaseConverter() {
 
   return (
     <div className="mt-6 space-y-4">
-      <textarea value={input} onChange={e => setInput(e.target.value)} placeholder={t('enterText')} className="w-full h-28 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
+      <textarea value={input} onChange={e => setInput(e.target.value)} placeholder={t('enterText')} className="w-full h-28 p-3 bg-surface border border-border rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
         {CASES.map((c) => (
           <button
@@ -50,7 +50,7 @@ export default function CaseConverter() {
             className={`p-3 rounded-sm text-center transition-all border ${
               active === c.id
                 ? 'bg-accent text-white border-accent'
-                : 'bg-surface text-text-primary border-[rgba(127,99,21,0.15)] hover:border-accent/30'
+                : 'bg-surface text-text-primary border-border hover:border-accent/30'
             }`}
           >
             <div className="text-xs font-semibold">{c.label}</div>
@@ -63,7 +63,7 @@ export default function CaseConverter() {
       </div>
       {output && (
         <div className="relative">
-          <textarea readOnly value={output} className="w-full h-28 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary resize-none" />
+          <textarea readOnly value={output} className="w-full h-28 p-3 bg-surface border border-border rounded-sm text-sm text-text-primary resize-none" />
           <button onClick={handleCopy}
             className={`text-xs px-2 py-1 rounded-sm transition-all duration-200 min-w-[4.5rem] text-center absolute top-2 right-6 ${
               copied

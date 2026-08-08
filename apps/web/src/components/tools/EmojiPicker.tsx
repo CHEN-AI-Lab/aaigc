@@ -140,7 +140,7 @@ export default function EmojiPicker() {
       <div className="flex gap-2 flex-wrap">
         {Object.keys(EMOJIS).map(c => (
           <button key={c} onClick={() => setCat(c)}
-            className={`px-3 py-1.5 text-xs rounded-sm transition-colors ${cat === c ? 'bg-accent text-white' : 'bg-surface text-text-primary border border-[rgba(127,99,21,0.15)]'}`}>{t('emoji' + c)}</button>
+            className={`px-3 py-1.5 text-xs rounded-sm transition-colors ${cat === c ? 'bg-accent text-white' : 'bg-surface text-text-primary border border-border'}`}>{t('emoji' + c)}</button>
         ))}
       </div>
       <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 gap-1">

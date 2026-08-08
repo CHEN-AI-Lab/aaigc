@@ -67,7 +67,7 @@ export default function JwtDecoder() {
 
   return (
     <div className="mt-6 space-y-4">
-      <textarea value={input} onChange={e => setInput(e.target.value)} placeholder="eyJhbG...NiIs..." className="w-full h-24 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
+      <textarea value={input} onChange={e => setInput(e.target.value)} placeholder="eyJhbG...NiIs..." className="w-full h-24 p-3 bg-surface border border-border rounded-sm text-sm font-mono text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
       <button onClick={decode} className="px-6 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('decode')}</button>
       {error && <p className="text-red-500 text-sm">{error}</p>}
       {header && (
@@ -79,7 +79,7 @@ export default function JwtDecoder() {
                 ref={headerRef}
                 readOnly
                 value={header}
-                className="w-full min-h-[120px] max-h-[40vh] p-3 pr-16 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary resize-none overflow-y-auto"
+                className="w-full min-h-[120px] max-h-[40vh] p-3 pr-16 bg-surface border border-border rounded-sm text-sm font-mono text-text-primary resize-none overflow-y-auto"
               />
               <button
                 onClick={handleCopyHeader}
@@ -100,7 +100,7 @@ export default function JwtDecoder() {
                 ref={payloadRef}
                 readOnly
                 value={payload}
-                className="w-full min-h-[180px] max-h-[60vh] p-3 pr-16 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary resize-none overflow-y-auto"
+                className="w-full min-h-[180px] max-h-[60vh] p-3 pr-16 bg-surface border border-border rounded-sm text-sm font-mono text-text-primary resize-none overflow-y-auto"
               />
               <button
                 onClick={handleCopyPayload}

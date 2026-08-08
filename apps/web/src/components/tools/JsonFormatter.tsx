@@ -98,12 +98,12 @@ export default function JsonFormatter() {
         value={input}
         onChange={e => setInput(e.target.value)}
         placeholder='{"key": "value"}'
-        className="w-full h-36 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30"
+        className="w-full h-36 p-3 bg-surface border border-border rounded-sm text-sm font-mono text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30"
       />
       <div className="flex gap-2 flex-wrap items-center">
         <button onClick={format} className="px-4 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('format')}</button>
-        <button onClick={validate} className="px-4 py-2 bg-surface text-text-primary text-sm rounded-sm hover:opacity-90 border border-[rgba(127,99,21,0.15)]">{t('validate')}</button>
-        <button onClick={minify} className="px-4 py-2 bg-surface text-text-primary text-sm rounded-sm hover:opacity-90 border border-[rgba(127,99,21,0.15)]">{t('minify')}</button>
+        <button onClick={validate} className="px-4 py-2 bg-surface text-text-primary text-sm rounded-sm hover:opacity-90 border border-border">{t('validate')}</button>
+        <button onClick={minify} className="px-4 py-2 bg-surface text-text-primary text-sm rounded-sm hover:opacity-90 border border-border">{t('minify')}</button>
         {downloadUrl && (
           <a
             href={downloadUrl}
@@ -120,13 +120,13 @@ export default function JsonFormatter() {
           {/* Single scrollable container: both line numbers + code scroll together */}
           <div
             ref={scrollRef}
-            className="max-h-[60vh] overflow-auto bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm pr-10"
+            className="max-h-[60vh] overflow-auto bg-surface border border-border rounded-sm pr-10"
           >
             {/* Each line is a grid row: line-number column + code column */}
             {lines.map((line, i) => (
               <div
                 key={i}
-                className="grid grid-cols-[3.5em_1fr] min-h-[1.35em] hover:bg-[rgba(0,0,0,0.03)]"
+                className="grid grid-cols-[3.5em_1fr] min-h-[1.35em] hover:bg-hover"
               >
                 {/* Line number — cannot be selected/copied */}
                 <div

@@ -579,7 +579,7 @@ export default function FileRenamer() {
                 <select
                   value={rule.type}
                   onChange={e => changeRuleType(i, e.target.value as RenameRuleType)}
-                  className="p-1.5 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary"
+                  className="p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                 >
                   {ruleConfigs.map(c => (
                     <option key={c.type} value={c.type}>{t(c.labelKey)}</option>
@@ -591,28 +591,28 @@ export default function FileRenamer() {
                   <input
                     type="text" placeholder={t('renFind')} value={(rule as any).find}
                     onChange={e => updateRule(i, r => ({ ...r, find: e.target.value }))}
-                    className="w-28 p-1.5 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary"
+                    className="w-28 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                   />
                 )}
                 {cfg?.hasReplace && (
                   <input
                     type="text" placeholder={t('renReplace')} value={(rule as any).replace}
                     onChange={e => updateRule(i, r => ({ ...r, replace: e.target.value }))}
-                    className="w-28 p-1.5 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary"
+                    className="w-28 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                   />
                 )}
                 {cfg?.hasText && (
                   <input
                     type="text" placeholder={t('renText')} value={(rule as any).text}
                     onChange={e => updateRule(i, r => ({ ...r, text: e.target.value }))}
-                    className="w-28 p-1.5 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary"
+                    className="w-28 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                   />
                 )}
                 {cfg?.hasDelete && (
                   <input
                     type="text" placeholder={t('renDeleteText')} value={(rule as any).text}
                     onChange={e => updateRule(i, r => ({ ...r, text: e.target.value }))}
-                    className="w-28 p-1.5 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary"
+                    className="w-28 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                   />
                 )}
                 {cfg?.hasStart && (
@@ -621,7 +621,7 @@ export default function FileRenamer() {
                     <input
                       type="number" min="0" value={(rule as any).start}
                       onChange={e => updateRule(i, r => ({ ...r, start: Math.max(0, parseInt(e.target.value) || 0) }))}
-                      className="w-16 p-1.5 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary"
+                      className="w-16 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                     />
                   </label>
                 )}
@@ -631,7 +631,7 @@ export default function FileRenamer() {
                     <input
                       type="number" min="1" max="10" value={(rule as any).digits}
                       onChange={e => updateRule(i, r => ({ ...r, digits: Math.max(1, Math.min(10, parseInt(e.target.value) || 1)) }))}
-                      className="w-14 p-1.5 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary"
+                      className="w-14 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                     />
                   </label>
                 )}
@@ -641,7 +641,7 @@ export default function FileRenamer() {
                     <input
                       type="number" min="0" max="5" value={(rule as any).level ?? 1}
                       onChange={e => updateRule(i, r => ({ ...r, level: Math.max(0, Math.min(5, parseInt(e.target.value) || 0)) }))}
-                      className="w-12 p-1 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary text-center"
+                      className="w-12 p-1 bg-bg border border-border rounded-lg text-xs text-text-primary text-center"
                     />
                   </label>
                 )}
@@ -659,7 +659,7 @@ export default function FileRenamer() {
                   <select
                     value={(rule as any).position}
                     onChange={e => updateRule(i, r => ({ ...r, position: e.target.value as 'prefix' | 'suffix' }))}
-                    className="p-1.5 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary"
+                    className="p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                   >
                     <option value="prefix">{t('renPrefix')}</option>
                     <option value="suffix">{t('renSuffix')}</option>
@@ -689,7 +689,7 @@ export default function FileRenamer() {
                   <select
                     value={(rule as any).mode}
                     onChange={e => updateRule(i, r => ({ ...r, mode: e.target.value as 'upper' | 'lower' | 'capitalize' }))}
-                    className="p-1.5 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary"
+                    className="p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                   >
                     <option value="upper">{t('renUpper')}</option>
                     <option value="lower">{t('renLower')}</option>
@@ -722,7 +722,7 @@ export default function FileRenamer() {
                     <input
                       type="text" maxLength={2} value={(rule as any).spaceReplacement}
                       onChange={e => updateRule(i, r => ({ ...r, spaceReplacement: e.target.value }))}
-                      className="w-12 p-1.5 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary"
+                      className="w-12 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                     />
                   </label>
                 )}
@@ -730,14 +730,14 @@ export default function FileRenamer() {
                   <input
                     type="text" placeholder={t('renPattern')} value={(rule as any).pattern}
                     onChange={e => updateRule(i, r => ({ ...r, pattern: e.target.value }))}
-                    className="w-28 p-1.5 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary"
+                    className="w-28 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                   />
                 )}
                 {(cfg?.hasReplacement && rule.type === 'regex') && (
                   <input
                     type="text" placeholder={t('renReplace')} value={(rule as any).replacement}
                     onChange={e => updateRule(i, r => ({ ...r, replacement: e.target.value }))}
-                    className="w-28 p-1.5 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary"
+                    className="w-28 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                   />
                 )}
 
@@ -757,7 +757,7 @@ export default function FileRenamer() {
                     <input
                       type="number" min="0" max="5" value={(rule as any).folderLevel ?? 1}
                       onChange={e => updateRule(i, r => ({ ...r, folderLevel: Math.max(0, Math.min(5, parseInt(e.target.value) || 0)) }))}
-                      className="w-12 p-1 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary text-center"
+                      className="w-12 p-1 bg-bg border border-border rounded-lg text-xs text-text-primary text-center"
                     />
                   </label>
                 )}
@@ -905,7 +905,7 @@ export default function FileRenamer() {
             >{processing ? t('renProcessing') : t('renExecute')}</button>
             <button
               onClick={() => { setFiles([]); setFileEntries([]); setRules([]); setError(''); setSuccessMsg('') }}
-              className="px-6 py-3 bg-surface text-text-primary text-sm font-medium rounded-lg border border-[rgba(127,99,21,0.15)] hover:bg-accent/5 transition-colors"
+              className="px-6 py-3 bg-surface text-text-primary text-sm font-medium rounded-lg border border-border hover:bg-accent/5 transition-colors"
             >{t('renClear')}</button>
           </div>
           {canDirectRename !== undefined && (

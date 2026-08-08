@@ -194,13 +194,13 @@ export default function Timer() {
         <button
           onClick={() => { stopTimer(); setMode('countdown'); setRemaining(0); remainingRef.current = 0; initialTotalRef.current = 0 }}
           className={`px-5 py-2 text-sm rounded-lg transition-colors ${
-            isCountdown ? 'bg-accent text-white' : 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.15)]'
+            isCountdown ? 'bg-accent text-white' : 'bg-surface text-text-secondary border border-border'
           }`}
         >{t('timerCountdown')}</button>
         <button
           onClick={() => { stopTimer(); setMode('stopwatch'); setElapsed(0); elapsedRef.current = 0; setLaps([]) }}
           className={`px-5 py-2 text-sm rounded-lg transition-colors ${
-            !isCountdown ? 'bg-accent text-white' : 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.15)]'
+            !isCountdown ? 'bg-accent text-white' : 'bg-surface text-text-secondary border border-border'
           }`}
         >{t('timerStopwatch')}</button>
       </div>
@@ -238,21 +238,21 @@ export default function Timer() {
           <input
             type="number" min="0" max="99" value={hours}
             onChange={e => setHours(clampHours(e.target.value))}
-            className="w-16 p-2 text-center bg-surface border border-[rgba(127,99,21,0.15)] rounded-lg text-sm text-text-primary"
+            className="w-16 p-2 text-center bg-surface border border-border rounded-lg text-sm text-text-primary"
             placeholder="0"
           />
           <span className="text-sm text-text-secondary">:</span>
           <input
             type="number" min="0" max="59" value={minutes}
             onChange={e => setMinutes(clampMinutes(e.target.value))}
-            className="w-16 p-2 text-center bg-surface border border-[rgba(127,99,21,0.15)] rounded-lg text-sm text-text-primary"
+            className="w-16 p-2 text-center bg-surface border border-border rounded-lg text-sm text-text-primary"
             placeholder="0"
           />
           <span className="text-sm text-text-secondary">:</span>
           <input
             type="number" min="0" max="59" value={seconds}
             onChange={e => setSeconds(clampSeconds(e.target.value))}
-            className="w-16 p-2 text-center bg-surface border border-[rgba(127,99,21,0.15)] rounded-lg text-sm text-text-primary"
+            className="w-16 p-2 text-center bg-surface border border-border rounded-lg text-sm text-text-primary"
             placeholder="00"
           />
         </div>
@@ -274,7 +274,7 @@ export default function Timer() {
               className={`px-3 py-1.5 text-xs rounded-lg transition-colors ${
                 parseInt(hours) === p.h && parseInt(minutes) === p.m && seconds === '00'
                   ? 'bg-accent text-white'
-                  : 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.15)]'
+                  : 'bg-surface text-text-secondary border border-border'
               }`}
             >{p.label}</button>
           ))}
@@ -303,18 +303,18 @@ export default function Timer() {
         {!isCountdown && running && (
           <button
             onClick={handleLap}
-            className="px-6 py-3 bg-surface text-text-primary text-sm font-medium rounded-lg border border-[rgba(127,99,21,0.15)] hover:bg-accent/5 transition-colors"
+            className="px-6 py-3 bg-surface text-text-primary text-sm font-medium rounded-lg border border-border hover:bg-accent/5 transition-colors"
           >{t('timerLap')}</button>
         )}
         {running && isCountdown ? (
           <button
             onClick={handleReset}
-            className="px-6 py-3 bg-surface text-text-primary text-sm font-medium rounded-lg border border-[rgba(127,99,21,0.15)] hover:bg-accent/5 transition-colors"
+            className="px-6 py-3 bg-surface text-text-primary text-sm font-medium rounded-lg border border-border hover:bg-accent/5 transition-colors"
           >{t('timerReset')}</button>
         ) : !running && (isCountdown ? remaining > 0 : elapsed > 0) ? (
           <button
             onClick={handleReset}
-            className="px-6 py-3 bg-surface text-text-primary text-sm font-medium rounded-lg border border-[rgba(127,99,21,0.15)] hover:bg-accent/5 transition-colors"
+            className="px-6 py-3 bg-surface text-text-primary text-sm font-medium rounded-lg border border-border hover:bg-accent/5 transition-colors"
           >{t('timerReset')}</button>
         ) : null}
       </div>

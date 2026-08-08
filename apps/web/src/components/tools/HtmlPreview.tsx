@@ -35,11 +35,11 @@ export default function HtmlPreview() {
     <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 min-h-[400px]">
       <div className="flex flex-col gap-2">
         <span className="text-xs font-semibold text-text-secondary uppercase tracking-wider">{t('editor')}</span>
-        <textarea value={html} onChange={e => setHtml(e.target.value)} className="w-full flex-1 min-h-[400px] p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary resize-none focus:outline-none focus:border-accent/30" />
+        <textarea value={html} onChange={e => setHtml(e.target.value)} className="w-full flex-1 min-h-[400px] p-3 bg-surface border border-border rounded-sm text-sm font-mono text-text-primary resize-none focus:outline-none focus:border-accent/30" />
       </div>
       <div className="flex flex-col gap-2">
         <span className="text-xs font-semibold text-text-secondary uppercase tracking-wider">{t('preview')}</span>
-        <iframe sandbox="allow-scripts" srcDoc={html} className="w-full flex-1 min-h-[400px] bg-white border border-[rgba(127,99,21,0.15)] rounded-sm" />
+        <iframe sandbox="allow-scripts" srcDoc={html} className="w-full flex-1 min-h-[400px] bg-white border border-border rounded-sm" />
       </div>
     </div>
   )

@@ -382,7 +382,7 @@ export default function ImageConverter() {
                     setInputs(prev => prev.filter(i => i.id !== input.id))
                     setOutputs([])
                   }}
-                  className="absolute top-1 right-1 w-5 h-5 flex items-center justify-center text-xs bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-text-secondary hover:text-error hover:border-error/30 transition-colors z-10"
+                  className="absolute top-1 right-1 w-5 h-5 flex items-center justify-center text-xs bg-surface border border-border rounded-sm text-text-secondary hover:text-error hover:border-error/30 transition-colors z-10"
                   title={t('renClear')}
                 >
                   ✕
@@ -419,7 +419,7 @@ export default function ImageConverter() {
                     className={`px-3 py-1.5 text-xs rounded-sm border transition-colors ${
                       targetFormat === fmt.value
                         ? 'bg-accent text-white border-accent'
-                        : 'bg-surface text-text-secondary border-[rgba(127,99,21,0.15)] hover:border-accent/30'
+                        : 'bg-surface text-text-secondary border-border hover:border-accent/30'
                     } ${isCurrent ? 'opacity-60' : 'cursor-pointer'}`}
                   >
                     {fmt.label}
@@ -444,7 +444,7 @@ export default function ImageConverter() {
                             className={`px-2 py-1 text-xs rounded-sm border transition-colors ${
                               inputs[0] && targetWidth === inputs[0].width && targetHeight === inputs[0].height
                                 ? 'bg-accent text-white border-accent'
-                                : 'bg-surface text-text-secondary border-[rgba(127,99,21,0.15)] hover:border-accent/30'
+                                : 'bg-surface text-text-secondary border-border hover:border-accent/30'
                             }`}
                           >
                             {t('resizeOriginal')}
@@ -457,7 +457,7 @@ export default function ImageConverter() {
                               className={`px-2 py-1 text-xs rounded-sm border transition-colors ${
                                 targetWidth === p.w && targetHeight === p.h
                                   ? 'bg-accent text-white border-accent'
-                                  : 'bg-surface text-text-secondary border-[rgba(127,99,21,0.15)] hover:border-accent/30'
+                                  : 'bg-surface text-text-secondary border-border hover:border-accent/30'
                               }`}
                             >
                               {p.label}
@@ -477,7 +477,7 @@ export default function ImageConverter() {
                               value={targetWidth || ''}
                               onChange={(e) => handleWidthChange(e.target.value)}
                               onFocus={(e) => e.target.select()}
-                              className="w-20 p-1.5 text-xs bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-text-primary focus:outline-none focus:border-accent/30"
+                              className="w-20 p-1.5 text-xs bg-surface border border-border rounded-sm text-text-primary focus:outline-none focus:border-accent/30"
                             />
                           </div>
                           <span className="text-text-secondary text-xs">×</span>
@@ -491,7 +491,7 @@ export default function ImageConverter() {
                               value={targetHeight || ''}
                               onChange={(e) => handleHeightChange(e.target.value)}
                               onFocus={(e) => e.target.select()}
-                              className="w-20 p-1.5 text-xs bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-text-primary focus:outline-none focus:border-accent/30"
+                              className="w-20 p-1.5 text-xs bg-surface border border-border rounded-sm text-text-primary focus:outline-none focus:border-accent/30"
                             />
                           </div>
                           <label className="flex items-center gap-1.5 text-xs text-text-secondary cursor-pointer select-none">
@@ -539,7 +539,7 @@ export default function ImageConverter() {
             </button>
             <button
               onClick={clearAll}
-              className="px-3 py-2 bg-surface text-text-primary text-sm rounded-sm border border-[rgba(127,99,21,0.15)] hover:bg-accent/10 transition-colors min-w-[5rem]"
+              className="px-3 py-2 bg-surface text-text-primary text-sm rounded-sm border border-border hover:bg-accent/10 transition-colors min-w-[5rem]"
             >
               {t('renClear')}
             </button>

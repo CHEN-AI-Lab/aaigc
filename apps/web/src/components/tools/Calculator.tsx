@@ -34,7 +34,7 @@ export default function Calculator() {
   const t = useTranslations('tools')
   return (
     <div className="mt-6 space-y-4">
-      <div className="flex gap-1 overflow-x-auto pb-1 scrollbar-none border-b border-[rgba(127,99,21,0.15)]">
+      <div className="flex gap-1 overflow-x-auto pb-1 scrollbar-none border-b border-border">
         {TABS.map(tb => (
           <button key={tb.id} onClick={() => setTab(tb.id)}
             className={`px-3 py-1.5 text-xs rounded-t-sm whitespace-nowrap transition-colors shrink-0 ${
@@ -129,7 +129,7 @@ function CalcPanel() {
 
   return (
     <div className="mx-auto" style={{ maxWidth: '260px' }}>
-      <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm p-3 mb-3 min-h-[4rem]">
+      <div className="bg-surface border border-border rounded-sm p-3 mb-3 min-h-[4rem]">
         <div className="flex items-center justify-between text-xs text-text-secondary/60 min-h-[1rem] leading-tight">
           <span>{sci ? (rad ? 'RAD' : 'DEG') : ''}</span>
           <span className="overflow-hidden text-ellipsis text-right ml-2">{expr}&nbsp;</span>
@@ -184,18 +184,18 @@ function CurrencyCalc() {
         <div className="grid grid-cols-[1fr_auto_1fr] gap-2 items-end">
           <div>
             <label className="block text-xs text-text-secondary mb-1">{t('currencyAmount')}</label>
-            <input value={amount} onChange={e => setAmount(e.target.value)} maxLength={15} className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            <input value={amount} onChange={e => setAmount(e.target.value)} maxLength={15} className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary" />
           </div>
           <div />
           <div />
           <div>
-            <select value={from} onChange={e => setFrom(e.target.value)} className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
+            <select value={from} onChange={e => setFrom(e.target.value)} className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary">
               {Object.keys(RATES).map(c => <option key={c} value={c}>{c} ({t(`currency${c}`)})</option>)}
             </select>
           </div>
           <button onClick={swap} className="p-2 text-lg text-accent hover:opacity-70 self-center">⇄</button>
           <div>
-            <select value={to} onChange={e => setTo(e.target.value)} className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
+            <select value={to} onChange={e => setTo(e.target.value)} className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary">
               {Object.keys(RATES).map(c => <option key={c} value={c}>{c} ({t(`currency${c}`)})</option>)}
             </select>
           </div>
@@ -296,11 +296,11 @@ function UnitTable({ units, title }: { units: Unit[]; title: string }) {
         <div className="flex gap-2 items-end mb-3">
           <div className="flex-1">
             <label className="block text-xs text-text-secondary mb-1">{title}</label>
-            <input value={val} onChange={e => setVal(e.target.value)} maxLength={15} className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            <input value={val} onChange={e => setVal(e.target.value)} maxLength={15} className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary" />
           </div>
           <div className="w-24">
             <label className="block text-xs text-text-secondary mb-1">{t('calcUnit')}</label>
-            <select value={from} onChange={e => setFrom(e.target.value)} className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
+            <select value={from} onChange={e => setFrom(e.target.value)} className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary">
               {units.map(u => <option key={u.label} value={u.label}>{u.label}</option>)}
             </select>
           </div>
@@ -339,11 +339,11 @@ function TempCalc() {
         <div className="flex gap-2 items-end mb-3">
           <div className="flex-1">
             <label className="block text-xs text-text-secondary mb-1">{t('calcTempValue')}</label>
-            <input value={val} onChange={e => setVal(e.target.value)} maxLength={15} className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            <input value={val} onChange={e => setVal(e.target.value)} maxLength={15} className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary" />
           </div>
           <div className="w-24">
             <label className="block text-xs text-text-secondary mb-1">{t('calcUnit')}</label>
-            <select value={unit} onChange={e => setUnit(e.target.value as 'C' | 'F' | 'K')} className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
+            <select value={unit} onChange={e => setUnit(e.target.value as 'C' | 'F' | 'K')} className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary">
               <option value="C">°C</option><option value="F">°F</option><option value="K">K</option>
             </select>
           </div>
@@ -415,15 +415,15 @@ function BmiCalc() {
         <div className="grid grid-cols-3 gap-3">
           <div>
             <label className="block text-xs text-text-secondary mb-1">{t('calcHeight')} ({unit === 'metric' ? 'cm' : 'in'})</label>
-            <input value={h} onChange={e => setH(e.target.value)} maxLength={5} className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            <input value={h} onChange={e => setH(e.target.value)} maxLength={5} className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary" />
           </div>
           <div>
             <label className="block text-xs text-text-secondary mb-1">{t('calcWeight')} ({unit === 'metric' ? 'kg' : 'lb'})</label>
-            <input value={w} onChange={e => setW(e.target.value)} maxLength={5} className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            <input value={w} onChange={e => setW(e.target.value)} maxLength={5} className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary" />
           </div>
           <div>
             <label className="block text-xs text-text-secondary mb-1">{t('calcAge')}</label>
-            <input value={age} onChange={e => setAge(e.target.value)} className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            <input value={age} onChange={e => setAge(e.target.value)} className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary" />
           </div>
         </div>
         <div className="flex gap-1 mt-2">
@@ -533,12 +533,12 @@ function TaxCalc() {
   const totalIncome = s * actualMonths + b
   const afterTax = totalIncome - totalTax
 
-  const inputClass = "w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary"
+  const inputClass = "w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary"
   const labelClass = "block text-xs text-text-secondary mb-1"
 
   return (
     <div className="max-w-md mx-auto space-y-3">
-      <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm p-3 text-xs text-text-secondary leading-relaxed">
+      <div className="bg-surface border border-border rounded-sm p-3 text-xs text-text-secondary leading-relaxed">
         {t('chinaOnlyNote')}
       </div>
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
@@ -823,12 +823,12 @@ function MortgageCalc() {
 
   const btnClass = (active: boolean) =>
     `px-3 py-1 text-xs rounded-sm ${active ? 'bg-accent text-white' : 'bg-card text-text-secondary'}`
-  const inputClass = "w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary"
+  const inputClass = "w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary"
   const labelClass = "block text-xs text-text-secondary mb-1"
 
   return (
     <div className="max-w-md mx-auto space-y-3">
-      <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm p-3 text-xs text-text-secondary leading-relaxed">
+      <div className="bg-surface border border-border rounded-sm p-3 text-xs text-text-secondary leading-relaxed">
         {t('chinaOnlyNote')}
       </div>
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
@@ -1149,7 +1149,7 @@ function ChineseNumCalc() {
 
   return (
     <div className="max-w-md mx-auto space-y-3">
-      <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm p-3 text-xs text-text-secondary leading-relaxed">
+      <div className="bg-surface border border-border rounded-sm p-3 text-xs text-text-secondary leading-relaxed">
         {t('calcChineseNote')}
       </div>
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
@@ -1158,7 +1158,7 @@ function ChineseNumCalc() {
           <button onClick={() => setMode('roman')} className={`px-3 py-1.5 text-xs rounded-sm ${mode === 'roman' ? 'bg-accent text-white' : 'bg-card text-text-secondary border border-[rgba(127,99,21,0.1)]'}`}>{t('calcRomanMode')}</button>
         </div>
         <label className="block text-xs text-text-secondary mb-1">{t('calcInputNumber')}</label>
-        <input value={num} onChange={e => setNum(e.target.value)} placeholder="12345.67" className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+        <input value={num} onChange={e => setNum(e.target.value)} placeholder="12345.67" className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary" />
         {result && (
           <div className="mt-3 p-3 bg-card rounded-sm border border-[rgba(127,99,21,0.08)]">
             <p className="text-xs text-text-secondary/60 mb-1">{t('calcResult')}</p>
@@ -1256,7 +1256,7 @@ function TimeCalc() {
   return (
     <div className="max-w-md mx-auto space-y-3">
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
-        <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm p-3 text-xs space-y-1">
+        <div className="bg-surface border border-border rounded-sm p-3 text-xs space-y-1">
           <div className="flex items-center justify-between text-text-primary">
             <span className="font-medium">{t('calcConversionRules')}</span>
           </div>
@@ -1265,11 +1265,11 @@ function TimeCalc() {
         <div className="flex gap-2 items-end mb-3">
           <div className="flex-1">
             <label className="block text-xs text-text-secondary mb-1">{t('calcTimeConvert')}</label>
-            <input value={val} onChange={e => setVal(e.target.value)} maxLength={15} className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary" />
+            <input value={val} onChange={e => setVal(e.target.value)} maxLength={15} className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary" />
           </div>
           <div className="w-28">
             <label className="block text-xs text-text-secondary mb-1">{t('calcUnit')}</label>
-            <select value={from} onChange={e => setFrom(e.target.value)} className="w-full p-2 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary">
+            <select value={from} onChange={e => setFrom(e.target.value)} className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary">
               {units.map(u => <option key={u.label} value={u.label}>{u.labelZh}</option>)}
             </select>
           </div>
@@ -1338,7 +1338,7 @@ function TitleCalc() {
 
   return (
       <div className="max-w-lg mx-auto space-y-3">
-        <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm p-3 text-xs text-text-secondary leading-relaxed space-y-1">
+        <div className="bg-surface border border-border rounded-sm p-3 text-xs text-text-secondary leading-relaxed space-y-1">
           {t('calcTitleNote')}
           <p>{t('chinaOnlyNote')}</p>
         </div>
@@ -1439,15 +1439,15 @@ function BaseCalc() {
 
   return (
     <div className="max-w-md mx-auto space-y-3">
-      <div className="bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm p-3 text-xs text-text-secondary leading-relaxed">
+      <div className="bg-surface border border-border rounded-sm p-3 text-xs text-text-secondary leading-relaxed">
         {t('baseDesc')}
       </div>
       <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-5">
         <div className="flex gap-2 mb-3">
           <input value={input} onChange={e => setInput(e.target.value)} placeholder="{t('calcInputNumber')}"
-            className="flex-1 p-3 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary focus:outline-none focus:border-accent/30" />
+            className="flex-1 p-3 bg-card border border-border rounded-sm text-sm font-mono text-text-primary focus:outline-none focus:border-accent/30" />
           <select value={fromBase} onChange={e => { setInput(''); setFromBase(parseInt(e.target.value)) }}
-            className="p-3 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary focus:outline-none">
+            className="p-3 bg-card border border-border rounded-sm text-sm text-text-primary focus:outline-none">
             {BASES.map(b => <option key={b.base} value={b.base}>{b.label} ({t(`base${b.base}`)})</option>)}
           </select>
         </div>
