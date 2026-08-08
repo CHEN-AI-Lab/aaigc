@@ -281,7 +281,7 @@ Phase 2: 核心页面开发          ✅ 已完成
 Phase 3: 在线工具实现          ✅ 已完成（38 个工具）
 Phase 4: 质量保障 + 部署       ✅ 已完成
 Phase 5: 访问统计 + 排行榜     ✅ 已完成
-Phase 6: 用户系统              ✅ 代码完成，OAuth/Resend 已配置（待 prisma migrate + AUTH_SECRET）
+Phase 6: 用户系统              ✅ 已完成（已上线）
 Phase 7: 收藏 + 点赞           ✅ 已完成
 Phase 8: 评论系统              📅 待开始
 Phase 9: 个性化推荐            📅 待开始
@@ -336,8 +336,10 @@ Phase 9: 个性化推荐            📅 待开始
 | # | 任务 | 说明 |
 |---|------|------|
 | 6.9 | 统计页面鉴权 | 管理员角色访问 /stats |
-| 6.10 | prisma migrate deploy | 连接数据库生成表 |
-| 6.11 | 配置 AUTH_SECRET | 生成并设置环境变量 |
+
+**已完成追加：**
+| 6.10 | prisma migrate | 数据库表已建（3 个迁移已应用） |
+| 6.11 | 配置 AUTH_SECRET | 你已配到 Vercel 环境变量 |
 
 ### Phase 7：收藏 + 点赞（✅ 已完成）
 
