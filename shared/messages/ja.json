@@ -1187,7 +1187,8 @@
     "invalidDomain": "無効なドメイン名です",
     "dnsNoRecords": "レコードが見つかりません",
     "ipLookupFailed": "IPアドレスの検索に失敗しました",
-    "emailNotRegistered": "このメールアドレスは登録されていません"
+    "emailNotRegistered": "このメールアドレスは登録されていません",
+    "accountLocked": "ログイン試行回数が多すぎます。アカウントは{minutes}分間ロックされています。"
   },
   "footer": {
     "tagline": "AI 駆動ツールとアプリケーション",

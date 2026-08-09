@@ -41,7 +41,20 @@ export default function LoginClient() {
       return
     }
 
+    // Check if account is locked
     setLoading('password')
+    try {
+      const lockRes = await fetch(`/api/auth/check-lockout?email=${encodeURIComponent(email)}`)
+      const lockData = await lockRes.json()
+      if (lockData.locked) {
+        setError(err('accountLocked').replace('{minutes}', String(lockData.minutesRemaining)))
+        setLoading(null)
+        return
+      }
+    } catch {
+      // ignore lock check failure, proceed with login
+    }
+
     try {
       const result = await signIn('password', {
         email,

@@ -1187,7 +1187,8 @@
     "invalidDomain": "Invalid domain name",
     "dnsNoRecords": "No records found",
     "ipLookupFailed": "Failed to look up IP address",
-    "emailNotRegistered": "This email is not registered"
+    "emailNotRegistered": "This email is not registered",
+    "accountLocked": "Too many failed attempts. Your account is locked for {minutes} minutes."
   },
   "footer": {
     "tagline": "AI-powered tools and applications",

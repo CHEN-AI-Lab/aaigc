@@ -1186,7 +1186,8 @@
     "invalidDomain": "無效的域名",
     "dnsNoRecords": "未找到記錄",
     "ipLookupFailed": "IP 查詢失敗",
-    "emailNotRegistered": "該郵箱未註冊"
+    "emailNotRegistered": "該郵箱未註冊",
+    "accountLocked": "登入失敗次數過多，帳號已鎖定，請 {minutes} 分鐘後再試。"
   },
   "footer": {
     "tagline": "AI 驅動工具與應用程式的集合",
