@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
 # ─────────────────────────────────────────────────────────────
-# Migration safety check — scan Prisma migration SQL for
-# dangerous data-loss operations before they reach production.
+# 迁移安全检查 — 扫描 Prisma 迁移 SQL 中的危险操作
+# 防止生产数据被误删。
 #
-# Usage: bash scripts/check-migration-safety.sh
-# Exit 1 if any dangerous statement is found.
+# 用法: bash scripts/check-migration-safety.sh
+# 发现危险操作时 exit 1，并输出中文提示。
 #
-# Why: `prisma migrate deploy` executes migration SQL verbatim.
-# If a migration contains DROP/TRUNCATE/etc, it will delete real
-# production data. This check blocks such migrations in CI.
+# 注意: 这个脚本是 AI 自动执行的，如果失败，
+# AI 必须用中文向用户报告具体原因。
 # ─────────────────────────────────────────────────────────────
 
 set -euo pipefail
@@ -16,45 +15,39 @@ set -euo pipefail
 MIGRATIONS_DIR="prisma/migrations"
 
 if [ ! -d "$MIGRATIONS_DIR" ]; then
-  echo "ℹ️  No prisma/migrations directory — nothing to check."
+  echo "ℹ️  没有 prisma/migrations 目录，跳过检查。"
   exit 0
 fi
 
 FAILED=0
 
-# ── Dangerous patterns (regex, case-insensitive) ─────────────
-# Each entry: "description|regex"
+# ── 危险操作列表 ──────────────────────────────────────────
+# 格式: "描述|正则表达式"
 DANGEROUS_PATTERNS=(
-  "DROP TABLE|DROP TABLE"
-  "DROP COLUMN|DROP COLUMN"
-  "DROP SCHEMA|DROP SCHEMA"
-  "TRUNCATE|TRUNCATE"
-  "ALTER COLUMN TYPE|ALTER COLUMN .* TYPE"
+  "删除表 (DROP TABLE)|DROP TABLE"
+  "删除列 (DROP COLUMN)|DROP COLUMN"
+  "删除 Schema (DROP SCHEMA)|DROP SCHEMA"
+  "清空表数据 (TRUNCATE)|TRUNCATE"
+  "修改列类型 (ALTER COLUMN TYPE)|ALTER COLUMN .* TYPE"
 )
 
-echo "=== Migration Safety Check ==="
-echo "Scanning $MIGRATIONS_DIR for dangerous SQL operations..."
+echo "=========================================="
+echo "    🔒 数据库迁移安全检查"
+echo "=========================================="
 echo ""
 
 while IFS= read -r -d '' FILE; do
-  # Skip files that aren't migration.sql
   [[ "$FILE" != *.sql ]] && continue
-
-  # Extract migration name (parent dir)
   MIGRATION_NAME=$(basename "$(dirname "$FILE")")
-
-  # Skip if file is empty
   [ -s "$FILE" ] || continue
-
-  # Read file content (lowercased for matching)
   CONTENT=$(cat "$FILE")
 
   for entry in "${DANGEROUS_PATTERNS[@]}"; do
     DESC="${entry%%|*}"
     REGEX="${entry#*|}"
     if echo "$CONTENT" | grep -qEi "$REGEX"; then
-      echo "❌ [$MIGRATION_NAME] $DESC"
-      echo "   File: $FILE"
+      echo "❌ [${MIGRATION_NAME}] 发现危险操作：${DESC}"
+      echo "   文件：$FILE"
       echo ""
       FAILED=1
     fi
@@ -62,11 +55,11 @@ while IFS= read -r -d '' FILE; do
 done < <(find "$MIGRATIONS_DIR" -name "migration.sql" -print0)
 
 if [ "$FAILED" -eq 1 ]; then
-  echo "⛔ DANGER: Found destructive migration operations above."
-  echo "   These will DELETE PRODUCTION DATA when deployed."
-  echo "   Fix the migration SQL before proceeding."
+  echo "⛔ 错误：迁移文件中存在危险操作，部署已拦截。"
+  echo "   这些操作会删除生产数据，请修复迁移 SQL 后再提交。"
+  echo ""
   exit 1
 else
-  echo "✅ No dangerous migration operations found."
+  echo "✅ 通过：未发现危险操作。"
   exit 0
 fi
