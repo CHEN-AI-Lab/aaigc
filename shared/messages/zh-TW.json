@@ -1185,7 +1185,8 @@
     "missingDomain": "缺少域名",
     "invalidDomain": "無效的域名",
     "dnsNoRecords": "未找到記錄",
-    "ipLookupFailed": "IP 查詢失敗"
+    "ipLookupFailed": "IP 查詢失敗",
+    "emailNotRegistered": "該郵箱未註冊"
   },
   "footer": {
     "tagline": "AI 驅動工具與應用程式的集合",
@@ -1340,7 +1341,13 @@
     "agreeTermsRequired": "请同意服务条款和隐私政策",
     "termsOfService": "服务条款",
     "privacyPolicy": "隐私政策",
-    "view": "查看"
+    "view": "查看",
+    "forgotPasswordTitle": "重置密碼",
+    "forgotPasswordDesc": "輸入郵箱獲取驗證碼，然後設置新密碼。",
+    "setNewPassword": "設置新密碼",
+    "resetPasswordBtn": "重置密碼",
+    "passwordResetSuccess": "密碼重置成功，請登入。",
+    "backToLogin": "返回登入"
   },
   "terms": {
     "tools": "線上工具",

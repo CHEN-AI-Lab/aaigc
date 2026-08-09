@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useTranslations, useLocale } from 'next-intl'
 import { useSearchParams } from 'next/navigation'
 import { signIn } from 'next-auth/react'
@@ -9,6 +9,7 @@ import Link from 'next/link'
 
 export default function LoginClient() {
   const t = useTranslations('auth')
+  const err = useTranslations('errors')
   const locale = useLocale()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -20,6 +21,17 @@ export default function LoginClient() {
   const [successMsg, setSuccessMsg] = useState(registered ? t('registerSuccess') : '')
   const [loading, setLoading] = useState<string | null>(null)
   const [oauthProvider, setOauthProvider] = useState<string | null>(null)
+
+  // Forgot password state
+  const [forgotMode, setForgotMode] = useState(false)
+  const [forgotEmail, setForgotEmail] = useState('')
+  const [forgotCode, setForgotCode] = useState('')
+  const [forgotCodeSent, setForgotCodeSent] = useState(false)
+  const [forgotCodeVerified, setForgotCodeVerified] = useState(false)
+  const [forgotNewPassword, setForgotNewPassword] = useState('')
+  const [forgotConfirmPassword, setForgotConfirmPassword] = useState('')
+  const [forgotCountdown, setForgotCountdown] = useState(0)
+  const forgotTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const handlePasswordLogin = async () => {
     setError('')
@@ -58,6 +70,108 @@ export default function LoginClient() {
     } catch {
       setError(t('oauthNotConfigured'))
       setOauthProvider(null)
+    }
+  }
+
+  // Forgot password handlers
+  useEffect(() => {
+    if (forgotCountdown > 0) {
+      forgotTimerRef.current = setTimeout(() => setForgotCountdown(forgotCountdown - 1), 1000)
+    }
+    return () => { if (forgotTimerRef.current) clearTimeout(forgotTimerRef.current) }
+  }, [forgotCountdown])
+
+  const handleForgotSendCode = async () => {
+    setError('')
+    if (!forgotEmail) {
+      setError(t('fillRequired'))
+      return
+    }
+    setLoading('forgotSend')
+    try {
+      const res = await fetch('/api/auth/send-verification', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: forgotEmail, purpose: 'forgotPassword' }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setError(data.error ? err(data.error) : t('sendFailed'))
+        return
+      }
+      setForgotCodeSent(true)
+      setForgotCountdown(60)
+    } catch {
+      setError(t('sendFailed'))
+    } finally {
+      setLoading(null)
+    }
+  }
+
+  const handleForgotVerifyCode = async () => {
+    setError('')
+    if (!forgotCode) {
+      setError(t('fillRequired'))
+      return
+    }
+    setLoading('forgotVerify')
+    try {
+      const res = await fetch('/api/auth/verify-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: forgotEmail, code: forgotCode }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setError(data.error ? err(data.error) : t('verifyFailed'))
+        return
+      }
+      setForgotCodeVerified(true)
+    } catch {
+      setError(t('verifyFailed'))
+    } finally {
+      setLoading(null)
+    }
+  }
+
+  const handleForgotResetPassword = async () => {
+    setError('')
+    if (!forgotNewPassword || !forgotConfirmPassword) {
+      setError(t('fillRequired'))
+      return
+    }
+    if (forgotNewPassword.length < 8) {
+      setError(t('passwordTooShort'))
+      return
+    }
+    if (forgotNewPassword !== forgotConfirmPassword) {
+      setError(t('passwordMismatch'))
+      return
+    }
+    setLoading('forgotReset')
+    try {
+      const res = await fetch('/api/auth/set-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: forgotEmail, password: forgotNewPassword, code: forgotCode }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setError(data.error ? err(data.error) : t('registerFailed'))
+        return
+      }
+      setSuccessMsg(t('passwordResetSuccess'))
+      setForgotMode(false)
+      setForgotCodeSent(false)
+      setForgotCodeVerified(false)
+      setForgotNewPassword('')
+      setForgotConfirmPassword('')
+      setForgotCode('')
+      setEmail(forgotEmail)
+    } catch {
+      setError(t('registerFailed'))
+    } finally {
+      setLoading(null)
     }
   }
 
@@ -117,55 +231,166 @@ export default function LoginClient() {
           </div>
 
           {/* Email + Password form */}
-          <div className="flex flex-col gap-4">
-            <div>
-              <label className="block text-xs font-medium text-text-secondary mb-1.5">
-                {t('email')}
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="name@example.com"
-                className="w-full px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors"
-              />
-            </div>
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-xs font-medium text-text-secondary">
-                  {t('password')}
+          {!forgotMode ? (
+            <div className="flex flex-col gap-4">
+              <div>
+                <label className="block text-xs font-medium text-text-secondary mb-1.5">
+                  {t('email')}
                 </label>
-                <span className="text-xs text-text-secondary cursor-default">{t('forgotPassword')}</span>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="name@example.com"
+                  className="w-full px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors"
+                />
               </div>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors"
-              />
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-xs font-medium text-text-secondary">
+                    {t('password')}
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setForgotMode(true)}
+                    className="text-xs text-accent hover:underline cursor-pointer"
+                  >
+                    {t('forgotPassword')}
+                  </button>
+                </div>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors"
+                />
+              </div>
+
+              {error && (
+                <p className="text-xs text-error text-center">{error}</p>
+              )}
+
+              <button
+                onClick={handlePasswordLogin}
+                disabled={loading === 'password' || !!oauthProvider}
+                className="w-full px-4 py-2.5 rounded-md bg-accent text-white text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+              >
+                {loading === 'password' ? (
+                  <span className="inline-flex items-center gap-1.5">
+                    <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    ...
+                  </span>
+                ) : t('loginButton')}
+              </button>
             </div>
+          ) : (
+            /* Forgot Password Form */
+            <div className="flex flex-col gap-4">
+              <h2 className="text-sm font-semibold text-text-primary">{t('forgotPasswordTitle')}</h2>
+              <p className="text-xs text-text-secondary">{t('forgotPasswordDesc')}</p>
 
-            {error && (
-              <p className="text-xs text-error text-center">{error}</p>
-            )}
+              {!forgotCodeVerified ? (
+                <>
+                  <div>
+                    <label className="block text-xs font-medium text-text-secondary mb-1.5">{t('email')}</label>
+                    <input
+                      type="email"
+                      value={forgotEmail}
+                      onChange={(e) => setForgotEmail(e.target.value)}
+                      placeholder="name@example.com"
+                      disabled={forgotCodeSent}
+                      className="w-full px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors disabled:opacity-50"
+                    />
+                  </div>
 
-            <button
-              onClick={handlePasswordLogin}
-              disabled={loading === 'password' || !!oauthProvider}
-              className="w-full px-4 py-2.5 rounded-md bg-accent text-white text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
-            >
-              {loading === 'password' ? (
-                <span className="inline-flex items-center gap-1.5">
-                  <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                  </svg>
-                  ...
-                </span>
-              ) : t('loginButton')}
-            </button>
-          </div>
+                  {!forgotCodeSent ? (
+                    <button
+                      onClick={handleForgotSendCode}
+                      disabled={loading === 'forgotSend'}
+                      className="w-full px-4 py-2.5 rounded-md bg-accent text-white text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+                    >
+                      {loading === 'forgotSend' ? '...' : t('sendCode')}
+                    </button>
+                  ) : (
+                    <>
+                      <div>
+                        <label className="block text-xs font-medium text-text-secondary mb-1.5">{t('verificationCode')}</label>
+                        <input
+                          type="text"
+                          value={forgotCode}
+                          onChange={(e) => setForgotCode(e.target.value)}
+                          placeholder="000000"
+                          maxLength={6}
+                          className="w-full px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors text-center tracking-[8px]"
+                        />
+                      </div>
+                      <button
+                        onClick={handleForgotVerifyCode}
+                        disabled={loading === 'forgotVerify'}
+                        className="w-full px-4 py-2.5 rounded-md bg-accent text-white text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+                      >
+                        {loading === 'forgotVerify' ? '...' : t('verifyCode')}
+                      </button>
+                      <button
+                        onClick={handleForgotSendCode}
+                        disabled={forgotCountdown > 0 || loading === 'forgotSend'}
+                        className="w-full text-center text-xs text-text-secondary hover:text-text-primary transition-colors disabled:opacity-50"
+                      >
+                        {forgotCountdown > 0 ? `${forgotCountdown}s` : t('resendCode')}
+                      </button>
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  <div>
+                    <label className="block text-xs font-medium text-text-secondary mb-1.5">{t('setNewPassword')}</label>
+                    <input
+                      type="password"
+                      value={forgotNewPassword}
+                      onChange={(e) => setForgotNewPassword(e.target.value)}
+                      placeholder="••••••••"
+                      className="w-full px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-text-secondary mb-1.5">{t('confirmPassword')}</label>
+                    <input
+                      type="password"
+                      value={forgotConfirmPassword}
+                      onChange={(e) => setForgotConfirmPassword(e.target.value)}
+                      placeholder="••••••••"
+                      className="w-full px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors"
+                    />
+                  </div>
+
+                  {error && <p className="text-xs text-error text-center">{error}</p>}
+
+                  <button
+                    onClick={handleForgotResetPassword}
+                    disabled={loading === 'forgotReset'}
+                    className="w-full px-4 py-2.5 rounded-md bg-accent text-white text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+                  >
+                    {loading === 'forgotReset' ? '...' : t('resetPasswordBtn')}
+                  </button>
+                </>
+              )}
+
+              {error && !forgotCodeVerified && <p className="text-xs text-error text-center">{error}</p>}
+
+              <button
+                type="button"
+                onClick={() => { setForgotMode(false); setForgotCodeSent(false); setForgotCodeVerified(false); setError('') }}
+                className="text-xs text-accent hover:underline text-center mt-2"
+              >
+                {t('backToLogin')}
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Register link */}

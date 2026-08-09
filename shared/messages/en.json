@@ -1186,7 +1186,8 @@
     "missingDomain": "Missing domain name",
     "invalidDomain": "Invalid domain name",
     "dnsNoRecords": "No records found",
-    "ipLookupFailed": "Failed to look up IP address"
+    "ipLookupFailed": "Failed to look up IP address",
+    "emailNotRegistered": "This email is not registered"
   },
   "footer": {
     "tagline": "AI-powered tools and applications",
@@ -1341,7 +1342,13 @@
     "agreeTermsRequired": "Please agree to the Terms of Service and Privacy Policy",
     "termsOfService": "Terms of Service",
     "privacyPolicy": "Privacy Policy",
-    "view": "View"
+    "view": "View",
+    "forgotPasswordTitle": "Reset Password",
+    "forgotPasswordDesc": "Enter your email to receive a verification code, then set a new password.",
+    "setNewPassword": "Set New Password",
+    "resetPasswordBtn": "Reset Password",
+    "passwordResetSuccess": "Password reset successfully. Please log in.",
+    "backToLogin": "Back to Login"
   },
   "terms": {
     "title": "Terms of Service",

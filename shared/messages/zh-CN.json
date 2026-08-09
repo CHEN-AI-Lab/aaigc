@@ -1186,7 +1186,8 @@
     "missingDomain": "缺少域名",
     "invalidDomain": "无效的域名",
     "dnsNoRecords": "未找到记录",
-    "ipLookupFailed": "IP 查询失败"
+    "ipLookupFailed": "IP 查询失败",
+    "emailNotRegistered": "该邮箱未注册"
   },
   "footer": {
     "tagline": "AI 驱动工具与应用的集合",
@@ -1341,7 +1342,13 @@
     "agreeTermsRequired": "请同意服务条款和隐私政策",
     "termsOfService": "服务条款",
     "privacyPolicy": "隐私政策",
-    "view": "查看"
+    "view": "查看",
+    "forgotPasswordTitle": "重置密码",
+    "forgotPasswordDesc": "输入邮箱获取验证码，然后设置新密码。",
+    "setNewPassword": "设置新密码",
+    "resetPasswordBtn": "重置密码",
+    "passwordResetSuccess": "密码重置成功，请登录。",
+    "backToLogin": "返回登录"
   },
   "terms": {
     "title": "服务条款",

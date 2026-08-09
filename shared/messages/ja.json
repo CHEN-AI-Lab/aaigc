@@ -1186,7 +1186,8 @@
     "missingDomain": "ドメイン名が不足しています",
     "invalidDomain": "無効なドメイン名です",
     "dnsNoRecords": "レコードが見つかりません",
-    "ipLookupFailed": "IPアドレスの検索に失敗しました"
+    "ipLookupFailed": "IPアドレスの検索に失敗しました",
+    "emailNotRegistered": "このメールアドレスは登録されていません"
   },
   "footer": {
     "tagline": "AI 駆動ツールとアプリケーション",
@@ -1341,7 +1342,13 @@
     "agreeTermsRequired": "Please agree to the Terms of Service and Privacy Policy",
     "termsOfService": "Terms of Service",
     "privacyPolicy": "Privacy Policy",
-    "view": "表示"
+    "view": "表示",
+    "forgotPasswordTitle": "パスワードをリセット",
+    "forgotPasswordDesc": "メールアドレスを入力して認証コードを受け取り、新しいパスワードを設定します。",
+    "setNewPassword": "新しいパスワードを設定",
+    "resetPasswordBtn": "パスワードをリセット",
+    "passwordResetSuccess": "パスワードがリセットされました。ログインしてください。",
+    "backToLogin": "ログインに戻る"
   },
   "terms": {
     "title": "利用規約",

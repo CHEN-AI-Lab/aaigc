@@ -6,7 +6,7 @@ import { sendVerificationEmail } from "@/lib/mail"
 
 export async function POST(req: Request) {
   try {
-    const { email } = await req.json()
+    const { email, purpose } = await req.json()
 
     // Validate email format
     if (!email || !isValidEmail(email)) {
@@ -25,10 +25,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "rateLimited" }, { status: 429 })
     }
 
-    // Check email not already registered
-    const existing = await prisma.user.findUnique({ where: { email } })
-    if (existing) {
-      return NextResponse.json({ error: "emailRegistered" }, { status: 409 })
+    // Check email not already registered (skip for forgot-password)
+    if (purpose !== 'forgotPassword') {
+      const existing = await prisma.user.findUnique({ where: { email } })
+      if (existing) {
+        return NextResponse.json({ error: "emailRegistered" }, { status: 409 })
+      }
     }
 
     // Generate code
