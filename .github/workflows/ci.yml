@@ -24,6 +24,9 @@ jobs:
       - name: Structure check
         run: bash scripts/check-structure.sh
 
+      - name: Migration safety check
+        run: bash scripts/check-migration-safety.sh
+
       - name: Translation key check
         run: python3 scripts/check-translations.py
 

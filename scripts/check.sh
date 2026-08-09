@@ -8,6 +8,10 @@ echo "Step 1: Structure check..."
 bash scripts/check-structure.sh
 
 echo ""
+echo "Step 1.5: Migration safety check..."
+bash scripts/check-migration-safety.sh
+echo ""
+
 echo "Step 2: Translation key check..."
 python3 scripts/check-translations.py
 echo ""
