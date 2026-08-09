@@ -57,7 +57,7 @@
 | 3a | 登录页加密码重置模式 | LoginClient.tsx | [x] ✅ 已完成 |
 | 3b | 复用 set-password API（新建） | api/auth/set-password/route.ts | [x] ✅ 已完成 |
 | 3c | 翻译 key 补充 | shared/messages/*.json | [x] ✅ 已完成 |
-| 4a | 登录次数限制逻辑 | auth.ts | [ ] |
-| 7a | 工具测试（JsonFormatter 等） | tests/unit/components/ | [ ] |
-| 6a | CI 加 E2E | .github/workflows/ci.yml | [ ] |
-| 8a | E2E webServer 自动启动 | playwright.config.ts | [ ] |
+| 4a | 登录次数限制逻辑 | auth.ts | [x] ✅ 已完成 |
+| 7a | 工具测试（JsonFormatter 等） | tests/unit/components/ | [x] ✅ 已完成 |
+| 6a | CI 加 E2E | .github/workflows/ci.yml | [x] ✅ 已完成 |
+| 8a | E2E webServer 自动启动 | playwright.config.ts | [x] ✅ 已完成 |
