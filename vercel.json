@@ -1,7 +1,6 @@
 {
   "framework": "nextjs",
   "installCommand": "pnpm install",
-  "rootDirectory": "apps/web",
   "buildCommand": "bash ../../scripts/check-migration-safety.sh && pnpm --filter web exec -- prisma migrate deploy --schema=../../prisma/schema.prisma && pnpm --filter web exec -- prisma generate --schema=../../prisma/schema.prisma && pnpm run build",
   "outputDirectory": ".next"
 }
