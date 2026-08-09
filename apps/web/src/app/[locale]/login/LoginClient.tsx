@@ -63,7 +63,20 @@ export default function LoginClient() {
       })
 
       if (result?.error) {
-        setError(t('loginFailed'))
+        // Check remaining attempts
+        try {
+          const lockRes = await fetch(`/api/auth/check-lockout?email=${encodeURIComponent(email)}`)
+          const lockData = await lockRes.json()
+          if (lockData.locked) {
+            setError(err('accountLocked').replace('{minutes}', String(lockData.minutesRemaining)))
+          } else if (lockData.remaining < 3) {
+            setError(`${t('loginFailed')} ${err('attemptsRemaining').replace('{count}', String(lockData.remaining))}`)
+          } else {
+            setError(t('loginFailed'))
+          }
+        } catch {
+          setError(t('loginFailed'))
+        }
       } else {
         router.push('/')
       }

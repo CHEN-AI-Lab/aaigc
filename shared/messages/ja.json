@@ -1188,7 +1188,8 @@
     "dnsNoRecords": "レコードが見つかりません",
     "ipLookupFailed": "IPアドレスの検索に失敗しました",
     "emailNotRegistered": "このメールアドレスは登録されていません",
-    "accountLocked": "ログイン試行回数が多すぎます。アカウントは{minutes}分間ロックされています。"
+    "accountLocked": "ログイン試行回数が多すぎます。アカウントは{minutes}分間ロックされています。",
+    "attemptsRemaining": "（残り{count}回）"
   },
   "footer": {
     "tagline": "AI 駆動ツールとアプリケーション",
