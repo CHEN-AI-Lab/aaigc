@@ -1193,7 +1193,8 @@
     "ipLookupFailed": "Failed to look up IP address",
     "emailNotRegistered": "This email is not registered",
     "accountLocked": "Too many failed attempts. Your account is locked for {minutes} minutes.",
-    "attemptsRemaining": "({count} attempt(s) remaining)"
+    "attemptsRemaining": "({count} attempt(s) remaining)",
+    "agreeTermsRequired": "Please agree to the Terms of Service and Privacy Policy"
   },
   "footer": {
     "tagline": "AI-powered tools and applications",

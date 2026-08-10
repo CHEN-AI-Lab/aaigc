@@ -1192,7 +1192,8 @@
     "ipLookupFailed": "IP 查詢失敗",
     "emailNotRegistered": "該郵箱未註冊",
     "accountLocked": "登入失敗次數過多，帳號已鎖定，請 {minutes} 分鐘後再試。",
-    "attemptsRemaining": "（還剩 {count} 次機會）"
+    "attemptsRemaining": "（還剩 {count} 次機會）",
+    "agreeTermsRequired": "請同意服務條款和隱私政策"
   },
   "footer": {
     "tagline": "AI 驅動工具與應用程式的集合",

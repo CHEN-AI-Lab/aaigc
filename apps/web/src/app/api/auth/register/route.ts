@@ -4,11 +4,16 @@ import { isValidEmail } from "@/lib/verification"
 
 export async function POST(req: Request) {
   try {
-    const { email, password, name, code } = await req.json()
+    const { email, password, name, code, agreeTerms } = await req.json()
 
     // Validate email
     if (!email || !isValidEmail(email)) {
       return NextResponse.json({ error: "invalidEmail" }, { status: 400 })
+    }
+
+    // Validate privacy consent
+    if (!agreeTerms) {
+      return NextResponse.json({ error: "agreeTermsRequired" }, { status: 400 })
     }
 
     // Validate password (optional)

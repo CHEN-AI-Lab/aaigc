@@ -1193,7 +1193,8 @@
     "ipLookupFailed": "IPアドレスの検索に失敗しました",
     "emailNotRegistered": "このメールアドレスは登録されていません",
     "accountLocked": "ログイン試行回数が多すぎます。アカウントは{minutes}分間ロックされています。",
-    "attemptsRemaining": "（残り{count}回）"
+    "attemptsRemaining": "（残り{count}回）",
+    "agreeTermsRequired": "利用規約とプライバシーポリシーに同意してください"
   },
   "footer": {
     "tagline": "AI 駆動ツールとアプリケーション",
