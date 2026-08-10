@@ -1356,7 +1356,9 @@
     "backToLogin": "返回登入",
     "accountNotFound": "該帳號不存在",
     "noPasswordSet": "該帳號未設置密碼",
-    "optional": "選填"
+    "optional": "選填",
+    "tabEmail": "📧 郵箱驗證碼",
+    "tabPassword": "🔑 密碼登入"
   },
   "terms": {
     "tools": "線上工具",

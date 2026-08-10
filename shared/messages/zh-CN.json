@@ -1357,7 +1357,9 @@
     "backToLogin": "返回登录",
     "accountNotFound": "该账号不存在",
     "noPasswordSet": "该账号未设置密码",
-    "optional": "选填"
+    "optional": "选填",
+    "tabEmail": "📧 邮箱验证码",
+    "tabPassword": "🔑 密码登录"
   },
   "terms": {
     "title": "服务条款",

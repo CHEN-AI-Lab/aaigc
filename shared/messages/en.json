@@ -1357,7 +1357,9 @@
     "backToLogin": "Back to Login",
     "accountNotFound": "Account not found",
     "noPasswordSet": "No password set for this account",
-    "optional": "optional"
+    "optional": "optional",
+    "tabEmail": "📧 Email Code",
+    "tabPassword": "🔑 Password"
   },
   "terms": {
     "title": "Terms of Service",

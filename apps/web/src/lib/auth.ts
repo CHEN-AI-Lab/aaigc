@@ -23,6 +23,41 @@ import { PrismaAdapter } from "@auth/prisma-adapter"
 
 const providers = []
 
+// 邮箱验证码登录
+providers.push(
+  Credentials({
+    id: "email",
+    name: "邮箱验证码登录",
+    credentials: {
+      email: { label: "邮箱", type: "text" },
+      code: { label: "验证码", type: "text" },
+    },
+    async authorize(credentials) {
+      const email = credentials?.email as string
+      const code = credentials?.code as string
+      if (!email || !code) return null
+
+      const verification = await prisma.verificationCode.findFirst({
+        where: { email, code, used: false, expiresAt: { gte: new Date() } },
+        orderBy: { createdAt: "desc" },
+      })
+      if (!verification) return null
+
+      // Mark as used
+      await prisma.verificationCode.update({
+        where: { id: verification.id },
+        data: { used: true },
+      })
+
+      // Find or create user
+      let user = await prisma.user.findUnique({ where: { email } })
+      if (!user) return null
+
+      return { id: user.id, name: user.name, email: user.email!, role: user.role }
+    },
+  })
+)
+
 // 邮箱 + 密码登录
 providers.push(
   Credentials({

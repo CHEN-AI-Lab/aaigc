@@ -11,8 +11,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "invalidEmail" }, { status: 400 })
     }
 
-    // Validate password
-    if (!password || password.length < 8) {
+    // Validate password (optional)
+    if (password && password.length < 8) {
       return NextResponse.json({ error: "passwordTooShort" }, { status: 400 })
     }
 
@@ -47,9 +47,12 @@ export async function POST(req: Request) {
     }
 
     // Create user
-    const bcrypt = await import("bcryptjs")
-    const salt = await bcrypt.genSalt(10)
-    const passwordHash = await bcrypt.hash(password, salt)
+    let passwordHash = null
+    if (password) {
+      const bcrypt = await import("bcryptjs")
+      const salt = await bcrypt.genSalt(10)
+      passwordHash = await bcrypt.hash(password, salt)
+    }
 
     await prisma.user.create({
       data: {
@@ -57,6 +60,7 @@ export async function POST(req: Request) {
         passwordHash,
         name: name.trim(),
         role: "user",
+        termsAgreedAt: new Date(),
       },
     })
 

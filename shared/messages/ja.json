@@ -1357,7 +1357,9 @@
     "backToLogin": "ログインに戻る",
     "accountNotFound": "アカウントが見つかりません",
     "noPasswordSet": "このアカウントはパスワードが設定されていません",
-    "optional": "任意"
+    "optional": "任意",
+    "tabEmail": "📧 メール認証",
+    "tabPassword": "🔑 パスワード"
   },
   "terms": {
     "title": "利用規約",

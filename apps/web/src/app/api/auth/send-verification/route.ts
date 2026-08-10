@@ -25,8 +25,15 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "rateLimited" }, { status: 429 })
     }
 
-    // Check email not already registered (skip for forgot-password)
-    if (purpose !== 'forgotPassword') {
+    // Check email registration status
+    if (purpose === 'login') {
+      // 登录：必须已注册
+      const existing = await prisma.user.findUnique({ where: { email } })
+      if (!existing) {
+        return NextResponse.json({ error: "emailNotRegistered" }, { status: 404 })
+      }
+    } else if (purpose !== 'forgotPassword') {
+      // 注册：必须未注册
       const existing = await prisma.user.findUnique({ where: { email } })
       if (existing) {
         return NextResponse.json({ error: "emailRegistered" }, { status: 409 })
