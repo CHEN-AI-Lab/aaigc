@@ -11,7 +11,11 @@
     "live": "已上线",
     "inDevelopment": "开发中",
     "all": "全部",
-    "aboutLink": "关于 AAIGC →"
+    "aboutLink": "关于 AAIGC →",
+    "goHome": "返回首页",
+    "logout": "退出登录",
+    "showPassword": "显示密码",
+    "hidePassword": "隐藏密码"
   },
   "home": {
     "heroTitle": "AI 驱动工具集",
@@ -1350,7 +1354,10 @@
     "setNewPassword": "设置新密码",
     "resetPasswordBtn": "重置密码",
     "passwordResetSuccess": "密码重置成功，请登录。",
-    "backToLogin": "返回登录"
+    "backToLogin": "返回登录",
+    "accountNotFound": "该账号不存在",
+    "noPasswordSet": "该账号未设置密码",
+    "optional": "选填"
   },
   "terms": {
     "title": "服务条款",

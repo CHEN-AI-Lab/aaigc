@@ -11,7 +11,11 @@
     "aboutLink": "關於 AAIGC",
     "appName": "AAIGC",
     "tools": "工具",
-    "all": "全部"
+    "all": "全部",
+    "goHome": "返回首頁",
+    "logout": "退出登入",
+    "showPassword": "顯示密碼",
+    "hidePassword": "隱藏密碼"
   },
   "home": {
     "heroTitle": "AI 驅動工具集",
@@ -1349,7 +1353,10 @@
     "setNewPassword": "設置新密碼",
     "resetPasswordBtn": "重置密碼",
     "passwordResetSuccess": "密碼重置成功，請登入。",
-    "backToLogin": "返回登入"
+    "backToLogin": "返回登入",
+    "accountNotFound": "該帳號不存在",
+    "noPasswordSet": "該帳號未設置密碼",
+    "optional": "選填"
   },
   "terms": {
     "tools": "線上工具",

@@ -11,7 +11,11 @@
     "all": "すべて",
     "aboutLink": "AAIGCについて →",
     "taglineZh": "AI があなたの仕事と生活を強化します",
-    "appName": "AAIGC"
+    "appName": "AAIGC",
+    "goHome": "ホームに戻る",
+    "logout": "ログアウト",
+    "showPassword": "パスワードを表示",
+    "hidePassword": "パスワードを隠す"
   },
   "home": {
     "heroTitle": "AI 駆動ツール集",
@@ -1350,7 +1354,10 @@
     "setNewPassword": "新しいパスワードを設定",
     "resetPasswordBtn": "パスワードをリセット",
     "passwordResetSuccess": "パスワードがリセットされました。ログインしてください。",
-    "backToLogin": "ログインに戻る"
+    "backToLogin": "ログインに戻る",
+    "accountNotFound": "アカウントが見つかりません",
+    "noPasswordSet": "このアカウントはパスワードが設定されていません",
+    "optional": "任意"
   },
   "terms": {
     "title": "利用規約",

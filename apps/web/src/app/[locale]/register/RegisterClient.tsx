@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from 'next-intl'
 import { signIn } from 'next-auth/react'
 import { useRouter } from '@/i18n/navigation'
 import Link from 'next/link'
+import PasswordInput from '@/components/PasswordInput'
 
 export default function RegisterClient() {
   const t = useTranslations('auth')
@@ -26,6 +27,7 @@ export default function RegisterClient() {
   const [termsError, setTermsError] = useState('')
 
   const [error, setError] = useState('')
+  const [errorType, setErrorType] = useState<'error' | 'success' | 'info'>('error')
   const [loading, setLoading] = useState<string | null>(null)
   const [oauthProvider, setOauthProvider] = useState<string | null>(null)
 
@@ -40,11 +42,13 @@ export default function RegisterClient() {
     setError('')
     setTermsError('')
     if (!agreeTerms) {
-      setTermsError(t('agreeTermsRequired') || 'Please agree to the Terms of Service and Privacy Policy')
+      setTermsError(t('agreeTermsRequired'))
+      setErrorType('error')
       return
     }
     if (!email) {
       setError(t('fillRequired'))
+      setErrorType('error')
       return
     }
 
@@ -58,12 +62,14 @@ export default function RegisterClient() {
       const data = await res.json()
       if (!res.ok) {
         setError(data.error ? err(data.error) : t('sendFailed'))
+        setErrorType('error')
         return
       }
       setCodeSent(true)
       setCountdown(60)
     } catch {
       setError(t('sendFailed'))
+      setErrorType('error')
     } finally {
       setLoading(null)
     }
@@ -73,6 +79,7 @@ export default function RegisterClient() {
     setError('')
     if (!code) {
       setError(t('fillRequired'))
+      setErrorType('error')
       return
     }
 
@@ -86,11 +93,13 @@ export default function RegisterClient() {
       const data = await res.json()
       if (!res.ok) {
         setError(data.error ? err(data.error) : t('verifyFailed'))
+        setErrorType('error')
         return
       }
       setCodeVerified(true)
     } catch {
       setError(t('verifyFailed'))
+      setErrorType('error')
     } finally {
       setLoading(null)
     }
@@ -100,22 +109,26 @@ export default function RegisterClient() {
     setError('')
 
     if (!agreeTerms) {
-      setTermsError(t('agreeTermsRequired') || 'Please agree to the Terms of Service and Privacy Policy')
+      setTermsError(t('agreeTermsRequired'))
+      setErrorType('error')
       return
     }
 
-    if (!name || !password || !confirmPassword) {
+    if (!name) {
       setError(t('fillRequired'))
+      setErrorType('error')
       return
     }
 
-    if (password.length < 8) {
+    if (password && password.length < 8) {
       setError(t('passwordTooShort'))
+      setErrorType('error')
       return
     }
 
     if (password !== confirmPassword) {
       setError(t('passwordMismatch'))
+      setErrorType('error')
       return
     }
 
@@ -130,12 +143,14 @@ export default function RegisterClient() {
       const data = await res.json()
       if (!res.ok) {
         setError(data.error ? err(data.error) : t('registerFailed'))
+        setErrorType('error')
         return
       }
 
       router.push(`/${locale}/login?registered=true&email=${encodeURIComponent(email)}`)
     } catch {
       setError(t('registerFailed'))
+      setErrorType('error')
     } finally {
       setLoading(null)
     }
@@ -150,6 +165,12 @@ export default function RegisterClient() {
       setError(t('oauthNotConfigured'))
       setOauthProvider(null)
     }
+  }
+
+  const errorColors = {
+    error: 'bg-red-50 border border-red-200 text-red-600',
+    success: 'bg-green-50 border border-green-200 text-green-700',
+    info: 'bg-blue-50 border border-blue-200 text-blue-600',
   }
 
   return (
@@ -271,7 +292,11 @@ export default function RegisterClient() {
                 </div>
               )}
 
-              {error && <p className="text-xs text-error text-center">{error}</p>}
+              {error && (
+                <div className={`text-xs rounded-md px-3 py-2 text-center ${errorColors[errorType]}`}>
+                  {error}
+                </div>
+              )}
             </div>
           ) : (
             /* Step 2: User info */
@@ -295,29 +320,32 @@ export default function RegisterClient() {
               <div>
                 <label className="block text-xs font-medium text-text-secondary mb-1.5">
                   {t('password')}
+                  <span className="text-text-secondary/50 ml-1">({t('optional')})</span>
                 </label>
-                <input
-                  type="password"
+                <PasswordInput
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={setPassword}
                   placeholder="••••••••"
-                  className="w-full px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors"
+                  className="w-full px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors bg-card"
                 />
               </div>
               <div>
                 <label className="block text-xs font-medium text-text-secondary mb-1.5">
                   {t('confirmPassword')}
                 </label>
-                <input
-                  type="password"
+                <PasswordInput
                   value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onChange={setConfirmPassword}
                   placeholder="••••••••"
-                  className="w-full px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors"
+                  className="w-full px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors bg-card"
                 />
               </div>
 
-              {error && <p className="text-xs text-error text-center">{error}</p>}
+              {error && (
+                <div className={`text-xs rounded-md px-3 py-2 text-center ${errorColors[errorType]}`}>
+                  {error}
+                </div>
+              )}
 
               <button
                 onClick={handleRegister}

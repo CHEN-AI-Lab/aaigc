@@ -11,7 +11,11 @@
     "live": "Live",
     "inDevelopment": "In Development",
     "all": "All",
-    "aboutLink": "About AAIGC →"
+    "aboutLink": "About AAIGC →",
+    "goHome": "Go Home",
+    "logout": "Logout",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
   },
   "home": {
     "heroTitle": "AI-Powered Tools",
@@ -1350,7 +1354,10 @@
     "setNewPassword": "Set New Password",
     "resetPasswordBtn": "Reset Password",
     "passwordResetSuccess": "Password reset successfully. Please log in.",
-    "backToLogin": "Back to Login"
+    "backToLogin": "Back to Login",
+    "accountNotFound": "Account not found",
+    "noPasswordSet": "No password set for this account",
+    "optional": "optional"
   },
   "terms": {
     "title": "Terms of Service",
