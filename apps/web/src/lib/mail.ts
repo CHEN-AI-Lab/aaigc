@@ -7,7 +7,7 @@ import { t } from 'shared/i18n'
 export async function sendVerificationEmail(
   to: string,
   code: string,
-  locale: string = 'zh-CN'
+  locale: string = 'en'
 ): Promise<{ success: boolean; error?: string }> {
   const isDev = process.env.NODE_ENV === 'development' || !process.env.RESEND_API_KEY
 
