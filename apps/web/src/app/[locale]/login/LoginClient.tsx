@@ -70,7 +70,7 @@ export default function LoginClient() {
       const res = await fetch('/api/auth/send-verification', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, purpose: 'login' }),
+        body: JSON.stringify({ email, purpose: 'login', locale }),
       })
       const data = await res.json()
       if (!res.ok) {
@@ -215,7 +215,7 @@ export default function LoginClient() {
       const res = await fetch('/api/auth/send-verification', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: forgotEmail, purpose: 'forgotPassword' }),
+        body: JSON.stringify({ email: forgotEmail, purpose: 'forgotPassword', locale }),
       })
       const data = await res.json()
       if (!res.ok) {

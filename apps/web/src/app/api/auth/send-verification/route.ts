@@ -6,7 +6,7 @@ import { sendVerificationEmail } from "@/lib/mail"
 
 export async function POST(req: Request) {
   try {
-    const { email, purpose } = await req.json()
+    const { email, purpose, locale } = await req.json()
 
     // Validate email format
     if (!email || !isValidEmail(email)) {
@@ -52,8 +52,8 @@ export async function POST(req: Request) {
       },
     })
 
-    // Send email
-    const sent = await sendVerificationEmail(email, code)
+    // Send email with locale support
+    const sent = await sendVerificationEmail(email, code, locale)
     if (!sent.success) {
       return NextResponse.json({ error: "sendFailed" }, { status: 500 })
     }
