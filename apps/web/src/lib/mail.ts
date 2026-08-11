@@ -5,7 +5,7 @@
 import { VERIFICATION_CODE_TTL } from '@/lib/verification'
 
 function emailT(locale: string, zh: string, en: string): string {
-  return locale === 'zh-CN' || locale.startsWith('zh') ? zh : en
+  return locale === 'zh-CN' ? zh : en
 }
 
 export async function sendVerificationEmail(
