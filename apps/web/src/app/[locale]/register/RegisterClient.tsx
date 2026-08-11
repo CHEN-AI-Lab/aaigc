@@ -172,7 +172,10 @@ export default function RegisterClient() {
     setOauthProvider(provider)
     setError('')
     try {
-      await signIn(provider, { callbackUrl: `/${locale}` })
+      const result = await signIn(provider, { redirect: false, callbackUrl: `/${locale}` })
+      if (result?.url) {
+        window.location.href = result.url
+      }
     } catch {
       setError(t('oauthNotConfigured'))
       setOauthProvider(null)
