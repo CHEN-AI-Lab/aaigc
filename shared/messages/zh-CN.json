@@ -15,7 +15,8 @@
     "goHome": "返回首页",
     "logout": "退出登录",
     "showPassword": "显示密码",
-    "hidePassword": "隐藏密码"
+    "hidePassword": "隐藏密码",
+    "seconds": "秒"
   },
   "home": {
     "heroTitle": "AI 驱动工具集",
@@ -1360,7 +1361,9 @@
     "noPasswordSet": "该账号未设置密码",
     "optional": "选填",
     "tabEmail": "📧 邮箱验证码",
-    "tabPassword": "🔑 密码登录"
+    "tabPassword": "🔑 密码登录",
+    "loginSubtitle": "输入邮箱或使用社交账号登录",
+    "registerSubtitle": "创建账号，开启 AI 之旅"
   },
   "terms": {
     "title": "服务条款",

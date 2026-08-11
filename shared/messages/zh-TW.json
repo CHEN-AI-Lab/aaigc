@@ -15,7 +15,8 @@
     "goHome": "返回首頁",
     "logout": "退出登入",
     "showPassword": "顯示密碼",
-    "hidePassword": "隱藏密碼"
+    "hidePassword": "隱藏密碼",
+    "seconds": "秒"
   },
   "home": {
     "heroTitle": "AI 驅動工具集",
@@ -1359,7 +1360,9 @@
     "noPasswordSet": "該帳號未設置密碼",
     "optional": "選填",
     "tabEmail": "📧 郵箱驗證碼",
-    "tabPassword": "🔑 密碼登入"
+    "tabPassword": "🔑 密碼登入",
+    "loginSubtitle": "輸入郵箱或使用社交帳號登錄",
+    "registerSubtitle": "創建帳號，開啟 AI 之旅"
   },
   "terms": {
     "tools": "線上工具",

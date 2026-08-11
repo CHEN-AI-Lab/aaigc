@@ -315,16 +315,21 @@ export default function LoginClient() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-200px)] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-sm">
-        <div className="bg-card rounded-xl shadow-sm border border-border p-8">
-          <div className="flex justify-center mb-6">
-            <img src="/icon.svg" alt="AAIGC" className="w-10 h-10" />
-          </div>
+    <>
+      <style>{`@keyframes shakeX{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}`}</style>
+      <div className="min-h-[calc(100vh-200px)] flex items-center justify-center px-4 py-12">
+        <div className="w-full max-w-sm">
+          <div className="bg-card rounded-xl shadow-sm border border-border p-8">
+            <div className="flex justify-center mb-4">
+              <img src="/icon.svg" alt="AAIGC" className="w-10 h-10" />
+            </div>
 
-          <h1 className="text-xl font-semibold text-text-primary text-center mb-8">
-            {t('login')}
-          </h1>
+            <h1 className="text-xl font-semibold text-text-primary text-center">
+              {forgotMode ? t('forgotPasswordTitle') : t('login')}
+            </h1>
+            <p className="text-sm text-text-secondary text-center mt-1 mb-8">
+              {forgotMode ? t('forgotPasswordDesc') : t('loginSubtitle')}
+            </p>
 
           {isLoggedIn && (
             <div className="mb-6 p-4 rounded-md bg-blue-50 border border-blue-200">
@@ -398,30 +403,31 @@ export default function LoginClient() {
                 <div className="flex flex-col gap-4">
                   <div>
                     <label className="block text-xs font-medium text-text-secondary mb-1.5">{t('email')}</label>
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => { setEmail(e.target.value); setCodeSent(false) }}
-                      placeholder="name@example.com"
-                      className="w-full px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors"
-                    />
+                    <div className="flex gap-2 mt-1.5">
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => { setEmail(e.target.value); setCodeSent(false) }}
+                        placeholder="name@example.com"
+                        className="flex-1 px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors"
+                      />
+                      <button
+                        onClick={handleSendCode}
+                        disabled={loading === 'send' || countdown > 0 || !email}
+                        className="px-4 py-2.5 rounded-md text-sm font-medium bg-hover text-text-primary hover:bg-border disabled:opacity-40 whitespace-nowrap transition-colors"
+                      >
+                        {countdown > 0 ? `${countdown}${tc('seconds')}` : loading === 'send' ? '...' : t('sendCode')}
+                      </button>
+                    </div>
                   </div>
-                  {!codeSent ? (
-                    <button
-                      onClick={handleSendCode}
-                      disabled={loading === 'send' || !email}
-                      className="w-full px-4 py-2.5 rounded-md bg-accent text-white text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
-                    >
-                      {loading === 'send' ? '...' : t('sendCode')}
-                    </button>
-                  ) : (
+                  {codeSent && (
                     <>
                       <div>
                         <label className="block text-xs font-medium text-text-secondary mb-1.5">{t('verificationCode')}</label>
                         <input
                           type="text"
                           value={code}
-                          onChange={(e) => setCode(e.target.value)}
+                          onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
                           placeholder="000000"
                           maxLength={6}
                           className="w-full px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors text-center tracking-[8px]"
@@ -430,7 +436,7 @@ export default function LoginClient() {
                       <button
                         onClick={handleCodeLogin}
                         disabled={loading === 'login' || !code}
-                        className="w-full px-4 py-2.5 rounded-md bg-accent text-white text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+                        className="w-full px-4 py-2.5 rounded-md bg-accent text-white text-sm font-medium hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50"
                       >
                         {loading === 'login' ? '...' : t('loginButton')}
                       </button>
@@ -490,7 +496,7 @@ export default function LoginClient() {
                   <button
                     onClick={handlePasswordLogin}
                     disabled={loading === 'password' || !!oauthProvider}
-                    className="w-full px-4 py-2.5 rounded-md bg-accent text-white text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+                    className="w-full px-4 py-2.5 rounded-md bg-accent text-white text-sm font-medium hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50"
                   >
                     {loading === 'password' ? (
                       <span className="inline-flex items-center gap-1.5">
@@ -517,7 +523,7 @@ export default function LoginClient() {
                         <input type="email" value={forgotEmail} onChange={(e) => setForgotEmail(e.target.value)} placeholder="name@example.com" disabled={forgotCodeSent} className="w-full px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors disabled:opacity-50" />
                       </div>
                       {!forgotCodeSent ? (
-                        <button onClick={handleForgotSendCode} disabled={loading === 'forgotSend'} className="w-full px-4 py-2.5 rounded-md bg-accent text-white text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50">
+                        <button onClick={handleForgotSendCode} disabled={loading === 'forgotSend'} className="w-full px-4 py-2.5 rounded-md bg-accent text-white text-sm font-medium hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50">
                           {loading === 'forgotSend' ? '...' : t('sendCode')}
                         </button>
                       ) : (
@@ -526,11 +532,11 @@ export default function LoginClient() {
                             <label className="block text-xs font-medium text-text-secondary mb-1.5">{t('verificationCode')}</label>
                             <input type="text" value={forgotCode} onChange={(e) => setForgotCode(e.target.value)} placeholder="000000" maxLength={6} className="w-full px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors text-center tracking-[8px]" />
                           </div>
-                          <button onClick={handleForgotVerifyCode} disabled={loading === 'forgotVerify'} className="w-full px-4 py-2.5 rounded-md bg-accent text-white text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50">
+                          <button onClick={handleForgotVerifyCode} disabled={loading === 'forgotVerify'} className="w-full px-4 py-2.5 rounded-md bg-accent text-white text-sm font-medium hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50">
                             {loading === 'forgotVerify' ? '...' : t('verifyCode')}
                           </button>
                           <button onClick={handleForgotSendCode} disabled={forgotCountdown > 0 || loading === 'forgotSend'} className="w-full text-center text-xs text-text-secondary hover:text-text-primary transition-colors disabled:opacity-50">
-                            {forgotCountdown > 0 ? `${forgotCountdown}s` : t('resendCode')}
+                            {forgotCountdown > 0 ? `${forgotCountdown}${tc('seconds')}` : t('resendCode')}
                           </button>
                         </>
                       )}
@@ -546,7 +552,7 @@ export default function LoginClient() {
                         <PasswordInput value={forgotConfirmPassword} onChange={setForgotConfirmPassword} placeholder="••••••••" className="w-full px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors bg-card" />
                       </div>
                       {error && <div className={`text-xs rounded-md px-3 py-2 text-center ${errorColors[errorType]}`}>{error}</div>}
-                      <button onClick={handleForgotResetPassword} disabled={loading === 'forgotReset'} className="w-full px-4 py-2.5 rounded-md bg-accent text-white text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50">
+                      <button onClick={handleForgotResetPassword} disabled={loading === 'forgotReset'} className="w-full px-4 py-2.5 rounded-md bg-accent text-white text-sm font-medium hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50">
                         {loading === 'forgotReset' ? '...' : t('resetPasswordBtn')}
                       </button>
                     </>
@@ -575,7 +581,8 @@ export default function LoginClient() {
           {t('and')}{' '}
           <Link href={`/${locale}/privacy`} className="text-accent hover:underline">{t('privacyPolicy')}</Link>
         </p>
+        </div>
       </div>
-    </div>
+    </>
   )
 }

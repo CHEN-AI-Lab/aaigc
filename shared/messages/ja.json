@@ -15,7 +15,8 @@
     "goHome": "ホームに戻る",
     "logout": "ログアウト",
     "showPassword": "パスワードを表示",
-    "hidePassword": "パスワードを隠す"
+    "hidePassword": "パスワードを隠す",
+    "seconds": "秒"
   },
   "home": {
     "heroTitle": "AI 駆動ツール集",
@@ -1360,7 +1361,9 @@
     "noPasswordSet": "このアカウントはパスワードが設定されていません",
     "optional": "任意",
     "tabEmail": "📧 メール認証",
-    "tabPassword": "🔑 パスワード"
+    "tabPassword": "🔑 パスワード",
+    "loginSubtitle": "メールアドレスまたはソーシャルログイン",
+    "registerSubtitle": "アカウントを作成して始めましょう"
   },
   "terms": {
     "title": "利用規約",

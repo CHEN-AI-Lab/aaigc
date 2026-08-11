@@ -15,7 +15,8 @@
     "goHome": "Go Home",
     "logout": "Logout",
     "showPassword": "Show password",
-    "hidePassword": "Hide password"
+    "hidePassword": "Hide password",
+    "seconds": "s"
   },
   "home": {
     "heroTitle": "AI-Powered Tools",
@@ -1360,7 +1361,9 @@
     "noPasswordSet": "No password set for this account",
     "optional": "optional",
     "tabEmail": "📧 Email Code",
-    "tabPassword": "🔑 Password"
+    "tabPassword": "🔑 Password",
+    "loginSubtitle": "Enter your email or use social login",
+    "registerSubtitle": "Create your account to get started"
   },
   "terms": {
     "title": "Terms of Service",
