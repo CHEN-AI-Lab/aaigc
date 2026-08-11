@@ -8,8 +8,9 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(cuid())
-  email        String?  @unique
+  id           String    @id @default(cuid())
+  email        String?   @unique
+  emailVerified DateTime?
   passwordHash String?              // bcrypt hash，仅密码用户有
   name         String?
   role         String   @default("user")  // "user" | "admin"
