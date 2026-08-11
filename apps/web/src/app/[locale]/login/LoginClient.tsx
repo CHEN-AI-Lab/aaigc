@@ -74,12 +74,13 @@ export default function LoginClient() {
       })
       const data = await res.json()
       if (!res.ok) {
+        if (data.remainingSeconds) setCountdown(data.remainingSeconds)
         setError(data.error ? err(data.error) : t('sendFailed'))
         setErrorType('error')
         return
       }
       setCodeSent(true)
-      setCountdown(60)
+      setCountdown(120)
     } catch {
       setError(t('sendFailed'))
       setErrorType('error')
@@ -219,12 +220,13 @@ export default function LoginClient() {
       })
       const data = await res.json()
       if (!res.ok) {
+        if (data.remainingSeconds) setForgotCountdown(data.remainingSeconds)
         setError(data.error ? err(data.error) : t('sendFailed'))
         setErrorType('error')
         return
       }
       setForgotCodeSent(true)
-      setForgotCountdown(60)
+      setForgotCountdown(120)
     } catch {
       setError(t('sendFailed'))
       setErrorType('error')
@@ -416,7 +418,7 @@ export default function LoginClient() {
                         disabled={loading === 'send' || countdown > 0 || !email}
                         className="px-4 py-2.5 rounded-md text-sm font-medium bg-hover text-text-primary hover:bg-border disabled:opacity-40 whitespace-nowrap transition-colors"
                       >
-                        {countdown > 0 ? `${countdown}${tc('seconds')}` : loading === 'send' ? '...' : t('sendCode')}
+                        {countdown > 0 ? `${countdown}${tc('seconds')}` : loading === 'send' ? tc('sending') : t('sendCode')}
                       </button>
                     </div>
                   </div>
@@ -428,7 +430,7 @@ export default function LoginClient() {
                           type="text"
                           value={code}
                           onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
-                          placeholder="000000"
+                          placeholder={t('codePlaceholder')}
                           maxLength={6}
                           className="w-full px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors text-center tracking-[8px]"
                         />
@@ -438,14 +440,14 @@ export default function LoginClient() {
                         disabled={loading === 'login' || !code}
                         className="w-full px-4 py-2.5 rounded-md bg-accent text-white text-sm font-medium hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50"
                       >
-                        {loading === 'login' ? '...' : t('loginButton')}
-                      </button>
-                      <button
-                        onClick={handleSendCode}
-                        disabled={countdown > 0 || loading === 'send'}
-                        className="w-full text-center text-xs text-text-secondary hover:text-text-primary transition-colors disabled:opacity-50"
-                      >
-                        {countdown > 0 ? `${countdown}s` : t('resendCode')}
+                        {loading === 'login' ? tc('sending') : t('loginButton')}
+                                              </button>
+                                              <button
+                                                onClick={handleSendCode}
+                                                disabled={countdown > 0 || loading === 'send'}
+                                                className="w-full text-center text-xs text-text-secondary hover:text-text-primary transition-colors disabled:opacity-50"
+                                              >
+                                                {countdown > 0 ? `${countdown}${tc('seconds')}` : t('resendCode')}
                       </button>
                     </>
                   )}
@@ -504,7 +506,7 @@ export default function LoginClient() {
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                         </svg>
-                        ...
+                        {tc('sending')}
                       </span>
                     ) : t('loginButton')}
                   </button>
@@ -520,20 +522,25 @@ export default function LoginClient() {
                     <>
                       <div>
                         <label className="block text-xs font-medium text-text-secondary mb-1.5">{t('email')}</label>
-                        <input type="email" value={forgotEmail} onChange={(e) => setForgotEmail(e.target.value)} placeholder="name@example.com" disabled={forgotCodeSent} className="w-full px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors disabled:opacity-50" />
+                        <div className="flex gap-2 mt-1.5">
+                          <input type="email" value={forgotEmail} onChange={(e) => setForgotEmail(e.target.value)} placeholder="name@example.com" disabled={forgotCodeSent} className="flex-1 px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors disabled:opacity-50" />
+                          <button onClick={handleForgotSendCode} disabled={loading === 'forgotSend' || forgotCountdown > 0 || !forgotEmail} className="px-4 py-2.5 rounded-md text-sm font-medium bg-hover text-text-primary hover:bg-border disabled:opacity-40 whitespace-nowrap transition-colors">
+                            {forgotCountdown > 0 ? `${forgotCountdown}${tc('seconds')}` : loading === 'forgotSend' ? tc('sending') : t('sendCode')}
+                          </button>
+                        </div>
                       </div>
                       {!forgotCodeSent ? (
                         <button onClick={handleForgotSendCode} disabled={loading === 'forgotSend'} className="w-full px-4 py-2.5 rounded-md bg-accent text-white text-sm font-medium hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50">
-                          {loading === 'forgotSend' ? '...' : t('sendCode')}
+                          {loading === 'forgotSend' ? tc('sending') : t('sendCode')}
                         </button>
                       ) : (
                         <>
                           <div>
                             <label className="block text-xs font-medium text-text-secondary mb-1.5">{t('verificationCode')}</label>
-                            <input type="text" value={forgotCode} onChange={(e) => setForgotCode(e.target.value)} placeholder="000000" maxLength={6} className="w-full px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors text-center tracking-[8px]" />
+                            <input type="text" value={forgotCode} onChange={(e) => setForgotCode(e.target.value.replace(/\D/g, ''))} placeholder={t('codePlaceholder')} maxLength={6} className="w-full px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors text-center tracking-[8px]" />
                           </div>
                           <button onClick={handleForgotVerifyCode} disabled={loading === 'forgotVerify'} className="w-full px-4 py-2.5 rounded-md bg-accent text-white text-sm font-medium hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50">
-                            {loading === 'forgotVerify' ? '...' : t('verifyCode')}
+                            {loading === 'forgotVerify' ? tc('sending') : t('verifyCode')}
                           </button>
                           <button onClick={handleForgotSendCode} disabled={forgotCountdown > 0 || loading === 'forgotSend'} className="w-full text-center text-xs text-text-secondary hover:text-text-primary transition-colors disabled:opacity-50">
                             {forgotCountdown > 0 ? `${forgotCountdown}${tc('seconds')}` : t('resendCode')}
@@ -553,7 +560,7 @@ export default function LoginClient() {
                       </div>
                       {error && <div className={`text-xs rounded-md px-3 py-2 text-center ${errorColors[errorType]}`}>{error}</div>}
                       <button onClick={handleForgotResetPassword} disabled={loading === 'forgotReset'} className="w-full px-4 py-2.5 rounded-md bg-accent text-white text-sm font-medium hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50">
-                        {loading === 'forgotReset' ? '...' : t('resetPasswordBtn')}
+                        {loading === 'forgotReset' ? tc('sending') : t('resetPasswordBtn')}
                       </button>
                     </>
                   )}

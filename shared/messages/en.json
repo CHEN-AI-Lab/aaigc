@@ -16,7 +16,8 @@
     "logout": "Logout",
     "showPassword": "Show password",
     "hidePassword": "Hide password",
-    "seconds": "s"
+    "seconds": "s",
+    "sending": "Sending..."
   },
   "home": {
     "heroTitle": "AI-Powered Tools",
@@ -1195,7 +1196,8 @@
     "emailNotRegistered": "This email is not registered",
     "accountLocked": "Too many failed attempts. Your account is locked for {minutes} minutes.",
     "attemptsRemaining": "({count} attempt(s) remaining)",
-    "agreeTermsRequired": "Please agree to the Terms of Service and Privacy Policy"
+    "agreeTermsRequired": "Please agree to the Terms of Service and Privacy Policy",
+    "codeRecentlySent": "Code sent recently. Please try again in {seconds} seconds."
   },
   "footer": {
     "tagline": "AI-powered tools and applications",
@@ -1363,7 +1365,8 @@
     "tabEmail": "📧 Email Code",
     "tabPassword": "🔑 Password",
     "loginSubtitle": "Enter your email or use social login",
-    "registerSubtitle": "Create your account to get started"
+    "registerSubtitle": "Create your account to get started",
+    "codePlaceholder": "Enter 6-digit code"
   },
   "terms": {
     "title": "Terms of Service",

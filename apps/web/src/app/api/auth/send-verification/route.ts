@@ -25,6 +25,17 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "rateLimited" }, { status: 429 })
     }
 
+    // Check 120-second send interval
+    const recent = await prisma.verificationCode.findFirst({
+      where: { email, used: false, createdAt: { gte: new Date(Date.now() - 120000) } },
+      orderBy: { createdAt: "desc" },
+    })
+    if (recent) {
+      const elapsed = Math.floor((Date.now() - recent.createdAt.getTime()) / 1000)
+      const remaining = Math.max(1, 120 - elapsed)
+      return NextResponse.json({ error: "codeRecentlySent", remainingSeconds: remaining }, { status: 429 })
+    }
+
     // Check email registration status
     if (purpose === 'login') {
       // 登录：必须已注册

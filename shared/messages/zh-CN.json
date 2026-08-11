@@ -16,7 +16,8 @@
     "logout": "退出登录",
     "showPassword": "显示密码",
     "hidePassword": "隐藏密码",
-    "seconds": "秒"
+    "seconds": "秒",
+    "sending": "发送中"
   },
   "home": {
     "heroTitle": "AI 驱动工具集",
@@ -1195,7 +1196,8 @@
     "emailNotRegistered": "该邮箱未注册",
     "accountLocked": "登录失败次数过多，账号已锁定，请 {minutes} 分钟后再试。",
     "attemptsRemaining": "（还剩 {count} 次机会）",
-    "agreeTermsRequired": "请同意服务条款和隐私政策"
+    "agreeTermsRequired": "请同意服务条款和隐私政策",
+    "codeRecentlySent": "验证码发送过于频繁，请 {seconds} 秒后再试"
   },
   "footer": {
     "tagline": "AI 驱动工具与应用的集合",
@@ -1363,7 +1365,8 @@
     "tabEmail": "📧 邮箱验证码",
     "tabPassword": "🔑 密码登录",
     "loginSubtitle": "输入邮箱或使用社交账号登录",
-    "registerSubtitle": "创建账号，开启 AI 之旅"
+    "registerSubtitle": "创建账号，开启 AI 之旅",
+    "codePlaceholder": "请输入6位验证码"
   },
   "terms": {
     "title": "服务条款",

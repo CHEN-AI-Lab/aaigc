@@ -16,7 +16,8 @@
     "logout": "ログアウト",
     "showPassword": "パスワードを表示",
     "hidePassword": "パスワードを隠す",
-    "seconds": "秒"
+    "seconds": "秒",
+    "sending": "送信中..."
   },
   "home": {
     "heroTitle": "AI 駆動ツール集",
@@ -1195,7 +1196,8 @@
     "emailNotRegistered": "このメールアドレスは登録されていません",
     "accountLocked": "ログイン試行回数が多すぎます。アカウントは{minutes}分間ロックされています。",
     "attemptsRemaining": "（残り{count}回）",
-    "agreeTermsRequired": "利用規約とプライバシーポリシーに同意してください"
+    "agreeTermsRequired": "利用規約とプライバシーポリシーに同意してください",
+    "codeRecentlySent": "コードの送信が頻繁です。{seconds}秒後にお試しください。"
   },
   "footer": {
     "tagline": "AI 駆動ツールとアプリケーション",
@@ -1363,7 +1365,8 @@
     "tabEmail": "📧 メール認証",
     "tabPassword": "🔑 パスワード",
     "loginSubtitle": "メールアドレスまたはソーシャルログイン",
-    "registerSubtitle": "アカウントを作成して始めましょう"
+    "registerSubtitle": "アカウントを作成して始めましょう",
+    "codePlaceholder": "6桁のコードを入力"
   },
   "terms": {
     "title": "利用規約",

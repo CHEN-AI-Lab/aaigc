@@ -16,7 +16,8 @@
     "logout": "退出登入",
     "showPassword": "顯示密碼",
     "hidePassword": "隱藏密碼",
-    "seconds": "秒"
+    "seconds": "秒",
+    "sending": "發送中"
   },
   "home": {
     "heroTitle": "AI 驅動工具集",
@@ -1194,7 +1195,8 @@
     "emailNotRegistered": "該郵箱未註冊",
     "accountLocked": "登入失敗次數過多，帳號已鎖定，請 {minutes} 分鐘後再試。",
     "attemptsRemaining": "（還剩 {count} 次機會）",
-    "agreeTermsRequired": "請同意服務條款和隱私政策"
+    "agreeTermsRequired": "請同意服務條款和隱私政策",
+    "codeRecentlySent": "驗證碼發送過於頻繁，請 {seconds} 秒後再試"
   },
   "footer": {
     "tagline": "AI 驅動工具與應用程式的集合",
@@ -1362,7 +1364,8 @@
     "tabEmail": "📧 郵箱驗證碼",
     "tabPassword": "🔑 密碼登入",
     "loginSubtitle": "輸入郵箱或使用社交帳號登錄",
-    "registerSubtitle": "創建帳號，開啟 AI 之旅"
+    "registerSubtitle": "創建帳號，開啟 AI 之旅",
+    "codePlaceholder": "請輸入6位驗證碼"
   },
   "terms": {
     "tools": "線上工具",

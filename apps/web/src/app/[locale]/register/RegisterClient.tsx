@@ -72,12 +72,13 @@ export default function RegisterClient() {
       })
       const data = await res.json()
       if (!res.ok) {
+        if (data.remainingSeconds) setCountdown(data.remainingSeconds)
         setError(data.error ? err(data.error) : t('sendFailed'))
         setErrorType('error')
         return
       }
       setCodeSent(true)
-      setCountdown(60)
+      setCountdown(120)
     } catch {
       setError(t('sendFailed'))
       setErrorType('error')
@@ -256,7 +257,7 @@ export default function RegisterClient() {
                       disabled={loading === 'send' || countdown > 0 || !email}
                       className="px-4 py-2.5 rounded-md text-sm font-medium bg-hover text-text-primary hover:bg-border disabled:opacity-40 whitespace-nowrap transition-colors"
                     >
-                      {countdown > 0 ? `${countdown}${tc('seconds')}` : loading === 'send' ? '...' : t('sendCode')}
+                      {countdown > 0 ? `${countdown}${tc('seconds')}` : loading === 'send' ? tc('sending') : t('sendCode')}
                     </button>
                   </div>
                 </div>
@@ -270,7 +271,7 @@ export default function RegisterClient() {
                       type="text"
                       value={code}
                       onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
-                      placeholder="000000"
+                      placeholder={t('codePlaceholder')}
                       maxLength={6}
                       className="w-full px-3.5 py-2.5 rounded-md border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors text-center tracking-[8px]"
                     />
@@ -280,7 +281,7 @@ export default function RegisterClient() {
                       disabled={loading === 'verify' || !code}
                       className="w-full mt-3 px-4 py-2.5 rounded-md bg-accent text-white text-sm font-medium hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50"
                     >
-                      {loading === 'verify' ? '...' : t('verifyCode')}
+                      {loading === 'verify' ? tc('sending') : t('verifyCode')}
                     </button>
                   </div>
                 )}
@@ -368,7 +369,7 @@ export default function RegisterClient() {
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                       </svg>
-                      ...
+                      {tc('sending')}
                     </span>
                   ) : t('registerButton')}
                 </button>
