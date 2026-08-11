@@ -2,8 +2,11 @@
 // In development, logs the code to console.
 // In production, sends via Resend (requires RESEND_API_KEY env var).
 
-import { t } from 'shared/i18n'
 import { VERIFICATION_CODE_TTL } from '@/lib/verification'
+
+function emailT(locale: string, zh: string, en: string): string {
+  return locale === 'zh-CN' || locale.startsWith('zh') ? zh : en
+}
 
 export async function sendVerificationEmail(
   to: string,
@@ -17,11 +20,11 @@ export async function sendVerificationEmail(
     return { success: true }
   }
 
-  const subject = t(locale, 'AAIGC 验证码', 'AAIGC verification code')
-  const title = t(locale, '验证您的邮箱', 'Verify your email')
-  const desc = t(locale, '请输入以下验证码完成验证：', 'Enter the code below to verify your email:')
+  const subject = emailT(locale, 'AAIGC 验证码', 'AAIGC verification code')
+  const title = emailT(locale, '验证您的邮箱', 'Verify your email')
+  const desc = emailT(locale, '请输入以下验证码完成验证：', 'Enter the code below to verify your email:')
   const expireMinutes = Math.floor(VERIFICATION_CODE_TTL / 60000)
-  const expireWarning = t(locale, `验证码 ${expireMinutes} 分钟内有效，请勿泄露给他人。`, `This code expires in ${expireMinutes} minutes. Do not share it with anyone.`)
+  const expireWarning = emailT(locale, `验证码 ${expireMinutes} 分钟内有效，请勿泄露给他人。`, `This code expires in ${expireMinutes} minutes. Do not share it with anyone.`)
 
   const html = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background-color:#f4f4f4;padding:24px">
   <div style="max-width:480px;margin:0 auto;background-color:#ffffff;border-radius:12px;overflow:hidden">
