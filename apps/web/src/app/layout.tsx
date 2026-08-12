@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     siteName: 'AAIGC',
-    url: 'https://aaigc.online',
+    url: process.env.NEXT_PUBLIC_APP_URL || '',
   },
   twitter: {
     card: 'summary_large_image',
