@@ -3,11 +3,12 @@
 import { useEffect } from 'react'
 import { WORKER_URL } from '../constants'
 
-export function useVisitTracking(project: string, page?: string, tool?: string) {
+export function useVisitTracking(project: string, page?: string | null, tool?: string) {
   useEffect(() => {
     const payload = JSON.stringify({
       project,
-      page: page || window.location.pathname,
+      // page === null → tool-only event: don't count pageview (VisitTracker already did)
+      page: page === null ? undefined : page || window.location.pathname,
       tool: tool || null,
       type: tool ? 'tool' : 'page',
     })
@@ -36,12 +37,8 @@ export async function fetchRanking(project: string, limit = 20, start?: string, 
   let url = `${WORKER_URL}/ranking?project=${project}&limit=${limit}`
   if (start && end) url += `&start=${start}&end=${end}`
   const res = await fetch(url)
-  const data = (await res.json()) as string[]
-  const ranking: { id: string; count: number }[] = []
-  for (let i = 0; i < data.length; i += 2) {
-    ranking.push({ id: data[i], count: parseInt(data[i + 1]) || 0 })
-  }
-  return ranking
+  const data = (await res.json()) as { id: string; count: number }[]
+  return Array.isArray(data) ? data : []
 }
 
 export async function fetchOnline(project: string) {

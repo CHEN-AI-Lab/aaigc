@@ -1,5 +1,6 @@
 'use client'
 
+import { useVisitTracking } from 'shared/hooks/useVisitTracking'
 import { lazy, Suspense } from 'react'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
@@ -54,6 +55,9 @@ export default function ToolPageClient({ slug }: Props) {
   const t = useTranslations('tools')
   const tu = useTranslations('ui')
   const Component = toolModules[slug]
+
+  // Track tool usage (page already tracked by VisitTracker, only pass tool)
+  useVisitTracking('aaigc', null, slug)
 
   return (
     <div>
