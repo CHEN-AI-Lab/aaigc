@@ -177,7 +177,9 @@ export default function StatsPage() {
       dateMode === 'custom'
         ? fetchDaily(project, 0, startDate, endDate).catch(() => [])
         : fetchDaily(project, dailyDays).catch(() => []),
-      fetchRanking(project, 20, startDate, endDate).catch(() => []),
+      dateMode === 'all'
+        ? fetchRanking(project, 20).catch(() => [])
+        : fetchRanking(project, 20, startDate, endDate).catch(() => []),
       fetchPages(project, 10, startDate, endDate).catch(() => []),
       fetchCountries(project, Math.min(dailyDays, 30), startDate, endDate).catch(() => []),
       fetchReferrer(project, 10, startDate, endDate).catch(() => []),
