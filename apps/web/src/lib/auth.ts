@@ -103,12 +103,6 @@ if (process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET) {
       clientId: process.env.AUTH_GOOGLE_ID,
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
       allowDangerousEmailAccountLinking: true,
-      authorization: {
-        url: "https://accounts.google.com/o/oauth2/v2/auth",
-        params: { scope: "openid profile email" },
-      },
-      token: { url: "https://oauth2.googleapis.com/token" },
-      userinfo: { url: "https://openidconnect.googleapis.com/v1/userinfo" },
     })
   )
 }
