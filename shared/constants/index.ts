@@ -7,3 +7,10 @@ export const WORKER_URL: string =
   (typeof process !== 'undefined' &&
     (process as any).env?.NEXT_PUBLIC_WORKER_URL) ||
   'https://stats.aaigc.workers.dev'
+
+// Fallback tracking endpoint for users who cannot reach the Worker (e.g. China)
+// Sends tracking data directly to the insights dashboard API
+export const FALLBACK_URL =
+  (typeof process !== 'undefined' &&
+    (process as any).env?.NEXT_PUBLIC_FALLBACK_URL) ||
+  'https://insights.aaigc.online/api/track'
