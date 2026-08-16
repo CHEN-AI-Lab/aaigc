@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
-import { fetchRanking } from 'shared/hooks/useVisitTracking'
+import { fetchRanking } from 'shared/hooks/fetchStats'
 import type { ToolMeta } from 'data/tools'
 
 type Props = {

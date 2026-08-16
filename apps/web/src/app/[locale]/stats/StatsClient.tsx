@@ -10,7 +10,7 @@ import DateRangePicker from '../../../components/DateRangePicker'
 import {
   fetchStats, fetchDaily, fetchRanking,
   fetchOnline, fetchPages, fetchCountries, fetchReferrer,
-} from 'shared/hooks/useVisitTracking'
+} from 'shared/hooks/fetchStats'
 
 const ALL_PROJECTS = [
   { id: 'aaigc', icon: '◈', name: 'AAIGC' },
