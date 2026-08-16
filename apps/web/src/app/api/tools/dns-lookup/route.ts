@@ -9,7 +9,7 @@ async function queryDns(name: string, type: string) {
     })
     const data = await res.json()
     if (data.Answer?.length) return data.Answer
-  } catch {}
+  } catch { /* Alibaba DNS timeout — try Google DNS */ }
 
   // Fallback to Google DNS
   try {
@@ -19,7 +19,7 @@ async function queryDns(name: string, type: string) {
     })
     const data = await res.json()
     if (data.Answer?.length) return data.Answer
-  } catch {}
+  } catch { /* Google DNS timeout — return null */ }
 
   return null
 }
@@ -44,6 +44,6 @@ export async function GET(request: NextRequest) {
     })
     const fb = await fallback.json()
     if (fb.Authority?.length) return NextResponse.json({ Answer: fb.Authority, note: `No ${type} records — showing SOA/NS instead` })
-  } catch {}
+  } catch { /* Fallback lookup failed — report no records */ }
   return NextResponse.json({ error: "dnsNoRecords" }, { status: 404 })
 }

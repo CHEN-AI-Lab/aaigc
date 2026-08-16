@@ -12,7 +12,7 @@ function daysInMonth(y: number, m: number) {
 }
 
 // ─── ClampInput — module-level ───
-function ClampInput({ value, onChange, min, max, label, field, hint }: {
+function ClampInput({ value, onChange, min, max, label: _label, field, hint }: {
   value: string; onChange: (v: string) => void; min: number; max: number; label: string; field: string; hint: { field: string; msg: string } | null
 }) {
   const hintFor = (f: string) => hint?.field === f ? hint.msg : null
@@ -118,7 +118,7 @@ export default function DateCalculator() {
     } else {
       setter(trimmed)
     }
-  }, [locale, showHint])
+  }, [showHint, t])
 
   const calcDiff = useCallback(() => {
     setError('')
@@ -135,7 +135,7 @@ export default function DateCalculator() {
     const h = Math.floor((abs % 86400000) / 3600000)
     const m = Math.floor((abs % 3600000) / 60000)
     setDiff(`${prefix}${d} ${t('days')}, ${h} ${t('hours')}, ${m} ${t('minutes')}`)
-  }, [d1y, d1m, d1d, d1h, d1min, d1s, d2y, d2m, d2d, d2h, d2min, d2s, locale])
+  }, [d1y, d1m, d1d, d1h, d1min, d1s, d2y, d2m, d2d, d2h, d2min, d2s, t])
 
   const calcAdd = useCallback(() => {
     setError('')
@@ -145,7 +145,7 @@ export default function DateCalculator() {
         if (isNaN(n)) { setError(t('enterNumberOfDays')); return }
     d.setDate(d.getDate() + n)
     setAddResult(d.toLocaleDateString(locale === 'ja' ? 'ja-JP' : locale === 'en' ? 'en-US' : 'zh-CN'))
-  }, [addY, addM, addD, addDays, locale])
+  }, [addY, addM, addD, addDays, locale, t])
 
   const todayBtn = (setters: { y: (v: string) => void; m: (v: string) => void; d: (v: string) => void; h?: (v: string) => void; min?: (v: string) => void; s?: (v: string) => void }) => {
     const d = new Date()

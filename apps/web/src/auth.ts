@@ -1,6 +1,5 @@
 import NextAuth from "next-auth"
 import { DefaultSession } from "next-auth"
-import { checkLoginRateLimit, recordLoginAttempt } from "@/lib/login-rate-limit"
 
 declare module "next-auth" {
   interface Session {
@@ -18,8 +17,9 @@ declare module "next-auth" {
 import Google from "next-auth/providers/google"
 import GitHub from "next-auth/providers/github"
 import Credentials from "next-auth/providers/credentials"
-import { prisma } from "@/lib/prisma"
+import { prisma } from "shared/utils/prisma"
 import { PrismaAdapter } from "@auth/prisma-adapter"
+import { checkLoginRateLimit, recordLoginAttempt } from "shared/utils/login-rate-limit"
 
 const providers = []
 
@@ -50,7 +50,7 @@ providers.push(
       })
 
       // Find or create user
-      let user = await prisma.user.findUnique({ where: { email } })
+      const user = await prisma.user.findUnique({ where: { email } })
       if (!user) return null
 
       return { id: user.id, name: user.name, email: user.email!, role: user.role }
@@ -150,7 +150,7 @@ const { handlers: nextAuthHandlers, auth: nextAuthAuth, signIn, signOut } = Next
       }
       return session
     },
-    async jwt({ token, account, user }) {
+    async jwt({ token, account }) {
       if (account) {
         token.provider = account.provider
       }

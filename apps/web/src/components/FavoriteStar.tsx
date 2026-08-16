@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useState } from 'react'
-import { useSession } from '@/lib/auth-client'
+import { useSession } from '@/auth-client'
 import { useTranslations } from 'next-intl'
 import { useRouter } from '@/i18n/navigation'
 

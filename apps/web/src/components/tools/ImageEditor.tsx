@@ -217,7 +217,7 @@ export default function ImageEditor() {
                   setShowZoom(mx >= offsetX && mx <= offsetX + contentW && my >= offsetY && my <= offsetY + contentH)
                 }
               }
-            }} onMouseUp={handleMouseUp} onMouseLeave={(e) => { handleMouseUp(); setShowZoom(false) }}>
+            }} onMouseUp={handleMouseUp} onMouseLeave={(_e) => { handleMouseUp(); setShowZoom(false) }}>
             <img ref={imgRef} src={dataUrl} alt="Preview" className="w-full h-auto max-h-[60vh] object-contain" draggable={false} />
             {showZoom && imgRef.current && (() => {
               const { offsetX, offsetY, contentW } = getDisplayContent(imgRef.current)

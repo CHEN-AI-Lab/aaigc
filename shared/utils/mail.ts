@@ -1,23 +1,34 @@
 // Email sending service abstraction.
-// In development, logs the code to console.
+// In development, returns the code in the response (no email sent).
 // In production, sends via Resend (requires RESEND_API_KEY env var).
+// Never logs verification codes to console or log files.
 
-import { VERIFICATION_CODE_TTL } from '@/lib/verification'
+import { VERIFICATION_CODE_TTL } from './verification'
 
-function emailT(locale: string, zh: string, en: string): string {
-  return locale === 'zh-CN' ? zh : en
+/**
+ * Email translation helper: zh-* locales get Chinese, everything else gets English.
+ * This matches the product requirement: "中文发中文，其他国家发英文".
+ */
+function emailT(locale: string | undefined, zh: string, en: string): string {
+  return locale?.startsWith('zh') ? zh : en
 }
 
 export async function sendVerificationEmail(
   to: string,
   code: string,
   locale: string = 'en'
-): Promise<{ success: boolean; error?: string }> {
-  const isDev = process.env.NODE_ENV === 'development' || !process.env.RESEND_API_KEY
+): Promise<{ success: boolean; error?: string; devCode?: string }> {
+  const isDev = process.env.NODE_ENV === 'development'
 
   if (isDev) {
-    console.log(`[DEV] Verification code for ${to}: ${code}`)
-    return { success: true }
+    // Dev mode: don't log the code anywhere, return it in the response
+    // so the frontend can display it for testing
+    return { success: true, devCode: code }
+  }
+
+  if (!process.env.RESEND_API_KEY) {
+    // Production without Resend key — fail loudly instead of silently pretending to send
+    return { success: false, error: 'RESEND_API_KEY not configured' }
   }
 
   const subject = emailT(locale, 'AAIGC 验证码', 'AAIGC verification code')
@@ -51,7 +62,7 @@ export async function sendVerificationEmail(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'AAIGC <noreply@aaigc.online>',
+        from: process.env.MAIL_FROM || 'AAIGC <noreply@aaigc.online>',
         to,
         subject,
         html,

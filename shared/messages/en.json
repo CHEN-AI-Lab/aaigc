@@ -1366,7 +1366,8 @@
     "tabPassword": "🔑 Password",
     "loginSubtitle": "Enter your email or use social login",
     "registerSubtitle": "Create your account to get started",
-    "codePlaceholder": "Enter 6-digit code"
+    "codePlaceholder": "Enter 6-digit code",
+    "devCodeHint": "Dev mode: code {code}"
   },
   "terms": {
     "title": "Terms of Service",

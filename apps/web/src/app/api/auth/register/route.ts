@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
-import { prisma } from "@/lib/prisma"
-import { isValidEmail } from "@/lib/verification"
+import { prisma } from "shared/utils/prisma"
+import { isValidEmail } from "shared/utils/verification"
 
 export async function POST(req: Request) {
   try {

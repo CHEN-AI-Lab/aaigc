@@ -20,7 +20,7 @@ export default function IpLookup() {
         setLoading(false)
       })
       .catch(() => { setError(t('conversionFailed')); setLoading(false) })
-  }, [t, locale])
+  }, [t, locale, err])
 
   // Show full location from API (country + province + city/district)
   const locStr = [data?.country, data?.region, data?.city].filter(Boolean).join(' ')

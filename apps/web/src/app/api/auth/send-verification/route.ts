@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server"
-import { prisma } from "@/lib/prisma"
-import { isValidEmail, isDisposableEmail, generateVerificationCode, VERIFICATION_CODE_TTL } from "@/lib/verification"
-import { checkRateLimit } from "@/lib/rate-limit"
-import { sendVerificationEmail } from "@/lib/mail"
+import { prisma } from "shared/utils/prisma"
+import { isValidEmail, isDisposableEmail, generateVerificationCode, VERIFICATION_CODE_TTL } from "shared/utils/verification"
+import { checkRateLimit } from "shared/utils/rate-limit"
+import { sendVerificationEmail } from "shared/utils/mail"
 
 export async function POST(req: Request) {
   try {
@@ -69,7 +69,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "sendFailed" }, { status: 500 })
     }
 
-    return NextResponse.json({ success: true })
+    // In dev mode, return the code so the frontend can display it for testing
+    return NextResponse.json({ success: true, devCode: sent.devCode })
   } catch (error) {
     console.error("Send verification error:", error)
     return NextResponse.json({ error: "sendFailed" }, { status: 500 })

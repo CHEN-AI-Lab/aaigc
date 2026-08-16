@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { prisma } from "@/lib/prisma"
+import { prisma } from "shared/utils/prisma"
 
 // POST /api/auth/check-password
 // 检查账号是否存在、是否设置了密码

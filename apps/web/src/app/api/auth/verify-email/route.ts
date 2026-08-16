@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server"
-import { prisma } from "@/lib/prisma"
-import { VERIFICATION_CODE_TTL } from "@/lib/verification"
-import { checkRateLimit } from "@/lib/rate-limit"
+import { prisma } from "shared/utils/prisma"
+import { checkRateLimit } from "shared/utils/rate-limit"
 
 export async function POST(req: Request) {
   try {

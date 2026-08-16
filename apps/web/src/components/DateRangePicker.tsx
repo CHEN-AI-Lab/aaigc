@@ -61,7 +61,6 @@ function CustomHeader({
   const months = locale === 'ja' ? MONTHS_JA : locale === 'zh-CN' ? MONTHS_CN : MONTHS_EN
   const year = date.getFullYear()
   const month = date.getMonth()
-  const sep = locale === 'en' ? ' ' : ''
 
   // Years from 2026 to current year
   const years = []

@@ -1,10 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
 
 export default function UserAgentParser() {
-  const t = useTranslations('tools')
   const [ua, setUa] = useState('')
 
   useEffect(() => { setUa(navigator.userAgent) }, [])

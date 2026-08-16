@@ -1,4 +1,5 @@
 // Email validation helpers
+
 export function isValidEmail(email: string): boolean {
   // RFC 5322 simplified - reasonable email format check
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)

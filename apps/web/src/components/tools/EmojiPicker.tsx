@@ -117,7 +117,6 @@ const EMOJIS: Record<string, { emoji: string; name: string; nameCn?: string }[]>
 export default function EmojiPicker() {
   const t = useTranslations('tools')
   const locale = useLocale()
-  const isCn = locale.startsWith('zh')
 
   const emojiName = (item: { emoji: string; name: string }) => {
     if (locale !== 'en') {
@@ -131,7 +130,7 @@ export default function EmojiPicker() {
   const [copied, setCopied] = useState('')
 
   const copy = async (emoji: string) => {
-    try { await navigator.clipboard.writeText(emoji); setCopied(emoji); setTimeout(() => setCopied(''), 1500) } catch {}
+    try { await navigator.clipboard.writeText(emoji); setCopied(emoji); setTimeout(() => setCopied(''), 1500) } catch { /* clipboard write may fail silently */ }
   }
 
   return (

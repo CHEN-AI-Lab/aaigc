@@ -21,7 +21,7 @@ export default function JsonToCsv() {
     URL.revokeObjectURL(url)
   }, [output])
 
-  const flatten = (obj: unknown, prefix = ''): Record<string, string> => {
+  const flatten = useCallback((obj: unknown, prefix = ''): Record<string, string> => {
     const result: Record<string, string> = {}
     if (obj === null || obj === undefined) return result
     if (typeof obj !== 'object' || Array.isArray(obj)) {
@@ -37,7 +37,7 @@ export default function JsonToCsv() {
       }
     }
     return result
-  }
+  }, [])
 
   const convert = useCallback(() => {
     setError('')
@@ -98,7 +98,7 @@ export default function JsonToCsv() {
     } catch {
       setError(t('invalidJson'))
     }
-  }, [input, t])
+  }, [input, t, flatten])
 
   const handleCopy = useCallback(async () => {
     try {

@@ -10,7 +10,6 @@ import PasswordInput from '@/components/PasswordInput'
 export default function RegisterClient() {
   const t = useTranslations('auth')
   const tc = useTranslations('common')
-  const tv = useTranslations('validation')
   const err = useTranslations('errors')
   const locale = useLocale()
   const router = useRouter()
@@ -19,6 +18,7 @@ export default function RegisterClient() {
   const [code, setCode] = useState('')
   const [codeSent, setCodeSent] = useState(false)
   const [codeVerified, setCodeVerified] = useState(false)
+  const [devCode, setDevCode] = useState('')
   const [countdown, setCountdown] = useState(0)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -51,6 +51,7 @@ export default function RegisterClient() {
   const handleSendCode = async () => {
     setError('')
     setTermsError('')
+    setDevCode('')
     if (!agreeTerms) {
       setShaking(true)
       setTermsError(t('agreeTermsRequired'))
@@ -79,6 +80,7 @@ export default function RegisterClient() {
       }
       setCodeSent(true)
       setCountdown(120)
+      if (data.devCode) setDevCode(data.devCode)
     } catch {
       setError(t('sendFailed'))
       setErrorType('error')
@@ -89,6 +91,7 @@ export default function RegisterClient() {
 
   const handleVerifyCode = async () => {
     setError('')
+    setDevCode('')
     if (!code) {
       setError(t('fillRequired'))
       setErrorType('error')
@@ -267,6 +270,11 @@ export default function RegisterClient() {
 
                 {codeSent && (
                   <div>
+                    {devCode && (
+                      <div className="mb-3 p-2 rounded-lg bg-blue-50 border border-blue-200 text-xs text-blue-700 text-center">
+                        {t('devCodeHint').replace('{code}', devCode)}
+                      </div>
+                    )}
                     <label className="block text-xs font-medium text-text-secondary mb-1.5">
                       {t('verificationCode')}
                     </label>

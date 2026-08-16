@@ -1,11 +1,10 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import { useTranslations, useLocale } from 'next-intl'
+import { useTranslations } from 'next-intl'
 
 export default function YamlJsonConverter() {
   const t = useTranslations('tools')
-  const locale = useLocale()
   const [input, setInput] = useState('')
   const [mode, setMode] = useState<'yaml2json' | 'json2yaml'>('yaml2json')
   const [output, setOutput] = useState('')

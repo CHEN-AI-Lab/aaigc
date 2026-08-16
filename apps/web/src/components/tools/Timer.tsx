@@ -105,7 +105,6 @@ export default function Timer() {
       setElapsed(now - startTimeRef.current)
     }, 10)
     return () => { if (intervalRef.current) clearInterval(intervalRef.current) }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [running, mode])
 
   const startCountdown = useCallback(() => {

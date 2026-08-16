@@ -1366,7 +1366,8 @@
     "tabPassword": "🔑 密码登录",
     "loginSubtitle": "输入邮箱或使用社交账号登录",
     "registerSubtitle": "创建账号，开启 AI 之旅",
-    "codePlaceholder": "请输入6位验证码"
+    "codePlaceholder": "请输入6位验证码",
+    "devCodeHint": "开发模式：验证码 {code}"
   },
   "terms": {
     "title": "服务条款",

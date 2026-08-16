@@ -32,7 +32,7 @@ vi.mock('@/i18n/navigation', () => ({
 }))
 
 // Mock the thin re-export wrapper instead of next-auth/react directly
-vi.mock('@/lib/auth-client', () => ({
+vi.mock('@/auth-client', () => ({
   useSession: () => ({ data: null, status: 'unauthenticated' }),
   SessionProvider: ({ children }: any) => children,
 }))

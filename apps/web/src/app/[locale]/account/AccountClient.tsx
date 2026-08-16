@@ -2,7 +2,6 @@
 
 import { useTranslations } from 'next-intl'
 import { useSession, signOut } from 'next-auth/react'
-import { useRouter } from '@/i18n/navigation'
 import Link from 'next/link'
 import { useCallback, useEffect, useState } from 'react'
 import type { FavoriteItem } from 'shared/types'
@@ -12,7 +11,6 @@ export default function AccountClient() {
   const tt = useTranslations('tools')
   const tp = useTranslations('products')
   const { data: session, status } = useSession()
-  const router = useRouter()
   const [favorites, setFavorites] = useState<FavoriteItem[]>([])
   const [favoritesLoading, setFavoritesLoading] = useState(false)
 
@@ -100,7 +98,7 @@ export default function AccountClient() {
           <div className="flex items-center justify-between py-2 border-t border-[rgba(127,99,21,0.1)]">
             <span className="text-xs text-text-secondary">{t('role')}</span>
             <span className="text-xs text-text-primary font-medium">
-              {(session.user as any)?.role === 'admin' ? t('admin') : t('user')}
+              {(session.user as { role?: string })?.role === 'admin' ? t('admin') : t('user')}
             </span>
           </div>
 

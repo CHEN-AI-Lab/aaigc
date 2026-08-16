@@ -91,10 +91,8 @@ export default function PdfTool() {
       const baseName = files[0].name.replace(/\.pdf$/i, '')
       const groupSize = Math.max(1, pagesPerGroup)
       const zip = new JSZip()
-      let groupIndex = 0
 
       for (let i = 0; i < total; i += groupSize) {
-        groupIndex++
         const end = Math.min(i + groupSize, total)
         const newDoc = await PDFDocument.create()
         const pages = await newDoc.copyPages(doc, Array.from({ length: end - i }, (_, k) => i + k))

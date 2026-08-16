@@ -734,7 +734,7 @@ function MortgageCalc() {
   useEffect(() => {
     const max = new Date(parseInt(startYear), parseInt(startMonth), 0).getDate()
     if (parseInt(startDay) > max) setStartDay(String(max).padStart(2, '0'))
-  }, [startYear, startMonth])
+  }, [startYear, startMonth, startDay])
 
   const YEAR_OPTIONS = Array.from({ length: 30 }, (_, i) => String(i + 1))
 
@@ -776,6 +776,11 @@ function MortgageCalc() {
   const fundN = parseInt(fundYears) * 12
   const commercialRate = (parseFloat(lpr) + parseFloat(bp || '0') / 100) / 100 / 12
   const fundMonthlyRate = (parseFloat(fundRate) || 0) / 100 / 12
+
+  // Mortgage calculation result types
+  type MortgageScheduleItem = { month: number; payment: number; principal: number; interest: number; remaining: number }
+  type MortgageSimple = { monthly: number; totalInterest: number; totalPayment: number; schedule: MortgageScheduleItem[] }
+  type MortgageMixed = MortgageSimple & { commercial: { monthly: number; amount: number; schedule: MortgageScheduleItem[] }; fund: { monthly: number; amount: number; schedule: MortgageScheduleItem[] } }
 
   const result = (() => {
     const calc = repayType === 'equal-payment' ? calcEqualPayment : calcEqualPrincipal
@@ -960,11 +965,11 @@ function MortgageCalc() {
               <div className="p-2 bg-card rounded-sm text-xs space-y-1">
                 <div className="flex justify-between">
                   <span className="text-text-secondary">{t('calcMortgageCommercial')}</span>
-                  <span className="font-medium">{t('calcMortgageDetail', { amount: (result as any).commercial.amount.toFixed(0), monthly: (result as any).commercial.monthly.toFixed(0) })}</span>
+                  <span className="font-medium">{t('calcMortgageDetail', { amount: (result as MortgageMixed).commercial.amount.toFixed(0), monthly: (result as MortgageMixed).commercial.monthly.toFixed(0) })}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-text-secondary">{t('calcMortgageFund')}</span>
-                  <span className="font-medium">{t('calcMortgageDetail', { amount: (result as any).fund.amount.toFixed(0), monthly: (result as any).fund.monthly.toFixed(0) })}</span>
+                  <span className="font-medium">{t('calcMortgageDetail', { amount: (result as MortgageMixed).fund.amount.toFixed(0), monthly: (result as MortgageMixed).fund.monthly.toFixed(0) })}</span>
                 </div>
               </div>
             )}
@@ -1031,7 +1036,7 @@ function MortgageCalc() {
           <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
             <p className="text-xs font-medium text-text-primary mb-2">{t('calcMortgageSchedule')}</p>
             {[t('calcMortgageCommercial'), t('calcMortgageFund')].map((label, idx) => {
-              const part = idx === 0 ? (result as any).commercial : (result as any).fund
+              const part = idx === 0 ? (result as MortgageMixed).commercial : (result as MortgageMixed).fund
               const schedule = part.schedule || []
               if (schedule.length === 0) return null
               return (
@@ -1040,9 +1045,9 @@ function MortgageCalc() {
                   {Array.from({ length: Math.ceil(schedule.length / 12) }, (_, yi) => {
                     const year = yi + 1
                     const key = `${label}-${year}`
-                    const isExpanded = expandedYears[key as any]
+                    const isExpanded = expandedYears[key]
                     const yearMonths = schedule.slice(yi * 12, (yi + 1) * 12)
-                    const yearTotal = yearMonths.reduce((s: number, m: any) => s + m.payment, 0)
+                    const yearTotal = yearMonths.reduce((s: number, m: MortgageScheduleItem) => s + m.payment, 0)
                     return (
                       <div key={year} className="mb-1">
                         <button
@@ -1063,7 +1068,7 @@ function MortgageCalc() {
                               <span className="w-20 text-right">{t('calcMortgageInterest')}</span>
                               <span className="w-20 text-right">{t('calcMortgageRemaining')}</span>
                             </div>
-                            {yearMonths.map((m: any) => (
+                            {yearMonths.map((m: MortgageScheduleItem) => (
                               <div key={m.month} className="flex items-center text-[11px] px-2 py-1 bg-card rounded-sm">
                                 <span className="w-8 text-text-secondary">{m.month}</span>
                                 <span className="w-20 text-right text-text-primary font-mono">¥{m.payment.toFixed(0)}</span>
@@ -1315,12 +1320,6 @@ function TitleCalc() {
       ? t('calcTitleInvalid')
       : relations[key] || `${key}（${t('calcTitleNotFound')}）`
     : ''
-
-  const clear = () => { setSelected1(''); setSelected3('') }
-  const back = () => {
-    if (selected3) setSelected3('')
-    else if (selected1) setSelected1('')
-  }
 
   // Most common 15 relations for quick reference (3 columns × 5 rows)
   const commonRelations = [

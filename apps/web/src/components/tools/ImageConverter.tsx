@@ -61,7 +61,7 @@ export default function ImageConverter() {
   const [quality, setQuality] = useState(90)
   const [outputs, setOutputs] = useState<OutputFile[]>([])
   const [converting, setConverting] = useState(false)
-  const [error, setError] = useState('')
+  const [, setError] = useState('')
   const [isDragOver, setIsDragOver] = useState(false)
   const [toast, setToast] = useState<{ message: string; key: number } | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -182,7 +182,7 @@ export default function ImageConverter() {
     }
     if (loaded.length > 0) setInputs(prev => [...prev, ...loaded])
     if (loaded.length === 0) setError(t('failedToRead'))
-  }, [inputs, loadImage, t])
+  }, [inputs, loadImage, t, showToast])
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault()

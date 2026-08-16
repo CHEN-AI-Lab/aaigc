@@ -114,8 +114,8 @@ function buildTree(items: PreviewItem[], hideFiles = false): TreeNode[] {
       // For files, check if name changed
       // For dirs, compute newName if the dir name changed
       let newName: string | undefined
-      let changed = false
-      let conflict = false
+      let changed: boolean
+      let conflict: boolean
 
       if (isLast) {
         // File - only check if the filename itself changed, not the folder path
@@ -126,6 +126,7 @@ function buildTree(items: PreviewItem[], hideFiles = false): TreeNode[] {
       } else {
         // Directory - compare individual segment, not cumulative path
         changed = origPart !== part
+        conflict = false
         newName = changed ? part : undefined
       }
 
@@ -202,6 +203,7 @@ export default function FileRenamer() {
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setCanDirectRename(typeof window !== 'undefined' && typeof (window as any).showDirectoryPicker === 'function')
   }, [])
 
@@ -217,6 +219,7 @@ export default function FileRenamer() {
     for (let i = 0; i < fileList.length; i++) {
       const f = fileList[i]
       // webkitRelativePath gives the full relative path including folder
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const relPath = (f as any).webkitRelativePath || f.name
       if (seen.has(relPath)) continue
       seen.add(relPath)
@@ -244,6 +247,61 @@ export default function FileRenamer() {
     e.preventDefault()
     setDragOver(false)
     setError(''); setSuccessMsg('')
+
+    async function handleFolderDrop(items: DataTransferItemList, fallbackFiles: FileList) {
+      const entries: File[] = []
+      const paths: FileWithPath[] = []
+      const seen = new Set<string>()
+
+      async function walk(entry: FileSystemEntry, basePath: string) {
+        if (entry.isDirectory) {
+          const reader = (entry as FileSystemDirectoryEntry).createReader()
+          const readBatch = (): Promise<void> =>
+            new Promise((resolve, reject) => {
+              reader.readEntries((batch) => {
+                if (batch.length === 0) return resolve()
+                Promise.all(batch.map(e => walk(e, `${basePath}${entry.name}/`)))
+                  .then(() => readBatch().then(resolve))
+                  .catch(reject)
+              }, reject)
+            })
+          await readBatch()
+        } else {
+          const file = await new Promise<File>((resolve, reject) =>
+            (entry as FileSystemFileEntry).file(resolve, reject)
+          )
+          const relPath = `${basePath}${file.name}`
+          if (seen.has(relPath)) return
+          seen.add(relPath)
+          entries.push(file)
+          paths.push({ name: file.name, path: relPath })
+        }
+      }
+
+      try {
+        const tasks: Promise<void>[] = []
+        for (let i = 0; i < items.length; i++) {
+          const entry = items[i].webkitGetAsEntry?.()
+          if (entry) tasks.push(walk(entry, ''))
+        }
+        await Promise.all(tasks)
+
+        if (paths.length === 0) {
+          handleFiles(fallbackFiles)
+          return
+        }
+        const [sortedEntries, sortedPaths] = sortFiles(entries, paths)
+        setFileEntries(sortedEntries)
+        setFiles(sortedPaths)
+        const firstSlash = sortedPaths[0].path.indexOf('/')
+        if (firstSlash > 0) {
+          setOrigFolderName(sortedPaths[0].path.slice(0, firstSlash))
+        }
+      } catch {
+        handleFiles(fallbackFiles)
+      }
+    }
+
     try {
       // Try folder drag via webkitGetAsEntry (Chrome/Edge/Firefox/Safari)
       const items = e.dataTransfer.items
@@ -264,70 +322,19 @@ export default function FileRenamer() {
     }
   }, [handleFiles])
 
-  async function handleFolderDrop(items: DataTransferItemList, fallbackFiles: FileList) {
-    const entries: File[] = []
-    const paths: FileWithPath[] = []
-    const seen = new Set<string>()
-
-    async function walk(entry: FileSystemEntry, basePath: string) {
-      if (entry.isDirectory) {
-        const reader = (entry as FileSystemDirectoryEntry).createReader()
-        const readBatch = (): Promise<void> =>
-          new Promise((resolve, reject) => {
-            reader.readEntries((batch) => {
-              if (batch.length === 0) return resolve()
-              Promise.all(batch.map(e => walk(e, `${basePath}${entry.name}/`)))
-                .then(() => readBatch().then(resolve))
-                .catch(reject)
-            }, reject)
-          })
-        await readBatch()
-      } else {
-        const file = await new Promise<File>((resolve, reject) =>
-          (entry as FileSystemFileEntry).file(resolve, reject)
-        )
-        const relPath = `${basePath}${file.name}`
-        if (seen.has(relPath)) return
-        seen.add(relPath)
-        entries.push(file)
-        paths.push({ name: file.name, path: relPath })
-      }
-    }
-
-    try {
-      const tasks: Promise<void>[] = []
-      for (let i = 0; i < items.length; i++) {
-        const entry = items[i].webkitGetAsEntry?.()
-        if (entry) tasks.push(walk(entry, ''))
-      }
-      await Promise.all(tasks)
-
-      if (paths.length === 0) {
-        handleFiles(fallbackFiles)
-        return
-      }
-      const [sortedEntries, sortedPaths] = sortFiles(entries, paths)
-      setFileEntries(sortedEntries)
-      setFiles(sortedPaths)
-      const firstSlash = sortedPaths[0].path.indexOf('/')
-      if (firstSlash > 0) {
-        setOrigFolderName(sortedPaths[0].path.slice(0, firstSlash))
-      }
-    } catch {
-      handleFiles(fallbackFiles)
-    }
-  }
-
   const handleClick = useCallback(async () => {
     // Try showDirectoryPicker first (Chrome/Edge) — clean native dialog, no scary warning
     try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if (typeof (window as any).showDirectoryPicker === 'function') {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const dirHandle = await (window as any).showDirectoryPicker()
         const entries: File[] = []
         const paths: FileWithPath[] = []
         const seen = new Set<string>()
 
         async function walk(dir: FileSystemDirectoryHandle, basePath: string) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const iter = (dir as any).entries()
           for await (const [name, handle] of iter) {
             if (handle.kind === 'directory') {
@@ -400,9 +407,67 @@ export default function FileRenamer() {
 
   const hasConflicts = useMemo(() => preview.some(p => p.conflict), [preview])
   const treeNodes = useMemo(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const hasFolderMode = rules.some(r => (r as any).folderMode || r.type === 'numberFolders')
     return buildTree(preview, hasFolderMode)
   }, [preview, rules])
+
+  // ── Rename/Download helpers ──────────────────
+
+  const directRename = useCallback(async (origFolderName: string) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const dirHandle = await (window as any).showDirectoryPicker()
+    if (dirHandle.name !== origFolderName) {
+      setError(t('renWrongFolder', { folder: origFolderName }))
+      return
+    }
+
+    let renamed = 0
+    for (const item of preview) {
+      if (!item.changed) continue
+      const relPath = item.originalPath.slice(origFolderName.length + 1)
+      const parts = relPath.split('/')
+      let handle = dirHandle
+
+      for (let i = 0; i < parts.length - 1; i++) {
+        handle = await handle.getDirectoryHandle(parts[i])
+      }
+
+      const newName = item.newName
+      const oldName = parts[parts.length - 1]
+      if (oldName !== newName) {
+        try {
+          const file = await handle.getFileHandle(oldName)
+          const blob = await file.getFile()
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const writable = await handle.getFileHandle(newName, { create: true }).then((h: any) => h.createWritable())
+          await writable.write(blob)
+          await writable.close()
+          await handle.removeEntry(oldName)
+          renamed++
+        } catch {
+          // skip files that can't be renamed
+        }
+      }
+    }
+    setSuccessMsg(t('renamedCount', { count: renamed }))
+  }, [preview, t])
+
+  const zipDownload = useCallback(async () => {
+    const zip = new JSZip()
+
+    for (let i = 0; i < preview.length; i++) {
+      const item = preview[i]
+      const entry = fileEntries[i]
+      if (!entry) continue
+      zip.file(item.newPath, entry)
+    }
+
+    const zipBytes = await zip.generateAsync({ type: 'uint8array' })
+    const zipName = origFolderName ? `${origFolderName}_renamed.zip` : 'renamed_files.zip'
+    downloadBlob(zipBytes, zipName)
+    setSuccessMsg(t('renZipped', { count: files.length }))
+  }, [preview, fileEntries, origFolderName, files, t])
 
   // ── Execute ─────────────────────────────────
 
@@ -417,6 +482,7 @@ export default function FileRenamer() {
 
     try {
       // Try showDirectoryPicker (File System Access API) for direct rename
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if (typeof (window as any).showDirectoryPicker === 'function') {
         const firstSlash = files[0].path.indexOf('/')
         const origFolderName = firstSlash > 0 ? files[0].path.slice(0, firstSlash) : ''
@@ -438,64 +504,7 @@ export default function FileRenamer() {
       setError(err instanceof Error ? err.message : t('renError'))
     }
     setProcessing(false)
-  }, [files, rules, hasConflicts, t, preview])
-
-  async function directRename(origFolderName: string) {
-    const dirHandle = await (window as any).showDirectoryPicker()
-    // Verify the user picked the right folder
-    if (dirHandle.name !== origFolderName) {
-      setError(t('renWrongFolder', { folder: origFolderName }))
-      return
-    }
-
-    let renamed = 0
-    for (const item of preview) {
-      if (!item.changed) continue
-      // Reconstruct the path relative to the folder
-      const relPath = item.originalPath.slice(origFolderName.length + 1)
-      const parts = relPath.split('/')
-      let handle = dirHandle
-
-      for (let i = 0; i < parts.length - 1; i++) {
-        handle = await handle.getDirectoryHandle(parts[i])
-      }
-
-      const newName = item.newName
-      const oldName = parts[parts.length - 1]
-      if (oldName !== newName) {
-        try {
-          const file = await handle.getFileHandle(oldName)
-          // File System Access API for rename is limited:
-          // We can't directly rename, so we copy the file content to a new name and delete the old one
-          const blob = await file.getFile()
-          const writable = await handle.getFileHandle(newName, { create: true }).then((h: any) => h.createWritable())
-          await writable.write(blob)
-          await writable.close()
-          await handle.removeEntry(oldName)
-          renamed++
-        } catch {
-          // skip files that can't be renamed
-        }
-      }
-    }
-    setSuccessMsg(t('renamedCount', { count: renamed }))
-  }
-
-  async function zipDownload() {
-    const zip = new JSZip()
-
-    for (let i = 0; i < preview.length; i++) {
-      const item = preview[i]
-      const entry = fileEntries[i]
-      if (!entry) continue
-      zip.file(item.newPath, entry)
-    }
-
-    const zipBytes = await zip.generateAsync({ type: 'uint8array' })
-    const zipName = origFolderName ? `${origFolderName}_renamed.zip` : 'renamed_files.zip'
-    downloadBlob(zipBytes, zipName)
-    setSuccessMsg(t('renZipped', { count: files.length }))
-  }
+  }, [files, rules, hasConflicts, t, directRename, zipDownload])
 
   // ── Render ──────────────────────────────────
 
@@ -589,6 +598,7 @@ export default function FileRenamer() {
                 {/* Rule-specific fields */}
                 {cfg?.hasFind && (
                   <input
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     type="text" placeholder={t('renFind')} value={(rule as any).find}
                     onChange={e => updateRule(i, r => ({ ...r, find: e.target.value }))}
                     className="w-28 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
@@ -596,6 +606,7 @@ export default function FileRenamer() {
                 )}
                 {cfg?.hasReplace && (
                   <input
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     type="text" placeholder={t('renReplace')} value={(rule as any).replace}
                     onChange={e => updateRule(i, r => ({ ...r, replace: e.target.value }))}
                     className="w-28 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
@@ -603,6 +614,7 @@ export default function FileRenamer() {
                 )}
                 {cfg?.hasText && (
                   <input
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     type="text" placeholder={t('renText')} value={(rule as any).text}
                     onChange={e => updateRule(i, r => ({ ...r, text: e.target.value }))}
                     className="w-28 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
@@ -610,6 +622,7 @@ export default function FileRenamer() {
                 )}
                 {cfg?.hasDelete && (
                   <input
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     type="text" placeholder={t('renDeleteText')} value={(rule as any).text}
                     onChange={e => updateRule(i, r => ({ ...r, text: e.target.value }))}
                     className="w-28 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
@@ -619,6 +632,7 @@ export default function FileRenamer() {
                   <label className="flex items-center gap-1 text-xs text-text-secondary">
                     {t('renStart')}
                     <input
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       type="number" min="0" value={(rule as any).start}
                       onChange={e => updateRule(i, r => ({ ...r, start: Math.max(0, parseInt(e.target.value) || 0) }))}
                       className="w-16 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
@@ -629,6 +643,7 @@ export default function FileRenamer() {
                   <label className="flex items-center gap-1 text-xs text-text-secondary">
                     {t('renDigits')}
                     <input
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       type="number" min="1" max="10" value={(rule as any).digits}
                       onChange={e => updateRule(i, r => ({ ...r, digits: Math.max(1, Math.min(10, parseInt(e.target.value) || 1)) }))}
                       className="w-14 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
@@ -639,6 +654,7 @@ export default function FileRenamer() {
                   <label className="flex items-center gap-1 text-xs text-text-secondary">
                     <span>{t('renFolderLevel')}</span>
                     <input
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       type="number" min="0" max="5" value={(rule as any).level ?? 1}
                       onChange={e => updateRule(i, r => ({ ...r, level: Math.max(0, Math.min(5, parseInt(e.target.value) || 0)) }))}
                       className="w-12 p-1 bg-bg border border-border rounded-lg text-xs text-text-primary text-center"
@@ -648,6 +664,7 @@ export default function FileRenamer() {
                 {rule.type === 'numberFolders' && (
                   <label className="flex items-center gap-1 text-xs text-text-secondary cursor-pointer whitespace-nowrap">
                     <input
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       type="checkbox" checked={(rule as any).perFolder ?? false}
                       onChange={e => updateRule(i, r => ({ ...r, perFolder: e.target.checked }))}
                       className="accent-accent"
@@ -657,6 +674,7 @@ export default function FileRenamer() {
                 )}
                 {cfg?.hasPosition && (
                   <select
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     value={(rule as any).position}
                     onChange={e => updateRule(i, r => ({ ...r, position: e.target.value as 'prefix' | 'suffix' }))}
                     className="p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
@@ -668,6 +686,7 @@ export default function FileRenamer() {
                 {cfg?.hasReplaceOriginal && (
                   <label className="flex items-center gap-1 text-xs text-text-secondary cursor-pointer whitespace-nowrap">
                     <input
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       type="checkbox" checked={(rule as any).replaceOriginal ?? false}
                       onChange={e => updateRule(i, r => ({ ...r, replaceOriginal: e.target.checked }))}
                       className="accent-accent"
@@ -678,6 +697,7 @@ export default function FileRenamer() {
                 {rule.type === 'numbering' && (
                   <label className="flex items-center gap-1 text-xs text-text-secondary cursor-pointer whitespace-nowrap">
                     <input
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       type="checkbox" checked={(rule as any).perFolder ?? false}
                       onChange={e => updateRule(i, r => ({ ...r, perFolder: e.target.checked }))}
                       className="accent-accent"
@@ -687,6 +707,7 @@ export default function FileRenamer() {
                 )}
                 {cfg?.hasMode && (
                   <select
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     value={(rule as any).mode}
                     onChange={e => updateRule(i, r => ({ ...r, mode: e.target.value as 'upper' | 'lower' | 'capitalize' }))}
                     className="p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
@@ -699,6 +720,7 @@ export default function FileRenamer() {
                 {cfg?.hasRemoveSpaces && (
                   <label className="flex items-center gap-1 text-xs text-text-secondary cursor-pointer">
                     <input
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       type="checkbox" checked={(rule as any).removeSpaces}
                       onChange={e => updateRule(i, r => ({ ...r, removeSpaces: e.target.checked }))}
                       className="accent-accent"
@@ -709,6 +731,7 @@ export default function FileRenamer() {
                 {cfg?.hasRemoveSpecial && (
                   <label className="flex items-center gap-1 text-xs text-text-secondary cursor-pointer">
                     <input
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       type="checkbox" checked={(rule as any).removeSpecialChars}
                       onChange={e => updateRule(i, r => ({ ...r, removeSpecialChars: e.target.checked }))}
                       className="accent-accent"
@@ -716,10 +739,12 @@ export default function FileRenamer() {
                     {t('renRemoveSpecial')}
                   </label>
                 )}
-                {cfg?.hasSpaceReplacement && (rule as any).removeSpaces && (
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                {cfg?.hasSpaceReplacement && (rule as any).removeSpaces && ( // eslint-disable-line @typescript-eslint/no-explicit-any
                   <label className="flex items-center gap-1 text-xs text-text-secondary">
                     {t('renReplaceWith')}
                     <input
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       type="text" maxLength={2} value={(rule as any).spaceReplacement}
                       onChange={e => updateRule(i, r => ({ ...r, spaceReplacement: e.target.value }))}
                       className="w-12 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
@@ -728,6 +753,7 @@ export default function FileRenamer() {
                 )}
                 {cfg?.hasPattern && (
                   <input
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     type="text" placeholder={t('renPattern')} value={(rule as any).pattern}
                     onChange={e => updateRule(i, r => ({ ...r, pattern: e.target.value }))}
                     className="w-28 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
@@ -735,6 +761,7 @@ export default function FileRenamer() {
                 )}
                 {(cfg?.hasReplacement && rule.type === 'regex') && (
                   <input
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     type="text" placeholder={t('renReplace')} value={(rule as any).replacement}
                     onChange={e => updateRule(i, r => ({ ...r, replacement: e.target.value }))}
                     className="w-28 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
@@ -744,6 +771,7 @@ export default function FileRenamer() {
                 {cfg?.hasFolderMode && (
                   <label className="flex items-center gap-1 text-xs text-text-secondary cursor-pointer whitespace-nowrap">
                     <input
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       type="checkbox" checked={(rule as any).folderMode ?? false}
                       onChange={e => updateRule(i, r => ({ ...r, folderMode: e.target.checked }))}
                       className="accent-accent"
@@ -751,10 +779,12 @@ export default function FileRenamer() {
                     {t('renFolderMode')}
                   </label>
                 )}
-                {(rule as any).folderMode && cfg?.hasFolderMode && (
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                {(rule as any).folderMode && cfg?.hasFolderMode && ( // eslint-disable-line @typescript-eslint/no-explicit-any
                   <label className="flex items-center gap-1 text-xs text-text-secondary whitespace-nowrap">
                     <span>{t('renFolderLevel')}</span>
                     <input
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       type="number" min="0" max="5" value={(rule as any).folderLevel ?? 1}
                       onChange={e => updateRule(i, r => ({ ...r, folderLevel: Math.max(0, Math.min(5, parseInt(e.target.value) || 0)) }))}
                       className="w-12 p-1 bg-bg border border-border rounded-lg text-xs text-text-primary text-center"

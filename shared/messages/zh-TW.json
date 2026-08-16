@@ -1365,7 +1365,8 @@
     "tabPassword": "🔑 密碼登入",
     "loginSubtitle": "輸入郵箱或使用社交帳號登錄",
     "registerSubtitle": "創建帳號，開啟 AI 之旅",
-    "codePlaceholder": "請輸入6位驗證碼"
+    "codePlaceholder": "請輸入6位驗證碼",
+    "devCodeHint": "開發模式：驗證碼 {code}"
   },
   "terms": {
     "tools": "線上工具",

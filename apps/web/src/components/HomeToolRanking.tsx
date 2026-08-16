@@ -20,7 +20,7 @@ function shuffle<T>(arr: T[]): T[] {
   return a
 }
 
-export default function HomeToolRanking({ tools, locale }: Props) {
+export default function HomeToolRanking({ tools, locale: _locale }: Props) {
   const t = useTranslations('home')
   const tt = useTranslations('tools')
   const [popular, setPopular] = useState<{ id: string; score: number }[]>([])

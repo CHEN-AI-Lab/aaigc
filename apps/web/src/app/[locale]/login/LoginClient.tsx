@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useTranslations, useLocale } from 'next-intl'
 import { useSearchParams } from 'next/navigation'
 import { signIn, signOut } from 'next-auth/react'
-import { useSession } from '@/lib/auth-client'
+import { useSession } from '@/auth-client'
 import { useRouter } from '@/i18n/navigation'
 import Link from 'next/link'
 import PasswordInput from '@/components/PasswordInput'
@@ -81,6 +81,7 @@ export default function LoginClient() {
       }
       setCodeSent(true)
       setCountdown(120)
+      if (data.devCode) setSuccessMsg(t('devCodeHint').replace('{code}', data.devCode))
     } catch {
       setError(t('sendFailed'))
       setErrorType('error')

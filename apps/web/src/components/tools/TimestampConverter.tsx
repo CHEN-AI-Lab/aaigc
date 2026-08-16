@@ -16,7 +16,7 @@ function daysInMonth(y: number, m: number) {
 }
 
 // ─── ClampInput — module-level, stable component ───
-function ClampInput({ value, onChange, min, max, label, field, hint }: {
+function ClampInput({ value, onChange, min, max, label: _label, field, hint }: {
   value: string; onChange: (v: string) => void; min: number; max: number; label: string; field: string; hint: { field: string; msg: string } | null
 }) {
   const hintFor = (f: string) => hint?.field === f ? hint.msg : null
