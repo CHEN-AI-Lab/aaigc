@@ -63,7 +63,7 @@ export default function HomeToolRanking({ tools, locale: _locale }: Props) {
           <div className="grid grid-cols-4 sm:grid-cols-8 gap-2 max-w-4xl mx-auto">
             {newTools.map((tool) => (
               <Link key={tool.id} href={`/tools/${tool.id}`}
-                className="text-xs px-2 py-1.5 bg-bg text-text-secondary hover:text-accent hover:bg-accent/5 rounded-sm transition-colors border border-[rgba(127,99,21,0.1)] truncate text-center">
+                className="text-xs px-2 py-1.5 bg-bg text-text-secondary hover:text-accent hover:bg-accent/5 rounded-sm transition-colors border-border border truncate text-center">
                 {tt(`${tool.id}.name`)}
               </Link>
             ))}
@@ -77,7 +77,7 @@ export default function HomeToolRanking({ tools, locale: _locale }: Props) {
         <div className="grid grid-cols-4 sm:grid-cols-8 gap-2 max-w-4xl mx-auto">
           {popular.map((item) => (
             <Link key={item.id} href={`/tools/${item.id}`}
-              className="text-xs px-2 py-1.5 bg-bg text-text-secondary hover:text-accent hover:bg-accent/5 rounded-sm transition-colors border border-[rgba(127,99,21,0.1)] truncate text-center">
+              className="text-xs px-2 py-1.5 bg-bg text-text-secondary hover:text-accent hover:bg-accent/5 rounded-sm transition-colors border-border border truncate text-center">
               {tt(`${item.id}.name`)}
             </Link>
           ))}
@@ -90,7 +90,7 @@ export default function HomeToolRanking({ tools, locale: _locale }: Props) {
         <div className="grid grid-cols-4 sm:grid-cols-8 gap-2 max-w-4xl mx-auto">
           {random.map((tool) => (
             <Link key={tool.id} href={`/tools/${tool.id}`}
-              className="text-xs px-2 py-1.5 bg-bg text-text-secondary hover:text-accent hover:bg-accent/5 rounded-sm transition-colors border border-[rgba(127,99,21,0.1)] truncate text-center">
+              className="text-xs px-2 py-1.5 bg-bg text-text-secondary hover:text-accent hover:bg-accent/5 rounded-sm transition-colors border-border border truncate text-center">
               {tt(`${tool.id}.name`)}
             </Link>
           ))}

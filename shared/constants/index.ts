@@ -5,7 +5,7 @@ export { locales, defaultLocale, isLocale, localeNames } from './locales'
 // 生产环境可通过 NEXT_PUBLIC_WORKER_URL 环境变量覆盖
 export const WORKER_URL: string =
   (typeof process !== 'undefined' &&
-    (process as any).env?.NEXT_PUBLIC_WORKER_URL) || ''
+    process.env?.NEXT_PUBLIC_WORKER_URL) || ''
 // Must be set via NEXT_PUBLIC_WORKER_URL env var — no hardcoded default.
 
 // Fallback tracking endpoint for users who cannot reach the Worker (e.g. China)
@@ -13,4 +13,4 @@ export const WORKER_URL: string =
 // Must be set via NEXT_PUBLIC_FALLBACK_URL env var — no hardcoded default.
 export const FALLBACK_URL =
   (typeof process !== 'undefined' &&
-    (process as any).env?.NEXT_PUBLIC_FALLBACK_URL) || ''
+    process.env?.NEXT_PUBLIC_FALLBACK_URL) || ''

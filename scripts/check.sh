@@ -21,6 +21,7 @@ cd apps/web && npx eslint . 2>&1
 echo ""
 
 echo "Step 4: TypeScript check..."
+rm -rf apps/web/.next 2>/dev/null
 npx tsc --noEmit
 echo ""
 

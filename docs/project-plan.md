@@ -83,23 +83,25 @@ workspace/aaigc/
 │   │   │       ├── tools/
 │   │   │       │   ├── page.tsx           # 工具列表（按分类分组）
 │   │   │       │   └── [slug]/page.tsx    # 工具页面（通用渲染器）
-│   │   │       ├── about/page.tsx         # 关于页
-│   │   │       ├── stats/page.tsx         # 统计后台（管理员，无鉴权）
-│   │   │       ├── privacy/page.tsx       # 隐私政策
-│   │   │       └── updates/page.tsx       # 更新日志
+│   │   │   ├── about/page.tsx         # 关于页
+│   │   │   ├── privacy/page.tsx       # 隐私政策
+│   │   │   ├── terms/page.tsx         # 服务条款
+│   │   │   ├── login/page.tsx         # 登录页
+│   │   │   ├── register/page.tsx      # 注册页
+│   │   │   ├── account/page.tsx       # 账号中心
+│   │   │   └── updates/page.tsx       # 更新日志
 │   │   └── components/
 │   │       ├── Header.tsx              # 导航栏
 │   │       ├── Footer.tsx              # 底部
 │   │       ├── LanguageSwitcher.tsx    # 语言切换
-│   │       ├── ThemeSwitcher.tsx       # 主题切换（placeholder）
+│   │       ├── ThemeSwitcher.tsx       # 主题切换
 │   │       ├── ToolShell.tsx           # 工具页面外壳
 │   │       ├── ToolsClient.tsx         # 工具列表客户端
 │   │       ├── ToolPageClient.tsx      # 工具详情页客户端
 │   │       ├── VisitTracker.tsx        # 统计埋点组件
 │   │       ├── HomeToolRanking.tsx     # 首页工具排行
-│   │       ├── StatsChart.tsx          # 统计图表
-│   │       ├── StatsBreakdown.tsx      # 统计细分面板
-│   │       ├── DateRangePicker.tsx     # 日期范围选择器
+│   │       ├── ProductCard.tsx         # 产品卡片
+│   │       ├── FavoriteButton.tsx / FavoriteStar.tsx  # 收藏
 │   │       └── tools/                  # 38 个工具组件
 │   ├── next.config.ts           # withNextIntlPlugin
 │   └── package.json
@@ -299,9 +301,9 @@ Phase 9: 个性化推荐            📅 待开始
 | # | 任务 | 说明 |
 |---|------|------|
 | 5.1 | 统计埋点组件 | VisitTracker.tsx 嵌入首页和工具详情页 |
-| 5.2 | 统计 Hook | useVisitTracking.ts，含 fetchStats/fetchDaily/fetchRanking/fetchOnline/fetchPages/fetchCountries/fetchReferrer |
-| 5.3 | 统计页面 | /stats 页面，含 4 指标卡片、折线图、页面/国家/来源排行、工具热门排行 |
-| 5.4 | 日期范围选择器 | DateRangePicker 组件，today/7d/30d/all/custom 模式 |
+| 5.2 | 统计 Hook | useVisitTracking.ts 页面/工具埋点 + shared/api/ranking.ts 排行获取 |
+| 5.3 | 统计页面 | ~~/stats 页面~~ 已迁出至独立 stats-dashboard 应用（跨项目统一看板） |
+| 5.4 | 日期范围选择器 | ~~DateRangePicker 组件~~ 已随 stats 页面迁至 stats-dashboard |
 | 5.5 | 首页排行榜 | HomeToolRanking 组件，热门工具展示 |
 | 5.6 | Worker 代码 | 完整 Cloudflare Worker 代码（docs/worker-code.md） |
 | 5.7 | 架构文档 | docs/architecture.md 和 docs/worker-code.md |
@@ -312,7 +314,7 @@ Phase 9: 个性化推荐            📅 待开始
 **已完成：**
 | 5.11 | 部署 Cloudflare Worker | 已部署至 stats.aaigc.workers.dev（已验证在线） |
 | 5.12 | 配置 Upstash Redis | 已配置 Worker 环境变量 |
-| 5.13 | 管理员鉴权 | 与 Phase 6 用户系统一起做，或加临时密码锁 |
+| 5.13 | 管理员鉴权 | 已随 stats 页面迁至 stats-dashboard（独立应用管理） |
 
 ### Phase 6：用户系统（✅ 已完成）
 
@@ -335,7 +337,7 @@ Phase 9: 个性化推荐            📅 待开始
 **待完成：**
 | # | 任务 | 说明 |
 |---|------|------|
-| 6.9 | 统计页面鉴权 | 管理员角色访问 /stats |
+| 6.9 | 统计页面鉴权 | ~~管理员角色访问 /stats~~ 已迁至 stats-dashboard |
 
 **已完成追加：**
 | 6.10 | prisma migrate | 数据库表已建（3 个迁移已应用） |
@@ -397,7 +399,7 @@ Phase 9: 个性化推荐            📅 待开始
 □ 语言切换正常（4 种语言）
 □ 所有内部链接保持语言前缀
 □ 所有 38 个工具页面加载正常
-□ 统计页面 /stats 可访问
+□ 埋点数据流入 Worker（stats.aaigc.workers.dev）
 ```
 
 ### 部署验证
