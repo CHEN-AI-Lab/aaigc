@@ -28,23 +28,7 @@ export default function ProductsClient({ products: allProducts }: { products: Pr
 
   return (
     <div>
-      <div className="flex gap-2 mb-8">
-        {(['all', 'live', 'wip'] as const).map((f) => (
-          <button
-            key={f}
-            onClick={() => setFilter(f)}
-            className={`px-4 py-1.5 text-sm rounded-sm transition-colors ${
-              filter === f ? 'bg-accent text-white' : 'bg-surface text-text-primary hover:bg-accent/10'
-            }`}
-          >
-            {f === 'all' ? t('all') :
-             f === 'live' ? t('live') :
-             t('comingSoon')}
-          </button>
-        ))}
-      </div>
-
-      {/* ── My Favorite Products ── */}
+      {/* ── My Favorite Products (above filter, always visible) ── */}
       {session && productFavs.length > 0 && (
         <div className="mb-8">
           <p className="text-xs font-semibold text-text-secondary mb-3 flex items-center gap-1">
@@ -72,6 +56,22 @@ export default function ProductsClient({ products: allProducts }: { products: Pr
           </div>
         </div>
       )}
+
+      <div className="flex gap-2 mb-8">
+        {(['all', 'live', 'wip'] as const).map((f) => (
+          <button
+            key={f}
+            onClick={() => setFilter(f)}
+            className={`px-4 py-1.5 text-sm rounded-sm transition-colors ${
+              filter === f ? 'bg-accent text-white' : 'bg-surface text-text-primary hover:bg-accent/10'
+            }`}
+          >
+            {f === 'all' ? t('all') :
+             f === 'live' ? t('live') :
+             t('comingSoon')}
+          </button>
+        ))}
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {filtered.map((p) => (

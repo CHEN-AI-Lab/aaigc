@@ -7,7 +7,7 @@ import { WORKER_URL, FALLBACK_URL } from '../constants'
 const ENV =
   (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_VERCEL_ENV) || 'development'
 
-export function useVisitTracking(project: string, page?: string | null, tool?: string) {
+export function useVisitTracking(project: string, page?: string | null, tool?: string, userId?: string | null) {
   useEffect(() => {
     const payload = JSON.stringify({
       project,
@@ -16,6 +16,7 @@ export function useVisitTracking(project: string, page?: string | null, tool?: s
       type: tool ? 'tool' : 'page',
       env: ENV,
       platform: 'web',
+      ...(userId ? { userId } : {}),
     })
 
     // Try Worker first (foreign users), fallback to insights API (Chinese users)
@@ -31,5 +32,5 @@ export function useVisitTracking(project: string, page?: string | null, tool?: s
       }
     }
     track()
-  }, [project, page, tool])
+  }, [project, page, tool, userId])
 }

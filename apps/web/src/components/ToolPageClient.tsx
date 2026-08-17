@@ -4,6 +4,7 @@ import { useVisitTracking } from 'shared/hooks/useVisitTracking'
 import { lazy, Suspense } from 'react'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
+import { useSession } from '@/auth-client'
 import FavoriteButton from './FavoriteButton'
 
 type Props = {
@@ -54,10 +55,11 @@ const toolModules: Record<string, React.LazyExoticComponent<React.ComponentType>
 export default function ToolPageClient({ slug }: Props) {
   const t = useTranslations('tools')
   const tu = useTranslations('ui')
+  const { data: session } = useSession()
   const Component = toolModules[slug]
 
   // Track tool usage (page already tracked by VisitTracker, only pass tool)
-  useVisitTracking('aaigc', null, slug)
+  useVisitTracking('aaigc', null, slug, session?.user?.id)
 
   return (
     <div>
