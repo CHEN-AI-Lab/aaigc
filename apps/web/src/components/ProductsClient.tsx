@@ -52,7 +52,7 @@ export default function ProductsClient({ products: allProducts }: { products: Pr
                   </Link>
                   <button
                     onClick={() => toggleFavorite(fav.toolId, 'product')}
-                    className="p-0.5 rounded-sm text-text-secondary/30 hover:text-accent transition-colors"
+                    className="p-0.5 rounded-sm text-accent hover:text-accent/70 transition-colors"
                     title={tt('unfavorite')}
                   >
                     <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
