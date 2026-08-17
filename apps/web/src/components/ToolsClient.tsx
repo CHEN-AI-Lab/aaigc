@@ -5,11 +5,20 @@ import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { tools, toolCategories } from 'data/tools'
 import FavoriteStar from './FavoriteStar'
+import { useFavorites } from './FavoritesProvider'
+import { useSession } from '@/auth-client'
 
 export default function ToolsClient() {
   const t = useTranslations('tools')
   const [query, setQuery] = useState('')
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
+  const { data: session } = useSession()
+  const { favorites, toggleFavorite } = useFavorites()
+
+  const toolFavs = useMemo(
+    () => favorites.filter((f) => f.type === 'tool'),
+    [favorites]
+  )
 
   // Scroll to category section on initial load if hash is present
   useEffect(() => {
@@ -71,9 +80,45 @@ export default function ToolsClient() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={t('search')}
-          className="w-full max-w-md p-3 bg-card border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/30"
+          className="w-full max-w-md p-3 bg-card border border-border rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/30"
         />
       </div>
+
+      {/* ── My Favorite Tools ── */}
+      {session && toolFavs.length > 0 && (
+        <div className="mb-8">
+          <p className="text-xs font-semibold text-text-secondary mb-3 flex items-center gap-1">
+            ★ {t('favoriteTools')} ({toolFavs.length})
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {toolFavs.map((fav) => {
+              const tool = tools.find((t) => t.id === fav.toolId)
+              if (!tool) return null
+              return (
+                <div
+                  key={fav.id}
+                  className="flex items-center gap-1.5 bg-card rounded-sm border border-border px-2.5 py-1.5 text-xs"
+                >
+                  <Link
+                    href={`/tools/${fav.toolId}`}
+                    className="text-text-primary hover:text-accent transition-colors truncate max-w-[120px]"
+                  >
+                    {tool.icon} {t(`${fav.toolId}.name`)}
+                  </Link>
+                  <button
+                    onClick={() => toggleFavorite(fav.toolId, 'tool')}
+                    className="p-0.5 rounded-sm text-text-secondary/30 hover:text-accent transition-colors"
+                  >
+                    <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                  </button>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
 
       {filtered !== null && (
         <div className="mb-8">
@@ -86,7 +131,7 @@ export default function ToolsClient() {
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
               {filtered.map((tool) => (
                 <Link key={tool.id} href={`/tools/${tool.id}`}
-                  className="block bg-card rounded-sm p-4 shadow-warm-sm hover:shadow-warm transition-shadow border border-[rgba(127,99,21,0.05)]">
+                  className="block bg-card rounded-sm p-4 shadow-warm-sm hover:shadow-warm transition-shadow border border-border">
                   <div className="flex items-start justify-between mb-2">
                     <div className="text-xs font-mono text-accent">{tool.icon}</div>
                     <FavoriteStar itemId={tool.id} type="tool" />
@@ -127,7 +172,7 @@ export default function ToolsClient() {
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 pt-3">
                 {catTools.map((tool) => (
                   <Link key={tool.id} href={`/tools/${tool.id}`}
-                    className="block bg-card rounded-sm p-4 shadow-warm-sm hover:shadow-warm transition-shadow border border-[rgba(127,99,21,0.05)]">
+                    className="block bg-card rounded-sm p-4 shadow-warm-sm hover:shadow-warm transition-shadow border border-border">
                     <div className="flex items-start justify-between mb-2">
                       <div className="text-xs font-mono text-accent">{tool.icon}</div>
                       <FavoriteStar itemId={tool.id} type="tool" />

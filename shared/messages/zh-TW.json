@@ -113,7 +113,8 @@
     "techStack": "技術棧",
     "features": "功能特性",
     "visit": "前往",
-    "learnMore": "了解更多"
+    "learnMore": "了解更多",
+    "product": "產品"
   },
   "tools": {
     "json-formatter": {
@@ -1143,7 +1144,14 @@
     "noFavorites": "暫無收藏",
     "favoritesCount": "收藏",
     "markdownParseError": "Markdown 解析失敗",
-    "loginRequired": "請先登入後收藏"
+    "loginRequired": "請先登入後收藏",
+    "favoriteSuccess": "收藏成功",
+    "unfavoriteSuccess": "已取消收藏",
+    "favoriteTools": "收藏的工具",
+    "favoriteProducts": "收藏的產品",
+    "unfavorite": "取消收藏",
+    "tool": "工具",
+    "all": "全部"
   },
   "ui": {
     "toolLinks": {

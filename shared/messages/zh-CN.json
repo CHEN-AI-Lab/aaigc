@@ -51,6 +51,7 @@
     "features": "功能特性",
     "visit": "前往",
     "learnMore": "了解更多",
+    "product": "产品",
     "cookmate": {
       "name": "CookMate",
       "description": "AI 智能食谱与餐食规划平台。输入食材，AI 自动生成菜谱，支持周计划、购物清单、饮食定制。",
@@ -1144,7 +1145,14 @@
     "noFavorites": "暂无收藏",
     "favoritesCount": "收藏",
     "markdownParseError": "Markdown 解析失败",
-    "loginRequired": "请先登录后收藏"
+    "loginRequired": "请先登录后收藏",
+    "favoriteSuccess": "收藏成功",
+    "unfavoriteSuccess": "已取消收藏",
+    "favoriteTools": "收藏的工具",
+    "favoriteProducts": "收藏的产品",
+    "unfavorite": "取消收藏",
+    "tool": "工具",
+    "all": "全部"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",

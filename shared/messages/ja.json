@@ -51,6 +51,7 @@
     "features": "機能",
     "visit": "アクセス",
     "learnMore": "詳細を見る",
+    "product": "製品",
     "cookmate": {
       "description": "AIを活用したレシピプランニング。食材を入力するだけでAIがレシピを生成、週間計画や買い物リストも自動作成。",
       "features": [
@@ -1144,7 +1145,14 @@
     "noFavorites": "お気に入りはまだありません",
     "favoritesCount": "お気に入り",
     "markdownParseError": "Markdownの解析に失敗しました",
-    "loginRequired": "ログインしてお気に入りに追加してください"
+    "loginRequired": "ログインしてお気に入りに追加してください",
+    "favoriteSuccess": "お気に入りに追加しました",
+    "unfavoriteSuccess": "お気に入りを解除しました",
+    "favoriteTools": "お気に入りのツール",
+    "favoriteProducts": "お気に入りの製品",
+    "unfavorite": "お気に入りを解除",
+    "tool": "ツール",
+    "all": "すべて"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

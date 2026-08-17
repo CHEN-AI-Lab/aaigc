@@ -51,6 +51,7 @@
     "features": "Features",
     "visit": "Visit",
     "learnMore": "Learn More",
+    "product": "Product",
     "cookmate": {
       "name": "CookMate",
       "description": "AI-powered recipe planning. Generate recipes from ingredients, plan weekly meals, and create shopping lists.",
@@ -1144,7 +1145,14 @@
     "noFavorites": "No favorites yet",
     "favoritesCount": "Favorites",
     "markdownParseError": "Failed to parse Markdown",
-    "loginRequired": "Please log in to save favorites"
+    "loginRequired": "Please log in to save favorites",
+    "favoriteSuccess": "Added to favorites",
+    "unfavoriteSuccess": "Removed from favorites",
+    "favoriteTools": "Favorite Tools",
+    "favoriteProducts": "Favorite Products",
+    "unfavorite": "Remove from favorites",
+    "tool": "Tool",
+    "all": "All"
   },
   "ui": {
     "aboutLink": "About AAIGC →",
