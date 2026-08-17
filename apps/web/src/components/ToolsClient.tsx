@@ -13,7 +13,7 @@ export default function ToolsClient() {
   const [query, setQuery] = useState('')
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
   const { data: session } = useSession()
-  const { favorites } = useFavorites()
+  const { favorites, toggleFavorite } = useFavorites()
 
   const toolFavs = useMemo(
     () => favorites.filter((f) => f.type === 'tool'),
@@ -105,6 +105,15 @@ export default function ToolsClient() {
                   >
                     {tool.icon} {t(`${fav.toolId}.name`)}
                   </Link>
+                  <button
+                    onClick={() => toggleFavorite(fav.toolId, 'tool')}
+                    className="p-0.5 rounded-sm text-text-secondary/30 hover:text-accent transition-colors"
+                    title={t('unfavorite')}
+                  >
+                    <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                  </button>
                 </div>
               )
             })}
