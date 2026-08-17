@@ -1,6 +1,6 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
@@ -14,6 +14,7 @@ export default function AccountClient() {
   const t = useTranslations('auth')
   const tt = useTranslations('tools')
   const tp = useTranslations('products')
+  const locale = useLocale()
   const { data: session, status } = useSession()
   const { favorites, loading, toggleFavorite } = useFavorites()
   const [tab, setTab] = useState<Tab>('all')
@@ -42,7 +43,7 @@ export default function AccountClient() {
   // Format date
   const formatDate = (d: string | Date) => {
     try {
-      return new Date(d).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })
+      return new Date(d).toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' })
     } catch {
       return ''
     }
@@ -120,7 +121,7 @@ export default function AccountClient() {
         </div>
 
         {/* ── Stats Cards ── */}
-        <div className="grid grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
           {[
             { label: tt('myFavorites'), value: favorites.length, color: 'from-accent/20 to-accent/5' },
             { label: `🔧 ${tt('favoriteTools')}`, value: toolFavs.length, color: 'from-blue-500/20 to-blue-500/5' },
