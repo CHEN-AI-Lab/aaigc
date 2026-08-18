@@ -292,7 +292,7 @@ export default function AccountClient() {
                 <span className="text-xs text-text-primary">
                   {session.user?.email}
                   {profile?.emailVerified
-                    ? <span className="text-green-500 ml-1.5">✓ {t('emailVerified')}</span>
+                    ? <span className="text-green-500 ml-1.5">{t('emailVerified')}</span>
                     : <span className="text-text-secondary/50 ml-1.5">({t('emailUnverified')})</span>}
                 </span>
               </div>
@@ -312,7 +312,7 @@ export default function AccountClient() {
           <div className="p-5 sm:p-6">
             <div className="flex items-center gap-2 mb-4">
               <span className="text-sm">🔒</span>
-              <h2 className="text-sm font-semibold text-text-primary">{t('accountSettings')}</h2>
+              <h2 className="text-sm font-semibold text-text-primary">🔒 {t('security')}</h2>
             </div>
 
             <div className="space-y-0">
