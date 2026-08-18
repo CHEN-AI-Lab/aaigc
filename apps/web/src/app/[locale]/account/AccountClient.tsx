@@ -352,7 +352,7 @@ export default function AccountClient() {
                     {profile?.hasPassword ? t('changePassword') : t('setPassword')}
                   </button>
                   {profile?.hasPassword && (
-                    <Link href="/forgot-password" className="text-text-secondary/50 hover:text-text-secondary text-xs">({t('forgotPassword')})</Link>
+                    <Link href="/login" className="text-text-secondary/50 hover:text-text-secondary text-xs">({t('forgotPassword')})</Link>
                   )}
                 </span>
               </div>
