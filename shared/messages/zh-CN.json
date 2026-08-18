@@ -1342,6 +1342,8 @@
     "exportDesc": "下载所有数据（JSON格式）",
     "exportButton": "导出",
     "favorites": "收藏",
+    "deleteItems": "账号信息及所有关联数据",
+    "emailPlaceholder": "输入邮箱确认",
     "editName": "修改名字",
     "save": "保存",
     "cancel": "取消",

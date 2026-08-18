@@ -1342,6 +1342,8 @@
     "exportDesc": "Download all your data (JSON)",
     "exportButton": "Export",
     "favorites": "Favorites",
+    "deleteItems": "Account information and all related data",
+    "emailPlaceholder": "Enter your email to confirm",
     "editName": "Edit name",
     "save": "Save",
     "cancel": "Cancel",

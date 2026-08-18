@@ -1346,6 +1346,8 @@
     "exportDesc": "すべてのデータをダウンロード（JSON）",
     "exportButton": "エクスポート",
     "favorites": "お気に入り",
+    "deleteItems": "アカウント情報および関連データ",
+    "emailPlaceholder": "確認のためメールアドレスを入力",
     "editName": "名前を編集",
     "save": "保存",
     "cancel": "キャンセル",

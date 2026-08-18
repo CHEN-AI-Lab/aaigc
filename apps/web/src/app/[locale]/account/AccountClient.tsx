@@ -46,6 +46,10 @@ export default function AccountClient() {
 
   // ── Delete account ──
   const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [deleteEmail, setDeleteEmail] = useState('')
+  const [deleteCode, setDeleteCode] = useState('')
+  const [deleteCodeSent, setDeleteCodeSent] = useState(false)
+  const [deleteSendingCode, setDeleteSendingCode] = useState(false)
   const [deleteSaving, setDeleteSaving] = useState(false)
   const [deleteError, setDeleteError] = useState('')
 
@@ -152,10 +156,30 @@ export default function AccountClient() {
   }
 
   // ── Delete account ──
+  const handleSendDeleteCode = async () => {
+    setDeleteSendingCode(true); setDeleteError('')
+    try {
+      const res = await fetch('/api/auth/send-verification', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: deleteEmail, purpose: 'deleteAccount', locale }),
+      })
+      const data = await res.json()
+      if (!res.ok) { setDeleteError(t('sendFailed')); return }
+      if (data.devCode) setDeleteCode(data.devCode)
+      setDeleteCodeSent(true)
+    } catch { setDeleteError(t('sendFailed')) }
+    finally { setDeleteSendingCode(false) }
+  }
+
   const handleDeleteAccount = async () => {
     setDeleteSaving(true); setDeleteError('')
     try {
-      const res = await fetch('/api/user/delete', { method: 'DELETE' })
+      const res = await fetch('/api/user/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: deleteEmail, code: deleteCode }),
+      })
       if (res.ok) {
         await signOut({ callbackUrl: '/' })
       } else {
@@ -350,7 +374,7 @@ export default function AccountClient() {
             {/* Delete */}
             <div className="flex items-center justify-between py-3 border-t border-border/50">
               <span className="text-xs text-text-secondary">{t('deleteAccount')}</span>
-              <button onClick={() => { setShowDeleteModal(true); setDeleteError('') }}
+              <button onClick={() => { setShowDeleteModal(true); setDeleteEmail(''); setDeleteCode(''); setDeleteCodeSent(false); setDeleteError('') }}
                 className="px-3 py-1.5 rounded-sm border border-error/30 text-xs text-error hover:bg-error/5 transition-colors shrink-0">
                 {t('deleteAccount')}
               </button>
@@ -376,7 +400,7 @@ export default function AccountClient() {
       {/* ── Delete Account Modal ── */}
       {showDeleteModal && (
         <div className="fixed inset-0 z-[90] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/30" onClick={() => setShowDeleteModal(false)} />
+          <div className="absolute inset-0 bg-black/30" onClick={() => { setShowDeleteModal(false); setDeleteCodeSent(false) }} />
           <div className="relative bg-card rounded-sm border border-border shadow-lg p-6 w-full max-w-sm">
             <div className="flex items-center gap-2 mb-3">
               <span className="text-lg">🗑️</span>
@@ -385,15 +409,44 @@ export default function AccountClient() {
             <p className="text-xs text-text-secondary mb-4">{t('deleteConfirm')}</p>
             <ul className="text-[10px] text-text-secondary/50 mb-4 space-y-1 list-disc ml-4">
               <li>{t('favorites')}</li>
-              <li>{t('email')} {t('emailUnverified')}</li>
+              <li>{t('deleteItems')}</li>
             </ul>
             <div className="space-y-3">
+              <div>
+                <label className="text-[10px] text-text-secondary/50 mb-1 block">{t('email')}</label>
+                <input
+                  type="email"
+                  value={deleteEmail}
+                  onChange={e => setDeleteEmail(e.target.value)}
+                  className="w-full p-2 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-error/30"
+                  placeholder={t('emailPlaceholder')}
+                  disabled={deleteCodeSent}
+                />
+              </div>
+              {deleteCodeSent && (
+                <div>
+                  <label className="text-[10px] text-text-secondary/50 mb-1 block">{t('verificationCode')}</label>
+                  <input
+                    type="text"
+                    maxLength={6}
+                    value={deleteCode}
+                    onChange={e => setDeleteCode(e.target.value.replace(/\D/g, ''))}
+                    className="w-full p-2 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-error/30 text-center tracking-widest"
+                    placeholder={t('codePlaceholder')}
+                  />
+                </div>
+              )}
               {deleteError && <p className="text-xs text-error">{deleteError}</p>}
               <div className="flex gap-2">
                 <button onClick={() => setShowDeleteModal(false)}
                   className="flex-1 px-3 py-1.5 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5">{t('cancel')}</button>
-                <button onClick={handleDeleteAccount} disabled={deleteSaving}
-                  className="flex-1 px-3 py-1.5 rounded-sm bg-error text-white text-xs disabled:opacity-50">{deleteSaving ? '...' : t('confirm')}</button>
+                {!deleteCodeSent ? (
+                  <button onClick={handleSendDeleteCode} disabled={deleteSendingCode || !deleteEmail}
+                    className="flex-1 px-3 py-1.5 rounded-sm bg-error text-white text-xs disabled:opacity-50">{deleteSendingCode ? '...' : t('sendCode')}</button>
+                ) : (
+                  <button onClick={handleDeleteAccount} disabled={deleteSaving || deleteCode.length !== 6}
+                    className="flex-1 px-3 py-1.5 rounded-sm bg-error text-white text-xs disabled:opacity-50">{deleteSaving ? '...' : t('confirm')}</button>
+                )}
               </div>
             </div>
           </div>
