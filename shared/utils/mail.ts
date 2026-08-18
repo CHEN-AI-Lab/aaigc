@@ -16,7 +16,8 @@ function emailT(locale: string | undefined, zh: string, en: string): string {
 export async function sendVerificationEmail(
   to: string,
   code: string,
-  locale: string = 'en'
+  locale: string = 'en',
+  purpose: string = 'verify'
 ): Promise<{ success: boolean; error?: string; devCode?: string }> {
   const isDev = process.env.NODE_ENV === 'development'
 
@@ -31,11 +32,25 @@ export async function sendVerificationEmail(
     return { success: false, error: 'RESEND_API_KEY not configured' }
   }
 
-  const subject = emailT(locale, 'AAIGC 验证码', 'AAIGC verification code')
-  const title = emailT(locale, '验证您的邮箱', 'Verify your email')
-  const desc = emailT(locale, '请输入以下验证码完成验证：', 'Enter the code below to verify your email:')
   const expireMinutes = Math.floor(VERIFICATION_CODE_TTL / 60000)
-  const expireWarning = emailT(locale, `验证码 ${expireMinutes} 分钟内有效，请勿泄露给他人。`, `This code expires in ${expireMinutes} minutes. Do not share it with anyone.`)
+
+  // 按 purpose 定制邮件内容
+  let subject: string
+  let title: string
+  let desc: string
+  let expireWarning: string
+
+  if (purpose === 'deleteAccount') {
+    subject = emailT(locale, 'AAIGC 账号删除确认验证码', 'AAIGC account deletion confirmation')
+    title = emailT(locale, '确认删除账号', 'Confirm account deletion')
+    desc = emailT(locale, '您正在申请删除 AAIGC 账号。验证码是：', 'You are requesting to delete your AAIGC account. Enter the code below:')
+    expireWarning = emailT(locale, `验证码 ${expireMinutes} 分钟内有效。如非本人操作，请忽略此邮件。`, `This code expires in ${expireMinutes} minutes. If you did not request this, please ignore this email.`)
+  } else {
+    subject = emailT(locale, 'AAIGC 验证码', 'AAIGC verification code')
+    title = emailT(locale, '验证您的邮箱', 'Verify your email')
+    desc = emailT(locale, '请输入以下验证码完成验证：', 'Enter the code below to verify your email:')
+    expireWarning = emailT(locale, `验证码 ${expireMinutes} 分钟内有效，请勿泄露给他人。`, `This code expires in ${expireMinutes} minutes. Do not share it with anyone.`)
+  }
 
   const html = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background-color:#f4f4f4;padding:24px">
   <div style="max-width:480px;margin:0 auto;background-color:#ffffff;border-radius:12px;overflow:hidden">

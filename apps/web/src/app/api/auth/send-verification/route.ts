@@ -64,7 +64,7 @@ export async function POST(req: Request) {
     })
 
     // Send email with locale support
-    const sent = await sendVerificationEmail(email, code, locale)
+    const sent = await sendVerificationEmail(email, code, locale, purpose)
     if (!sent.success) {
       return NextResponse.json({ error: "sendFailed" }, { status: 500 })
     }
