@@ -31,10 +31,12 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
     setTimeout(() => setToast(null), 2000)
   }, [])
 
-  // Fetch favorites on session change (login/logout/refresh).
-  // No hasFetched ref — always fetch when session changes, so hard refresh works reliably.
+  // Fetch favorites on login/logout only (session.user.id is stable across re-renders).
+  // Do NOT depend on the session OBJECT — its reference changes on every render/refresh,
+  // which would re-trigger loading and flash skeleton ↔ content repeatedly.
+  const userId = session?.user?.id ?? null
   useEffect(() => {
-    if (!session) {
+    if (!userId) {
       setFavorites([])
       return
     }
@@ -53,7 +55,7 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
     return () => {
       cancelled = true
     }
-  }, [session])
+  }, [userId])
 
   const isFavorited = useCallback(
     (itemId: string, type: string) =>
