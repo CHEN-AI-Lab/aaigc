@@ -182,8 +182,35 @@ export default function AccountClient() {
 
   if (status === 'loading') {
     return (
-      <div className="min-h-[calc(100vh-200px)] flex items-center justify-center">
-        <p className="text-text-secondary text-sm">...</p>
+      <div className="min-h-[calc(100vh-200px)] px-4 py-10">
+        <div className="max-w-2xl mx-auto animate-pulse">
+          {/* User info skeleton */}
+          <div className="bg-card rounded-sm border border-border p-6 mb-8">
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-full bg-surface" />
+              <div className="flex-1 space-y-2">
+                <div className="h-4 w-32 bg-surface rounded" />
+                <div className="h-3 w-48 bg-surface rounded" />
+                <div className="h-3 w-24 bg-surface rounded" />
+              </div>
+            </div>
+          </div>
+          {/* Stats cards skeleton */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-card rounded-sm border border-border p-4">
+                <div className="h-8 w-12 bg-surface rounded mx-auto mb-2" />
+                <div className="h-3 w-20 bg-surface rounded mx-auto" />
+              </div>
+            ))}
+          </div>
+          {/* Favorites skeleton */}
+          <div className="space-y-2">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-14 bg-card rounded-sm border border-border" />
+            ))}
+          </div>
+        </div>
       </div>
     )
   }
@@ -360,7 +387,11 @@ export default function AccountClient() {
 
           {/* List */}
           {loading ? (
-            <p className="text-sm text-text-secondary text-center py-8">...</p>
+            <div className="space-y-2 animate-pulse">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="h-14 bg-card rounded-sm border border-border" />
+              ))}
+            </div>
           ) : filtered.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-2xl mb-2">📭</p>
