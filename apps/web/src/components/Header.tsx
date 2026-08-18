@@ -33,8 +33,19 @@ export default function Header() {
           <ThemeSwitcher />
           <LanguageSwitcher />
           {session?.user ? (
-            <Link href="/account" className="text-xs sm:text-sm text-text-secondary hover:text-accent transition-colors sm:ml-3">
-              {authT('account')}
+            <Link href="/account" className="flex items-center gap-1.5 sm:ml-3 group"
+              title={session.user.name || session.user.email || ''}>
+              {session.user.image ? (
+                <img
+                  src={session.user.image}
+                  alt=""
+                  className="w-7 h-7 rounded-full object-cover border border-border group-hover:border-accent/30 transition-colors"
+                />
+              ) : (
+                <div className="w-7 h-7 rounded-full bg-accent/10 flex items-center justify-center text-accent text-xs font-semibold border border-border group-hover:border-accent/30 transition-colors">
+                  {(session.user.name || session.user.email || '?')[0].toUpperCase()}
+                </div>
+              )}
             </Link>
           ) : (
             <Link href="/login" className="text-xs sm:text-sm text-text-secondary hover:text-accent transition-colors sm:ml-3">
