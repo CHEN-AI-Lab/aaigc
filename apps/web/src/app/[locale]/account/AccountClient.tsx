@@ -213,53 +213,68 @@ export default function AccountClient() {
 
         {/* ── Profile Section ── */}
         <div className="bg-card rounded-sm border border-border p-6">
-          <h2 className="text-sm font-semibold text-text-primary mb-4">{t('accountSettings')}</h2>
-          <div className="flex items-start gap-4">
+          <h2 className="text-sm font-semibold text-text-primary mb-5">{t('accountSettings')}</h2>
+          <div className="flex items-start gap-5 mb-5">
             {session.user?.image ? (
-              <img src={session.user.image} alt="" className="w-14 h-14 rounded-full object-cover shrink-0" />
+              <img src={session.user.image} alt="" className="w-20 h-20 rounded-full object-cover shrink-0 border-2 border-border" />
             ) : (
-              <div className="w-14 h-14 rounded-full bg-accent/10 flex items-center justify-center text-accent text-xl font-semibold shrink-0">
+              <div className="w-20 h-20 rounded-full bg-accent/10 flex items-center justify-center text-accent text-2xl font-semibold shrink-0 border-2 border-border">
                 {(session.user?.name || session.user?.email || '?')[0].toUpperCase()}
               </div>
             )}
-            <div className="flex-1 min-w-0">
-              <div className="flex flex-wrap items-center gap-2">
-                <p className="text-base font-medium text-text-primary">{session.user?.name || t('noName')}</p>
+            <div className="flex-1 min-w-0 pt-1">
+              <div className="flex items-center gap-2">
+                <p className="text-lg font-medium text-text-primary">{session.user?.name || t('noName')}</p>
                 <button onClick={() => { setNewName(session.user?.name || profile?.name || ''); setEditingName(true) }}
-                  className="text-[10px] text-text-secondary/50 hover:text-accent transition-colors">✏️ {t('editName')}</button>
+                  className="text-xs text-text-secondary/50 hover:text-accent transition-colors">✏️ {t('editName')}</button>
               </div>
-              <p className="text-xs text-text-secondary truncate mt-1">
+            </div>
+          </div>
+          <div className="space-y-0">
+            <div className="grid grid-cols-[100px_1fr] items-center py-3 border-t border-border/50">
+              <span className="text-xs text-text-secondary">{t('email')}</span>
+              <span className="text-xs text-text-primary">
                 {session.user?.email}
                 {profile?.emailVerified
-                  ? <span className="text-green-500 ml-1">✓ {t('emailVerified')}</span>
-                  : <span className="text-text-secondary/50 ml-1">({t('emailUnverified')})</span>}
-              </p>
-              <p className="text-xs text-text-secondary/50 mt-1">
-                {(profile?.role || session.user?.role || 'user') === 'admin' ? `👑 ${t('admin')}` : `👤 ${t('user')}`}
-                {profile?.createdAt && ` · ${t('memberSince')} ${formatDate(profile.createdAt)}`}
-              </p>
+                  ? <span className="text-green-500 ml-1.5">✓ {t('emailVerified')}</span>
+                  : <span className="text-text-secondary/50 ml-1.5">({t('emailUnverified')})</span>}
+              </span>
             </div>
+            <div className="grid grid-cols-[100px_1fr] items-center py-3 border-t border-border/50">
+              <span className="text-xs text-text-secondary">{t('role')}</span>
+              <span className="text-xs text-text-primary">
+                {(profile?.role || session.user?.role || 'user') === 'admin' ? `👑 ${t('admin')}` : `👤 ${t('user')}`}
+              </span>
+            </div>
+            {profile?.createdAt && (
+              <div className="grid grid-cols-[100px_1fr] items-center py-3 border-t border-border/50">
+                <span className="text-xs text-text-secondary">{t('memberSince')}</span>
+                <span className="text-xs text-text-primary">{formatDate(profile.createdAt)}</span>
+              </div>
+            )}
           </div>
         </div>
 
         {/* ── Login Methods Section ── */}
         <div className="bg-card rounded-sm border border-border p-6">
-          <h2 className="text-sm font-semibold text-text-primary mb-4">🔑 {t('accountSettings')}</h2>
-          <div className="space-y-3">
-            {profile && profile.accounts.length > 0 && (
-              <div className="flex items-center gap-2 text-xs text-text-secondary">
-                <span className="w-5">🔗</span>
-                <span>{t('connectedAccounts')}: {profile.accounts.map(a => providerNames[a.provider] || a.provider).join(', ')}</span>
+          <h2 className="text-sm font-semibold text-text-primary mb-1">🔑 {t('accountSettings')}</h2>
+          <div className="space-y-0 mt-3">
+            {profile && profile.accounts.length > 0 && profile.accounts.map((acc) => (
+              <div key={acc.provider} className="grid grid-cols-[100px_1fr] items-center py-3 border-t border-border/50">
+                <span className="text-xs text-text-secondary">{providerNames[acc.provider] || acc.provider}</span>
+                <span className="text-xs text-green-500">✓ {t('connectedAccounts')}</span>
               </div>
-            )}
+            ))}
             {profile && (
-              <div className="flex items-center gap-2 text-xs text-text-secondary">
-                <span className="w-5">🔒</span>
-                <span>{t('passwordLogin')}</span>
-                <button onClick={() => { setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdCode(''); setPwdStep('form'); setPwdError(''); setChangingPwd(true) }}
-                  className="text-accent hover:underline ml-1">
-                  {profile.hasPassword ? t('changePassword') : t('setPassword')}
-                </button>
+              <div className="grid grid-cols-[100px_1fr] items-center py-3 border-t border-border/50">
+                <span className="text-xs text-text-secondary">{t('passwordLogin')}</span>
+                <span className="text-xs text-text-primary flex items-center gap-2">
+                  <span className="text-text-secondary/50">••••••••</span>
+                  <button onClick={() => { setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdCode(''); setPwdStep('form'); setPwdError(''); setChangingPwd(true) }}
+                    className="text-accent hover:underline text-xs">
+                    {profile.hasPassword ? t('changePassword') : t('setPassword')}
+                  </button>
+                </span>
               </div>
             )}
           </div>
@@ -267,15 +282,15 @@ export default function AccountClient() {
 
         {/* ── Account Actions Section ── */}
         <div className="bg-card rounded-sm border border-border p-6">
-          <h2 className="text-sm font-semibold text-text-primary mb-4">⚙️ {t('account')}</h2>
-          <div className="space-y-3">
-            <div className="flex items-center gap-2 text-xs text-text-secondary">
-              <span className="w-5">🕐</span>
-              <span>{t('lastActive')}: {formatDateTime(profile?.createdAt || new Date().toISOString())}</span>
+          <h2 className="text-sm font-semibold text-text-primary mb-1">⚙️ {t('account')}</h2>
+          <div className="space-y-0 mt-3">
+            <div className="grid grid-cols-[100px_1fr] items-center py-3 border-t border-border/50">
+              <span className="text-xs text-text-secondary">{t('lastActive')}</span>
+              <span className="text-xs text-text-primary">{formatDateTime(profile?.createdAt || new Date().toISOString())}</span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-between py-3 border-t border-border/50">
               <button onClick={handleLogout}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5 hover:text-error transition-colors">
+                className="flex items-center gap-1.5 px-4 py-2 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5 hover:text-error transition-colors">
                 <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                   <polyline points="16 17 21 12 16 7" />
@@ -285,24 +300,20 @@ export default function AccountClient() {
               </button>
               {!confirmDelete ? (
                 <button onClick={() => setConfirmDelete(true)}
-                  className="px-3 py-1.5 rounded-sm border border-error/30 text-xs text-error hover:bg-error/5 transition-colors ml-auto">
+                  className="px-4 py-2 rounded-sm border border-error/30 text-xs text-error hover:bg-error/5 transition-colors">
                   {t('deleteAccount')}
                 </button>
               ) : (
-                <div className="flex items-center gap-2 ml-auto">
+                <div className="flex items-center gap-2">
                   <span className="text-xs text-error">{t('deleteConfirm')}</span>
                   <button onClick={handleDeleteAccount} disabled={deleting}
-                    className="px-3 py-1.5 rounded-sm bg-error text-white text-xs disabled:opacity-50">
-                    {deleting ? '...' : t('confirm')}
-                  </button>
+                    className="px-3 py-1.5 rounded-sm bg-error text-white text-xs disabled:opacity-50">{deleting ? '...' : t('confirm')}</button>
                   <button onClick={() => setConfirmDelete(false)}
-                    className="px-3 py-1.5 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5 transition-colors">
-                    {t('cancel')}
-                  </button>
+                    className="px-3 py-1.5 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5 transition-colors">{t('cancel')}</button>
                 </div>
               )}
             </div>
-            {deleteError && <p className="text-xs text-error">{deleteError}</p>}
+            {deleteError && <p className="text-xs text-error mt-2">{deleteError}</p>}
           </div>
         </div>
       </div>
