@@ -24,12 +24,6 @@ const providerNames: Record<string, string> = {
   email: 'Password',
 }
 
-function CardHeader({ icon, title, accent }: { icon: string; title: string; accent: string }) {
-  return (
-    <div className={`h-1 shrink-0 ${accent}`} />
-  )
-}
-
 export default function AccountClient() {
   const t = useTranslations('auth')
   const locale = useLocale()
