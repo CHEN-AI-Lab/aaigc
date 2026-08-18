@@ -20,6 +20,13 @@ export default function LoginClient() {
   const isLoggedIn = !!session?.user
   const registered = searchParams.get('registered')
 
+  // 已登录用户访问登录页 → 自动跳转到账号页
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.replace('/account')
+    }
+  }, [isLoggedIn, router])
+
   const [tab, setTab] = useState<'email' | 'password'>('email')
   const [email, setEmail] = useState(registered ? (searchParams.get('email') || '') : '')
   const [password, setPassword] = useState('')
@@ -336,22 +343,6 @@ export default function LoginClient() {
             <p className="text-sm text-text-secondary text-center mt-1 mb-6">
               {forgotMode ? t('forgotPasswordDesc') : t('loginSubtitle')}
             </p>
-
-          {isLoggedIn && (
-            <div className="mb-6 p-4 rounded-xl bg-blue-50 border border-blue-200">
-              <p className="text-sm text-blue-700 font-medium">
-                {session?.user?.name ? `👋 ${session.user.name}` : t('alreadyLoggedIn')}
-              </p>
-              <p className="text-xs text-blue-500 mt-1">{t('forgotPassword')}</p>
-              <div className="mt-3 flex gap-2">
-                <Link href="/" className="flex-1 bg-accent text-white text-center text-sm py-3 rounded-xl hover:opacity-90">{tc('goHome')}</Link>
-                <button onClick={() => signOut({ callbackUrl: `/${locale}/login` })}
-                  className="flex-1 bg-card text-text-primary text-center text-sm py-3 rounded-xl border border-border hover:bg-hover">
-                  {tc('logout')}
-                </button>
-              </div>
-            </div>
-          )}
 
           {successMsg && (
             <div className="mb-6 p-3 rounded-xl bg-green-50 border border-green-200">
