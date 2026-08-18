@@ -136,49 +136,23 @@ export default function AccountClient() {
 
     setPwdSaving(true); setPwdError('')
     try {
-      // 有密码 → 走验证旧密码流程（无需代码）；无密码 → 走邮箱验证码
-      if (profile?.hasPassword) {
-        // 直接更新密码（check-password 已验证旧密码）
-        const bcrypt = await import('bcryptjs')
-        const salt = await bcrypt.genSalt(10)
-        const hash = await bcrypt.hash(pwdNew, salt)
-        const res = await fetch('/api/user/update', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ passwordHash: hash }),
-        })
-        if (!res.ok) { setPwdError(t('registerFailed')); return }
-      } else {
-        // 无密码 → 通过 set-password API（需要验证码）
-        const sendRes = await fetch('/api/auth/send-verification', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: profile?.email, purpose: 'setPassword', locale }),
-        })
-        if (!sendRes.ok) { setPwdError(t('sendFailed')); return }
-        const data = await sendRes.json()
-        const code = data.devCode || (await askForCode())
-        if (!code) { setPwdError(t('verifyFailed')); return }
-        const setRes = await fetch('/api/auth/set-password', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: profile?.email, password: pwdNew, code }),
-        })
-        if (!setRes.ok) {
-          const d = await setRes.json()
-          setPwdError(t(d.error) || t('registerFailed'))
-          return
-        }
+      // 已登录用户直接调 set-password API（无需验证码）
+      const res = await fetch('/api/auth/set-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pwdNew }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setPwdError(t(data.error) || t('registerFailed'))
+        setPwdSaving(false)
+        return
       }
       setShowPwdForm(false); setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdError('')
       await fetchProfile()
       showToast(t('nameUpdated'))
     } catch { setPwdError(t('registerFailed')) }
     finally { setPwdSaving(false) }
-  }
-
-  const askForCode = () => {
-    return prompt(t('codePlaceholder'))
   }
 
   // ── Delete account ──
