@@ -285,23 +285,40 @@ export default function AccountClient() {
               </div>
             </div>
 
-            {/* Info rows */}
+            {/* Info rows — 参考 CookMate 模式：左标签右值，统一布局 */}
             <div className="space-y-0">
-              <div className="flex items-center py-2.5 border-t border-border/50">
-                <span className="text-xs text-text-secondary w-24 shrink-0">{t('email')}</span>
-                <span className="text-xs text-text-primary">
+              <div className="flex items-center justify-between py-2.5 border-t border-border/50">
+                <span className="text-xs text-text-secondary">{t('email')}</span>
+                <span className="text-xs text-text-primary flex items-center gap-1.5">
                   {session.user?.email}
                   {profile?.emailVerified
-                    ? <span className="text-green-500 ml-1.5">{t('emailVerified')}</span>
-                    : <span className="text-text-secondary/50 ml-1.5">({t('emailUnverified')})</span>}
+                    ? <span className="text-green-500 font-medium">{t('emailVerified')}</span>
+                    : <span className="text-text-secondary/50">({t('emailUnverified')})</span>}
                 </span>
               </div>
-              {profile && profile.accounts.length > 0 && profile.accounts.map((acc) => (
-                <div key={acc.provider} className="flex items-center py-2.5 border-t border-border/50">
-                  <span className="text-xs text-text-secondary w-24 shrink-0">{providerNames[acc.provider] || acc.provider}</span>
-                  <span className="text-xs text-green-500">✓ {t('connected')}</span>
+
+              {profile && profile.accounts.length > 0 && (
+                <div className="py-2.5 border-t border-border/50">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[10px] text-text-secondary/60">{t('connectedAccounts')}</span>
+                    <span className="text-[10px] text-text-secondary/40">{profile.accounts.length} {t('accounts')}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2 mt-1.5">
+                    {profile.accounts
+                      .sort((a, b) => {
+                        const order: Record<string, number> = { google: 0, github: 1, credentials: 2, email: 3 }
+                        return (order[a.provider] ?? 99) - (order[b.provider] ?? 99)
+                      })
+                      .map((acc) => (
+                        <span key={acc.provider} className="inline-flex items-center gap-1 px-2 py-1 bg-surface border border-border rounded-sm text-[10px] text-text-primary">
+                          {acc.provider === 'google' ? <span className="text-xs">🔵</span> : acc.provider === 'github' ? <span className="text-xs">⚫</span> : null}
+                          {providerNames[acc.provider] || acc.provider}
+                          <span className="text-green-500">✓</span>
+                        </span>
+                      ))}
+                  </div>
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </div>
