@@ -46,7 +46,6 @@ export default function AccountClient() {
 
   // ── Delete account ──
   const [showDeleteModal, setShowDeleteModal] = useState(false)
-  const [deleteEmail, setDeleteEmail] = useState('')
   const [deleteCode, setDeleteCode] = useState('')
   const [deleteCodeSent, setDeleteCodeSent] = useState(false)
   const [deleteSendingCode, setDeleteSendingCode] = useState(false)
@@ -374,7 +373,7 @@ export default function AccountClient() {
             {/* Delete */}
             <div className="flex items-center justify-between py-3 border-t border-border/50">
               <span className="text-xs text-text-secondary">{t('deleteAccount')}</span>
-              <button onClick={() => { setShowDeleteModal(true); setDeleteEmail(''); setDeleteCode(''); setDeleteCodeSent(false); setDeleteError('') }}
+              <button onClick={() => { setShowDeleteModal(true); setDeleteCode(''); setDeleteCodeSent(false); setDeleteError('') }}
                 className="px-3 py-1.5 rounded-sm border border-error/30 text-xs text-error hover:bg-error/5 transition-colors shrink-0">
                 {t('deleteAccount')}
               </button>
