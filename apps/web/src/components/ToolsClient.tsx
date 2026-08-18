@@ -12,7 +12,7 @@ export default function ToolsClient() {
   const t = useTranslations('tools')
   const [query, setQuery] = useState('')
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const { favorites, loading, toggleFavorite } = useFavorites()
 
   const toolFavs = useMemo(
@@ -85,7 +85,7 @@ export default function ToolsClient() {
       </div>
 
       {/* ── My Favorite Tools ── */}
-      {session && loading && (
+      {(status === 'loading' || (session && loading)) && (
         <div className="mb-8">
           <div className="h-3 w-24 bg-surface rounded mb-3" />
           <div className="flex flex-wrap gap-2">

@@ -13,7 +13,7 @@ export default function ProductsClient({ products: allProducts }: { products: Pr
   const tp = useTranslations('products')
   const tt = useTranslations('tools')
   const [filter, setFilter] = useState<'all' | 'live' | 'wip'>('all')
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const { favorites, loading, toggleFavorite } = useFavorites()
 
   const productFavs = useMemo(
@@ -29,7 +29,7 @@ export default function ProductsClient({ products: allProducts }: { products: Pr
   return (
     <div>
       {/* ── My Favorite Products (above filter, always visible) ── */}
-      {session && loading && (
+      {(status === 'loading' || (session && loading)) && (
         <div className="mb-8">
           <div className="h-3 w-24 bg-surface rounded mb-3" />
           <div className="flex flex-wrap gap-2">
