@@ -3,7 +3,7 @@
 import { useTranslations, useLocale } from 'next-intl'
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useRef } from 'react'
 
 interface UserProfile {
   id: string
@@ -17,29 +17,57 @@ interface UserProfile {
   accounts: { provider: string }[]
 }
 
+const providerNames: Record<string, string> = {
+  google: 'Google',
+  github: 'GitHub',
+  credentials: 'Password',
+  email: 'Password',
+}
+
+function CardHeader({ icon, title, accent }: { icon: string; title: string; accent: string }) {
+  return (
+    <div className={`h-1 shrink-0 ${accent}`} />
+  )
+}
+
 export default function AccountClient() {
   const t = useTranslations('auth')
   const locale = useLocale()
   const { data: session, status, update } = useSession()
   const [profile, setProfile] = useState<UserProfile | null>(null)
 
+  // ── Name inline edit ──
   const [editingName, setEditingName] = useState(false)
-  const [newName, setNewName] = useState('')
+  const [nameInput, setNameInput] = useState('')
   const [nameSaving, setNameSaving] = useState(false)
-  const [nameError, setNameError] = useState('')
+  const nameRef = useRef<HTMLInputElement>(null)
 
-  const [changingPwd, setChangingPwd] = useState(false)
-  const [pwdStep, setPwdStep] = useState<'form' | 'code'>('form')
-  const [pwdCode, setPwdCode] = useState('')
+  // ── Password inline edit ──
+  const [showPwdForm, setShowPwdForm] = useState(false)
   const [pwdOld, setPwdOld] = useState('')
   const [pwdNew, setPwdNew] = useState('')
   const [pwdConfirm, setPwdConfirm] = useState('')
   const [pwdSaving, setPwdSaving] = useState(false)
   const [pwdError, setPwdError] = useState('')
 
-  const [confirmDelete, setConfirmDelete] = useState(false)
-  const [deleting, setDeleting] = useState(false)
+  // ── Delete account ──
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [deleteEmail, setDeleteEmail] = useState('')
+  const [deleteCode, setDeleteCode] = useState('')
+  const [deleteCodeSent, setDeleteCodeSent] = useState(false)
+  const [deleteSendingCode, setDeleteSendingCode] = useState(false)
+  const [deleteSaving, setDeleteSaving] = useState(false)
   const [deleteError, setDeleteError] = useState('')
+
+  // ── Toast ──
+  const [toast, setToast] = useState('')
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  function showToast(msg: string) {
+    setToast(msg)
+    if (toastTimer.current) clearTimeout(toastTimer.current)
+    toastTimer.current = setTimeout(() => setToast(''), 3000)
+  }
 
   const fetchProfile = useCallback(async () => {
     try {
@@ -48,34 +76,28 @@ export default function AccountClient() {
         const data = await res.json()
         setProfile(data.user)
       }
-    } catch {
-      // ignore
-    }
+    } catch { /* ignore */ }
   }, [])
 
   useEffect(() => {
     if (session) fetchProfile()
   }, [session, fetchProfile])
 
+  useEffect(() => {
+    if (editingName && nameRef.current) nameRef.current.focus()
+  }, [editingName])
+
   const formatDate = (d: string | Date) => {
     try {
       return new Date(d).toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' })
-    } catch {
-      return ''
-    }
+    } catch { return '' }
   }
 
-  const providerNames: Record<string, string> = {
-    google: 'Google',
-    github: 'GitHub',
-    credentials: t('passwordLogin') || 'Password',
-    email: t('passwordLogin') || 'Password',
-  }
-
+  // ── Name save ──
   const handleSaveName = async () => {
-    const name = newName.trim()
-    if (!name) { setNameError(t('fillRequired')); return }
-    setNameSaving(true); setNameError('')
+    const name = nameInput.trim()
+    if (!name) { showToast(t('fillRequired')); return }
+    setNameSaving(true)
     try {
       const res = await fetch('/api/user/update', {
         method: 'POST',
@@ -84,19 +106,21 @@ export default function AccountClient() {
       })
       if (res.ok) {
         setEditingName(false)
-        // 同步刷新 JWT session，让 Header 等全站立即显示新名字
         await update({ name })
         await fetchProfile()
+        showToast(t('nameUpdated'))
+      } else {
+        const data = await res.json()
+        showToast(t(data.error) || t('registerFailed'))
       }
-      else { const data = await res.json(); setNameError(t(data.error) || t('registerFailed')) }
-    } catch { setNameError(t('registerFailed')) }
+    } catch { showToast(t('registerFailed')) }
     finally { setNameSaving(false) }
   }
 
-  const handleChangePassword = async () => {
+  // ── Password save ──
+  const handleSavePassword = async () => {
     if (!pwdNew) { setPwdError(t('fillRequired')); return }
     if (pwdNew.length < 8) { setPwdError(t('passwordTooShort')); return }
-    // 密码强度验证（前端先拦截，避免走到发验证码后才报错）
     let types = 0
     if (/[a-z]/.test(pwdNew)) types++
     if (/[A-Z]/.test(pwdNew)) types++
@@ -106,61 +130,88 @@ export default function AccountClient() {
     const COMMON = ['password1','password123','qwerty123','qwerty1','trustno1','abc12345','1234qwer','1q2w3e4r','passw0rd','admin123','12345678','87654321','11111111','00000000','aaaaaaaa']
     if (COMMON.includes(pwdNew.toLowerCase())) { setPwdError(t('passwordCommon')); return }
     if (pwdNew !== pwdConfirm) { setPwdError(t('passwordMismatch')); return }
-    setPwdSaving(true); setPwdError('')
-    try {
-      // Step 1 — verify old password (only for users who already have one)
-      if (profile?.hasPassword) {
-        if (!pwdOld) { setPwdError(t('fillRequired')); setPwdSaving(false); return }
-        const checkRes = await fetch('/api/auth/check-password', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: profile?.email, password: pwdOld }),
-        })
-        if (!checkRes.ok) { setPwdError(t('currentPasswordWrong')); setPwdSaving(false); return }
-      }
-      // Step 2 — send verification code
-      const sendRes = await fetch('/api/auth/send-verification', {
+    if (profile?.hasPassword) {
+      if (!pwdOld) { setPwdError(t('fillRequired')); return }
+      const r = await fetch('/api/auth/check-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: profile?.email, purpose: 'changePassword', locale }),
+        body: JSON.stringify({ email: profile.email, password: pwdOld }),
       })
-      if (!sendRes.ok) { setPwdError(t('sendFailed')); setPwdSaving(false); return }
-      // Step 3 — show code input; user types code, then set-password is called
-      setPwdStep('code')
+      if (!r.ok) { setPwdError(t('currentPasswordWrong')); return }
+    }
+
+    setPwdSaving(true); setPwdError('')
+    try {
+      // 有密码 → 走验证旧密码流程（无需代码）；无密码 → 走邮箱验证码
+      if (profile?.hasPassword) {
+        // 直接更新密码（check-password 已验证旧密码）
+        const bcrypt = await import('bcryptjs')
+        const salt = await bcrypt.genSalt(10)
+        const hash = await bcrypt.hash(pwdNew, salt)
+        const res = await fetch('/api/user/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ passwordHash: hash }),
+        })
+        if (!res.ok) { setPwdError(t('registerFailed')); return }
+      } else {
+        // 无密码 → 通过 set-password API（需要验证码）
+        const sendRes = await fetch('/api/auth/send-verification', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: profile?.email, purpose: 'setPassword', locale }),
+        })
+        if (!sendRes.ok) { setPwdError(t('sendFailed')); return }
+        const data = await sendRes.json()
+        const code = data.devCode || (await askForCode())
+        if (!code) { setPwdError(t('verifyFailed')); return }
+        const setRes = await fetch('/api/auth/set-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: profile?.email, password: pwdNew, code }),
+        })
+        if (!setRes.ok) {
+          const d = await setRes.json()
+          setPwdError(t(d.error) || t('registerFailed'))
+          return
+        }
+      }
+      setShowPwdForm(false); setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdError('')
+      await fetchProfile()
+      showToast(t('nameUpdated'))
     } catch { setPwdError(t('registerFailed')) }
     finally { setPwdSaving(false) }
   }
 
-  const handleSubmitNewPassword = async () => {
-    if (!pwdCode) { setPwdError(t('fillRequired')); return }
-    setPwdSaving(true); setPwdError('')
+  const askForCode = () => {
+    return prompt(t('codePlaceholder'))
+  }
+
+  // ── Delete account ──
+  const handleSendDeleteCode = async () => {
+    setDeleteSendingCode(true); setDeleteError('')
     try {
-      const res = await fetch('/api/auth/set-password', {
+      const res = await fetch('/api/auth/send-verification', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: profile?.email, password: pwdNew, code: pwdCode }),
+        body: JSON.stringify({ email: deleteEmail, purpose: 'deleteAccount', locale }),
       })
       const data = await res.json()
-      if (!res.ok) {
-        // 翻译后端返回的错误码，支持 passwordNeedsTypes / passwordCommon / passwordTooShort 等
-        const errMsg = data.error
-          ? (t(data.error) || data.error)
-          : t('registerFailed')
-        setPwdError(errMsg)
-        setPwdSaving(false)
-        return
-      }
-      // Success — close dialog, reset
-      setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdCode(''); setPwdStep('form'); setChangingPwd(false)
-      await fetchProfile()
-    } catch { setPwdError(t('registerFailed')) }
-    finally { setPwdSaving(false) }
+      if (!res.ok) { setDeleteError(t('sendFailed')); return }
+      if (data.devCode) setDeleteCode(data.devCode)
+      setDeleteCodeSent(true)
+    } catch { setDeleteError(t('sendFailed')) }
+    finally { setDeleteSendingCode(false) }
   }
 
   const handleDeleteAccount = async () => {
-    setDeleting(true); setDeleteError('')
+    setDeleteSaving(true); setDeleteError('')
     try {
-      const res = await fetch('/api/user/delete', { method: 'DELETE' })
+      const res = await fetch('/api/user/delete', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: deleteEmail, code: deleteCode }),
+      })
       if (res.ok) {
         await signOut({ callbackUrl: '/' })
       } else {
@@ -168,26 +219,35 @@ export default function AccountClient() {
         setDeleteError(t(data.error) || t('registerFailed'))
       }
     } catch { setDeleteError(t('registerFailed')) }
-    finally { setDeleting(false) }
+    finally { setDeleteSaving(false) }
+  }
+
+  // ── Export data ──
+  const handleExport = async () => {
+    try {
+      const res = await fetch('/api/user/export')
+      if (!res.ok) { showToast(t('registerFailed')); return }
+      const blob = await res.blob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `aaigc-export-${new Date().toISOString().split('T')[0]}.json`
+      a.click()
+      URL.revokeObjectURL(url)
+      showToast(t('nameUpdated'))
+    } catch { showToast(t('registerFailed')) }
   }
 
   const handleLogout = async () => { await signOut({ callbackUrl: '/' }) }
 
+  // ── Loading / Not logged in ──
   if (status === 'loading') {
     return (
       <div className="min-h-[calc(100vh-200px)] px-4 py-10">
-        <div className="max-w-2xl mx-auto animate-pulse space-y-6">
-          <div className="bg-card rounded-sm border border-border p-6">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-surface" />
-              <div className="flex-1 space-y-2">
-                <div className="h-4 w-32 bg-surface rounded" />
-                <div className="h-3 w-48 bg-surface rounded" />
-              </div>
-            </div>
-          </div>
-          <div className="h-24 bg-card rounded-sm border border-border" />
-          <div className="h-24 bg-card rounded-sm border border-border" />
+        <div className="max-w-xl mx-auto animate-pulse space-y-6">
+          <div className="h-48 bg-card rounded-sm border border-border" />
+          <div className="h-32 bg-card rounded-sm border border-border" />
+          <div className="h-32 bg-card rounded-sm border border-border" />
         </div>
       </div>
     )
@@ -206,84 +266,168 @@ export default function AccountClient() {
 
   return (
     <div className="min-h-[calc(100vh-200px)] px-4 py-10">
-      <div className="max-w-2xl mx-auto space-y-6">
+      <div className="max-w-xl mx-auto space-y-6">
 
-        {/* ── Profile Section ── */}
-        <div className="bg-card rounded-sm border border-border p-6">
-          <h2 className="text-sm font-semibold text-text-primary mb-5">{t('accountSettings')}</h2>
-          <div className="flex items-center gap-5 mb-5">
-            {session.user?.image ? (
-              <img src={session.user.image} alt="" className="w-16 h-16 rounded-full object-cover shrink-0 border-2 border-border" />
-            ) : (
-              <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center text-accent text-xl font-semibold shrink-0 border-2 border-border">
-                {(profile?.name || session.user?.name || session.user?.email || '?')[0].toUpperCase()}
-              </div>
-            )}
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <p className="text-lg font-medium text-text-primary">{session.user?.name || t('noName')}</p>
-                <button onClick={() => { setNewName(profile?.name || session.user?.name || ''); setEditingName(true) }}
-                  className="text-xs text-text-secondary/50 hover:text-accent transition-colors">✏️ {t('editName')}</button>
-              </div>
+        {/* ── Card 1: Profile ── */}
+        <div className="bg-card rounded-sm border border-border overflow-hidden">
+          <div className="h-1 bg-gradient-to-r from-accent to-accent-light" />
+          <div className="p-5 sm:p-6">
+            <div className="flex items-center gap-2 mb-5">
+              <span className="text-sm">👤</span>
+              <h2 className="text-sm font-semibold text-text-primary">{t('accountSettings')}</h2>
             </div>
-          </div>
-          <div className="space-y-0">
-            <div className="grid grid-cols-[100px_1fr] items-center py-3 border-t border-border/50">
-              <span className="text-xs text-text-secondary">{t('email')}</span>
-              <span className="text-xs text-text-primary">
-                {session.user?.email}
-                {profile?.emailVerified
-                  ? <span className="text-green-500 ml-1.5">✓ {t('emailVerified')}</span>
-                  : <span className="text-text-secondary/50 ml-1.5">({t('emailUnverified')})</span>}
-              </span>
-            </div>
-            <div className="grid grid-cols-[100px_1fr] items-center py-3 border-t border-border/50">
-              <span className="text-xs text-text-secondary">{t('role')}</span>
-              <span className="text-xs text-text-primary">
-                {(profile?.role || session.user?.role || 'user') === 'admin' ? `👑 ${t('admin')}` : `👤 ${t('user')}`}
-              </span>
-            </div>
-            {profile?.createdAt && (
-              <div className="grid grid-cols-[100px_1fr] items-center py-3 border-t border-border/50">
-                <span className="text-xs text-text-secondary">{t('memberSince')}</span>
-                <span className="text-xs text-text-primary">{formatDate(profile.createdAt)}</span>
-              </div>
-            )}
-          </div>
-        </div>
 
-        {/* ── Login Methods Section ── */}
-        <div className="bg-card rounded-sm border border-border p-6">
-          <h2 className="text-sm font-semibold text-text-primary mb-1">🔑 {t('accountSettings')}</h2>
-          <div className="space-y-0 mt-3">
-            {profile && profile.accounts.length > 0 && profile.accounts.map((acc) => (
-              <div key={acc.provider} className="grid grid-cols-[100px_1fr] items-center py-3 border-t border-border/50">
-                <span className="text-xs text-text-secondary">{providerNames[acc.provider] || acc.provider}</span>
-                <span className="text-xs text-green-500">✓ {t('connected')}</span>
+            {/* Avatar + Name */}
+            <div className="flex items-center gap-4 mb-5">
+              {profile?.image || session.user?.image ? (
+                <img src={profile?.image || session.user?.image || ''} alt="" className="w-16 h-16 rounded-full object-cover shrink-0 border-2 border-border" />
+              ) : (
+                <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center text-accent text-xl font-semibold shrink-0 border-2 border-border">
+                  {(profile?.name || session.user?.name || session.user?.email || '?')[0].toUpperCase()}
+                </div>
+              )}
+              <div className="flex-1 min-w-0">
+                {editingName ? (
+                  <div className="flex items-center gap-2">
+                    <input
+                      ref={nameRef}
+                      type="text"
+                      value={nameInput}
+                      onChange={e => setNameInput(e.target.value)}
+                      onKeyDown={e => { if (e.key === 'Enter') handleSaveName(); if (e.key === 'Escape') setEditingName(false) }}
+                      className="flex-1 p-1.5 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30"
+                      maxLength={30}
+                      autoFocus
+                    />
+                    <button onClick={handleSaveName} disabled={nameSaving}
+                      className="text-xs text-accent hover:underline disabled:opacity-50">{nameSaving ? '...' : t('save')}</button>
+                    <button onClick={() => setEditingName(false)}
+                      className="text-xs text-text-secondary/50 hover:text-text-secondary">{t('cancel')}</button>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <span className="text-base font-medium text-text-primary">{profile?.name || session.user?.name || t('noName')}</span>
+                    <button onClick={() => { setNameInput(profile?.name || session.user?.name || ''); setEditingName(true) }}
+                      className="text-xs text-text-secondary/50 hover:text-accent transition-colors">✏️ {t('editName')}</button>
+                  </div>
+                )}
+                <p className="text-xs text-text-secondary/50 mt-0.5">
+                  {(profile?.role || session.user?.role || 'user') === 'admin' ? `👑 ${t('admin')}` : `👤 ${t('user')}`}
+                  {profile?.createdAt && ` · ${t('memberSince')} ${formatDate(profile.createdAt)}`}
+                </p>
               </div>
-            ))}
-            {profile && (
-              <div className="grid grid-cols-[100px_1fr] items-center py-3 border-t border-border/50">
-                <span className="text-xs text-text-secondary">{t('passwordLogin')}</span>
-                <span className="text-xs text-text-primary flex items-center gap-2">
-                  <span className="text-text-secondary/50">••••••••</span>
-                  <button onClick={() => { setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdCode(''); setPwdStep('form'); setPwdError(''); setChangingPwd(true) }}
-                    className="text-accent hover:underline text-xs">
-                    {profile.hasPassword ? t('changePassword') : t('setPassword')}
-                  </button>
+            </div>
+
+            {/* Info rows */}
+            <div className="space-y-0">
+              <div className="flex items-center py-2.5 border-t border-border/50">
+                <span className="text-xs text-text-secondary w-24 shrink-0">{t('email')}</span>
+                <span className="text-xs text-text-primary">
+                  {session.user?.email}
+                  {profile?.emailVerified
+                    ? <span className="text-green-500 ml-1.5">✓ {t('emailVerified')}</span>
+                    : <span className="text-text-secondary/50 ml-1.5">({t('emailUnverified')})</span>}
                 </span>
               </div>
+              {profile && profile.accounts.length > 0 && profile.accounts.map((acc) => (
+                <div key={acc.provider} className="flex items-center py-2.5 border-t border-border/50">
+                  <span className="text-xs text-text-secondary w-24 shrink-0">{providerNames[acc.provider] || acc.provider}</span>
+                  <span className="text-xs text-green-500">✓ {t('connected')}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ── Card 2: Security ── */}
+        <div className="bg-card rounded-sm border border-border overflow-hidden">
+          <div className="h-1 bg-gradient-to-r from-amber-400 to-amber-200" />
+          <div className="p-5 sm:p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-sm">🔒</span>
+              <h2 className="text-sm font-semibold text-text-primary">{t('accountSettings')}</h2>
+            </div>
+
+            <div className="space-y-0">
+              <div className="flex items-center py-2.5 border-t border-border/50">
+                <span className="text-xs text-text-secondary w-24 shrink-0">{t('passwordLogin')}</span>
+                <span className="text-xs text-text-primary flex items-center gap-2 flex-wrap">
+                  <span className="text-text-secondary/50">{profile?.hasPassword ? '••••••••' : t('noPassword')}</span>
+                  <button onClick={() => { setShowPwdForm(!showPwdForm); setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdError('') }}
+                    className="text-accent hover:underline text-xs">
+                    {profile?.hasPassword ? t('changePassword') : t('setPassword')}
+                  </button>
+                  {profile?.hasPassword && (
+                    <Link href="/forgot-password" className="text-text-secondary/50 hover:text-text-secondary text-xs">({t('forgotPassword')})</Link>
+                  )}
+                </span>
+              </div>
+            </div>
+
+            {/* Inline password form */}
+            {showPwdForm && (
+              <div className="mt-3 p-3 bg-surface rounded-sm border border-border space-y-2.5">
+                {profile?.hasPassword && (
+                  <input type="password" value={pwdOld} onChange={e => setPwdOld(e.target.value)}
+                    className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30" placeholder={t('currentPassword')} />
+                )}
+                <input type="password" value={pwdNew} onChange={e => setPwdNew(e.target.value)}
+                  className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30" placeholder={t('newPassword')} />
+                <p className="text-[10px] text-text-secondary/50 -mt-1.5">{t('passwordHint')}</p>
+                <input type="password" value={pwdConfirm} onChange={e => setPwdConfirm(e.target.value)}
+                  className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30" placeholder={t('confirmPassword')} />
+                {pwdError && <p className="text-xs text-error">{pwdError}</p>}
+                <div className="flex gap-2 pt-1">
+                  <button onClick={handleSavePassword} disabled={pwdSaving}
+                    className="px-4 py-1.5 rounded-sm bg-accent text-white text-xs font-medium disabled:opacity-50">{pwdSaving ? '...' : t('save')}</button>
+                  <button onClick={() => setShowPwdForm(false)}
+                    className="px-4 py-1.5 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5">{t('cancel')}</button>
+                  {!profile?.hasPassword && (
+                    <span className="text-[10px] text-text-secondary/50 self-center ml-1">{t('codeSentTo', { email: profile?.email || '' })}</span>
+                  )}
+                </div>
+              </div>
             )}
           </div>
         </div>
 
-        {/* ── Account Actions Section ── */}
-        <div className="bg-card rounded-sm border border-border p-6">
-          <h2 className="text-sm font-semibold text-text-primary mb-1">⚙️ {t('account')}</h2>
-          <div className="space-y-0 mt-3">
+        {/* ── Card 3: Data Management ── */}
+        <div className="bg-card rounded-sm border border-border overflow-hidden">
+          <div className="h-1 bg-gradient-to-r from-sky-400 to-sky-200" />
+          <div className="p-5 sm:p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-sm">⚙️</span>
+              <h2 className="text-sm font-semibold text-text-primary">{t('account')}</h2>
+            </div>
+
+            {/* Export */}
             <div className="flex items-center justify-between py-3 border-t border-border/50">
+              <div>
+                <p className="text-xs text-text-primary font-medium">{t('exportTitle')}</p>
+                <p className="text-[10px] text-text-secondary/50 mt-0.5">{t('exportDesc')}</p>
+              </div>
+              <button onClick={handleExport}
+                className="px-3 py-1.5 rounded-sm bg-accent text-white text-xs font-medium hover:opacity-90 transition-opacity shrink-0">
+                {t('exportButton')}
+              </button>
+            </div>
+
+            {/* Delete */}
+            <div className="flex items-center justify-between py-3 border-t border-border/50">
+              <div>
+                <p className="text-xs text-text-primary font-medium">{t('deleteAccount')}</p>
+                <p className="text-[10px] text-text-secondary/50 mt-0.5">{t('deleteConfirm')}</p>
+              </div>
+              <button onClick={() => { setShowDeleteModal(true); setDeleteEmail(''); setDeleteCode(''); setDeleteCodeSent(false); setDeleteError('') }}
+                className="px-3 py-1.5 rounded-sm border border-error/30 text-xs text-error hover:bg-error/5 transition-colors shrink-0">
+                {t('deleteAccount')}
+              </button>
+            </div>
+
+            {/* Logout */}
+            <div className="pt-3 border-t border-border/50">
               <button onClick={handleLogout}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5 hover:text-error transition-colors">
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5 hover:text-error transition-colors">
                 <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                   <polyline points="16 17 21 12 16 7" />
@@ -291,85 +435,64 @@ export default function AccountClient() {
                 </svg>
                 {t('logout')}
               </button>
-              {!confirmDelete ? (
-                <button onClick={() => setConfirmDelete(true)}
-                  className="px-4 py-2 rounded-sm border border-error/30 text-xs text-error hover:bg-error/5 transition-colors">
-                  {t('deleteAccount')}
-                </button>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-error">{t('deleteConfirm')}</span>
-                  <button onClick={handleDeleteAccount} disabled={deleting}
-                    className="px-3 py-1.5 rounded-sm bg-error text-white text-xs disabled:opacity-50">{deleting ? '...' : t('confirm')}</button>
-                  <button onClick={() => setConfirmDelete(false)}
-                    className="px-3 py-1.5 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5 transition-colors">{t('cancel')}</button>
-                </div>
-              )}
             </div>
-            {deleteError && <p className="text-xs text-error mt-2">{deleteError}</p>}
           </div>
         </div>
+
       </div>
 
-      {/* ── Edit Name Dialog ── */}
-      {editingName && (
+      {/* ── Delete Account Modal ── */}
+      {showDeleteModal && (
         <div className="fixed inset-0 z-[90] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/30" onClick={() => setEditingName(false)} />
+          <div className="absolute inset-0 bg-black/30" onClick={() => setShowDeleteModal(false)} />
           <div className="relative bg-card rounded-sm border border-border shadow-lg p-6 w-full max-w-sm">
-            <h3 className="text-sm font-semibold text-text-primary mb-4">{t('editName')}</h3>
-            <input type="text" value={newName} onChange={e => setNewName(e.target.value)}
-              className="w-full p-2 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30 mb-3" placeholder={t('name')} />
-            {nameError && <p className="text-xs text-error mb-3">{nameError}</p>}
-            <div className="flex gap-2 justify-end">
-              <button onClick={() => setEditingName(false)}
-                className="px-3 py-1.5 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5 transition-colors">{t('cancel')}</button>
-              <button onClick={handleSaveName} disabled={nameSaving}
-                className="px-3 py-1.5 rounded-sm bg-accent text-white text-xs disabled:opacity-50">{nameSaving ? '...' : t('save')}</button>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-lg">🗑️</span>
+              <h3 className="text-sm font-semibold text-text-primary">{t('deleteAccount')}</h3>
+            </div>
+            <p className="text-xs text-text-secondary mb-4">{t('deleteConfirm')}</p>
+            <ul className="text-[10px] text-text-secondary/50 mb-4 space-y-1 list-disc ml-4">
+              <li>{t('email')} {t('emailUnverified')}</li>
+              <li>{t('favorites')}</li>
+            </ul>
+
+            <div className="space-y-3">
+              <div>
+                <label className="text-[10px] text-text-secondary/50 mb-1 block">{t('email')}</label>
+                <input type="email" value={deleteEmail} onChange={e => setDeleteEmail(e.target.value)}
+                  className="w-full p-2 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-error/30"
+                  placeholder={t('email')} disabled={deleteCodeSent} />
+              </div>
+              {deleteCodeSent && (
+                <div>
+                  <label className="text-[10px] text-text-secondary/50 mb-1 block">{t('verificationCode')}</label>
+                  <input type="text" maxLength={6} value={deleteCode} onChange={e => setDeleteCode(e.target.value.replace(/\D/g, ''))}
+                    className="w-full p-2 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-error/30 text-center tracking-widest"
+                    placeholder={t('codePlaceholder')} />
+                </div>
+              )}
+              {deleteError && <p className="text-xs text-error">{deleteError}</p>}
+              <div className="flex gap-2">
+                <button onClick={() => setShowDeleteModal(false)}
+                  className="flex-1 px-3 py-1.5 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5">{t('cancel')}</button>
+                {!deleteCodeSent ? (
+                  <button onClick={handleSendDeleteCode} disabled={deleteSendingCode || !deleteEmail}
+                    className="flex-1 px-3 py-1.5 rounded-sm bg-error text-white text-xs disabled:opacity-50">{deleteSendingCode ? '...' : t('sendCode')}</button>
+                ) : (
+                  <button onClick={handleDeleteAccount} disabled={deleteSaving || deleteCode.length !== 6}
+                    className="flex-1 px-3 py-1.5 rounded-sm bg-error text-white text-xs disabled:opacity-50">{deleteSaving ? '...' : t('confirm')}</button>
+                )}
+              </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* ── Change Password Dialog ── */}
-      {changingPwd && (
-        <div className="fixed inset-0 z-[90] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/30" onClick={() => { setChangingPwd(false); setPwdStep('form') }} />
-          <div className="relative bg-card rounded-sm border border-border shadow-lg p-6 w-full max-w-sm">
-            {pwdStep === 'form' ? (
-              <>
-                <h3 className="text-sm font-semibold text-text-primary mb-4">{profile?.hasPassword ? t('changePassword') : t('setPassword')}</h3>
-                {profile?.hasPassword && (
-                  <input type="password" value={pwdOld} onChange={e => setPwdOld(e.target.value)}
-                    className="w-full p-2 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30 mb-2" placeholder={t('currentPassword')} />
-                )}
-                <input type="password" value={pwdNew} onChange={e => setPwdNew(e.target.value)}
-                  className="w-full p-2 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30 mb-2" placeholder={t('newPassword')} />
-                <p className="text-[10px] text-text-secondary/50 -mt-1 mb-2">{t('passwordHint')}</p>
-                <input type="password" value={pwdConfirm} onChange={e => setPwdConfirm(e.target.value)}
-                  className="w-full p-2 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30 mb-3" placeholder={t('confirmPassword')} />
-                {pwdError && <p className="text-xs text-error mb-3">{pwdError}</p>}
-                <div className="flex gap-2 justify-end">
-                  <button onClick={() => { setChangingPwd(false); setPwdStep('form') }}
-                    className="px-3 py-1.5 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5 transition-colors">{t('cancel')}</button>
-                  <button onClick={handleChangePassword} disabled={pwdSaving}
-                    className="px-3 py-1.5 rounded-sm bg-accent text-white text-xs disabled:opacity-50">{pwdSaving ? '...' : t('sendCode')}</button>
-                </div>
-              </>
-            ) : (
-              <>
-                <h3 className="text-sm font-semibold text-text-primary mb-2">{t('verificationCode')}</h3>
-                <p className="text-xs text-text-secondary mb-4">{t('codeSentTo', { email: profile?.email || '' })}</p>
-                <input type="text" value={pwdCode} onChange={e => setPwdCode(e.target.value)}
-                  className="w-full p-2 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30 mb-3 text-center tracking-widest" placeholder={t('codePlaceholder')} maxLength={6} />
-                {pwdError && <p className="text-xs text-error mb-3">{pwdError}</p>}
-                <div className="flex gap-2 justify-end">
-                  <button onClick={() => { setChangingPwd(false); setPwdStep('form') }}
-                    className="px-3 py-1.5 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5 transition-colors">{t('cancel')}</button>
-                  <button onClick={handleSubmitNewPassword} disabled={pwdSaving}
-                    className="px-3 py-1.5 rounded-sm bg-accent text-white text-xs disabled:opacity-50">{pwdSaving ? '...' : t('verifyCode')}</button>
-                </div>
-              </>
-            )}
+      {/* ── Toast ── */}
+      {toast && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100]">
+          <div className="bg-bg border border-border shadow-lg rounded-sm px-5 py-2.5 text-xs text-text-primary">
+            {toast}
           </div>
         </div>
       )}
