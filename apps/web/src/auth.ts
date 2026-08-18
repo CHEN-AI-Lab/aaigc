@@ -159,9 +159,13 @@ const { handlers: nextAuthHandlers, auth: nextAuthAuth, signIn, signOut } = Next
       }
       return session
     },
-    async jwt({ token, account }) {
+    async jwt({ token, account, trigger, session }) {
       if (account) {
         token.provider = account.provider
+      }
+      // 客户端 update() 刷新 session 时，把新名字写进 JWT
+      if (trigger === 'update' && session?.name) {
+        token.name = session.name
       }
       if (token.sub) {
         try {
