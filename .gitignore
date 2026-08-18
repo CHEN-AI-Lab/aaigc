@@ -8,6 +8,8 @@ dist
 .DS_Store
 *.log
 .vercel
+# Auto-generated files
+next-env.d.ts
 # Test artifacts
 test-results/
 playwright-report/

@@ -31,6 +31,9 @@ jobs:
       - name: Lint
         run: pnpm --filter web lint
 
+      - name: TypeScript type check
+        run: pnpm --filter web exec -- tsc --noEmit
+
       - name: Unit tests
         run: pnpm test
 
