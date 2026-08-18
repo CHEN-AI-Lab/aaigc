@@ -92,18 +92,22 @@ export default function AccountClient() {
   }
 
   const handleChangePassword = async () => {
-    if (!pwdOld || !pwdNew) { setPwdError(t('fillRequired')); return }
+    if (!pwdNew) { setPwdError(t('fillRequired')); return }
     if (pwdNew.length < 8) { setPwdError(t('passwordTooShort')); return }
     if (pwdNew !== pwdConfirm) { setPwdError(t('passwordMismatch')); return }
     setPwdSaving(true)
     setPwdError('')
     try {
-      const checkRes = await fetch('/api/auth/check-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: profile?.email, password: pwdOld }),
-      })
-      if (!checkRes.ok) { setPwdError(t('loginFailed')); setPwdSaving(false); return }
+      // 已有密码的用户需验证旧密码；未设置过密码（OAuth 登录）的用户直接设置
+      if (profile?.hasPassword) {
+        if (!pwdOld) { setPwdError(t('fillRequired')); setPwdSaving(false); return }
+        const checkRes = await fetch('/api/auth/check-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: profile?.email, password: pwdOld }),
+        })
+        if (!checkRes.ok) { setPwdError(t('loginFailed')); setPwdSaving(false); return }
+      }
       const sendRes = await fetch('/api/auth/send-verification', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -194,18 +198,13 @@ export default function AccountClient() {
                   🔗 {t('connectedAccounts')}: {profile.accounts.map(a => providerNames[a.provider] || a.provider).join(', ')}
                 </p>
               )}
-              {profile?.hasPassword && (
+              {profile && (
                 <p className="text-xs text-text-secondary/50 mt-1">
                   🔒 {t('passwordLogin')}{' '}
                   <button onClick={() => { setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdError(''); setChangingPwd(true) }}
-                    className="text-accent hover:underline ml-1">{t('changePassword')}</button>
-                </p>
-              )}
-              {profile && !profile.hasPassword && profile.accounts.length === 0 && (
-                <p className="text-xs text-text-secondary/50 mt-1">
-                  🔒 {t('passwordLogin')}{' '}
-                  <button onClick={() => { setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdError(''); setChangingPwd(true) }}
-                    className="text-accent hover:underline ml-1">{t('setPassword')}</button>
+                    className="text-accent hover:underline ml-1">
+                    {profile.hasPassword ? t('changePassword') : t('setPassword')}
+                  </button>
                 </p>
               )}
             </div>
@@ -246,10 +245,14 @@ export default function AccountClient() {
           <div className="fixed inset-0 z-[90] flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-black/30" onClick={() => setChangingPwd(false)} />
             <div className="relative bg-card rounded-sm border border-border shadow-lg p-6 w-full max-w-sm">
-              <h3 className="text-sm font-semibold text-text-primary mb-4">{t('changePassword')}</h3>
-              <input type="password" value={pwdOld} onChange={e => setPwdOld(e.target.value)}
-                className="w-full p-2 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30 mb-2"
-                placeholder={t('currentPassword')} />
+              <h3 className="text-sm font-semibold text-text-primary mb-4">
+                {profile?.hasPassword ? t('changePassword') : t('setPassword')}
+              </h3>
+              {profile?.hasPassword && (
+                <input type="password" value={pwdOld} onChange={e => setPwdOld(e.target.value)}
+                  className="w-full p-2 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30 mb-2"
+                  placeholder={t('currentPassword')} />
+              )}
               <input type="password" value={pwdNew} onChange={e => setPwdNew(e.target.value)}
                 className="w-full p-2 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30 mb-2"
                 placeholder={t('newPassword')} />
