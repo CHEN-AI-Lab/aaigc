@@ -1343,6 +1343,7 @@
     "exportButton": "Export",
     "exportSuccess": "Export started",
     "security": "Security",
+    "dataManagement": "Data Management",
     "favorites": "Favorites",
     "deleteItems": "Account information and all related data",
     "emailPlaceholder": "Enter your email to confirm",

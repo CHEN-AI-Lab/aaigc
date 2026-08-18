@@ -312,7 +312,7 @@ export default function AccountClient() {
           <div className="p-5 sm:p-6">
             <div className="flex items-center gap-2 mb-4">
               <span className="text-sm">🔒</span>
-              <h2 className="text-sm font-semibold text-text-primary">🔒 {t('security')}</h2>
+              <h2 className="text-sm font-semibold text-text-primary">{t('security')}</h2>
             </div>
 
             <div className="space-y-0">
@@ -358,7 +358,7 @@ export default function AccountClient() {
           <div className="p-5 sm:p-6">
             <div className="flex items-center gap-2 mb-4">
               <span className="text-sm">⚙️</span>
-              <h2 className="text-sm font-semibold text-text-primary">{t('account')}</h2>
+              <h2 className="text-sm font-semibold text-text-primary">{t('dataManagement')}</h2>
             </div>
 
             {/* Export */}

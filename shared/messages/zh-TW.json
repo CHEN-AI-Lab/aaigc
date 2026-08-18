@@ -1343,6 +1343,7 @@
         "exportButton": "導出",
     "exportSuccess": "導出成功",
     "security": "安全設置",
+    "dataManagement": "數據管理",
         "favorites": "收藏",
     "deleteItems": "帳號資訊及所有關聯數據",
     "emailPlaceholder": "輸入郵箱確認",
