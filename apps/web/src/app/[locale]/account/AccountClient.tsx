@@ -216,7 +216,7 @@ export default function AccountClient() {
             )}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
-                <p className="text-lg font-medium text-text-primary">{profile?.name || t('noName')}</p>
+                <p className="text-lg font-medium text-text-primary">{profile ? (profile.name || t('noName')) : ''}</p>
                 <button onClick={() => { setNewName(profile?.name || ''); setEditingName(true) }}
                   className="text-xs text-text-secondary/50 hover:text-accent transition-colors">✏️ {t('editName')}</button>
               </div>
