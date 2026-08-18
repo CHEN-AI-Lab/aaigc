@@ -65,14 +65,6 @@ export default function AccountClient() {
     }
   }
 
-  const formatDateTime = (d: string | Date) => {
-    try {
-      return new Date(d).toLocaleString(locale, { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })
-    } catch {
-      return ''
-    }
-  }
-
   const providerNames: Record<string, string> = {
     google: 'Google',
     github: 'GitHub',
