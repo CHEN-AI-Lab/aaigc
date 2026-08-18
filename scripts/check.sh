@@ -26,7 +26,7 @@ npx tsc --noEmit
 echo ""
 
 echo "Step 5: Unit tests..."
-cd /home/ubuntu/workspace/aaigc && pnpm test 2>&1
+cd "$(git rev-parse --show-toplevel)" && pnpm test 2>&1
 echo ""
 
 echo "Step 6: Production build..."
