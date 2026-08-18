@@ -1341,6 +1341,7 @@
         "exportTitle": "導出數據",
         "exportDesc": "下載所有數據（JSON格式）",
         "exportButton": "導出",
+    "exportSuccess": "導出成功",
         "favorites": "收藏",
     "deleteItems": "帳號資訊及所有關聯數據",
     "emailPlaceholder": "輸入郵箱確認",

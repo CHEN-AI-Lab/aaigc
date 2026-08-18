@@ -201,7 +201,7 @@ export default function AccountClient() {
       a.download = `aaigc-export-${new Date().toISOString().split('T')[0]}.json`
       a.click()
       URL.revokeObjectURL(url)
-      showToast(t('nameUpdated'))
+      showToast(t('exportSuccess'))
     } catch { showToast(t('registerFailed')) }
   }
 
