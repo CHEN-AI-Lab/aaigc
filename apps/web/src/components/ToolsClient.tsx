@@ -13,7 +13,7 @@ export default function ToolsClient() {
   const [query, setQuery] = useState('')
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
   const { data: session } = useSession()
-  const { favorites, toggleFavorite } = useFavorites()
+  const { favorites, loading, toggleFavorite } = useFavorites()
 
   const toolFavs = useMemo(
     () => favorites.filter((f) => f.type === 'tool'),
@@ -85,7 +85,17 @@ export default function ToolsClient() {
       </div>
 
       {/* ── My Favorite Tools ── */}
-      {session && toolFavs.length > 0 && (
+      {session && loading && (
+        <div className="mb-8">
+          <div className="h-3 w-24 bg-surface rounded mb-3" />
+          <div className="flex flex-wrap gap-2">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-7 w-28 bg-surface rounded-sm animate-pulse" />
+            ))}
+          </div>
+        </div>
+      )}
+      {session && !loading && toolFavs.length > 0 && (
         <div className="mb-8">
           <p className="text-xs font-semibold text-text-secondary mb-3 flex items-center gap-1">
             ★ {t('favoriteTools')} ({toolFavs.length})
