@@ -342,7 +342,7 @@ export default function LoginClient() {
               <p className="text-sm text-blue-700 font-medium">
                 {session?.user?.name ? `👋 ${session.user.name}` : t('alreadyLoggedIn')}
               </p>
-              <p className="text-xs text-blue-500 mt-1">{t('switchAccount')}</p>
+              <p className="text-xs text-blue-500 mt-1">{t('forgotPassword')}</p>
               <div className="mt-3 flex gap-2">
                 <Link href="/" className="flex-1 bg-accent text-white text-center text-sm py-3 rounded-xl hover:opacity-90">{tc('goHome')}</Link>
                 <button onClick={() => signOut({ callbackUrl: `/${locale}/login` })}
