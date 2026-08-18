@@ -17,7 +17,7 @@ python3 scripts/check-translations.py
 echo ""
 
 echo "Step 3: Lint..."
-cd apps/web && npx eslint . 2>&1
+(cd apps/web && npx eslint . 2>&1)
 echo ""
 
 echo "Step 4: TypeScript check..."
