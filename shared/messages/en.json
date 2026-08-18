@@ -1337,6 +1337,7 @@
     "setPassword": "Set password",
     "noPassword": "Not set",
     "nameUpdated": "Name updated",
+    "passwordUpdated": "Password updated",
     "exportTitle": "Export data",
     "exportDesc": "Download all your data (JSON)",
     "exportButton": "Export",

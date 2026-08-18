@@ -1341,6 +1341,7 @@
     "setPassword": "パスワード設定",
     "noPassword": "未設定",
     "nameUpdated": "名前を更新しました",
+    "passwordUpdated": "パスワードを更新しました",
     "exportTitle": "データをエクスポート",
     "exportDesc": "すべてのデータをダウンロード（JSON）",
     "exportButton": "エクスポート",

@@ -1337,6 +1337,7 @@
     "setPassword": "设置密码",
     "noPassword": "未设置",
     "nameUpdated": "昵称已更新",
+    "passwordUpdated": "密码已更新",
     "exportTitle": "导出数据",
     "exportDesc": "下载所有数据（JSON格式）",
     "exportButton": "导出",
