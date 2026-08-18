@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { useSession } from '@/auth-client'
 import { useTranslations } from 'next-intl'
 import { useRouter } from '@/i18n/navigation'
@@ -25,22 +25,19 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
   const [favorites, setFavorites] = useState<FavoriteItem[]>([])
   const [loading, setLoading] = useState(false)
   const [toast, setToast] = useState<ToastState>(null)
-  const hasFetched = useRef(false)
 
   const showToast = useCallback((message: string, error = false) => {
     setToast({ message, key: Date.now(), error })
     setTimeout(() => setToast(null), 2000)
   }, [])
 
-  // Fetch all favorites once after login. Clear on logout.
+  // Fetch favorites on session change (login/logout/refresh).
+  // No hasFetched ref — always fetch when session changes, so hard refresh works reliably.
   useEffect(() => {
     if (!session) {
       setFavorites([])
-      hasFetched.current = false
       return
     }
-    if (hasFetched.current) return
-    hasFetched.current = true
 
     let cancelled = false
     setLoading(true)
