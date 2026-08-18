@@ -347,9 +347,6 @@ export default function AccountClient() {
                     className="px-4 py-1.5 rounded-sm bg-accent text-white text-xs font-medium disabled:opacity-50">{pwdSaving ? '...' : t('save')}</button>
                   <button onClick={() => setShowPwdForm(false)}
                     className="px-4 py-1.5 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5">{t('cancel')}</button>
-                  {!profile?.hasPassword && (
-                    <span className="text-[10px] text-text-secondary/50 self-center ml-1">{t('codeSentTo', { email: profile?.email || '' })}</span>
-                  )}
                 </div>
               </div>
             )}
