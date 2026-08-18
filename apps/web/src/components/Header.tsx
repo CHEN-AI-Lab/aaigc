@@ -12,7 +12,7 @@ export default function Header() {
   const { data: session } = useSession()
 
   return (
-    <header className="border-b border-[rgba(127,99,21,0.1)] bg-bg/80 backdrop-blur-md sticky top-0 z-50">
+    <header className="border-b border-border bg-bg/80 backdrop-blur-md sticky top-0 z-50">
       <div className="max-w-6xl mx-auto flex items-center px-4 sm:px-6 h-16">
         <Link href="/" className="flex items-center gap-2 shrink-0">
           <img src="/icon.svg" alt="AAIGC" className="w-7 h-7" />
