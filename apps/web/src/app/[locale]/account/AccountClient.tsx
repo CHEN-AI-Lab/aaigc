@@ -110,8 +110,7 @@ export default function AccountClient() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email: profile?.email, password: pwdOld }),
         })
-        const checkData = await checkRes.json()
-        if (!checkRes.ok || !checkData.hasPassword) { setPwdError(t('loginFailed')); setPwdSaving(false); return }
+        if (!checkRes.ok) { setPwdError(t('loginFailed')); setPwdSaving(false); return }
       }
       // Step 2 — send verification code
       const sendRes = await fetch('/api/auth/send-verification', {
@@ -137,7 +136,11 @@ export default function AccountClient() {
       })
       const data = await res.json()
       if (!res.ok) {
-        setPwdError(data.error ? (t(data.error) || data.error) : t('registerFailed'))
+        // 翻译后端返回的错误码，支持 passwordNeedsTypes / passwordCommon / passwordTooShort 等
+        const errMsg = data.error
+          ? (t(data.error) || data.error)
+          : t('registerFailed')
+        setPwdError(errMsg)
         setPwdSaving(false)
         return
       }
@@ -328,6 +331,7 @@ export default function AccountClient() {
                 )}
                 <input type="password" value={pwdNew} onChange={e => setPwdNew(e.target.value)}
                   className="w-full p-2 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30 mb-2" placeholder={t('newPassword')} />
+                <p className="text-[10px] text-text-secondary/50 -mt-1 mb-2">{t('passwordHint')}</p>
                 <input type="password" value={pwdConfirm} onChange={e => setPwdConfirm(e.target.value)}
                   className="w-full p-2 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30 mb-3" placeholder={t('confirmPassword')} />
                 {pwdError && <p className="text-xs text-error mb-3">{pwdError}</p>}

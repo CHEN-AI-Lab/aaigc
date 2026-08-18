@@ -1,6 +1,28 @@
 import { NextResponse } from "next/server"
 import { prisma } from "shared/utils/prisma"
 
+// 密码强度验证
+function validatePassword(password: string): string | null {
+  if (password.length < 8) return "passwordTooShort"
+  if (password.length > 128) return "passwordTooLong"
+
+  let types = 0
+  if (/[a-z]/.test(password)) types++
+  if (/[A-Z]/.test(password)) types++
+  if (/[0-9]/.test(password)) types++
+  if (/[^a-zA-Z0-9]/.test(password)) types++
+  if (types < 2) return "passwordNeedsTypes"
+
+  const COMMON_PASSWORDS = [
+    'password1', 'password123', 'qwerty123', 'qwerty1', 'trustno1',
+    'abc12345', '1234qwer', '1q2w3e4r', 'passw0rd', 'admin123',
+    '12345678', '87654321', '11111111', '00000000', 'aaaaaaaa',
+  ]
+  if (COMMON_PASSWORDS.includes(password.toLowerCase())) return "passwordCommon"
+
+  return null
+}
+
 export async function POST(req: Request) {
   try {
     const { email, password, code } = await req.json()
@@ -9,8 +31,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "invalidParams" }, { status: 400 })
     }
 
-    if (password.length < 8) {
-      return NextResponse.json({ error: "passwordTooShort" }, { status: 400 })
+    // 密码强度验证
+    const pwdErr = validatePassword(password)
+    if (pwdErr) {
+      return NextResponse.json({ error: pwdErr }, { status: 400 })
     }
 
     // Verify code
