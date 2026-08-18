@@ -99,6 +99,15 @@ export default function AccountClient() {
   const handleChangePassword = async () => {
     if (!pwdNew) { setPwdError(t('fillRequired')); return }
     if (pwdNew.length < 8) { setPwdError(t('passwordTooShort')); return }
+    // 密码强度验证（前端先拦截，避免走到发验证码后才报错）
+    let types = 0
+    if (/[a-z]/.test(pwdNew)) types++
+    if (/[A-Z]/.test(pwdNew)) types++
+    if (/[0-9]/.test(pwdNew)) types++
+    if (/[^a-zA-Z0-9]/.test(pwdNew)) types++
+    if (types < 2) { setPwdError(t('passwordNeedsTypes')); return }
+    const COMMON = ['password1','password123','qwerty123','qwerty1','trustno1','abc12345','1234qwer','1q2w3e4r','passw0rd','admin123','12345678','87654321','11111111','00000000','aaaaaaaa']
+    if (COMMON.includes(pwdNew.toLowerCase())) { setPwdError(t('passwordCommon')); return }
     if (pwdNew !== pwdConfirm) { setPwdError(t('passwordMismatch')); return }
     setPwdSaving(true); setPwdError('')
     try {
@@ -110,7 +119,7 @@ export default function AccountClient() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email: profile?.email, password: pwdOld }),
         })
-        if (!checkRes.ok) { setPwdError(t('loginFailed')); setPwdSaving(false); return }
+        if (!checkRes.ok) { setPwdError(t('currentPasswordWrong')); setPwdSaving(false); return }
       }
       // Step 2 — send verification code
       const sendRes = await fetch('/api/auth/send-verification', {

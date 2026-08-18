@@ -1309,6 +1309,7 @@
     "passwordNeedsTypes": "Password must contain at least 2 character types (uppercase, lowercase, numbers, symbols)",
     "passwordCommon": "This password is too common, please choose another",
     "passwordHint": "At least 8 characters, with 2+ types (upper/lower/numbers/symbols)",
+    "currentPasswordWrong": "現在のパスワードが正しくありません",
     "passwordMismatch": "Passwords do not match",
     "loginFailed": "Invalid email or password",
     "registerFailed": "Registration failed",
