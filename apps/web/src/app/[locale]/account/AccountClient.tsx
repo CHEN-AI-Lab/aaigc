@@ -393,10 +393,7 @@ export default function AccountClient() {
 
             {/* Export */}
             <div className="flex items-center justify-between py-3 border-t border-border/50">
-              <div>
-                <p className="text-xs text-text-primary font-medium">{t('exportTitle')}</p>
-                <p className="text-[10px] text-text-secondary/50 mt-0.5">{t('exportDesc')}</p>
-              </div>
+              <span className="text-xs text-text-secondary">{t('exportTitle')}</span>
               <button onClick={handleExport}
                 className="px-3 py-1.5 rounded-sm bg-accent text-white text-xs font-medium hover:opacity-90 transition-opacity shrink-0">
                 {t('exportButton')}
@@ -405,10 +402,7 @@ export default function AccountClient() {
 
             {/* Delete */}
             <div className="flex items-center justify-between py-3 border-t border-border/50">
-              <div>
-                <p className="text-xs text-text-primary font-medium">{t('deleteAccount')}</p>
-                <p className="text-[10px] text-text-secondary/50 mt-0.5">{t('deleteConfirm')}</p>
-              </div>
+              <span className="text-xs text-text-secondary">{t('deleteAccount')}</span>
               <button onClick={() => { setShowDeleteModal(true); setDeleteEmail(''); setDeleteCode(''); setDeleteCodeSent(false); setDeleteError('') }}
                 className="px-3 py-1.5 rounded-sm border border-error/30 text-xs text-error hover:bg-error/5 transition-colors shrink-0">
                 {t('deleteAccount')}
