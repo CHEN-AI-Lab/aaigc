@@ -211,12 +211,12 @@ export default function AccountClient() {
               <img src={session.user.image} alt="" className="w-16 h-16 rounded-full object-cover shrink-0 border-2 border-border" />
             ) : (
               <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center text-accent text-xl font-semibold shrink-0 border-2 border-border">
-                {(session.user?.name || session.user?.email || '?')[0].toUpperCase()}
+                {(profile?.name || session.user?.name || session.user?.email || '?')[0].toUpperCase()}
               </div>
             )}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
-                <p className="text-lg font-medium text-text-primary">{session.user?.name || t('noName')}</p>
+                <p className="text-lg font-medium text-text-primary">{profile?.name || session.user?.name || t('noName')}</p>
                 <button onClick={() => { setNewName(session.user?.name || profile?.name || ''); setEditingName(true) }}
                   className="text-xs text-text-secondary/50 hover:text-accent transition-colors">✏️ {t('editName')}</button>
               </div>
