@@ -1385,7 +1385,13 @@
     "registerSubtitle": "Create your account to get started",
     "codePlaceholder": "Enter 6-digit code",
     "codeSentTo": "Verification code sent to {email}",
-    "devCodeHint": "Dev mode: code {code}"
+    "devCodeHint": "Dev mode: code {code}",
+    "unlink": "Unlink",
+    "unlinkConfirm": "Are you sure you want to unlink {provider}? You will no longer be able to sign in with this account.",
+    "unlinkSuccess": "Account unlinked successfully",
+    "unlinkFailed": "Failed to unlink account",
+    "cannotUnlinkEmail": "Cannot unlink email login method",
+    "mustKeepOneMethod": "At least one login method must be kept"
   },
   "terms": {
     "title": "Terms of Service",

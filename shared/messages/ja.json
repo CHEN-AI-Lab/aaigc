@@ -1384,8 +1384,14 @@
     "loginSubtitle": "メールアドレスまたはソーシャルログイン",
     "registerSubtitle": "アカウントを作成して始めましょう",
     "codePlaceholder": "6桁の認証コードを入力",
-        "codeSentTo": "認証コードを {email} に送信しました",
-        "devCodeHint": "開発モード: 認証コード {code}"
+    "codeSentTo": "認証コードを {email} に送信しました",
+    "devCodeHint": "開発モード: 認証コード {code}",
+    "unlink": "リンク解除",
+    "unlinkConfirm": "{provider} のリンクを解除してもよろしいですか？解除後、このアカウントでのログインはできなくなります。",
+    "unlinkSuccess": "リンクを解除しました",
+    "unlinkFailed": "リンク解除に失敗しました",
+    "cannotUnlinkEmail": "メールログインは解除できません",
+    "mustKeepOneMethod": "ログイン方法は1つ以上残す必要があります"
   },
   "terms": {
     "title": "利用規約",

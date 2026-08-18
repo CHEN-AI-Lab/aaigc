@@ -22,7 +22,7 @@ echo ""
 
 echo "Step 4: TypeScript check..."
 rm -rf apps/web/.next 2>/dev/null
-npx tsc --noEmit
+(cd apps/web && npx tsc --noEmit)
 echo ""
 
 echo "Step 5: Unit tests..."

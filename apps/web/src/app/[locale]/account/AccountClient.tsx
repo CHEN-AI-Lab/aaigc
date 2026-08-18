@@ -17,11 +17,11 @@ interface UserProfile {
   accounts: { provider: string }[]
 }
 
-const providerNames: Record<string, string> = {
+// OAuth 账号的顺序和显示名称
+const OAUTH_ORDER: Record<string, number> = { google: 0, github: 1 }
+const OAUTH_NAMES: Record<string, string> = {
   google: 'Google',
   github: 'GitHub',
-  credentials: 'Password',
-  email: 'Password',
 }
 
 export default function AccountClient() {
@@ -207,6 +207,30 @@ export default function AccountClient() {
 
   const handleLogout = async () => { await signOut({ callbackUrl: '/' }) }
 
+  // ── Unlink OAuth ──
+  const [unlinking, setUnlinking] = useState<string | null>(null)
+
+  const handleUnlink = async (provider: string) => {
+    const confirmed = window.confirm(t('unlinkConfirm', { provider: OAUTH_NAMES[provider] || provider }))
+    if (!confirmed) return
+    setUnlinking(provider)
+    try {
+      const res = await fetch('/api/user/unlink-account', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ provider }),
+      })
+      const data = await res.json()
+      if (res.ok) {
+        await fetchProfile()
+        showToast(t('unlinkSuccess'))
+      } else {
+        showToast(t(data.error || 'unlinkFailed'))
+      }
+    } catch { showToast(t('unlinkFailed')) }
+    finally { setUnlinking(null) }
+  }
+
   // ── Loading / Not logged in ──
   if (status === 'loading') {
     return (
@@ -305,12 +329,10 @@ export default function AccountClient() {
                   </div>
                   <div className="flex flex-wrap gap-2 mt-1.5">
                     {profile.accounts
-                      .sort((a, b) => {
-                        const order: Record<string, number> = { google: 0, github: 1, credentials: 2, email: 3 }
-                        return (order[a.provider] ?? 99) - (order[b.provider] ?? 99)
-                      })
+                      .filter((acc) => ['google', 'github'].includes(acc.provider))
+                      .sort((a, b) => (OAUTH_ORDER[a.provider] ?? 99) - (OAUTH_ORDER[b.provider] ?? 99))
                       .map((acc) => (
-                        <span key={acc.provider} className="inline-flex items-center gap-1 px-2 py-1 bg-surface border border-border rounded-sm text-[10px] text-text-primary">
+                        <span key={acc.provider} className="inline-flex items-center gap-1 px-2 py-1 bg-surface border border-border rounded-sm text-[10px] text-text-primary group">
                           {acc.provider === 'google' && (
                             <svg className="w-3 h-3" viewBox="0 0 24 24">
                               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -324,8 +346,20 @@ export default function AccountClient() {
                               <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.43 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 016.02 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.87.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.82.58C20.57 21.8 24 17.31 24 12c0-6.63-5.37-12-12-12z"/>
                             </svg>
                           )}
-                          {providerNames[acc.provider] || acc.provider}
+                          {OAUTH_NAMES[acc.provider] || acc.provider}
                           <span className="text-green-500">✓</span>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); handleUnlink(acc.provider) }}
+                            disabled={unlinking === acc.provider}
+                            className="ml-1 text-text-secondary/40 hover:text-error transition-colors disabled:opacity-50"
+                            title={t('unlink')}
+                          >
+                            <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                              <polyline points="16 17 21 12 16 7" />
+                              <line x1="21" y1="12" x2="9" y2="12" />
+                            </svg>
+                          </button>
                         </span>
                       ))}
                   </div>
