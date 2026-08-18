@@ -162,7 +162,7 @@ export default function AccountClient() {
       const res = await fetch('/api/auth/send-verification', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: deleteEmail, purpose: 'deleteAccount', locale }),
+        body: JSON.stringify({ email: session?.user?.email, purpose: 'deleteAccount', locale }),
       })
       const data = await res.json()
       if (!res.ok) { setDeleteError(t('sendFailed')); return }
@@ -178,7 +178,7 @@ export default function AccountClient() {
       const res = await fetch('/api/user/delete', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: deleteEmail, code: deleteCode }),
+        body: JSON.stringify({ email: session?.user?.email, code: deleteCode }),
       })
       if (res.ok) {
         await signOut({ callbackUrl: '/' })
@@ -416,11 +416,9 @@ export default function AccountClient() {
                 <label className="text-[10px] text-text-secondary/50 mb-1 block">{t('email')}</label>
                 <input
                   type="email"
-                  value={deleteEmail}
-                  onChange={e => setDeleteEmail(e.target.value)}
-                  className="w-full p-2 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-error/30"
-                  placeholder={t('emailPlaceholder')}
-                  disabled={deleteCodeSent}
+                  value={session.user?.email || ''}
+                  className="w-full p-2 bg-surface/50 border border-border rounded-sm text-sm text-text-primary/50 cursor-not-allowed"
+                  disabled
                 />
               </div>
               {deleteCodeSent && (
@@ -441,7 +439,7 @@ export default function AccountClient() {
                 <button onClick={() => setShowDeleteModal(false)}
                   className="flex-1 px-3 py-1.5 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5">{t('cancel')}</button>
                 {!deleteCodeSent ? (
-                  <button onClick={handleSendDeleteCode} disabled={deleteSendingCode || !deleteEmail}
+                  <button onClick={handleSendDeleteCode} disabled={deleteSendingCode || !session.user?.email}
                     className="flex-1 px-3 py-1.5 rounded-sm bg-error text-white text-xs disabled:opacity-50">{deleteSendingCode ? '...' : t('sendCode')}</button>
                 ) : (
                   <button onClick={handleDeleteAccount} disabled={deleteSaving || deleteCode.length !== 6}
