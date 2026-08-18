@@ -214,15 +214,15 @@ export default function AccountClient() {
         {/* ── Profile Section ── */}
         <div className="bg-card rounded-sm border border-border p-6">
           <h2 className="text-sm font-semibold text-text-primary mb-5">{t('accountSettings')}</h2>
-          <div className="flex items-start gap-5 mb-5">
+          <div className="flex items-center gap-5 mb-5">
             {session.user?.image ? (
-              <img src={session.user.image} alt="" className="w-20 h-20 rounded-full object-cover shrink-0 border-2 border-border" />
+              <img src={session.user.image} alt="" className="w-16 h-16 rounded-full object-cover shrink-0 border-2 border-border" />
             ) : (
-              <div className="w-20 h-20 rounded-full bg-accent/10 flex items-center justify-center text-accent text-2xl font-semibold shrink-0 border-2 border-border">
+              <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center text-accent text-xl font-semibold shrink-0 border-2 border-border">
                 {(session.user?.name || session.user?.email || '?')[0].toUpperCase()}
               </div>
             )}
-            <div className="flex-1 min-w-0 pt-1">
+            <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
                 <p className="text-lg font-medium text-text-primary">{session.user?.name || t('noName')}</p>
                 <button onClick={() => { setNewName(session.user?.name || profile?.name || ''); setEditingName(true) }}
@@ -235,7 +235,7 @@ export default function AccountClient() {
               <span className="text-xs text-text-secondary">{t('email')}</span>
               <span className="text-xs text-text-primary">
                 {session.user?.email}
-                {profile?.emailVerified
+                {profile?.emailVerified || (profile && profile.accounts.length > 0)
                   ? <span className="text-green-500 ml-1.5">✓ {t('emailVerified')}</span>
                   : <span className="text-text-secondary/50 ml-1.5">({t('emailUnverified')})</span>}
               </span>
@@ -262,7 +262,7 @@ export default function AccountClient() {
             {profile && profile.accounts.length > 0 && profile.accounts.map((acc) => (
               <div key={acc.provider} className="grid grid-cols-[100px_1fr] items-center py-3 border-t border-border/50">
                 <span className="text-xs text-text-secondary">{providerNames[acc.provider] || acc.provider}</span>
-                <span className="text-xs text-green-500">✓ {t('connectedAccounts')}</span>
+                <span className="text-xs text-green-500">✓ {t('connected')}</span>
               </div>
             ))}
             {profile && (

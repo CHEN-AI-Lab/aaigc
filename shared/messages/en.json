@@ -1306,6 +1306,7 @@
     "passwordCommon": "This password is too common, please choose another",
     "passwordHint": "At least 8 characters, with 2+ types (upper/lower/numbers/symbols)",
     "currentPasswordWrong": "Current password is incorrect",
+    "connected": "Connected",
     "passwordMismatch": "Passwords do not match",
     "loginFailed": "Invalid email or password",
     "registerFailed": "Registration failed",

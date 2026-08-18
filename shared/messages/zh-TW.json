@@ -1305,6 +1305,7 @@
         "passwordCommon": "密码过于常见，请换一个",
         "passwordHint": "至少 8 位，包含至少 2 種字元類型（大小寫/數字/符號）",
             "currentPasswordWrong": "當前密碼錯誤",
+    "connected": "已綁定",
         "passwordMismatch": "两次密码输入不一致",
     "loginFailed": "邮箱或密码错误",
     "registerFailed": "注册失败",
