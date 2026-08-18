@@ -29,6 +29,8 @@ export default function AccountClient() {
   const [nameError, setNameError] = useState('')
 
   const [changingPwd, setChangingPwd] = useState(false)
+  const [pwdStep, setPwdStep] = useState<'form' | 'code'>('form')
+  const [pwdCode, setPwdCode] = useState('')
   const [pwdOld, setPwdOld] = useState('')
   const [pwdNew, setPwdNew] = useState('')
   const [pwdConfirm, setPwdConfirm] = useState('')
@@ -100,6 +102,7 @@ export default function AccountClient() {
     if (pwdNew !== pwdConfirm) { setPwdError(t('passwordMismatch')); return }
     setPwdSaving(true); setPwdError('')
     try {
+      // Step 1 — verify old password (only for users who already have one)
       if (profile?.hasPassword) {
         if (!pwdOld) { setPwdError(t('fillRequired')); setPwdSaving(false); return }
         const checkRes = await fetch('/api/auth/check-password', {
@@ -107,15 +110,40 @@ export default function AccountClient() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email: profile?.email, password: pwdOld }),
         })
-        if (!checkRes.ok) { setPwdError(t('loginFailed')); setPwdSaving(false); return }
+        const checkData = await checkRes.json()
+        if (!checkRes.ok || !checkData.hasPassword) { setPwdError(t('loginFailed')); setPwdSaving(false); return }
       }
+      // Step 2 — send verification code
       const sendRes = await fetch('/api/auth/send-verification', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: profile?.email, purpose: 'changePassword' }),
+        body: JSON.stringify({ email: profile?.email, purpose: 'changePassword', locale }),
       })
       if (!sendRes.ok) { setPwdError(t('sendFailed')); setPwdSaving(false); return }
-      setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setChangingPwd(false)
+      // Step 3 — show code input; user types code, then set-password is called
+      setPwdStep('code')
+    } catch { setPwdError(t('registerFailed')) }
+    finally { setPwdSaving(false) }
+  }
+
+  const handleSubmitNewPassword = async () => {
+    if (!pwdCode) { setPwdError(t('fillRequired')); return }
+    setPwdSaving(true); setPwdError('')
+    try {
+      const res = await fetch('/api/auth/set-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: profile?.email, password: pwdNew, code: pwdCode }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setPwdError(data.error ? (t(data.error) || data.error) : t('registerFailed'))
+        setPwdSaving(false)
+        return
+      }
+      // Success — close dialog, reset
+      setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdCode(''); setPwdStep('form'); setChangingPwd(false)
+      await fetchProfile()
     } catch { setPwdError(t('registerFailed')) }
     finally { setPwdSaving(false) }
   }
@@ -216,7 +244,7 @@ export default function AccountClient() {
               <div className="flex items-center gap-2 text-xs text-text-secondary">
                 <span className="w-5">🔒</span>
                 <span>{t('passwordLogin')}</span>
-                <button onClick={() => { setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdError(''); setChangingPwd(true) }}
+                <button onClick={() => { setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdCode(''); setPwdStep('form'); setPwdError(''); setChangingPwd(true) }}
                   className="text-accent hover:underline ml-1">
                   {profile.hasPassword ? t('changePassword') : t('setPassword')}
                 </button>
@@ -289,24 +317,42 @@ export default function AccountClient() {
       {/* ── Change Password Dialog ── */}
       {changingPwd && (
         <div className="fixed inset-0 z-[90] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/30" onClick={() => setChangingPwd(false)} />
+          <div className="absolute inset-0 bg-black/30" onClick={() => { setChangingPwd(false); setPwdStep('form') }} />
           <div className="relative bg-card rounded-sm border border-border shadow-lg p-6 w-full max-w-sm">
-            <h3 className="text-sm font-semibold text-text-primary mb-4">{profile?.hasPassword ? t('changePassword') : t('setPassword')}</h3>
-            {profile?.hasPassword && (
-              <input type="password" value={pwdOld} onChange={e => setPwdOld(e.target.value)}
-                className="w-full p-2 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30 mb-2" placeholder={t('currentPassword')} />
+            {pwdStep === 'form' ? (
+              <>
+                <h3 className="text-sm font-semibold text-text-primary mb-4">{profile?.hasPassword ? t('changePassword') : t('setPassword')}</h3>
+                {profile?.hasPassword && (
+                  <input type="password" value={pwdOld} onChange={e => setPwdOld(e.target.value)}
+                    className="w-full p-2 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30 mb-2" placeholder={t('currentPassword')} />
+                )}
+                <input type="password" value={pwdNew} onChange={e => setPwdNew(e.target.value)}
+                  className="w-full p-2 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30 mb-2" placeholder={t('newPassword')} />
+                <input type="password" value={pwdConfirm} onChange={e => setPwdConfirm(e.target.value)}
+                  className="w-full p-2 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30 mb-3" placeholder={t('confirmPassword')} />
+                {pwdError && <p className="text-xs text-error mb-3">{pwdError}</p>}
+                <div className="flex gap-2 justify-end">
+                  <button onClick={() => { setChangingPwd(false); setPwdStep('form') }}
+                    className="px-3 py-1.5 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5 transition-colors">{t('cancel')}</button>
+                  <button onClick={handleChangePassword} disabled={pwdSaving}
+                    className="px-3 py-1.5 rounded-sm bg-accent text-white text-xs disabled:opacity-50">{pwdSaving ? '...' : t('sendCode')}</button>
+                </div>
+              </>
+            ) : (
+              <>
+                <h3 className="text-sm font-semibold text-text-primary mb-2">{t('verificationCode')}</h3>
+                <p className="text-xs text-text-secondary mb-4">{t('codeSentTo', { email: profile?.email || '' })}</p>
+                <input type="text" value={pwdCode} onChange={e => setPwdCode(e.target.value)}
+                  className="w-full p-2 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30 mb-3 text-center tracking-widest" placeholder={t('codePlaceholder')} maxLength={6} />
+                {pwdError && <p className="text-xs text-error mb-3">{pwdError}</p>}
+                <div className="flex gap-2 justify-end">
+                  <button onClick={() => { setChangingPwd(false); setPwdStep('form') }}
+                    className="px-3 py-1.5 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5 transition-colors">{t('cancel')}</button>
+                  <button onClick={handleSubmitNewPassword} disabled={pwdSaving}
+                    className="px-3 py-1.5 rounded-sm bg-accent text-white text-xs disabled:opacity-50">{pwdSaving ? '...' : t('verifyCode')}</button>
+                </div>
+              </>
             )}
-            <input type="password" value={pwdNew} onChange={e => setPwdNew(e.target.value)}
-              className="w-full p-2 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30 mb-2" placeholder={t('newPassword')} />
-            <input type="password" value={pwdConfirm} onChange={e => setPwdConfirm(e.target.value)}
-              className="w-full p-2 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30 mb-3" placeholder={t('confirmPassword')} />
-            {pwdError && <p className="text-xs text-error mb-3">{pwdError}</p>}
-            <div className="flex gap-2 justify-end">
-              <button onClick={() => setChangingPwd(false)}
-                className="px-3 py-1.5 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5 transition-colors">{t('cancel')}</button>
-              <button onClick={handleChangePassword} disabled={pwdSaving}
-                className="px-3 py-1.5 rounded-sm bg-accent text-white text-xs disabled:opacity-50">{pwdSaving ? '...' : t('save')}</button>
-            </div>
           </div>
         </div>
       )}

@@ -1365,8 +1365,9 @@
     "tabPassword": "🔑 パスワード",
     "loginSubtitle": "メールアドレスまたはソーシャルログイン",
     "registerSubtitle": "アカウントを作成して始めましょう",
-    "codePlaceholder": "6桁のコードを入力",
-    "devCodeHint": "開発モード：コード {code}"
+    "codePlaceholder": "6桁の認証コードを入力",
+        "codeSentTo": "認証コードを {email} に送信しました",
+        "devCodeHint": "開発モード: 認証コード {code}"
   },
   "terms": {
     "title": "利用規約",

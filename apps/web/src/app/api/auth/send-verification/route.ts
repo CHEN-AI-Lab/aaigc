@@ -43,8 +43,8 @@ export async function POST(req: Request) {
       if (!existing) {
         return NextResponse.json({ error: "emailNotRegistered" }, { status: 404 })
       }
-    } else if (purpose !== 'forgotPassword') {
-      // 注册：必须未注册
+    } else if (purpose !== 'forgotPassword' && purpose !== 'changePassword') {
+      // 注册：必须未注册（登录/forgotPassword/changePassword 跳过此检查）
       const existing = await prisma.user.findUnique({ where: { email } })
       if (existing) {
         return NextResponse.json({ error: "emailRegistered" }, { status: 409 })

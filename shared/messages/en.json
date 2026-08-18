@@ -1366,6 +1366,7 @@
     "loginSubtitle": "Enter your email or use social login",
     "registerSubtitle": "Create your account to get started",
     "codePlaceholder": "Enter 6-digit code",
+    "codeSentTo": "Verification code sent to {email}",
     "devCodeHint": "Dev mode: code {code}"
   },
   "terms": {
