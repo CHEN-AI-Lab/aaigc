@@ -10,7 +10,7 @@ export async function GET() {
 
   const userId = session.user.id
 
-  const [user, accounts] = await Promise.all([
+  const [user, accounts, pw] = await Promise.all([
     prisma.user.findUnique({
       where: { id: userId },
       select: {
@@ -21,12 +21,15 @@ export async function GET() {
         role: true,
         image: true,
         createdAt: true,
-        passwordHash: true,
       },
     }),
     prisma.account.findMany({
       where: { userId },
       select: { provider: true },
+    }),
+    prisma.user.findUnique({
+      where: { id: userId },
+      select: { passwordHash: true },
     }),
   ])
 
@@ -43,7 +46,7 @@ export async function GET() {
       role: user.role,
       image: user.image,
       createdAt: user.createdAt,
-      hasPassword: !!user.passwordHash,
+      hasPassword: !!pw?.passwordHash,
       accounts: accounts.map((a) => ({ provider: a.provider })),
     },
   })

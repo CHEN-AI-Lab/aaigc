@@ -235,7 +235,7 @@ export default function AccountClient() {
               <span className="text-xs text-text-secondary">{t('email')}</span>
               <span className="text-xs text-text-primary">
                 {session.user?.email}
-                {profile?.emailVerified || (profile && profile.accounts.length > 0)
+                {profile?.emailVerified
                   ? <span className="text-green-500 ml-1.5">✓ {t('emailVerified')}</span>
                   : <span className="text-text-secondary/50 ml-1.5">({t('emailUnverified')})</span>}
               </span>
@@ -286,7 +286,7 @@ export default function AccountClient() {
           <div className="space-y-0 mt-3">
             <div className="grid grid-cols-[100px_1fr] items-center py-3 border-t border-border/50">
               <span className="text-xs text-text-secondary">{t('lastActive')}</span>
-              <span className="text-xs text-text-primary">{formatDateTime(profile?.createdAt || new Date().toISOString())}</span>
+              <span className="text-xs text-text-primary">{profile?.createdAt ? formatDateTime(profile.createdAt) : ''}</span>
             </div>
             <div className="flex items-center justify-between py-3 border-t border-border/50">
               <button onClick={handleLogout}

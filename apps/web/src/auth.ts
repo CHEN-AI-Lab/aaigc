@@ -124,18 +124,27 @@ const { handlers: nextAuthHandlers, auth: nextAuthAuth, signIn, signOut } = Next
   providers,
   callbacks: {
     async signIn({ user, account }) {
-      // OAuth 首次登录时，设置默认 role
       if (account?.type === "oauth" && user.id) {
         try {
           const dbUser = await prisma.user.findUnique({
             where: { id: user.id },
-            select: { role: true },
+            select: { role: true, email: true, emailVerified: true },
           })
-          if (dbUser && !dbUser.role) {
-            await prisma.user.update({
-              where: { id: user.id },
-              data: { role: "user" },
-            })
+          // OAuth 提供方的邮箱默认视为已验证
+          if (dbUser) {
+            const updates: Record<string, string | Date> = {};
+            if (!dbUser.role) {
+              updates.role = "user";
+            }
+            if (!dbUser.emailVerified && user.email && dbUser.email === user.email) {
+              updates.emailVerified = new Date();
+            }
+            if (Object.keys(updates).length > 0) {
+              await prisma.user.update({
+                where: { id: user.id },
+                data: updates,
+              });
+            }
           }
         } catch {
           // ignore

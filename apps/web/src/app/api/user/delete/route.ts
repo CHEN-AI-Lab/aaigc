@@ -11,13 +11,14 @@ export async function DELETE() {
   const userId = session.user.id
 
   // Delete all related records first, then the user
-  await prisma.$transaction([
-    prisma.favorite.deleteMany({ where: { userId } }),
-    prisma.session.deleteMany({ where: { userId } }),
-    prisma.account.deleteMany({ where: { userId } }),
-    prisma.verificationCode.deleteMany({ where: { email: session.user.email } }),
-    prisma.user.delete({ where: { id: userId } }),
-  ])
+  const tx = [
+      prisma.favorite.deleteMany({ where: { userId } }),
+      prisma.session.deleteMany({ where: { userId } }),
+      prisma.account.deleteMany({ where: { userId } }),
+      ...(session.user.email ? [prisma.verificationCode.deleteMany({ where: { email: session.user.email } })] : []),
+      prisma.user.delete({ where: { id: userId } }),
+    ]
+    await prisma.$transaction(tx)
 
   return NextResponse.json({ ok: true })
 }
