@@ -182,7 +182,7 @@ export default function AccountClient() {
         <div className="max-w-2xl mx-auto animate-pulse space-y-6">
           <div className="bg-card rounded-sm border border-border p-6">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-full bg-surface" />
+              <div className="w-16 h-16 rounded-full bg-surface" />
               <div className="flex-1 space-y-2">
                 <div className="h-4 w-32 bg-surface rounded" />
                 <div className="h-3 w-48 bg-surface rounded" />
