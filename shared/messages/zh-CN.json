@@ -1346,7 +1346,7 @@
     "emailVerified": "邮箱已验证 ✓",
     "emailUnverified": "未验证",
     "memberSince": "加入时间",
-    "connectedAccounts": "绑定账号",
+    "connectedAccounts": "已绑定账号",
     "passwordLogin": "密码登录",
     "changePassword": "修改密码",
     "setPassword": "设置密码",

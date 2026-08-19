@@ -1350,7 +1350,7 @@
     "emailVerified": "Email verified ✓",
     "emailUnverified": "未認証",
     "memberSince": "登録日",
-    "connectedAccounts": "連携アカウント",
+    "connectedAccounts": "連携済み",
     "passwordLogin": "パスワードログイン",
     "changePassword": "パスワード変更",
     "setPassword": "パスワード設定",
