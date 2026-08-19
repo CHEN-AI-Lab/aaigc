@@ -374,7 +374,7 @@ export default function AccountClient() {
               {/* Connected Accounts */}
               {profile && profile.accounts.length > 0 && (
                 <div className="flex items-center py-3 border-t border-border/50">
-                  <span className="text-sm text-text-secondary/70 shrink-0 w-[60px]">{t('connectedAccounts')}</span>
+                  <span className="text-sm text-text-secondary/70 shrink-0 min-w-max pr-2">{t('connectedAccounts')}</span>
                   <div className="flex gap-2 flex-wrap ml-auto">
                     {profile.accounts
                       .filter((acc) => ['google', 'github'].includes(acc.provider))
