@@ -149,9 +149,13 @@ export default function AccountClient() {
         setPwdSaving(false)
         return
       }
-      setShowPwdForm(false); setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdError('')
       setPwdSaved(true)
       await fetchProfile()
+      setTimeout(() => {
+        setShowPwdForm(false)
+        setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdError('')
+        setPwdSaved(false)
+      }, 2000)
     } catch { setPwdError(t('registerFailed')) }
     finally { setPwdSaving(false) }
   }
