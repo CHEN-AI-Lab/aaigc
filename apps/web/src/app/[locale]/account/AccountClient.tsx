@@ -8,7 +8,6 @@ import { useCallback, useEffect, useState, useRef } from 'react'
 interface UserProfile {
   id: string
   email: string | null
-  emailVerified: string | null
   name: string | null
   role: string
   image: string | null
@@ -329,9 +328,7 @@ export default function AccountClient() {
                 <span className="text-xs text-text-secondary">{t('email')}</span>
                 <span className="text-xs text-text-primary flex items-center gap-1.5">
                   {session.user?.email}
-                  {profile?.emailVerified
-                    ? <span className="text-green-500 font-medium">{t('emailVerified')}</span>
-                    : <span className="text-text-secondary/50">({t('emailUnverified')})</span>}
+                  <span className="text-green-500 font-medium">{t('emailVerified')}</span>
                 </span>
               </div>
 
