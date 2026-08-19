@@ -24,26 +24,36 @@ export interface FindReplaceRule {
   type: 'findReplace'
   find: string
   replace: string
+  folderMode?: boolean
+  folderLevel?: number
 }
 
 export interface DeleteBeforeRule {
   type: 'deleteBefore'
   text: string
+  folderMode?: boolean
+  folderLevel?: number
 }
 
 export interface DeleteAfterRule {
   type: 'deleteAfter'
   text: string
+  folderMode?: boolean
+  folderLevel?: number
 }
 
 export interface PrefixRule {
   type: 'prefix'
   text: string
+  folderMode?: boolean
+  folderLevel?: number
 }
 
 export interface SuffixRule {
   type: 'suffix'
   text: string
+  folderMode?: boolean
+  folderLevel?: number
 }
 
 export interface NumberingRule {
@@ -53,11 +63,15 @@ export interface NumberingRule {
   position: 'prefix' | 'suffix'
   replaceOriginal?: boolean
   perFolder?: boolean
+  folderMode?: boolean
+  folderLevel?: number
 }
 
 export interface CaseRule {
   type: 'case'
   mode: 'upper' | 'lower' | 'capitalize'
+  folderMode?: boolean
+  folderLevel?: number
 }
 
 export interface CleanRule {
@@ -65,18 +79,24 @@ export interface CleanRule {
   removeSpaces: boolean
   removeSpecialChars: boolean
   spaceReplacement: string
+  folderMode?: boolean
+  folderLevel?: number
 }
 
 export interface RegexRule {
   type: 'regex'
   pattern: string
   replacement: string
+  folderMode?: boolean
+  folderLevel?: number
 }
 
 export interface KeepNumberRule {
   type: 'keepNumber'
   digits: number
   position: 'prefix' | 'suffix'
+  folderMode?: boolean
+  folderLevel?: number
 }
 
 export interface NumberFoldersRule {
@@ -85,6 +105,8 @@ export interface NumberFoldersRule {
   digits: number
   level?: number
   perFolder?: boolean
+  folderMode?: boolean
+  folderLevel?: number
 }
 
 export type RenameRule =
@@ -228,7 +250,7 @@ function compareNames(a: string, b: string): number {
  */
 function applyRuleToFolderSegments(path: string, rule: RenameRule, fileIndex: number, allNames: string[]): string {
   const parts = path.split('/')
-  const level = (rule as any).folderLevel ?? 1
+  const level = rule.folderLevel ?? 1
   if (parts.length <= level) return path // not enough segments
   parts[level] = applyRule(parts[level], rule, fileIndex, allNames)
   return parts.join('/')
@@ -255,8 +277,8 @@ export function applyRules(
   const newNames: string[] = []
 
   // Separate rules: normal file rules, folder-mode rules, and numberFolders
-  const fileRules = rules.filter(r => r.type !== 'numberFolders' && !(r as any).folderMode)
-  const folderModeRules = rules.filter(r => (r as any).folderMode && r.type !== 'numberFolders')
+  const fileRules = rules.filter(r => r.type !== 'numberFolders' && !r.folderMode)
+  const folderModeRules = rules.filter(r => r.folderMode && r.type !== 'numberFolders')
   const numberFolderRules = rules.filter(r => r.type === 'numberFolders') as NumberFoldersRule[]
 
   // Pre-compute folder numbering mapping
@@ -303,7 +325,7 @@ export function applyRules(
 
   // Pre-compute per-folder numbering indices
   let folderIndexMap: Record<string, number> | null = null
-  const hasPerFolder = rules.some(r => r.type === 'numbering' && (r as any).perFolder)
+  const hasPerFolder = rules.some(r => r.type === 'numbering' && r.perFolder)
   if (hasPerFolder) {
     folderIndexMap = {}
     const folderCounts: Record<string, number> = {}
@@ -321,7 +343,7 @@ export function applyRules(
 
     for (const rule of fileRules) {
       // For per-folder numbering, use the folder-specific index instead of global index
-      const effectiveIndex = (rule.type === 'numbering' && (rule as any).perFolder && folderIndexMap)
+      const effectiveIndex = (rule.type === 'numbering' && rule.perFolder && folderIndexMap)
         ? folderIndexMap[file.path]
         : fileIndex
       newBase = applyRule(newBase, rule, effectiveIndex, newNames)

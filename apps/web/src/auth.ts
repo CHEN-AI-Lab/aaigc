@@ -49,9 +49,16 @@ providers.push(
         data: { used: true },
       })
 
-      // Find or create user
+      // Find or create user, 同时设置 emailVerified（验证码本身就是邮箱验证）
       const user = await prisma.user.findUnique({ where: { email } })
       if (!user) return null
+
+      if (!user.emailVerified) {
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { emailVerified: new Date() },
+        })
+      }
 
       return { id: user.id, name: user.name, email: user.email!, role: user.role }
     },

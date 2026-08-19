@@ -408,7 +408,7 @@ export default function FileRenamer() {
   const hasConflicts = useMemo(() => preview.some(p => p.conflict), [preview])
   const treeNodes = useMemo(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const hasFolderMode = rules.some(r => (r as any).folderMode || r.type === 'numberFolders')
+    const hasFolderMode = rules.some(r => r.folderMode || r.type === 'numberFolders')
     return buildTree(preview, hasFolderMode)
   }, [preview, rules])
 
@@ -665,7 +665,7 @@ export default function FileRenamer() {
                   <label className="flex items-center gap-1 text-xs text-text-secondary cursor-pointer whitespace-nowrap">
                     <input
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      type="checkbox" checked={(rule as any).perFolder ?? false}
+                      type="checkbox" checked={rule.perFolder ?? false}
                       onChange={e => updateRule(i, r => ({ ...r, perFolder: e.target.checked }))}
                       className="accent-accent"
                     />
@@ -698,7 +698,7 @@ export default function FileRenamer() {
                   <label className="flex items-center gap-1 text-xs text-text-secondary cursor-pointer whitespace-nowrap">
                     <input
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      type="checkbox" checked={(rule as any).perFolder ?? false}
+                      type="checkbox" checked={rule.perFolder ?? false}
                       onChange={e => updateRule(i, r => ({ ...r, perFolder: e.target.checked }))}
                       className="accent-accent"
                     />
@@ -772,7 +772,7 @@ export default function FileRenamer() {
                   <label className="flex items-center gap-1 text-xs text-text-secondary cursor-pointer whitespace-nowrap">
                     <input
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      type="checkbox" checked={(rule as any).folderMode ?? false}
+                      type="checkbox" checked={rule.folderMode ?? false}
                       onChange={e => updateRule(i, r => ({ ...r, folderMode: e.target.checked }))}
                       className="accent-accent"
                     />
@@ -780,12 +780,12 @@ export default function FileRenamer() {
                   </label>
                 )}
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                {(rule as any).folderMode && cfg?.hasFolderMode && ( // eslint-disable-line @typescript-eslint/no-explicit-any
+                {rule.folderMode && cfg?.hasFolderMode && (
                   <label className="flex items-center gap-1 text-xs text-text-secondary whitespace-nowrap">
                     <span>{t('renFolderLevel')}</span>
                     <input
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      type="number" min="0" max="5" value={(rule as any).folderLevel ?? 1}
+                      type="number" min="0" max="5" value={rule.folderLevel ?? 1}
                       onChange={e => updateRule(i, r => ({ ...r, folderLevel: Math.max(0, Math.min(5, parseInt(e.target.value) || 0)) }))}
                       className="w-12 p-1 bg-bg border border-border rounded-lg text-xs text-text-primary text-center"
                     />
