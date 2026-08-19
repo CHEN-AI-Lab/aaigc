@@ -42,6 +42,7 @@ export default function AccountClient() {
   const [pwdNew, setPwdNew] = useState('')
   const [pwdConfirm, setPwdConfirm] = useState('')
   const [pwdSaving, setPwdSaving] = useState(false)
+  const [pwdSaved, setPwdSaved] = useState(false)
   const [pwdError, setPwdError] = useState('')
 
   // ── Delete account ──
@@ -149,8 +150,8 @@ export default function AccountClient() {
         return
       }
       setShowPwdForm(false); setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdError('')
+      setPwdSaved(true)
       await fetchProfile()
-      showToast(t('passwordUpdated'))
     } catch { setPwdError(t('registerFailed')) }
     finally { setPwdSaving(false) }
   }
@@ -358,7 +359,7 @@ export default function AccountClient() {
                 <span className="text-sm text-text-secondary/70 shrink-0 w-[60px]">{t('passwordLogin')}</span>
                 <span className="text-right flex items-center gap-3 shrink-0 min-w-0">
                   <span className="text-sm text-text-secondary/60">{profile?.hasPassword ? '••••••••' : t('noPassword')}</span>
-                  <button onClick={() => { setShowPwdForm(!showPwdForm); setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdError('') }}
+                  <button onClick={() => { setShowPwdForm(!showPwdForm); setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdError(''); setPwdSaved(false) }}
                     className="text-sm text-accent hover:underline shrink-0">
                     {profile?.hasPassword ? t('changePassword') : t('setPassword')}
                   </button>
@@ -424,7 +425,9 @@ export default function AccountClient() {
                 {pwdError && <p className="text-xs text-error">{pwdError}</p>}
                 <div className="flex gap-2 pt-1">
                   <button onClick={handleSavePassword} disabled={pwdSaving}
-                    className="px-4 py-1.5 rounded-sm bg-accent text-white text-xs font-medium disabled:opacity-50">{pwdSaving ? '...' : t('save')}</button>
+                    className={`px-4 py-1.5 rounded-sm text-white text-xs font-medium disabled:opacity-50 ${pwdSaved ? 'bg-success hover:bg-success/90' : 'bg-accent hover:opacity-90'}`}>
+                    {pwdSaving ? '...' : pwdSaved ? '✓ ' + t('auth.passwordUpdated') : t('save')}
+                  </button>
                   <button onClick={() => setShowPwdForm(false)}
                     className="px-4 py-1.5 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5">{t('cancel')}</button>
                 </div>
