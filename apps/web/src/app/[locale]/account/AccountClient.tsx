@@ -4,6 +4,7 @@ import { useTranslations, useLocale } from 'next-intl'
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { useCallback, useEffect, useState, useRef } from 'react'
+import PasswordInput from '@/components/PasswordInput'
 
 interface UserProfile {
   id: string
@@ -418,14 +419,26 @@ export default function AccountClient() {
             {showPwdForm && (
               <div className="mt-3 p-3 bg-surface rounded-sm border border-border space-y-2.5">
                 {profile?.hasPassword && (
-                  <input type="password" value={pwdOld} onChange={e => setPwdOld(e.target.value)}
-                    className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30" placeholder={t('currentPassword')} />
+                  <PasswordInput
+                    placeholder={t('currentPassword')}
+                    value={pwdOld}
+                    onChange={setPwdOld}
+                    className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30"
+                  />
                 )}
-                <input type="password" value={pwdNew} onChange={e => setPwdNew(e.target.value)}
-                  className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30" placeholder={t('newPassword')} />
+                <PasswordInput
+                  placeholder={t('newPassword')}
+                  value={pwdNew}
+                  onChange={setPwdNew}
+                  className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30"
+                />
                 <p className="text-[10px] text-text-secondary/50 -mt-1.5">{t('passwordHint')}</p>
-                <input type="password" value={pwdConfirm} onChange={e => setPwdConfirm(e.target.value)}
-                  className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30" placeholder={t('confirmPassword')} />
+                <PasswordInput
+                  placeholder={t('confirmPassword')}
+                  value={pwdConfirm}
+                  onChange={setPwdConfirm}
+                  className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30"
+                />
                 {pwdError && <p className="text-xs text-error">{pwdError}</p>}
                 <div className="flex gap-2 pt-1">
                   <button onClick={handleSavePassword} disabled={pwdSaving}
