@@ -43,8 +43,8 @@ export default function AccountClient() {
   const [pwdNew, setPwdNew] = useState('')
   const [pwdConfirm, setPwdConfirm] = useState('')
   const [pwdSaving, setPwdSaving] = useState(false)
-  const [pwdSaved, setPwdSaved] = useState(false)
   const [pwdError, setPwdError] = useState('')
+  const [pwdMsg, setPwdMsg] = useState('')
 
   // ── Delete account ──
   const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -150,13 +150,14 @@ export default function AccountClient() {
         setPwdSaving(false)
         return
       }
-      setPwdSaved(true)
+      setPwdSaving(false)
+      setPwdMsg('✓ ' + t('passwordUpdated'))
       await fetchProfile()
       setTimeout(() => {
+        setPwdMsg('')
         setShowPwdForm(false)
         setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdError('')
-        setPwdSaved(false)
-      }, 2000)
+      }, 1500)
     } catch { setPwdError(t('registerFailed')) }
     finally { setPwdSaving(false) }
   }
@@ -364,7 +365,7 @@ export default function AccountClient() {
                 <span className="text-sm text-text-secondary/70 shrink-0 w-[60px]">{t('passwordLogin')}</span>
                 <span className="text-right flex items-center gap-3 shrink-0 min-w-0">
                   <span className="text-sm text-text-secondary/60">{profile?.hasPassword ? '••••••••' : t('noPassword')}</span>
-                  <button onClick={() => { setShowPwdForm(!showPwdForm); setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdError(''); setPwdSaved(false) }}
+                  <button onClick={() => { setShowPwdForm(!showPwdForm); setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdError('') }}
                     className="text-sm text-accent hover:underline shrink-0">
                     {profile?.hasPassword ? t('changePassword') : t('setPassword')}
                   </button>
@@ -427,12 +428,11 @@ export default function AccountClient() {
                   />
                 )}
                 <PasswordInput
-                  placeholder={t('newPassword')}
+                  placeholder={t('passwordHint')}
                   value={pwdNew}
                   onChange={setPwdNew}
                   className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30"
                 />
-                <p className="text-[10px] text-text-secondary/50 -mt-1.5">{t('passwordHint')}</p>
                 <PasswordInput
                   placeholder={t('confirmPassword')}
                   value={pwdConfirm}
@@ -440,10 +440,11 @@ export default function AccountClient() {
                   className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30"
                 />
                 {pwdError && <p className="text-xs text-error">{pwdError}</p>}
+                {pwdMsg && <p className="text-xs text-success">{pwdMsg}</p>}
                 <div className="flex gap-2 pt-1">
                   <button onClick={handleSavePassword} disabled={pwdSaving}
-                    className={`px-4 py-1.5 rounded-sm text-white text-xs font-medium disabled:opacity-50 ${pwdSaved ? 'bg-success hover:bg-success/90' : 'bg-accent hover:opacity-90'}`}>
-                    {pwdSaving ? '...' : pwdSaved ? '✓ ' + t('passwordUpdated') : t('save')}
+                    className="px-4 py-1.5 rounded-sm bg-accent text-white text-xs font-medium hover:opacity-90 disabled:opacity-50">
+                    {pwdSaving ? '...' : t('save')}
                   </button>
                   <button onClick={() => setShowPwdForm(false)}
                     className="px-4 py-1.5 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5">{t('cancel')}</button>
