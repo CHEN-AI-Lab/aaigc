@@ -591,8 +591,8 @@ export default function AccountClient() {
 
       {/* ── Toast ── */}
       {toast && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100]">
-          <div className="bg-bg border border-border shadow-lg rounded-sm px-5 py-2.5 text-xs text-text-primary">
+        <div className="fixed top-1/3 left-1/2 -translate-x-1/2 z-[100]">
+          <div className="bg-bg border border-border shadow-lg rounded-xl px-5 py-2.5 text-sm text-text-primary">
             {toast}
           </div>
         </div>
