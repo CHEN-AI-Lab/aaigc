@@ -414,11 +414,10 @@ export default function AccountClient() {
                   </div>
                 </div>
               )}
-            </div>
 
-            {/* Inline password form */}
+              {/* Inline password form */}
             {showPwdForm && (
-              <div className="mt-2 space-y-3">
+              <div className="mt-2 space-y-3 px-1">
                 {profile?.hasPassword && (
                   <div>
                     <label className="text-xs text-text-secondary">{t('currentPassword')}</label>
@@ -460,6 +459,7 @@ export default function AccountClient() {
                 </div>
               </div>
             )}
+            </div>
           </div>
         </div>
 
