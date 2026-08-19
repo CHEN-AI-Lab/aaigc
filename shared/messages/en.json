@@ -1387,11 +1387,17 @@
     "codeSentTo": "Verification code sent to {email}",
     "devCodeHint": "Dev mode: code {code}",
     "unlink": "Unlink",
-    "unlinkConfirm": "Are you sure you want to unlink {provider}? You will no longer be able to sign in with this account.",
+    "unlinkConfirm": "Unlink {provider}? You will no longer be able to sign in with this account.",
     "unlinkSuccess": "Account unlinked successfully",
     "unlinkFailed": "Failed to unlink account",
-    "cannotUnlinkEmail": "Cannot unlink email login method",
-    "mustKeepOneMethod": "At least one login method must be kept"
+    "cannotUnlinkEmail": "Cannot unlink email login",
+    "mustKeepOneMethod": "At least one login method must be kept",
+    "confirmUnlink": "Confirm Unlink",
+    "githubRevokeNote": "GitHub does not support automatic unbinding. After unlinking, please go to GitHub Settings → Applications to cancel authorization manually.",
+    "githubManualRevokeDone": "GitHub account has been unlinked from this site.",
+    "githubManualRevokeNote": "To fully cancel authorization on GitHub, go to: GitHub → Settings → Applications → Authorized OAuth Apps, and remove this app.",
+    "githubManualRevoke": "GitHub unlinked — please cancel authorization on GitHub manually.",
+    "understood": "Got it"
   },
   "terms": {
     "title": "Terms of Service",

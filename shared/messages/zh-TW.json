@@ -1391,7 +1391,13 @@
     "unlinkSuccess": "已解綁",
     "unlinkFailed": "解綁失敗",
     "cannotUnlinkEmail": "信箱登入方式不可解綁",
-    "mustKeepOneMethod": "至少需要保留一種登入方式"
+    "mustKeepOneMethod": "至少需要保留一種登入方式",
+    "confirmUnlink": "確認解綁",
+    "githubRevokeNote": "GitHub 不支援自動解綁，解綁後請前往 GitHub 設定 → 應用程式 手動取消授權。",
+    "githubManualRevokeDone": "GitHub 帳號已從本站解綁。",
+    "githubManualRevokeNote": "要完全取消 GitHub 授權，請前往：GitHub → 設定 → 應用程式 → 已授權的 OAuth 應用程式，移除本應用程式。",
+    "githubManualRevoke": "GitHub 已解綁，請手動到 GitHub 取消授權。",
+    "understood": "知道了"
   },
   "terms": {
     "tools": "線上工具",

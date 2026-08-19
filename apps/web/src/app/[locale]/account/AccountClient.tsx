@@ -209,25 +209,39 @@ export default function AccountClient() {
 
   // ── Unlink OAuth ──
   const [unlinking, setUnlinking] = useState<string | null>(null)
+  const [unlinkConfirmProvider, setUnlinkConfirmProvider] = useState<string | null>(null)
+  const [unlinkError, setUnlinkError] = useState('')
+  const [needsManualRevoke, setNeedsManualRevoke] = useState(false)
 
-  const handleUnlink = async (provider: string) => {
-    const confirmed = window.confirm(t('unlinkConfirm', { provider: OAUTH_NAMES[provider] || provider }))
-    if (!confirmed) return
-    setUnlinking(provider)
+  const handleUnlinkClick = (provider: string) => {
+    setUnlinkConfirmProvider(provider)
+    setUnlinkError('')
+    setNeedsManualRevoke(false)
+  }
+
+  const handleUnlinkConfirm = async () => {
+    if (!unlinkConfirmProvider) return
+    setUnlinking(unlinkConfirmProvider)
     try {
       const res = await fetch('/api/user/unlink-account', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ provider }),
+        body: JSON.stringify({ provider: unlinkConfirmProvider }),
       })
       const data = await res.json()
       if (res.ok) {
         await fetchProfile()
-        showToast(t('unlinkSuccess'))
+        setUnlinkConfirmProvider(null)
+        if (data.needsManualRevoke) {
+          setNeedsManualRevoke(true)
+          showToast(t('githubManualRevoke'))
+        } else {
+          showToast(t('unlinkSuccess'))
+        }
       } else {
-        showToast(t(data.error || 'unlinkFailed'))
+        setUnlinkError(t(data.error || 'unlinkFailed'))
       }
-    } catch { showToast(t('unlinkFailed')) }
+    } catch { setUnlinkError(t('unlinkFailed')) }
     finally { setUnlinking(null) }
   }
 
@@ -349,7 +363,7 @@ export default function AccountClient() {
                           {OAUTH_NAMES[acc.provider] || acc.provider}
                           <span className="text-green-500">✓</span>
                           <button
-                            onClick={(e) => { e.stopPropagation(); handleUnlink(acc.provider) }}
+                            onClick={(e) => { e.stopPropagation(); handleUnlinkClick(acc.provider) }}
                             disabled={unlinking === acc.provider}
                             className="ml-1 text-text-secondary/40 hover:text-error transition-colors disabled:opacity-50"
                             title={t('unlink')}
@@ -508,6 +522,55 @@ export default function AccountClient() {
                     className="flex-1 px-3 py-1.5 rounded-sm bg-error text-white text-xs disabled:opacity-50">{deleteSaving ? '...' : t('confirm')}</button>
                 )}
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Unlink Confirmation Modal ── */}
+      {unlinkConfirmProvider && (
+        <div className="fixed inset-0 z-[90] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/30" onClick={() => setUnlinkConfirmProvider(null)} />
+          <div className="relative bg-card rounded-sm border border-border shadow-lg p-6 w-full max-w-sm">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-lg">🔗</span>
+              <h3 className="text-sm font-semibold text-text-primary">{t('unlink')}</h3>
+            </div>
+            <p className="text-xs text-text-secondary mb-2">
+              {t('unlinkConfirm', { provider: OAUTH_NAMES[unlinkConfirmProvider] || unlinkConfirmProvider })}
+            </p>
+            {unlinkConfirmProvider === 'github' && (
+              <p className="text-[10px] text-text-secondary/50 mb-4">
+                {t('githubRevokeNote')}
+              </p>
+            )}
+            {unlinkError && <p className="text-xs text-error mb-3">{unlinkError}</p>}
+            <div className="flex gap-2">
+              <button onClick={() => setUnlinkConfirmProvider(null)}
+                className="flex-1 px-3 py-1.5 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5">{t('cancel')}</button>
+              <button onClick={handleUnlinkConfirm} disabled={unlinking !== null}
+                className="flex-1 px-3 py-1.5 rounded-sm bg-error text-white text-xs disabled:opacity-50">
+                {unlinking ? '...' : t('confirmUnlink')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── GitHub Manual Revoke Modal ── */}
+      {needsManualRevoke && (
+        <div className="fixed inset-0 z-[90] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/30" onClick={() => setNeedsManualRevoke(false)} />
+          <div className="relative bg-card rounded-sm border border-border shadow-lg p-6 w-full max-w-sm">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-lg">ℹ️</span>
+              <h3 className="text-sm font-semibold text-text-primary">{t('unlink')}</h3>
+            </div>
+            <p className="text-xs text-text-secondary mb-4">{t('githubManualRevokeDone')}</p>
+            <p className="text-[10px] text-text-secondary/50 mb-4">{t('githubManualRevokeNote')}</p>
+            <div className="flex gap-2">
+              <button onClick={() => setNeedsManualRevoke(false)}
+                className="flex-1 px-3 py-1.5 rounded-sm bg-accent text-white text-xs hover:opacity-90">{t('understood')}</button>
             </div>
           </div>
         </div>

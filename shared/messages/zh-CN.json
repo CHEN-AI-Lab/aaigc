@@ -1391,7 +1391,13 @@
     "unlinkSuccess": "已解绑",
     "unlinkFailed": "解绑失败",
     "cannotUnlinkEmail": "邮箱登录方式不可解绑",
-    "mustKeepOneMethod": "至少需要保留一种登录方式"
+    "mustKeepOneMethod": "至少需要保留一种登录方式",
+    "confirmUnlink": "确认解绑",
+    "githubRevokeNote": "GitHub 不支持自动解绑，解绑后请前往 GitHub 设置 → 应用 手动取消授权。",
+    "githubManualRevokeDone": "GitHub 账号已从本站解绑。",
+    "githubManualRevokeNote": "要完全取消 GitHub 授权，请前往：GitHub → 设置 → 应用 → 已授权的 OAuth 应用，移除本应用。",
+    "githubManualRevoke": "GitHub 已解绑，请手动到 GitHub 取消授权。",
+    "understood": "知道了"
   },
   "terms": {
     "title": "服务条款",

@@ -126,7 +126,6 @@ describe('tools', () => {
       'cron-builder': 'CronBuilder',
       'emoji-picker': 'EmojiPicker',
       'pdf-tool': 'PdfTool',
-      'text-to-binary': 'TextToBinary',
       'file-renamer': 'FileRenamer',
     }
     for (const t of tools) {
@@ -180,7 +179,6 @@ describe('tools', () => {
       CronBuilder: () => import('../../apps/web/src/components/tools/CronBuilder'),
       EmojiPicker: () => import('../../apps/web/src/components/tools/EmojiPicker'),
       PdfTool: () => import('../../apps/web/src/components/tools/PdfTool'),
-      TextToBinary: () => import('../../apps/web/src/components/tools/TextToBinary'),
       FileRenamer: () => import('../../apps/web/src/components/tools/FileRenamer'),
       ImageEditor: () => import('../../apps/web/src/components/tools/ImageEditor'),
       ImageConverter: () => import('../../apps/web/src/components/tools/ImageConverter'),

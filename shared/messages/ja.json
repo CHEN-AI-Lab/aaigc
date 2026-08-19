@@ -1391,7 +1391,13 @@
     "unlinkSuccess": "リンクを解除しました",
     "unlinkFailed": "リンク解除に失敗しました",
     "cannotUnlinkEmail": "メールログインは解除できません",
-    "mustKeepOneMethod": "ログイン方法は1つ以上残す必要があります"
+    "mustKeepOneMethod": "ログイン方法は1つ以上残す必要があります",
+    "confirmUnlink": "解除確認",
+    "githubRevokeNote": "GitHubは自動リンク解除をサポートしていません。解除後、GitHub 設定 → アプリケーション にアクセスして手動で認可をキャンセルしてください。",
+    "githubManualRevokeDone": "GitHub アカウントは本サイトからリンク解除されました。",
+    "githubManualRevokeNote": "GitHub 側の認可を完全に取消すには：GitHub → 設定 → アプリケーション → 認可された OAuth アプリ から本アプリを削除してください。",
+    "githubManualRevoke": "GitHub がリンク解除されました。GitHub 側でも手動で認可をキャンセルしてください。",
+    "understood": "わかりました"
   },
   "terms": {
     "title": "利用規約",
