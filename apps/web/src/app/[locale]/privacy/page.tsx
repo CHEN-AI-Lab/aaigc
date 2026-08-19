@@ -1,3 +1,4 @@
+import { CONTACT_EMAIL } from 'shared/constants'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { routing } from '@/i18n/routing'
 
@@ -96,7 +97,10 @@ export default async function PrivacyPage({ params }: Props) {
 
         <section>
           <h2 className="text-base font-medium text-text-primary mb-2">{t('contact')}</h2>
-          <p>{t('contactDesc')}</p>
+          <p>
+            {t('contactDesc')}{' '}
+            <a href={`mailto:${CONTACT_EMAIL}`} className="text-accent hover:underline">{CONTACT_EMAIL}</a>
+          </p>
         </section>
       </div>
     </div>

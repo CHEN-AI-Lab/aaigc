@@ -1221,7 +1221,7 @@
     "more": "更多...",
     "updates": "更新日志",
     "privacy": "隐私政策",
-    "email": "chen@aaigc.online",
+    "email": "AAIGC@aaigc.online",
     "copyright": "AAIGC. 保留所有权利。",
     "terms": "服务条款"
   },
@@ -1270,7 +1270,7 @@
       "随时撤回同意"
     ],
     "contact": "联系我们",
-    "contactDesc": "如对本隐私政策有疑问，请联系：chen@aaigc.online",
+    "contactDesc": "如对本隐私政策有疑问，请联系：",
     "gdpr": "GDPR 合规（欧盟用户）",
     "gdprDesc": "如果您在欧洲经济区，您在 GDPR 下有额外权利。我们处理您数据的法律依据是您的同意（注册时）和合法利益（统计分析）。",
     "ccpa": "CCPA 合规（加州用户）",
@@ -1440,6 +1440,6 @@
     "changes": "条款变更",
     "changesDesc": "我们可能随时更新本条款。变更后继续使用即构成接受。",
     "contact": "联系方式",
-    "contactDesc": "如有疑问，请联系：chen@aaigc.online"
+    "contactDesc": "如有疑问，请联系："
   }
 }

@@ -1221,7 +1221,7 @@
     "more": "More...",
     "updates": "Updates",
     "privacy": "Privacy",
-    "email": "chen@aaigc.online",
+    "email": "AAIGC@aaigc.online",
     "copyright": "AAIGC. All rights reserved.",
     "terms": "Terms of Service"
   },
@@ -1270,7 +1270,7 @@
       "Withdraw consent at any time"
     ],
     "contact": "Contact Us",
-    "contactDesc": "For questions about this Privacy Policy, contact us at: chen@aaigc.online",
+    "contactDesc": "For questions about this Privacy Policy, contact us at:",
     "gdpr": "GDPR Compliance (EU Users)",
     "gdprDesc": "If you are in the European Economic Area, you have additional rights under GDPR. Our legal basis for processing your data is your consent (when you register) and legitimate interest (for analytics).",
     "ccpa": "CCPA Compliance (California Users)",
@@ -1440,6 +1440,6 @@
     "changes": "Changes to Terms",
     "changesDesc": "We may update these terms at any time. Continued use after changes constitutes acceptance.",
     "contact": "Contact",
-    "contactDesc": "For questions, contact: chen@aaigc.online"
+    "contactDesc": "For questions, contact:"
   }
 }

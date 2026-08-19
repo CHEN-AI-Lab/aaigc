@@ -1,5 +1,8 @@
 export { locales, defaultLocale, isLocale, localeNames } from './locales'
 
+// 对外联系邮箱 — 所有页面统一从此常量读取
+export const CONTACT_EMAIL = 'AAIGC@aaigc.online'
+
 // Cloudflare Worker 统计网关地址
 // 所有项目的统计请求通过此 Worker 发送到 Upstash Redis
 // 生产环境可通过 NEXT_PUBLIC_WORKER_URL 环境变量覆盖

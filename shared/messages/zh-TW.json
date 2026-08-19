@@ -1222,7 +1222,7 @@
     "company": "更多",
     "toolJson": "JSON 格式化",
     "more": "更多...",
-    "email": "chen@aaigc.online",
+    "email": "AAIGC@aaigc.online",
     "terms": "服務條款"
   },
   "privacy": {
@@ -1270,7 +1270,7 @@
       "隨時撤回同意"
     ],
     "contact": "聯絡我們",
-    "contactDesc": "如對本隱私政策有疑問，請聯絡：chen@aaigc.online",
+    "contactDesc": "如對本隱私政策有疑問，請聯絡：",
     "gdpr": "GDPR 合規（歐盟用戶）",
     "gdprDesc": "如果您在歐洲經濟區，您在 GDPR 下有額外權利。我們處理您數據的法律依據是您的同意（註冊時）和合法利益（統計分析）。",
     "ccpa": "CCPA 合規（加州用戶）",
@@ -1440,6 +1440,6 @@
     "liabilityDesc": "AAIGC 按「現狀」提供，不提供任何擔保。我們對您使用服務產生的損害不承擔責任。",
     "changes": "條款變更",
     "changesDesc": "我們可能隨時更新本條款。變更後繼續使用即構成接受。",
-    "contactDesc": "如有疑問，請聯繫：chen@aaigc.online"
+    "contactDesc": "如有疑問，請聯繫："
   }
 }

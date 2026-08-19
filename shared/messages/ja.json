@@ -1223,7 +1223,7 @@
     "privacy": "プライバシー",
     "copyright": "AAIGC. 無断複写・転載を禁じます。",
     "terms": "利用規約",
-    "email": "chen@aaigc.online"
+    "email": "AAIGC@aaigc.online"
   },
   "privacy": {
     "title": "プライバシーポリシー",
@@ -1270,7 +1270,7 @@
       "いつでも同意を撤回する"
     ],
     "contact": "お問い合わせ",
-    "contactDesc": "このプライバシーポリシーに関するお問い合わせは、chen@aaigc.onlineまでご連絡ください。",
+    "contactDesc": "このプライバシーポリシーに関するお問い合わせは、ご連絡ください：",
     "gdpr": "GDPR遵守（EUユーザー向け）",
     "gdprDesc": "お客様が欧州経済領域にお住まいの場合、GDPRに基づく追加の権利があります。当社がお客様のデータを処理する法的根拠は、お客様の同意（登録時）および正当な利益（分析目的）です。",
     "ccpa": "CCPA遵守（カリフォルニア州ユーザー向け）",
@@ -1440,6 +1440,6 @@
     "changes": "規約の変更",
     "changesDesc": "当社は随時本規約を更新する場合があります。変更後の継続利用は、同意とみなされます。",
     "contact": "お問い合わせ",
-    "contactDesc": "ご質問は、chen@aaigc.onlineまでお問い合わせください。"
+    "contactDesc": "ご質問は、お問い合わせください："
   }
 }

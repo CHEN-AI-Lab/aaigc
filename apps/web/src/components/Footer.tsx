@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
+import { CONTACT_EMAIL } from 'shared/constants'
 import { products } from 'data/products'
 import { tools } from 'data/tools'
 
@@ -64,7 +65,7 @@ export default function Footer() {
             <ul className="space-y-2 text-xs text-text-secondary">
               <li><Link href="/updates" className="hover:text-accent transition-colors">{t('updates')}</Link></li>
               <li><Link href="/about" className="hover:text-accent transition-colors">{tc('about')}</Link></li>
-              <li><a href="mailto:chen@aaigc.online" className="hover:text-accent transition-colors">{t('email')}</a></li>
+              <li><a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-accent transition-colors">{t('email')}</a></li>
             </ul>
           </div>
         </div>

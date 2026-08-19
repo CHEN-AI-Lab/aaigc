@@ -1,3 +1,4 @@
+import { CONTACT_EMAIL } from 'shared/constants'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 type Props = { params: Promise<{ locale: string }> }
@@ -19,8 +20,8 @@ export default async function AboutPage({ params }: Props) {
       <div className="mt-16 p-6 bg-surface rounded-sm border border-border">
         <h2 className="text-sm font-semibold text-text-primary mb-3 uppercase tracking-wider">{t('contact')}</h2>
         <div className="space-y-2 text-sm">
-          <a href="mailto:chen@aaigc.online" className="block text-accent hover:underline">
-            chen@aaigc.online
+          <a href={`mailto:${CONTACT_EMAIL}`} className="block text-accent hover:underline">
+            {CONTACT_EMAIL}
           </a>
         </div>
       </div>
