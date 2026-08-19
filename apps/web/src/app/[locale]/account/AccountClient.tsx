@@ -305,9 +305,9 @@ export default function AccountClient() {
             {/* Avatar + Name */}
             <div className="flex items-center gap-4 mb-5">
               {profile?.image || session.user?.image ? (
-                <img src={profile?.image || session.user?.image || ''} alt="" className="w-14 h-14 rounded-full object-cover shrink-0 border-2 border-border" />
+                <img src={profile?.image || session.user?.image || ''} alt="" className="w-12 h-12 rounded-full object-cover shrink-0 border-2 border-border" />
               ) : (
-                <div className="w-14 h-14 rounded-full bg-accent/10 flex items-center justify-center text-accent text-lg font-semibold shrink-0 border-2 border-border">
+                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent text-base font-semibold shrink-0 border-2 border-border">
                   {(profile?.name || session.user?.name || session.user?.email || '?')[0].toUpperCase()}
                 </div>
               )}

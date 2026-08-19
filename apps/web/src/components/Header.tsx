@@ -39,10 +39,10 @@ export default function Header() {
                 <img
                   src={session.user.image}
                   alt=""
-                  className="w-8 h-8 rounded-full object-cover border border-border group-hover:border-accent/30 transition-colors"
+                  className="w-7 h-7 rounded-full object-cover border border-border group-hover:border-accent/30 transition-colors"
                 />
               ) : (
-                <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center text-accent text-sm font-semibold border border-border group-hover:border-accent/30 transition-colors">
+                <div className="w-7 h-7 rounded-full bg-accent/10 flex items-center justify-center text-accent text-xs font-semibold border border-border group-hover:border-accent/30 transition-colors">
                   {(session.user.name || session.user.email || '?')[0].toUpperCase()}
                 </div>
               )}
