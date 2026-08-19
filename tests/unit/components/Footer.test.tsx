@@ -12,7 +12,6 @@ const mockTranslations = vi.hoisted(() => {
     'footer.more': 'More...',
     'footer.updates': 'Updates',
     'footer.privacy': 'Privacy',
-    'footer.email': 'AAIGC@aaigc.online',
     'footer.copyright': 'AAIGC. All rights reserved.',
   }
   return (ns: string) => (key: string) => map[`${ns}.${key}`] || key
