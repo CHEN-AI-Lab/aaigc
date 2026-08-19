@@ -1245,9 +1245,9 @@
       "回复您的咨询"
     ],
     "dataStorage": "数据存储与安全",
-    "dataStorageDesc": "您的数据存储在新加坡的 Neon Postgres 服务器上（AWS 亚太区域）。我们采取合理的安全措施保护您的数据，包括传输加密（TLS）和静态加密。",
+    "dataStorageDesc": "您的数据存储在安全可靠的云端服务器上。我们采取合理的安全措施保护您的数据，包括传输加密（TLS）和静态加密。",
     "dataRetention": "数据保留",
-    "dataRetentionDesc": "我们保留您的账户数据直到您删除账户。使用统计数据保留12个月。您可以通过联系我们请求删除您的数据。",
+    "dataRetentionDesc": "我们保留您的账户数据直到您删除账户。删除账户后，相关数据将被彻底清除。",
     "thirdParty": "第三方服务",
     "thirdPartyDesc": "我们使用以下第三方服务：",
     "thirdPartyItems": [

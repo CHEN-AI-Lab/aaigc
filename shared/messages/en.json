@@ -1245,9 +1245,9 @@
       "Responding to your inquiries"
     ],
     "dataStorage": "Data Storage and Security",
-    "dataStorageDesc": "Your data is stored on Neon Postgres servers in Singapore (AWS Asia Pacific). We implement reasonable security measures to protect your data, including encryption in transit (TLS) and at rest.",
+    "dataStorageDesc": "Your data is stored on secure cloud servers. We take reasonable measures to protect your data, including encryption in transit (TLS) and at rest.",
     "dataRetention": "Data Retention",
-    "dataRetentionDesc": "We retain your account data until you delete your account. Usage analytics data is retained for 12 months. You can request deletion of your data by contacting us.",
+    "dataRetentionDesc": "We retain your account data until you delete your account. After deletion, your data will be fully removed.",
     "thirdParty": "Third-Party Services",
     "thirdPartyDesc": "We use the following third-party services:",
     "thirdPartyItems": [
