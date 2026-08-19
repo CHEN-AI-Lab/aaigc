@@ -443,7 +443,7 @@ export default function AccountClient() {
                 <div className="flex gap-2 pt-1">
                   <button onClick={handleSavePassword} disabled={pwdSaving}
                     className={`px-4 py-1.5 rounded-sm text-white text-xs font-medium disabled:opacity-50 ${pwdSaved ? 'bg-success hover:bg-success/90' : 'bg-accent hover:opacity-90'}`}>
-                    {pwdSaving ? '...' : pwdSaved ? '✓ ' + t('auth.passwordUpdated') : t('save')}
+                    {pwdSaving ? '...' : pwdSaved ? '✓ ' + t('passwordUpdated') : t('save')}
                   </button>
                   <button onClick={() => setShowPwdForm(false)}
                     className="px-4 py-1.5 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5">{t('cancel')}</button>
