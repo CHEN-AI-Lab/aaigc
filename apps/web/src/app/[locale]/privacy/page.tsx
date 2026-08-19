@@ -54,7 +54,7 @@ export default async function PrivacyPage({ params }: Props) {
           <p>{t('dataRetentionDesc')}</p>
         </section>
 
-        <section>
+        {/* <section>
           <h2 className="text-base font-medium text-text-primary mb-2">{t('thirdParty')}</h2>
           <p className="mb-2">{t('thirdPartyDesc')}</p>
           <ul className="list-disc pl-5 space-y-1">
@@ -62,7 +62,7 @@ export default async function PrivacyPage({ params }: Props) {
               <li key={i}>{item}</li>
             ))}
           </ul>
-        </section>
+        </section> */}
 
         <section>
           <h2 className="text-base font-medium text-text-primary mb-2">{t('cookies')}</h2>
@@ -79,7 +79,7 @@ export default async function PrivacyPage({ params }: Props) {
           </ul>
         </section>
 
-        <section>
+        {/* <section>
           <h2 className="text-base font-medium text-text-primary mb-2">{t('gdpr')}</h2>
           <p>{t('gdprDesc')}</p>
         </section>
@@ -92,7 +92,7 @@ export default async function PrivacyPage({ params }: Props) {
         <section>
           <h2 className="text-base font-medium text-text-primary mb-2">{t('pip')}</h2>
           <p>{t('pipDesc')}</p>
-        </section>
+        </section> */}
 
         <section>
           <h2 className="text-base font-medium text-text-primary mb-2">{t('contact')}</h2>
