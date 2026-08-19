@@ -28,6 +28,7 @@ export default function AccountClient() {
   const locale = useLocale()
   const { data: session, status, update } = useSession()
   const [profile, setProfile] = useState<UserProfile | null>(null)
+  const [profileLoaded, setProfileLoaded] = useState(false)
 
   // ── Name inline edit ──
   const [editingName, setEditingName] = useState(false)
@@ -69,6 +70,7 @@ export default function AccountClient() {
         setProfile(data.user)
       }
     } catch { /* ignore */ }
+    finally { setProfileLoaded(true) }
   }, [])
 
   useEffect(() => {
@@ -245,7 +247,7 @@ export default function AccountClient() {
   }
 
   // ── Loading / Not logged in ──
-  if (status === 'loading') {
+  if (status === 'loading' || (session && !profileLoaded)) {
     return (
       <div className="min-h-[calc(100vh-200px)] px-4 py-10">
         <div className="max-w-xl mx-auto animate-pulse space-y-6">
