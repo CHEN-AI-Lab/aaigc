@@ -1358,7 +1358,7 @@
     "nameUpdated": "名前を更新しました",
     "passwordUpdated": "パスワードを更新しました",
     "exportTitle": "データをエクスポート",
-    "exportDesc": "すべてのデータをダウンロード（JSON）",
+    "exportDesc": "プロフィール情報、連携アカウント、お気に入りを含みます（JSON形式）",
     "exportButton": "エクスポート",
     "exportSuccess": "エクスポート完了",
     "security": "セキュリティ",

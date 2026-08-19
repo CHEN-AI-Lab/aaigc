@@ -1354,7 +1354,7 @@
     "nameUpdated": "昵称已更新",
     "passwordUpdated": "密码已更新",
     "exportTitle": "导出数据",
-    "exportDesc": "下载所有数据（JSON格式）",
+    "exportDesc": "包含账号信息、绑定账号、收藏记录（JSON格式）",
     "exportButton": "导出",
     "exportSuccess": "导出成功",
     "security": "安全设置",

@@ -1354,7 +1354,7 @@
     "nameUpdated": "Name updated",
     "passwordUpdated": "Password updated",
     "exportTitle": "Export data",
-    "exportDesc": "Download all your data (JSON)",
+    "exportDesc": "Includes your profile info, connected accounts, and favorites (JSON format)",
     "exportButton": "Export",
     "exportSuccess": "Export started",
     "security": "Security",
