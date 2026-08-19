@@ -343,16 +343,16 @@ export default function AccountClient() {
             </div>
 
             {/* Email */}
-            <div className="flex items-center py-3 border-t border-border/50">
-              <span className="text-sm text-text-secondary/70 shrink-0 w-[60px]">{t('email')}</span>
+            <div className="flex items-center justify-between py-3 border-t border-border/50">
+              <span className="text-sm text-text-secondary/70 shrink-0">{t('email')}</span>
               <span className="text-sm text-text-primary truncate ml-4">{session.user?.email}</span>
             </div>
 
             {/* Connected Accounts */}
             {profile && profile.accounts.length > 0 && (
-              <div className="flex items-center py-3 border-t border-border/50">
-                <span className="text-sm text-text-secondary/70 shrink-0 min-w-max pr-2">{t('connectedAccounts')}</span>
-                <div className="flex gap-2 flex-wrap ml-auto">
+              <div className="flex items-center justify-between py-3 border-t border-border/50">
+                <span className="text-sm text-text-secondary/70 shrink-0">{t('connectedAccounts')}</span>
+                <div className="flex gap-2 flex-wrap justify-end">
                   {profile.accounts
                     .filter((acc) => ['google', 'github'].includes(acc.provider))
                     .sort((a, b) => (OAUTH_ORDER[a.provider] ?? 99) - (OAUTH_ORDER[b.provider] ?? 99))
