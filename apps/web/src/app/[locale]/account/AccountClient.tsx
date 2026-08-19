@@ -339,9 +339,6 @@ export default function AccountClient() {
             <div className="flex items-center py-3 border-t border-border/50">
               <span className="text-sm text-text-secondary/70 shrink-0 w-[60px]">{t('email')}</span>
               <span className="text-sm text-text-primary truncate ml-4">{session.user?.email}</span>
-              <span className="ml-auto text-[10px] text-success flex items-center gap-1 shrink-0">
-                {t('emailVerified')}
-              </span>
             </div>
           </div>
         </div>
