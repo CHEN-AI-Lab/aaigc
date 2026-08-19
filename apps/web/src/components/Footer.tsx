@@ -13,7 +13,7 @@ export default function Footer() {
   const tt = useTranslations('tools')
   const tc = useTranslations('common')
 
-  if (pathname?.includes('/tools/')) return null
+  if (pathname?.includes('/tools/') || pathname?.includes('/account')) return null
 
   const liveProducts = products.filter(p => p.status === 'live')
   const featureTools = tools.slice(0, 3)
