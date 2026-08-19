@@ -325,7 +325,7 @@ export default function AccountClient() {
                       autoFocus
                     />
                     <button onClick={handleSaveName} disabled={nameSaving}
-                      className="text-xs text-accent hover:underline disabled:opacity-50">{nameSaving ? '...' : t('save')}</button>
+                      className="text-xs text-accent hover:underline disabled:opacity-50">{t('save')}</button>
                     <button onClick={() => setEditingName(false)}
                       className="text-xs text-text-secondary/60 hover:text-text-primary">{t('cancel')}</button>
                   </div>
@@ -529,10 +529,10 @@ export default function AccountClient() {
                   className="flex-1 px-3 py-1.5 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5">{t('cancel')}</button>
                 {!deleteCodeSent ? (
                   <button onClick={handleSendDeleteCode} disabled={deleteSendingCode || !session.user?.email}
-                    className="flex-1 px-3 py-1.5 rounded-sm bg-error text-white text-xs disabled:opacity-50">{deleteSendingCode ? '...' : t('sendCode')}</button>
+                    className="flex-1 px-3 py-1.5 rounded-sm bg-error text-white text-xs disabled:opacity-50">{t('sendCode')}</button>
                 ) : (
                   <button onClick={handleDeleteAccount} disabled={deleteSaving || deleteCode.length !== 6}
-                    className="flex-1 px-3 py-1.5 rounded-sm bg-error text-white text-xs disabled:opacity-50">{deleteSaving ? '...' : t('confirm')}</button>
+                    className="flex-1 px-3 py-1.5 rounded-sm bg-error text-white text-xs disabled:opacity-50">{t('confirm')}</button>
                 )}
               </div>
             </div>
@@ -563,7 +563,7 @@ export default function AccountClient() {
                 className="flex-1 px-3 py-1.5 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5">{t('cancel')}</button>
               <button onClick={handleUnlinkConfirm} disabled={unlinking !== null}
                 className="flex-1 px-3 py-1.5 rounded-sm bg-error text-white text-xs disabled:opacity-50">
-                {unlinking ? '...' : t('confirmUnlink')}
+                {t('confirmUnlink')}
               </button>
             </div>
           </div>
