@@ -322,9 +322,9 @@ export default function LoginClient() {
   }
 
   const errorColors = {
-    error: 'bg-red-50 border border-red-200 text-red-600',
-    success: 'bg-green-50 border border-green-200 text-green-700',
-    info: 'bg-blue-50 border border-blue-200 text-blue-600',
+    error: 'bg-error/10 border border-error/25 text-error',
+    success: 'bg-success/10 border border-success/25 text-success',
+    info: 'bg-info/10 border border-info/25 text-info',
   }
 
   return (
@@ -345,8 +345,8 @@ export default function LoginClient() {
             </p>
 
           {successMsg && (
-            <div className="mb-6 p-3 rounded-xl bg-green-50 border border-green-200">
-              <p className="text-xs text-green-700 text-center">{successMsg}</p>
+            <div className="mb-6 p-3 rounded-xl bg-success/10 border border-success/25">
+              <p className="text-xs text-success text-center">{successMsg}</p>
             </div>
           )}
 

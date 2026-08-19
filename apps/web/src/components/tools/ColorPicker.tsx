@@ -71,7 +71,7 @@ export default function ColorPicker() {
         <p className="text-xs text-text-secondary mb-2">{t('presetColors')}</p>
         <div className="grid grid-cols-10 sm:grid-cols-15 gap-1.5">
           {presets.map(c => (
-            <button key={c} onClick={() => setColor(c)} className="h-8 rounded-sm border border-[rgba(127,99,21,0.1)] cursor-pointer hover:scale-110 transition-transform" style={{ backgroundColor: c }} title={c} />
+            <button key={c} onClick={() => setColor(c)} className="h-8 rounded-sm border border-border cursor-pointer hover:scale-110 transition-transform" style={{ backgroundColor: c }} title={c} />
           ))}
         </div>
       </div>

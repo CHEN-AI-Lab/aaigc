@@ -47,7 +47,7 @@ export default function DnsLookup() {
           className="px-5 py-3 bg-accent text-white text-sm rounded-lg hover:opacity-90 disabled:opacity-50">{t('search')}</button>
       </div>
       {loading && <p className="text-text-secondary text-sm">{t('loading')}</p>}
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {error && <p className="text-error text-sm">{error}</p>}
       {note && <p className="text-xs text-text-secondary mb-1">{note}</p>}
       {result && (
         <div className="bg-surface border border-border rounded-sm overflow-hidden">
@@ -59,7 +59,7 @@ export default function DnsLookup() {
               <th className="text-left p-3 text-text-secondary font-medium">{t('dnsData')}</th>
             </tr></thead>
             <tbody>{result.map((r, i) => (
-              <tr key={i} className="border-b border-[rgba(127,99,21,0.08)]">
+              <tr key={i} className="border-b border-border">
                 <td className="p-3 text-text-primary font-mono text-xs">{r.name}</td>
                 <td className="p-3 text-text-primary">{TYPE_NAMES[r.type] || r.type}</td>
                 <td className="p-3 text-text-secondary">{r.TTL}</td>

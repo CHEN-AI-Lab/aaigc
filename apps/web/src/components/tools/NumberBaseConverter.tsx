@@ -45,7 +45,7 @@ export default function NumberBaseConverter() {
         {t('baseDesc')}
       </div>
 
-      <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-5">
+      <div className="bg-surface rounded-sm border border-border p-5">
         <div className="space-y-3">
           <div>
             <label className="block text-xs text-text-secondary mb-1.5">{t('enterNumber')}</label>
@@ -69,22 +69,22 @@ export default function NumberBaseConverter() {
         </div>
       </div>
 
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {error && <p className="text-error text-sm">{error}</p>}
 
       {results.length > 0 && (
         <div>
           <h3 className="text-sm font-semibold text-text-primary mb-3">{t('result')}</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {results.map((r) => (
-              <div key={r.base} className="flex items-center gap-4 p-4 bg-surface rounded-sm border border-[rgba(127,99,21,0.1)]">
+              <div key={r.base} className="flex items-center gap-4 p-4 bg-surface rounded-sm border border-border">
                 <div className="w-24 shrink-0">
                   <span className="text-xs font-mono text-accent font-bold">{r.label}</span>
                 </div>
-                <code className="text-sm text-text-primary font-mono flex-1 break-all bg-surface px-2 py-1.5 rounded-sm border border-[rgba(127,99,21,0.08)]">{r.value}</code>
+                <code className="text-sm text-text-primary font-mono flex-1 break-all bg-surface px-2 py-1.5 rounded-sm border border-border">{r.value}</code>
                 <button onClick={() => copy(r.value, r.base)}
                   className={`text-xs px-2.5 py-1.5 rounded-sm transition-all duration-200 shrink-0 min-w-[4.5rem] text-center ${
                     copiedIdx === r.base
-                      ? 'bg-green-500 text-white'
+                      ? 'bg-success text-white'
                       : 'bg-accent text-white hover:opacity-90'
                   }`}>
                   {copiedIdx === r.base ? t('copied') : t('copy')}

@@ -29,7 +29,7 @@ export default function IpLookup() {
     <div className="mt-6 space-y-4">
       <div className="p-6 bg-surface border border-border rounded-sm">
         {loading && <p className="text-text-secondary text-center">{t('loading')}</p>}
-        {error && <p className="text-red-500 text-center">{error}</p>}
+        {error && <p className="text-error text-center">{error}</p>}
         {!loading && !error && data && (
           <div className="space-y-4">
             <div className="text-center">
@@ -37,7 +37,7 @@ export default function IpLookup() {
               <p className="text-2xl font-mono font-semibold text-text-primary">{data.ip}</p>
             </div>
             {data.country || data.isp ? (
-              <div className="border-t border-[rgba(127,99,21,0.1)] pt-4 space-y-3 text-sm">
+              <div className="border-t border-border pt-4 space-y-3 text-sm">
                 {locStr && (
                   <div className="flex">
                     <span className="w-20 text-text-secondary shrink-0">{t('ipLocation')}</span>

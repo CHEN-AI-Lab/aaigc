@@ -51,7 +51,7 @@ export default function Base64Codec() {
         <button onClick={() => setMode('decode')} className={`px-4 py-1.5 text-sm rounded-sm transition-colors ${mode === 'decode' ? 'bg-accent text-white' : 'bg-surface text-text-primary'}`}>{t('decode')}</button>
       </div>
       <textarea value={input} onChange={e => setInput(e.target.value)} placeholder={t('enterText')} className="w-full h-28 p-3 bg-surface border border-border rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {error && <p className="text-error text-sm">{error}</p>}
       <button onClick={convert} className="px-6 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90 transition-opacity">{t('convert')}</button>
       {output && (
         <div className="relative">
@@ -65,7 +65,7 @@ export default function Base64Codec() {
             onClick={handleCopy}
             className={`absolute top-2 right-6 text-xs px-2.5 py-1.5 rounded-sm transition-all duration-200 min-w-[4.5rem] text-center ${
               copied
-                ? 'bg-green-500 text-white scale-105'
+                ? 'bg-success text-white scale-105'
                 : 'bg-accent text-white hover:opacity-90'
             }`}
           >

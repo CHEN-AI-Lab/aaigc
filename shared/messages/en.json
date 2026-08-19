@@ -1281,7 +1281,21 @@
   "updates": {
     "title": "Updates",
     "subtitle": "Recent changes and new features",
-    "back": "Back to Home"
+    "back": "Back to Home",
+    "items": [
+      {
+        "date": "2026-07-17",
+        "text": "Site launch with 14 online tools"
+      },
+      {
+        "date": "2026-07-17",
+        "text": "CookMate, AIHub product pages"
+      },
+      {
+        "date": "2026-07-17",
+        "text": "Mistral warm design system"
+      }
+    ]
   },
   "auth": {
     "login": "Login",

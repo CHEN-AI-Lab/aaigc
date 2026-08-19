@@ -194,7 +194,7 @@ export default function ImageEditor() {
       {!dataUrl && (
         <div onDrop={handleDrop} onDragOver={e => { e.preventDefault(); setIsDragOver(true) }} onDragLeave={() => setIsDragOver(false)}
           onClick={() => inputRef.current?.click()}
-          className={`flex items-center justify-center w-full h-40 border-2 border-dashed rounded-sm bg-surface cursor-pointer hover:border-accent/30 transition-colors ${isDragOver ? 'border-accent bg-accent/5' : 'border-[rgba(127,99,21,0.2)]'}`}>
+          className={`flex items-center justify-center w-full h-40 border-2 border-dashed rounded-sm bg-surface cursor-pointer hover:border-accent/30 transition-colors ${isDragOver ? 'border-accent bg-accent/5' : 'border-border'}`}>
           <div className="text-center pointer-events-none">
             <div className="text-3xl mb-2">🖼️</div>
             <p className="text-sm text-text-secondary">{t('dropImage')}</p>
@@ -206,7 +206,7 @@ export default function ImageEditor() {
       {dataUrl && (
         <>
           {/* Preview */}
-          <div ref={containerRef} className="relative bg-surface border border-[rgba(127,99,21,0.1)] rounded-sm overflow-hidden cursor-crosshair select-none"
+          <div ref={containerRef} className="relative bg-surface border border-border rounded-sm overflow-hidden cursor-crosshair select-none"
             onMouseDown={handleMouseDown} onMouseMove={(e) => {
               handleMouseMove(e)
               if (imgRef.current) {
@@ -241,7 +241,7 @@ export default function ImageEditor() {
           </div>
 
           {/* Controls */}
-          <div className="bg-surface border border-[rgba(127,99,21,0.1)] rounded-sm p-4 space-y-4">
+          <div className="bg-surface border border-border rounded-sm p-4 space-y-4">
             <div className="flex gap-2">
               {(['crop', 'rotate', 'flip'] as Mode[]).map(m => (
                 <button key={m} onClick={() => setMode(m)}
@@ -288,7 +288,7 @@ export default function ImageEditor() {
             </div>
           </div>
 
-          {error && <p className="text-red-500 text-sm">{error}</p>}
+          {error && <p className="text-error text-sm">{error}</p>}
 
           {/* Lightbox */}
           {lightboxOpen && (

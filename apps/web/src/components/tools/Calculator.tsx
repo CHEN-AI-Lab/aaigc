@@ -138,29 +138,29 @@ function CalcPanel() {
       </div>
       {sci && (
         <div className="grid grid-cols-4 gap-1 mb-2">
-          {sciFuncs.map(f => sbtn(f.l, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => apply(f.f, f.l)))}
-          {sbtn('π', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => { setDisplay(String(Math.PI)); setExpr('π') })}
-          {sbtn('e', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => { setDisplay(String(Math.E)); setExpr('e') })}
-          {sbtn(rad ? 'RAD' : 'DEG', rad ? 'bg-accent text-white' : 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => setRad(!rad))}
-          {sbtn('MC', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => setMem(null))}
-          {sbtn('MR', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => { if (mem !== null) { setDisplay(String(mem)); setExpr('MR') } })}
-          {sbtn('M+', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => { setMem(parseFloat(display)); setExpr('M+') })}
-          {sbtn('M-', 'bg-surface text-text-secondary border border-[rgba(127,99,21,0.1)]', () => { setMem(parseFloat(display)); setExpr('M-') })}
+          {sciFuncs.map(f => sbtn(f.l, 'bg-surface text-text-primary border border-border hover:border-accent/30', () => apply(f.f, f.l)))}
+          {sbtn('π', 'bg-surface text-text-primary border border-border hover:border-accent/30', () => { setDisplay(String(Math.PI)); setExpr('π') })}
+          {sbtn('e', 'bg-surface text-text-primary border border-border hover:border-accent/30', () => { setDisplay(String(Math.E)); setExpr('e') })}
+          {sbtn(rad ? 'RAD' : 'DEG', rad ? 'bg-accent text-white' : 'bg-surface text-text-secondary border border-border', () => setRad(!rad))}
+          {sbtn('MC', 'bg-surface text-text-secondary border border-border', () => setMem(null))}
+          {sbtn('MR', 'bg-surface text-text-secondary border border-border', () => { if (mem !== null) { setDisplay(String(mem)); setExpr('MR') } })}
+          {sbtn('M+', 'bg-surface text-text-secondary border border-border', () => { setMem(parseFloat(display)); setExpr('M+') })}
+          {sbtn('M-', 'bg-surface text-text-secondary border border-border', () => { setMem(parseFloat(display)); setExpr('M-') })}
         </div>
       )}
       <div className="grid grid-cols-4 gap-1.5">
-        {btn('AC', 'col-span-2 bg-surface text-red-400 border border-[rgba(127,99,21,0.1)] hover:border-red-300', clear)}
-        {btn('⌫', 'bg-surface text-red-400 border border-[rgba(127,99,21,0.1)] hover:border-red-300', () => setDisplay(d => d.length > 1 ? d.slice(0, -1) : '0'))}
-        {btn('÷', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('/'))}
-        {['7','8','9'].map(n => btn(n, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input(n)))}
-        {btn('×', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('*'))}
-        {['4','5','6'].map(n => btn(n, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input(n)))}
-        {btn('−', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('-'))}
-        {['1','2','3'].map(n => btn(n, 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input(n)))}
-        {btn('+', 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 font-bold', () => handleOp('+'))}
-        {btn(sci ? t('calcScientific') : t('calcBasic'), 'bg-surface text-accent border border-[rgba(127,99,21,0.1)] hover:border-accent/30 text-xs', () => setSci(!sci))}
-        {btn('0', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input('0'))}
-        {btn('.', 'bg-surface text-text-primary border border-[rgba(127,99,21,0.1)] hover:border-accent/30', () => input('.'))}
+        {btn('AC', 'col-span-2 bg-surface text-error border border-border hover:border-error/30', clear)}
+        {btn('⌫', 'bg-surface text-error border border-border hover:border-error/30', () => setDisplay(d => d.length > 1 ? d.slice(0, -1) : '0'))}
+        {btn('÷', 'bg-surface text-accent border border-border hover:border-accent/30 font-bold', () => handleOp('/'))}
+        {['7','8','9'].map(n => btn(n, 'bg-surface text-text-primary border border-border hover:border-accent/30', () => input(n)))}
+        {btn('×', 'bg-surface text-accent border border-border hover:border-accent/30 font-bold', () => handleOp('*'))}
+        {['4','5','6'].map(n => btn(n, 'bg-surface text-text-primary border border-border hover:border-accent/30', () => input(n)))}
+        {btn('−', 'bg-surface text-accent border border-border hover:border-accent/30 font-bold', () => handleOp('-'))}
+        {['1','2','3'].map(n => btn(n, 'bg-surface text-text-primary border border-border hover:border-accent/30', () => input(n)))}
+        {btn('+', 'bg-surface text-accent border border-border hover:border-accent/30 font-bold', () => handleOp('+'))}
+        {btn(sci ? t('calcScientific') : t('calcBasic'), 'bg-surface text-accent border border-border hover:border-accent/30 text-xs', () => setSci(!sci))}
+        {btn('0', 'bg-surface text-text-primary border border-border hover:border-accent/30', () => input('0'))}
+        {btn('.', 'bg-surface text-text-primary border border-border hover:border-accent/30', () => input('.'))}
         {btn('=', 'bg-accent text-white font-bold hover:opacity-90', equals)}
       </div>
     </div>
@@ -180,7 +180,7 @@ function CurrencyCalc() {
 
   return (
     <div className="max-w-md mx-auto space-y-3">
-      <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
+      <div className="bg-surface rounded-sm border border-border p-4">
         <div className="grid grid-cols-[1fr_auto_1fr] gap-2 items-end">
           <div>
             <label className="block text-xs text-text-secondary mb-1">{t('currencyAmount')}</label>
@@ -201,7 +201,7 @@ function CurrencyCalc() {
           </div>
         </div>
         {result !== null && (
-          <div className="mt-3 pt-3 border-t border-[rgba(127,99,21,0.1)] text-center">
+          <div className="mt-3 pt-3 border-t border-border text-center">
             <p className="text-xs text-text-secondary/60">{amount} {from} ({t(`currency${from}`)}) =</p>
             <p className="text-2xl font-bold text-accent">{fmt(result)}</p>
             <p className="text-xs text-text-secondary mt-1">1 {from} ({t(`currency${from}`)}) = {fmt(1 / RATES[from] * RATES[to])} {to} ({t(`currency${to}`)})</p>
@@ -210,7 +210,7 @@ function CurrencyCalc() {
       </div>
       {/* All currencies table */}
       {result !== null && (
-        <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-3">
+        <div className="bg-surface rounded-sm border border-border p-3">
           <p className="text-xs text-text-secondary/60 mb-2">{amount} {from} ({t(`currency${from}`)}) {t('currencyAll')}</p>
           <div className="grid grid-cols-2 gap-1 text-xs">
             {Object.keys(RATES).filter(c => c !== from).map(c => (
@@ -292,7 +292,7 @@ function UnitTable({ units, title }: { units: Unit[]; title: string }) {
 
   return (
     <div className="max-w-md mx-auto space-y-3">
-      <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
+      <div className="bg-surface rounded-sm border border-border p-4">
         <div className="flex gap-2 items-end mb-3">
           <div className="flex-1">
             <label className="block text-xs text-text-secondary mb-1">{title}</label>
@@ -335,7 +335,7 @@ function TempCalc() {
 
   return (
     <div className="max-w-md mx-auto space-y-3">
-      <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
+      <div className="bg-surface rounded-sm border border-border p-4">
         <div className="flex gap-2 items-end mb-3">
           <div className="flex-1">
             <label className="block text-xs text-text-secondary mb-1">{t('calcTempValue')}</label>
@@ -407,7 +407,7 @@ function BmiCalc() {
 
   return (
     <div className="max-w-md mx-auto space-y-3">
-      <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
+      <div className="bg-surface rounded-sm border border-border p-4">
         <div className="flex gap-1 mb-3">
           <button onClick={() => setUnit('metric')} className={`px-3 py-1 text-xs rounded-sm ${unit === 'metric' ? 'bg-accent text-white' : 'bg-card text-text-secondary'}`}>{t('calcMetric')}</button>
           <button onClick={() => setUnit('imperial')} className={`px-3 py-1 text-xs rounded-sm ${unit === 'imperial' ? 'bg-accent text-white' : 'bg-card text-text-secondary'}`}>{t('calcImperial')}</button>
@@ -427,11 +427,11 @@ function BmiCalc() {
           </div>
         </div>
         <div className="flex gap-1 mt-2">
-          <button onClick={() => setGender('male')} className={`flex-1 p-2 text-xs rounded-sm ${gender === 'male' ? 'bg-accent text-white' : 'bg-card text-text-secondary border border-[rgba(127,99,21,0.1)]'}`}>{t('calcMale')}</button>
-          <button onClick={() => setGender('female')} className={`flex-1 p-2 text-xs rounded-sm ${gender === 'female' ? 'bg-accent text-white' : 'bg-card text-text-secondary border border-[rgba(127,99,21,0.1)]'}`}>{t('calcFemale')}</button>
+          <button onClick={() => setGender('male')} className={`flex-1 p-2 text-xs rounded-sm ${gender === 'male' ? 'bg-accent text-white' : 'bg-card text-text-secondary border border-border'}`}>{t('calcMale')}</button>
+          <button onClick={() => setGender('female')} className={`flex-1 p-2 text-xs rounded-sm ${gender === 'female' ? 'bg-accent text-white' : 'bg-card text-text-secondary border border-border'}`}>{t('calcFemale')}</button>
         </div>
         {bmi && (
-          <div className="mt-3 pt-3 border-t border-[rgba(127,99,21,0.1)]">
+          <div className="mt-3 pt-3 border-t border-border">
             <div className="flex items-center gap-3 mb-2">
               <div className={`w-14 h-14 rounded-full ${color} flex items-center justify-center text-white font-bold text-lg`}>{bmi.toFixed(1)}</div>
               <div>
@@ -541,7 +541,7 @@ function TaxCalc() {
       <div className="bg-surface border border-border rounded-sm p-3 text-xs text-text-secondary leading-relaxed">
         {t('chinaOnlyNote')}
       </div>
-      <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
+      <div className="bg-surface rounded-sm border border-border p-4">
         {/* Basic salary inputs */}
         <div className="grid grid-cols-2 gap-3 mb-3">
           <div>
@@ -681,20 +681,20 @@ function TaxCalc() {
               </>
             )}
             {(salaryResult || bonusResult) && (
-              <div className="flex justify-between text-sm p-2 bg-card rounded-sm border-t border-[rgba(127,99,21,0.1)]">
+              <div className="flex justify-between text-sm p-2 bg-card rounded-sm border-t border-border">
                 <span className="text-text-secondary font-medium">{t('calcTaxTotal')}</span>
                 <span className="text-accent font-bold">¥{totalTax.toFixed(0)}</span>
               </div>
             )}
-            <div className="flex justify-between text-sm p-2 bg-green-50 rounded-sm border border-green-200">
-              <span className="text-green-700">{t('calcTaxAfterTax')}</span>
-              <span className="text-green-700 font-bold">¥{afterTax.toFixed(0)}</span>
+            <div className="flex justify-between text-sm p-2 bg-success/10 rounded-sm border border-success/25">
+              <span className="text-success">{t('calcTaxAfterTax')}</span>
+              <span className="text-success font-bold">¥{afterTax.toFixed(0)}</span>
             </div>
           </div>
         )}
       </div>
       {(salaryResult || bonusResult) && (
-        <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-3">
+        <div className="bg-surface rounded-sm border border-border p-3">
           <p className="text-xs text-text-secondary/60 mb-2">{t('calcTaxBracketReference')}</p>
           <div className="space-y-0.5">
             {yearlyBrackets.map(b => (
@@ -836,7 +836,7 @@ function MortgageCalc() {
       <div className="bg-surface border border-border rounded-sm p-3 text-xs text-text-secondary leading-relaxed">
         {t('chinaOnlyNote')}
       </div>
-      <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
+      <div className="bg-surface rounded-sm border border-border p-4">
         {/* Loan type */}
         <div className="flex gap-1 mb-3 flex-wrap">
           <button onClick={() => setType('commercial')} className={btnClass(type === 'commercial')}>{t('calcMortgageCommercial')}</button>
@@ -941,7 +941,7 @@ function MortgageCalc() {
         </div>
 
         {result && result.monthly > 0 && (
-          <div className="mt-3 pt-3 border-t border-[rgba(127,99,21,0.1)] space-y-2">
+          <div className="mt-3 pt-3 border-t border-border space-y-2">
             {startDate && (
               <p className="text-xs text-text-secondary/60">{t('calcMortgageFirstPaymentDate', { date: formatDate(startDate) })}</p>
             )}
@@ -986,7 +986,7 @@ function MortgageCalc() {
           </div>
         )}
         {result && result.schedule && result.schedule.length > 0 && (
-          <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
+          <div className="bg-surface rounded-sm border border-border p-4">
             <div className="flex items-center justify-between mb-2">
               <p className="text-xs font-medium text-text-primary">{t('calcMortgageSchedule')}</p>
               <span className="text-xs text-text-secondary/60">{t('calcMortgagePeriods', { count: result.schedule.length })}</span>
@@ -1033,7 +1033,7 @@ function MortgageCalc() {
           </div>
         )}
         {type === 'mixed' && result && 'commercial' in result && 'fund' in result && (
-          <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
+          <div className="bg-surface rounded-sm border border-border p-4">
             <p className="text-xs font-medium text-text-primary mb-2">{t('calcMortgageSchedule')}</p>
             {[t('calcMortgageCommercial'), t('calcMortgageFund')].map((label, idx) => {
               const part = idx === 0 ? (result as MortgageMixed).commercial : (result as MortgageMixed).fund
@@ -1157,15 +1157,15 @@ function ChineseNumCalc() {
       <div className="bg-surface border border-border rounded-sm p-3 text-xs text-text-secondary leading-relaxed">
         {t('calcChineseNote')}
       </div>
-      <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
+      <div className="bg-surface rounded-sm border border-border p-4">
         <div className="flex gap-1 mb-3">
-          <button onClick={() => setMode('chinese')} className={`px-3 py-1.5 text-xs rounded-sm ${mode === 'chinese' ? 'bg-accent text-white' : 'bg-card text-text-secondary border border-[rgba(127,99,21,0.1)]'}`}>{t('calcChineseMode')}</button>
-          <button onClick={() => setMode('roman')} className={`px-3 py-1.5 text-xs rounded-sm ${mode === 'roman' ? 'bg-accent text-white' : 'bg-card text-text-secondary border border-[rgba(127,99,21,0.1)]'}`}>{t('calcRomanMode')}</button>
+          <button onClick={() => setMode('chinese')} className={`px-3 py-1.5 text-xs rounded-sm ${mode === 'chinese' ? 'bg-accent text-white' : 'bg-card text-text-secondary border border-border'}`}>{t('calcChineseMode')}</button>
+          <button onClick={() => setMode('roman')} className={`px-3 py-1.5 text-xs rounded-sm ${mode === 'roman' ? 'bg-accent text-white' : 'bg-card text-text-secondary border border-border'}`}>{t('calcRomanMode')}</button>
         </div>
         <label className="block text-xs text-text-secondary mb-1">{t('calcInputNumber')}</label>
         <input value={num} onChange={e => setNum(e.target.value)} placeholder="12345.67" className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary" />
         {result && (
-          <div className="mt-3 p-3 bg-card rounded-sm border border-[rgba(127,99,21,0.08)]">
+          <div className="mt-3 p-3 bg-card rounded-sm border border-border">
             <p className="text-xs text-text-secondary/60 mb-1">{t('calcResult')}</p>
             <p className="text-lg font-bold text-accent break-all">{result}</p>
           </div>
@@ -1260,7 +1260,7 @@ function TimeCalc() {
 
   return (
     <div className="max-w-md mx-auto space-y-3">
-      <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
+      <div className="bg-surface rounded-sm border border-border p-4">
         <div className="bg-surface border border-border rounded-sm p-3 text-xs space-y-1">
           <div className="flex items-center justify-between text-text-primary">
             <span className="font-medium">{t('calcConversionRules')}</span>
@@ -1332,7 +1332,7 @@ function TitleCalc() {
 
   const btnClass = (selected: boolean) =>
     `px-2.5 py-1.5 text-xs rounded-sm transition-colors ${
-      selected ? 'bg-accent text-white' : 'bg-card text-text-secondary border border-[rgba(127,99,21,0.1)] hover:border-accent/30'
+      selected ? 'bg-accent text-white' : 'bg-card text-text-secondary border border-border hover:border-accent/30'
     }`
 
   return (
@@ -1341,7 +1341,7 @@ function TitleCalc() {
           {t('calcTitleNote')}
           <p>{t('chinaOnlyNote')}</p>
         </div>
-        <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-4">
+        <div className="bg-surface rounded-sm border border-border p-4">
           <div className="flex items-center justify-between mb-3">
                     <p className="text-xs text-text-secondary/60">{t('calcTitleSelectRelation')}</p>
                   </div>
@@ -1364,7 +1364,7 @@ function TitleCalc() {
           </div>
         {selected1 && selected3 && (
           <div className={`mt-3 p-3 bg-card rounded-sm border text-center ${
-            isInvalid ? 'border-red-300' : 'border-[rgba(127,99,21,0.08)]'
+            isInvalid ? 'border-error/30' : 'border-border'
           }`}>
             <p className="text-xs text-text-secondary/60 mb-1">{selected1}的{selected3}</p>
             <p className={`text-lg font-medium ${
@@ -1373,7 +1373,7 @@ function TitleCalc() {
           </div>
         )}
       </div>
-      <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-3">
+      <div className="bg-surface rounded-sm border border-border p-3">
         <p className="text-xs text-text-secondary/60 mb-2">{t('calcTitleCommonRelations')}</p>
         <div className="grid grid-cols-3 gap-1">
           {commonRelations.map(k => {
@@ -1441,7 +1441,7 @@ function BaseCalc() {
       <div className="bg-surface border border-border rounded-sm p-3 text-xs text-text-secondary leading-relaxed">
         {t('baseDesc')}
       </div>
-      <div className="bg-surface rounded-sm border border-[rgba(127,99,21,0.1)] p-5">
+      <div className="bg-surface rounded-sm border border-border p-5">
         <div className="flex gap-2 mb-3">
           <input value={input} onChange={e => setInput(e.target.value)} placeholder="{t('calcInputNumber')}"
             className="flex-1 p-3 bg-card border border-border rounded-sm text-sm font-mono text-text-primary focus:outline-none focus:border-accent/30" />
@@ -1454,7 +1454,7 @@ function BaseCalc() {
         {results.length > 0 && (
           <div className="space-y-1.5">
             {results.map(r => (
-              <div key={r.base} className="flex items-center gap-3 p-3 bg-surface rounded-sm border border-[rgba(127,99,21,0.08)]">
+              <div key={r.base} className="flex items-center gap-3 p-3 bg-surface rounded-sm border border-border">
                 <span className="w-36 text-accent font-mono text-xs font-bold shrink-0">{r.labelFull}</span>
                 <code className="flex-1 font-mono text-sm text-text-primary break-all overflow-x-auto">{r.value}</code>
               </div>

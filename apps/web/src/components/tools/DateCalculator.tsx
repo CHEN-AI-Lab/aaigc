@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
+import { dateLocale } from 'shared/utils/locale'
 
 function pad(n: number, len: number) {
   return String(n).padStart(len, '0')
@@ -29,7 +30,7 @@ function ClampInput({ value, onChange, min, max, label: _label, field, hint }: {
         }}
         className="w-full px-2 py-2 bg-bg border border-border rounded-sm text-sm text-text-primary text-center focus:outline-none focus:border-accent/30 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
       {hintFor(field) && (
-        <div className="absolute -bottom-4 left-0 right-0 text-[10px] text-red-500 text-center whitespace-nowrap">{hintFor(field)}</div>
+        <div className="absolute -bottom-4 left-0 right-0 text-[10px] text-error text-center whitespace-nowrap">{hintFor(field)}</div>
       )}
     </div>
   )
@@ -144,7 +145,7 @@ export default function DateCalculator() {
     const n = parseInt(addDays, 10)
         if (isNaN(n)) { setError(t('enterNumberOfDays')); return }
     d.setDate(d.getDate() + n)
-    setAddResult(d.toLocaleDateString(locale === 'ja' ? 'ja-JP' : locale === 'en' ? 'en-US' : 'zh-CN'))
+    setAddResult(d.toLocaleDateString(dateLocale(locale)))
   }, [addY, addM, addD, addDays, locale, t])
 
   const todayBtn = (setters: { y: (v: string) => void; m: (v: string) => void; d: (v: string) => void; h?: (v: string) => void; min?: (v: string) => void; s?: (v: string) => void }) => {
@@ -172,7 +173,7 @@ export default function DateCalculator() {
             </label>
             <div className="flex items-center gap-1.5 flex-wrap">
               <DateSelect year={d1y} month={d1m} day={d1d} onYear={setD1y} onMonth={setD1m} onDay={setD1d} years={years} months={months} days={Array.from({ length: d1days }, (_, i) => i + 1)} />
-              <div className="w-px h-6 bg-[rgba(127,99,21,0.15)]" />
+              <div className="w-px h-6 bg-border" />
               <div className="flex gap-1">
                 <div className="w-12">
                   <ClampInput value={d1h} onChange={v => clampNow(v, 0, 23, 'd1h', 'HH', setD1h)} min={0} max={23} label="HH" field="d1h" hint={hint} />
@@ -195,7 +196,7 @@ export default function DateCalculator() {
             </label>
             <div className="flex items-center gap-1.5 flex-wrap">
               <DateSelect year={d2y} month={d2m} day={d2d} onYear={setD2y} onMonth={setD2m} onDay={setD2d} years={years} months={months} days={Array.from({ length: d2days }, (_, i) => i + 1)} />
-              <div className="w-px h-6 bg-[rgba(127,99,21,0.15)]" />
+              <div className="w-px h-6 bg-border" />
               <div className="flex gap-1">
                 <div className="w-12">
                   <ClampInput value={d2h} onChange={v => clampNow(v, 0, 23, 'd2h', 'HH', setD2h)} min={0} max={23} label="HH" field="d2h" hint={hint} />
@@ -214,7 +215,7 @@ export default function DateCalculator() {
         <button onClick={calcDiff} className="px-4 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('calculate')}</button>
 
         {diff && (
-          <div className="mt-2 p-2 bg-bg rounded-sm border border-[rgba(127,99,21,0.1)]">
+          <div className="mt-2 p-2 bg-bg rounded-sm border border-border">
             <p className="text-sm text-text-primary">{diff}</p>
           </div>
         )}
@@ -240,13 +241,13 @@ export default function DateCalculator() {
         </div>
         <button onClick={calcAdd} className="px-4 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('calculate')}</button>
         {addResult && (
-          <div className="mt-2 p-2 bg-bg rounded-sm border border-[rgba(127,99,21,0.1)]">
+          <div className="mt-2 p-2 bg-bg rounded-sm border border-border">
             <p className="text-sm text-text-primary">{t('result')}: {addResult}</p>
           </div>
         )}
       </div>
 
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {error && <p className="text-error text-sm">{error}</p>}
     </div>
   )
 }

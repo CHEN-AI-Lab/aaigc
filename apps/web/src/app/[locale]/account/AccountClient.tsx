@@ -282,7 +282,7 @@ export default function AccountClient() {
             </div>
 
             {/* Avatar + Name */}
-            <div className="flex items-center gap-5 mb-6 pb-6 border-b border-border/50">
+            <div className="flex items-center gap-5 mb-5">
               {profile?.image || session.user?.image ? (
                 <img src={profile?.image || session.user?.image || ''} alt="" className="w-14 h-14 rounded-full object-cover shrink-0 border-2 border-border" />
               ) : (
@@ -353,7 +353,7 @@ export default function AccountClient() {
                             </svg>
                           )}
                           {OAUTH_NAMES[acc.provider] || acc.provider}
-                          <span className="text-green-500 text-[10px]">✓</span>
+                          <span className="text-success text-[10px]">✓</span>
                           <button
                             onClick={(e) => { e.stopPropagation(); handleUnlinkClick(acc.provider) }}
                             disabled={unlinking === acc.provider}

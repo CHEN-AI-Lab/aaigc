@@ -145,11 +145,11 @@ export default function EmojiPicker() {
       <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 gap-1">
         {EMOJIS[cat].map((item, i) => (
           <button key={i} onClick={() => copy(item.emoji)}
-            className={`text-xl p-2 rounded-sm hover:bg-accent/10 transition-colors text-center ${copied === item.emoji ? 'bg-green-500/20' : ''}`}
+            className={`text-xl p-2 rounded-sm hover:bg-accent/10 transition-colors text-center ${copied === item.emoji ? 'bg-success/20' : ''}`}
             title={emojiName(item)}>{item.emoji}</button>
         ))}
       </div>
-      {copied && <p className="text-xs text-green-500 text-center">✓ {t('copied')}</p>}
+      {copied && <p className="text-xs text-success text-center">✓ {t('copied')}</p>}
     </div>
   )
 }

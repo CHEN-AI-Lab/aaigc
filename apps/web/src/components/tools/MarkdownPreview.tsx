@@ -255,7 +255,7 @@ export default function MarkdownPreview() {
               `}</style>
             )}
             {activeTab === 'rendered' && (
-              <div className={`prose prose-sm max-w-none [&_blockquote]:!border-l-2 [&_blockquote]:!border-accent/30 [&_blockquote]:!pl-4 [&_blockquote]:!italic [&_blockquote]:!text-text-secondary [&_blockquote_p::before]:!content-none [&_blockquote_p::after]:!content-none [&_pre]:!bg-[#f4f5f2] [&_pre]:!border [&_pre]:!border-[rgba(127,99,21,0.12)] [&_pre]:!p-0 [&_pre_code]:!bg-transparent [&_pre_code]:!p-0 [&_code]:!text-sm ${isDark ? 'markdown-preview-dark !text-[#e0e0e0]' : '!text-text-primary'}`}>
+              <div className={`prose prose-sm max-w-none [&_blockquote]:!border-l-2 [&_blockquote]:!border-accent/30 [&_blockquote]:!pl-4 [&_blockquote]:!italic [&_blockquote]:!text-text-secondary [&_blockquote_p::before]:!content-none [&_blockquote_p::after]:!content-none [&_pre]:!bg-[#f4f5f2] [&_pre]:!border [&_pre]:!border-border [&_pre]:!p-0 [&_pre_code]:!bg-transparent [&_pre_code]:!p-0 [&_code]:!text-sm ${isDark ? 'markdown-preview-dark !text-[#e0e0e0]' : '!text-text-primary'}`}>
                 <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]} components={components}>
                   {input}
                 </ReactMarkdown>

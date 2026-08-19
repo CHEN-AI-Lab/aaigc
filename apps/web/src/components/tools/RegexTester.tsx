@@ -35,7 +35,7 @@ export default function RegexTester() {
         <input value={flags} onChange={e => setFlags(e.target.value)} placeholder="gm" className="w-16 p-2 bg-surface border border-border rounded-sm text-sm font-mono text-text-primary text-center focus:outline-none focus:border-accent/30" />
       </div>
       <textarea value={text} onChange={e => setText(e.target.value)} placeholder={t('testText')} className="w-full h-36 p-3 bg-surface border border-border rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {error && <p className="text-error text-sm">{error}</p>}
       <div className="text-xs text-text-secondary">
         {t('matches')}: {matches.length}
       </div>

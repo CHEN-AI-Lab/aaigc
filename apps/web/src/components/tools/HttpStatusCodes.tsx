@@ -31,7 +31,7 @@ export default function HttpStatusCodes() {
             <th className="text-left p-3 text-text-secondary font-medium">{t('httpCategory')}</th>
           </tr></thead>
           <tbody>{filtered.map((c, i) => (
-            <tr key={i} className="border-b border-[rgba(127,99,21,0.08)] hover:bg-accent/5">
+            <tr key={i} className="border-b border-border hover:bg-accent/5">
               <td className="p-3 pl-4 text-text-primary font-mono font-semibold">{c.code}</td>
               <td className="p-3 text-text-primary">{isEn ? c.name : `${c.name} (${t(c.key)})`}</td>
               <td className="p-3 text-text-secondary text-xs">{t(c.cat)}</td>

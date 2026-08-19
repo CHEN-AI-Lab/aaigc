@@ -30,10 +30,10 @@ export default function TextDiff() {
               if (lines.length === 0) return null
               return lines.map((line, j) => {
                 if (part.added) {
-                  return <div key={`${i}-${j}`} className="flex px-3 py-0.5 bg-green-50 text-green-700"><span className="w-6 shrink-0 text-green-500">+</span><span className="break-all">{line}</span></div>
+                  return <div key={`${i}-${j}`} className="flex px-3 py-0.5 bg-success/10 text-success"><span className="w-6 shrink-0 text-success">+</span><span className="break-all">{line}</span></div>
                 }
                 if (part.removed) {
-                  return <div key={`${i}-${j}`} className="flex px-3 py-0.5 bg-red-50 text-red-700"><span className="w-6 shrink-0 text-red-500">-</span><span className="break-all">{line}</span></div>
+                  return <div key={`${i}-${j}`} className="flex px-3 py-0.5 bg-error/10 text-error"><span className="w-6 shrink-0 text-error">-</span><span className="break-all">{line}</span></div>
                 }
                 return <div key={`${i}-${j}`} className="flex px-3 py-0.5 text-text-secondary"><span className="w-6 shrink-0 opacity-50">{' '}</span><span className="break-all">{line}</span></div>
               })

@@ -186,9 +186,9 @@ export default function RegisterClient() {
   }
 
   const errorColors = {
-    error: 'bg-red-50 border border-red-200 text-red-600',
-    success: 'bg-green-50 border border-green-200 text-green-700',
-    info: 'bg-blue-50 border border-blue-200 text-blue-600',
+    error: 'bg-error/10 border border-error/25 text-error',
+    success: 'bg-success/10 border border-success/25 text-success',
+    info: 'bg-info/10 border border-info/25 text-info',
   }
 
   return (
@@ -271,7 +271,7 @@ export default function RegisterClient() {
                 {codeSent && (
                   <div>
                     {devCode && (
-                      <div className="mb-3 p-2 rounded-lg bg-blue-50 border border-blue-200 text-xs text-blue-700 text-center">
+                      <div className="mb-3 p-2 rounded-lg bg-info/10 border border-info/25 text-xs text-info text-center">
                         {t('devCodeHint').replace('{code}', devCode)}
                       </div>
                     )}
@@ -323,8 +323,8 @@ export default function RegisterClient() {
             ) : (
               /* Step 2: User info */
               <div className="flex flex-col gap-4">
-                <div className="p-3 rounded-xl bg-green-50 border border-green-200 mb-2">
-                  <p className="text-xs text-green-700 text-center">{t('emailVerified')}</p>
+                <div className="p-3 rounded-xl bg-success/10 border border-success/25 mb-2">
+                  <p className="text-xs text-success text-center">{t('emailVerified')}</p>
                 </div>
 
                 <div>

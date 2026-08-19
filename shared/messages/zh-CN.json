@@ -1281,7 +1281,21 @@
   "updates": {
     "title": "更新日志",
     "subtitle": "最近的功能更新和变更",
-    "back": "返回首页"
+    "back": "返回首页",
+    "items": [
+      {
+        "date": "2026-07-17",
+        "text": "网站上线，首批 14 个在线工具"
+      },
+      {
+        "date": "2026-07-17",
+        "text": "CookMate、AIHub 产品页面"
+      },
+      {
+        "date": "2026-07-17",
+        "text": "Mistral 暖色设计系统"
+      }
+    ]
   },
   "auth": {
     "login": "登录",

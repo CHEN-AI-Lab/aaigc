@@ -37,7 +37,7 @@ function ClampInput({ value, onChange, min, max, label: _label, field, hint }: {
         }}
         className="w-full px-2 py-2 bg-bg border border-border rounded-sm text-sm text-text-primary text-center focus:outline-none focus:border-accent/30 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
       {hintFor(field) && (
-        <div className="absolute -bottom-4 left-0 right-0 text-[10px] text-red-500 text-center whitespace-nowrap">{hintFor(field)}</div>
+        <div className="absolute -bottom-4 left-0 right-0 text-[10px] text-error text-center whitespace-nowrap">{hintFor(field)}</div>
       )}
     </div>
   )
@@ -126,7 +126,7 @@ export default function TimestampConverter() {
           </button>
         </div>
         {dateResult && (
-          <div className="mt-2 p-2 bg-bg rounded-sm border border-[rgba(127,99,21,0.1)]">
+          <div className="mt-2 p-2 bg-bg rounded-sm border border-border">
             <p className="text-sm text-text-primary font-mono">{dateResult}</p>
           </div>
         )}
@@ -162,7 +162,7 @@ export default function TimestampConverter() {
           </div>
 
           {/* Spacer */}
-          <div className="w-px h-8 bg-[rgba(127,99,21,0.15)] self-center" />
+          <div className="w-px h-8 bg-border self-center" />
 
           {/* HH */}
           <div className="w-14">
@@ -195,11 +195,11 @@ export default function TimestampConverter() {
 
         {tsResultSec && (
           <div className="mt-2 space-y-1">
-            <div className="p-2 bg-bg rounded-sm border border-[rgba(127,99,21,0.1)] flex items-center justify-between">
+            <div className="p-2 bg-bg rounded-sm border border-border flex items-center justify-between">
               <span className="text-xs text-text-secondary">{t('secondsLabel')}</span>
               <span className="text-sm text-text-primary font-mono">{tsResultSec}</span>
             </div>
-            <div className="p-2 bg-bg rounded-sm border border-[rgba(127,99,21,0.1)] flex items-center justify-between">
+            <div className="p-2 bg-bg rounded-sm border border-border flex items-center justify-between">
               <span className="text-xs text-text-secondary">{t('millisecondsLabel')}</span>
               <span className="text-sm text-text-primary font-mono">{tsResultMs}</span>
             </div>
@@ -207,7 +207,7 @@ export default function TimestampConverter() {
         )}
       </div>
 
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {error && <p className="text-error text-sm">{error}</p>}
     </div>
   )
 }

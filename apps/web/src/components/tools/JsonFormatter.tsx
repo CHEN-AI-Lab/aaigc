@@ -114,7 +114,7 @@ export default function JsonFormatter() {
           </a>
         )}
       </div>
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {error && <p className="text-error text-sm">{error}</p>}
       {output && (
         <div className="relative">
           {/* Single scrollable container: both line numbers + code scroll together */}
@@ -130,7 +130,7 @@ export default function JsonFormatter() {
               >
                 {/* Line number — cannot be selected/copied */}
                 <div
-                  className="text-right pr-3 pl-2 text-text-secondary/50 text-xs leading-[1.5] select-none border-r border-[rgba(127,99,21,0.1)] py-px"
+                  className="text-right pr-3 pl-2 text-text-secondary/50 text-xs leading-[1.5] select-none border-r border-border py-px"
                   aria-hidden="true"
                 >
                   {i + 1}
@@ -146,7 +146,7 @@ export default function JsonFormatter() {
             onClick={handleCopy}
             className={`absolute top-2 right-8 text-xs px-2.5 py-1.5 rounded-sm transition-all duration-200 min-w-[4.5rem] text-center ${
               copied
-                ? 'bg-green-500 text-white scale-105'
+                ? 'bg-success text-white scale-105'
                 : 'bg-accent text-white hover:opacity-90'
             }`}
           >

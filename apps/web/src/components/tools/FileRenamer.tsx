@@ -200,7 +200,7 @@ function renderTreeNode(node: TreeNode, depth: number, isLast: boolean): React.R
         <span className="shrink-0">{icon}</span>
         <span className="text-text-secondary/40 shrink-0">{prefix}</span>
         <span className="truncate">{name}</span>
-        {node.conflict && <span className="text-red-500 shrink-0">⚠️</span>}
+        {node.conflict && <span className="text-error shrink-0">⚠️</span>}
       </div>
       {children}
     </div>
@@ -577,7 +577,7 @@ export default function FileRenamer() {
       </div>
 
       {canDirectRename === false && (
-        <p className="text-xs text-text-secondary/60 text-center bg-surface py-2 px-4 rounded-lg border border-[rgba(127,99,21,0.1)]">
+        <p className="text-xs text-text-secondary/60 text-center bg-surface py-2 px-4 rounded-lg border border-border">
           {t('renBrowserHint')}
         </p>
       )}
@@ -792,7 +792,7 @@ export default function FileRenamer() {
                 {/* Delete rule */}
                 <button
                   onClick={() => removeRule(i)}
-                  className="ml-auto text-xs text-red-500 hover:text-red-600 shrink-0"
+                  className="ml-auto text-xs text-error hover:text-error shrink-0"
                 >✕</button>
               </div>
             )
@@ -826,7 +826,7 @@ export default function FileRenamer() {
               </div>
               <p className="text-text-secondary/60 mt-1">{t('renEx5Desc')}</p>
             </div>
-            <hr className="border-[rgba(127,99,21,0.08)]" />
+            <hr className="border-border" />
             <div>
               <p className="font-medium text-text-primary mb-1">{t('renEx6Title')}</p>
               <div className="grid grid-cols-[1fr_auto_1fr] gap-x-3 gap-y-0.5 text-text-secondary">
@@ -839,7 +839,7 @@ export default function FileRenamer() {
               </div>
               <p className="text-text-secondary/60 mt-1">{t('renEx6Desc')}</p>
             </div>
-            <hr className="border-[rgba(127,99,21,0.08)]" />
+            <hr className="border-border" />
             <div>
               <p className="font-medium text-text-primary mb-1">{t('renEx3Title')}</p>
               <div className="grid grid-cols-[1fr_auto_1fr] gap-x-3 gap-y-0.5 text-text-secondary">
@@ -859,7 +859,7 @@ export default function FileRenamer() {
   <span className="pl-[3em] block">{t('renEx3Desc3')}</span>
 </p>
             </div>
-            <hr className="border-[rgba(127,99,21,0.08)]" />
+            <hr className="border-border" />
             <div>
               <p className="font-medium text-text-primary mb-1">{t('renEx1Title')}</p>
               <div className="grid grid-cols-[1fr_auto_1fr] gap-x-3 gap-y-0.5 text-text-secondary">
@@ -872,7 +872,7 @@ export default function FileRenamer() {
               </div>
               <p className="text-text-secondary/60 mt-1">{t('renEx1Desc')}</p>
             </div>
-            <hr className="border-[rgba(127,99,21,0.08)]" />
+            <hr className="border-border" />
             <div>
               <p className="font-medium text-text-primary mb-1">{t('renEx2Title')}</p>
               <div className="grid grid-cols-[1fr_auto_1fr] gap-x-3 gap-y-0.5 text-text-secondary">
@@ -885,7 +885,7 @@ export default function FileRenamer() {
               </div>
               <p className="text-text-secondary/60 mt-1">{t('renEx2Desc')}</p>
             </div>
-            <hr className="border-[rgba(127,99,21,0.08)]" />
+            <hr className="border-border" />
             <div>
               <p className="font-medium text-text-primary mb-1">{t('renEx4Title')}</p>
               <div className="grid grid-cols-[1fr_auto_1fr] gap-x-3 gap-y-0.5 text-text-secondary">
@@ -916,7 +916,7 @@ export default function FileRenamer() {
 
       {/* Error / info message */}
       {(error || successMsg) && (
-        <p className={`text-sm text-center ${successMsg ? 'text-green-500' : 'text-red-500'}`}>
+        <p className={`text-sm text-center ${successMsg ? 'text-success' : 'text-error'}`}>
           {successMsg || error}
         </p>
       )}

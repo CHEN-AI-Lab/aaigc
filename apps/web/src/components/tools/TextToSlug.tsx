@@ -39,7 +39,7 @@ export default function TextToSlug() {
           <button onClick={handleCopy}
             className={`text-xs px-2 py-1 rounded-sm transition-all duration-200 min-w-[4.5rem] text-center absolute top-2 right-6 ${
               copied
-                ? 'bg-green-500 text-white scale-105'
+                ? 'bg-success text-white scale-105'
                 : 'bg-accent text-white hover:opacity-90'
             }`}>
             {copied ? t('copied') : t('copy')}

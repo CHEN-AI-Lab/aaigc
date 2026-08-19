@@ -25,7 +25,7 @@ export default function ProductCard({ product }: { product: Product }) {
       <h3 className="card-title text-text-primary mb-2 text-center">{name}</h3>
       {desc && <p className="text-sm text-text-secondary mb-4 line-clamp-2 text-center leading-relaxed">{desc}</p>}
       <span className={`inline-block text-xs px-3 py-1 rounded-sm font-medium ${
-        isLive ? 'bg-green-500 text-white' : 'bg-surface text-text-secondary'
+        isLive ? 'bg-success text-white' : 'bg-surface text-text-secondary'
       }`}>
         {isLive ? tc('live') : tc('comingSoon')}
       </span>

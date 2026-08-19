@@ -333,7 +333,7 @@ export default function ImageConverter() {
               className={`flex items-center justify-center w-full border-2 border-dashed rounded-sm bg-surface cursor-pointer hover:border-accent/30 transition-colors ${
                 isDragOver
                   ? 'border-accent bg-accent/5'
-                  : 'border-[rgba(127,99,21,0.2)]'
+                  : 'border-border'
               } ${inputs.length === 0 ? 'h-40' : 'h-16'}`}
             >
               <div className="text-center pointer-events-none flex items-center gap-2">
@@ -366,7 +366,7 @@ export default function ImageConverter() {
           {toast && (
             <div
               key={toast.key}
-              className="absolute -top-3 left-1/2 -translate-x-1/2 z-10 text-sm text-red-500 bg-red-50 border border-red-200 rounded-sm px-4 py-2 shadow-md whitespace-nowrap"
+              className="absolute -top-3 left-1/2 -translate-x-1/2 z-10 text-sm text-error bg-error/10 border border-error/25 rounded-sm px-4 py-2 shadow-md whitespace-nowrap"
             >
               {toast.message}
             </div>
@@ -375,7 +375,7 @@ export default function ImageConverter() {
             {(collapsed ? inputs.slice(0, 4) : inputs).map((input) => (
               <div
                 key={input.id}
-                className="bg-surface border border-[rgba(127,99,21,0.1)] rounded-sm p-2 relative"
+                className="bg-surface border border-border rounded-sm p-2 relative"
               >
                 <button
                   onClick={() => {
@@ -387,7 +387,7 @@ export default function ImageConverter() {
                 >
                   ✕
                 </button>
-                <div className="w-full h-24 bg-[rgba(127,99,21,0.05)] rounded-sm mb-2 flex items-center justify-center overflow-hidden">
+                <div className="w-full h-24 bg-surface rounded-sm mb-2 flex items-center justify-center overflow-hidden">
                   <img
                     src={input.dataUrl}
                     alt={input.file.name}
@@ -405,7 +405,7 @@ export default function ImageConverter() {
       )}
 
       {inputs.length > 0 && (
-        <div className="bg-surface border border-[rgba(127,99,21,0.1)] rounded-sm p-4 space-y-4">
+        <div className="bg-surface border border-border rounded-sm p-4 space-y-4">
           {/* Format target */}
           <div>
             <label className="text-sm text-text-secondary block mb-2">{t('convertTo')}</label>
@@ -565,11 +565,11 @@ export default function ImageConverter() {
             {converting && outputs.length === 0 && (
               <>
                 {inputs.map((_, i) => (
-                  <div key={i} className="bg-surface border border-[rgba(127,99,21,0.1)] rounded-sm p-2 animate-pulse">
-                    <div className="w-full h-32 bg-[rgba(127,99,21,0.08)] rounded-sm mb-2" />
-                    <div className="h-3 bg-[rgba(127,99,21,0.08)] rounded w-3/4 mb-1" />
-                    <div className="h-3 bg-[rgba(127,99,21,0.08)] rounded w-1/2 mb-2" />
-                    <div className="h-6 bg-[rgba(127,99,21,0.08)] rounded" />
+                  <div key={i} className="bg-surface border border-border rounded-sm p-2 animate-pulse">
+                    <div className="w-full h-32 bg-surface rounded-sm mb-2" />
+                    <div className="h-3 bg-surface rounded w-3/4 mb-1" />
+                    <div className="h-3 bg-surface rounded w-1/2 mb-2" />
+                    <div className="h-6 bg-surface rounded" />
                   </div>
                 ))}
               </>
@@ -577,9 +577,9 @@ export default function ImageConverter() {
             {outputs.map((out, i) => (
               <div
                 key={i}
-                className="bg-surface border border-[rgba(127,99,21,0.1)] rounded-sm p-2"
+                className="bg-surface border border-border rounded-sm p-2"
               >
-                <div className="w-full h-32 bg-[rgba(127,99,21,0.05)] rounded-sm mb-2 flex items-center justify-center overflow-hidden">
+                <div className="w-full h-32 bg-surface rounded-sm mb-2 flex items-center justify-center overflow-hidden">
                   <img
                     src={out.url}
                     alt={out.name}

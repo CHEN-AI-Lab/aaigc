@@ -1281,7 +1281,21 @@
   "updates": {
     "title": "更新情報",
     "subtitle": "最近の変更と新機能",
-    "back": "ホームに戻る"
+    "back": "ホームに戻る",
+    "items": [
+      {
+        "date": "2026-07-17",
+        "text": "サイト公開、最初の14のオンラインツール"
+      },
+      {
+        "date": "2026-07-17",
+        "text": "CookMate、AIHub の製品ページ"
+      },
+      {
+        "date": "2026-07-17",
+        "text": "Mistral 暖色デザインシステム"
+      }
+    ]
   },
   "auth": {
     "agreeTerms": "I agree to the",

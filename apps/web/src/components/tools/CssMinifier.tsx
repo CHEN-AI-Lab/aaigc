@@ -57,15 +57,15 @@ export default function CssMinifier() {
       </div>
       <textarea value={input} onChange={e => setInput(e.target.value)} placeholder="body { margin: 0; color: #333; }" className="w-full h-32 p-3 bg-surface border border-border rounded-sm text-sm font-mono text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
       <button onClick={convert} className="px-6 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{mode === 'minify' ? t('minify') : t('format')}</button>
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {error && <p className="text-error text-sm">{error}</p>}
       {output && (
         <div className="relative">
           <textarea readOnly value={output} className="w-full h-32 p-3 bg-surface border border-border rounded-sm text-sm font-mono text-text-primary resize-none" />
-          {saved > 0 && <p className="text-xs text-green-600 mt-1">{t('saved', { bytes: saved })}</p>}
+          {saved > 0 && <p className="text-xs text-success mt-1">{t('saved', { bytes: saved })}</p>}
           <button onClick={handleCopy}
             className={`text-xs px-2 py-1 rounded-sm transition-all duration-200 min-w-[4.5rem] text-center absolute top-2 right-6 ${
               copied
-                ? 'bg-green-500 text-white scale-105'
+                ? 'bg-success text-white scale-105'
                 : 'bg-accent text-white hover:opacity-90'
             }`}>
             {copied ? t('copied') : t('copy')}

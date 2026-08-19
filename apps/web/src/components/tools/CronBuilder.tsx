@@ -60,10 +60,10 @@ export default function CronBuilder() {
       </div>
 
       {dangerous && (
-        <div className="p-3 bg-red-50 border border-red-200 rounded-sm text-xs text-red-700 leading-relaxed">
+        <div className="p-3 bg-error/10 border border-error/25 rounded-sm text-xs text-error leading-relaxed">
           <p className="font-semibold mb-1">⚠️ {t('cronWarning')}</p>
           <button onClick={() => { setMinute('0'); setHour('0') }}
-            className="mt-1 px-3 py-1 bg-red-500 text-white rounded-sm hover:opacity-90">{t('cronFix')}</button>
+            className="mt-1 px-3 py-1 bg-error text-white rounded-sm hover:opacity-90">{t('cronFix')}</button>
         </div>
       )}
 

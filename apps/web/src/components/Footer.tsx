@@ -19,7 +19,7 @@ export default function Footer() {
   const featureTools = tools.slice(0, 3)
 
   return (
-    <footer className="border-t border-[rgba(127,99,21,0.1)] bg-bg mt-auto">
+    <footer className="border-t border-border bg-bg mt-auto">
       <div className="max-w-6xl mx-auto px-6 py-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div>
@@ -68,7 +68,7 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <div className="border-t border-[rgba(127,99,21,0.1)] mt-8 pt-8 flex items-center justify-center gap-6 text-xs text-text-secondary">
+        <div className="border-t border-border mt-8 pt-8 flex items-center justify-center gap-6 text-xs text-text-secondary">
           <span>&copy; {new Date().getFullYear()} {t('copyright')}</span>
           <Link href="/privacy" className="hover:text-accent transition-colors">{t('privacy')}</Link>
           <Link href="/terms" className="hover:text-accent transition-colors">{t('terms')}</Link>

@@ -208,7 +208,7 @@ export default function Timer() {
       <div className="relative flex items-center justify-center min-h-[16rem]">
         {isCountdown && (
           <svg className="absolute w-64 h-64" viewBox="0 0 220 220" style={{ zIndex: 0 }}>
-            <circle cx="110" cy="110" r="90" fill="none" stroke="rgba(127,99,21,0.1)" strokeWidth="6" />
+            <circle cx="110" cy="110" r="90" fill="none" stroke="var(--color-border)" strokeWidth="6" />
             <circle
               cx="110" cy="110" r="90" fill="none" stroke="var(--color-accent, #c89b3c)" strokeWidth="6"
               strokeDasharray={circumference}
@@ -291,7 +291,7 @@ export default function Timer() {
         ) : !running ? (
           <button
             onClick={handleResume}
-            className="px-8 py-3 bg-green-500 text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity"
+            className="px-8 py-3 bg-success text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity"
           >{t('timerResume')}</button>
         ) : (
           <button

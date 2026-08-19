@@ -32,7 +32,7 @@ export default function ImageToBase64() {
 
   return (
     <div className="mt-6 space-y-4">
-      <label className="flex items-center justify-center w-full h-32 border-2 border-dashed border-[rgba(127,99,21,0.2)] rounded-sm bg-surface cursor-pointer hover:border-accent/30 transition-colors">
+      <label className="flex items-center justify-center w-full h-32 border-2 border-dashed border-border rounded-sm bg-surface cursor-pointer hover:border-accent/30 transition-colors">
         <div className="text-center">
           <div className="text-3xl mb-2">📁</div>
           <p className="text-sm text-text-secondary">{t('dropImage')}</p>
@@ -40,7 +40,7 @@ export default function ImageToBase64() {
         </div>
         <input type="file" accept="image/*" onChange={handleFile} className="hidden" />
       </label>
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {error && <p className="text-error text-sm">{error}</p>}
       {base64 && (
         <div className="space-y-3">
           <div className="flex items-center gap-4">
@@ -52,7 +52,7 @@ export default function ImageToBase64() {
             <button onClick={handleCopy}
               className={`text-xs px-2 py-1 rounded-sm transition-all duration-200 min-w-[4.5rem] text-center absolute top-2 right-6 ${
                 copied
-                  ? 'bg-green-500 text-white scale-105'
+                  ? 'bg-success text-white scale-105'
                   : 'bg-accent text-white hover:opacity-90'
               }`}>
               {copied ? t('copied') : t('copy')}

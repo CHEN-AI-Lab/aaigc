@@ -174,7 +174,7 @@ export default function PdfTool() {
                 <span className="text-text-primary truncate">{f.name}</span>
                 <span className="text-text-secondary/50 text-xs shrink-0">({f.pageCount} {t('pdfPages')})</span>
               </div>
-              <button onClick={() => removeFile(f.id)} className="text-xs text-red-500 hover:text-red-600 shrink-0 ml-2">{t('pdfRemove')}</button>
+              <button onClick={() => removeFile(f.id)} className="text-xs text-error hover:text-error shrink-0 ml-2">{t('pdfRemove')}</button>
             </div>
           ))}
           {mode === 'merge' && files.length > 0 && (
@@ -184,7 +184,7 @@ export default function PdfTool() {
       )}
 
       {/* Error */}
-      {error && <p className="text-sm text-red-500 text-center">{error}</p>}
+      {error && <p className="text-sm text-error text-center">{error}</p>}
 
       {/* Action buttons */}
       <div className="flex justify-center gap-3">

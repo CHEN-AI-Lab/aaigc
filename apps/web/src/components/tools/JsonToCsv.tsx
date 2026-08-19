@@ -115,14 +115,14 @@ export default function JsonToCsv() {
         <button onClick={convert} className="px-6 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('convert')}</button>
         {output && <button onClick={handleDownload} className="px-6 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('downloadCsv')}</button>}
       </div>
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {error && <p className="text-error text-sm">{error}</p>}
       {output && (
         <div className="relative">
           <textarea readOnly value={output} className="w-full h-96 p-3 bg-surface border border-border rounded-sm text-sm font-mono text-text-primary resize-none" />
           <button onClick={handleCopy}
             className={`text-xs px-2 py-1 rounded-sm transition-all duration-200 min-w-[4.5rem] text-center absolute top-2 right-6 ${
               copied
-                ? 'bg-green-500 text-white scale-105'
+                ? 'bg-success text-white scale-105'
                 : 'bg-accent text-white hover:opacity-90'
             }`}>
             {copied ? t('copied') : t('copy')}
