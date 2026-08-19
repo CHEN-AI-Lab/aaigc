@@ -418,36 +418,45 @@ export default function AccountClient() {
 
             {/* Inline password form */}
             {showPwdForm && (
-              <div className="mt-3 p-3 bg-surface rounded-sm border border-border space-y-2.5">
+              <div className="mt-2 space-y-3">
                 {profile?.hasPassword && (
-                  <PasswordInput
-                    placeholder={t('currentPassword')}
-                    value={pwdOld}
-                    onChange={setPwdOld}
-                    className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30"
-                  />
+                  <div>
+                    <label className="text-xs text-text-secondary">{t('currentPassword')}</label>
+                    <PasswordInput
+                      placeholder={t('currentPassword')}
+                      value={pwdOld}
+                      onChange={setPwdOld}
+                      className="w-full border border-border rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-accent mt-1"
+                    />
+                  </div>
                 )}
-                <PasswordInput
-                  placeholder={t('passwordHint')}
-                  value={pwdNew}
-                  onChange={setPwdNew}
-                  className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30"
-                />
-                <PasswordInput
-                  placeholder={t('confirmPassword')}
-                  value={pwdConfirm}
-                  onChange={setPwdConfirm}
-                  className="w-full p-2 bg-card border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30"
-                />
+                <div>
+                  <label className="text-xs text-text-secondary">{t('newPassword')}</label>
+                  <PasswordInput
+                    placeholder={t('passwordHint')}
+                    value={pwdNew}
+                    onChange={setPwdNew}
+                    className="w-full border border-border rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-accent mt-1"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-text-secondary">{t('confirmPassword')}</label>
+                  <PasswordInput
+                    placeholder="再次输入新密码"
+                    value={pwdConfirm}
+                    onChange={setPwdConfirm}
+                    className="w-full border border-border rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-accent mt-1"
+                  />
+                </div>
                 {pwdError && <p className="text-xs text-error">{pwdError}</p>}
                 {pwdMsg && <p className="text-xs text-success">{pwdMsg}</p>}
-                <div className="flex gap-2 pt-1">
-                  <button onClick={handleSavePassword} disabled={pwdSaving}
-                    className="px-4 py-1.5 rounded-sm bg-accent text-white text-xs font-medium hover:opacity-90 disabled:opacity-50">
-                    {pwdSaving ? '...' : t('save')}
+                <div className="flex items-center gap-2">
+                  <button onClick={handleSavePassword} disabled={pwdSaving || !pwdNew || !pwdConfirm}
+                    className="bg-accent text-white px-4 py-2 rounded-xl text-sm font-medium hover:opacity-90 disabled:bg-gray-300 transition-all whitespace-nowrap">
+                    {pwdSaving ? '...' : profile?.hasPassword ? t('changePassword') : t('setPassword')}
                   </button>
                   <button onClick={() => setShowPwdForm(false)}
-                    className="px-4 py-1.5 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5">{t('cancel')}</button>
+                    className="text-sm text-text-secondary/60 hover:text-text-secondary whitespace-nowrap">{t('cancel')}</button>
                 </div>
               </div>
             )}
