@@ -439,7 +439,7 @@ export default function AccountClient() {
                 <div className="flex items-center gap-2">
                   <button onClick={handleSavePassword} disabled={pwdSaving || !pwdNew || !pwdConfirm}
                     className="bg-accent text-white px-4 py-2 rounded-xl text-sm font-medium hover:opacity-90 disabled:bg-gray-300 transition-all whitespace-nowrap">
-                    {pwdSaving ? '...' : profile?.hasPassword ? t('changePassword') : t('setPassword')}
+                    {profile?.hasPassword ? t('changePassword') : t('setPassword')}
                   </button>
                   <button onClick={() => setShowPwdForm(false)}
                     className="text-sm text-text-secondary/60 hover:text-text-secondary whitespace-nowrap">{t('cancel')}</button>
