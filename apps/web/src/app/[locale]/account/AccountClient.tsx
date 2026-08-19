@@ -276,17 +276,29 @@ export default function AccountClient() {
         <div className="bg-card rounded-sm border border-border overflow-hidden">
           <div className="h-1 bg-gradient-to-r from-accent to-accent-light" />
           <div className="p-5 sm:p-6">
-            <div className="flex items-center gap-2 mb-5">
-              <span className="text-sm">👤</span>
-              <h2 className="text-sm font-semibold text-text-primary">{t('accountSettings')}</h2>
+            {/* Title + Logout */}
+            <div className="flex items-center justify-between mb-5">
+              <div className="flex items-center gap-2">
+                <span className="text-sm">👤</span>
+                <h2 className="text-sm font-semibold text-text-primary">{t('accountSettings')}</h2>
+              </div>
+              <button onClick={handleLogout}
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-sm text-xs text-text-secondary/70 hover:text-error hover:bg-error/5 transition-colors">
+                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                  <polyline points="16 17 21 12 16 7" />
+                  <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+                {t('logout')}
+              </button>
             </div>
 
             {/* Avatar + Name */}
-            <div className="flex items-center gap-5 mb-5">
+            <div className="flex items-center gap-4 mb-5">
               {profile?.image || session.user?.image ? (
-                <img src={profile?.image || session.user?.image || ''} alt="" className="w-14 h-14 rounded-full object-cover shrink-0 border-2 border-border" />
+                <img src={profile?.image || session.user?.image || ''} alt="" className="w-12 h-12 rounded-full object-cover shrink-0 border-2 border-border" />
               ) : (
-                <div className="w-14 h-14 rounded-full bg-accent/10 flex items-center justify-center text-accent text-lg font-semibold shrink-0 border-2 border-border">
+                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent text-base font-semibold shrink-0 border-2 border-border">
                   {(profile?.name || session.user?.name || session.user?.email || '?')[0].toUpperCase()}
                 </div>
               )}
@@ -310,30 +322,55 @@ export default function AccountClient() {
                   </div>
                 ) : (
                   <div className="flex items-center gap-2">
-                    <span className="text-lg font-medium text-text-primary">{profile?.name || session.user?.name || t('noName')}</span>
+                    <span className="text-base font-medium text-text-primary">{profile?.name || session.user?.name || t('noName')}</span>
                     <button onClick={() => { setNameInput(profile?.name || session.user?.name || ''); setEditingName(true) }}
                       className="text-xs text-accent hover:underline">{t('editName')}</button>
                   </div>
                 )}
-                <p className="text-xs text-text-secondary/60 mt-1.5">
+                <p className="text-xs text-text-secondary/60 mt-1">
                   {(profile?.role || session.user?.role || 'user') === 'admin' ? `👑 ${t('admin')}` : `👤 ${t('user')}`}{profile?.createdAt && ` · ${t('memberSince')} ${formatDate(profile.createdAt)}`}
                 </p>
               </div>
             </div>
 
+            {/* Email */}
+            <div className="flex items-center py-3 border-t border-border/50">
+              <span className="text-sm text-text-secondary/70 shrink-0 w-[60px]">{t('email')}</span>
+              <span className="text-sm text-text-primary truncate ml-4">{session.user?.email}</span>
+              <span className="ml-auto text-[10px] text-success flex items-center gap-1 shrink-0">
+                {t('emailVerified')}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Card 2: Security ── */}
+        <div className="bg-card rounded-sm border border-border overflow-hidden">
+          <div className="h-1 bg-gradient-to-r from-amber-400 to-amber-200" />
+          <div className="p-5 sm:p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-sm">🔒</span>
+              <h2 className="text-sm font-semibold text-text-primary">{t('security')}</h2>
+            </div>
+
             <div className="space-y-0">
+              {/* Password */}
               <div className="flex items-center justify-between py-3 border-t border-border/50">
-                <span className="text-sm text-text-secondary/70">{t('email')}</span>
-                <span className="text-sm text-text-primary truncate ml-4">{session.user?.email}</span>
+                <span className="text-sm text-text-secondary/70 shrink-0 w-[60px]">{t('passwordLogin')}</span>
+                <span className="text-right flex items-center gap-3 shrink-0 min-w-0">
+                  <span className="text-sm text-text-secondary/60">{profile?.hasPassword ? '••••••••' : t('noPassword')}</span>
+                  <button onClick={() => { setShowPwdForm(!showPwdForm); setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdError('') }}
+                    className="text-sm text-accent hover:underline shrink-0">
+                    {profile?.hasPassword ? t('changePassword') : t('setPassword')}
+                  </button>
+                </span>
               </div>
 
+              {/* Connected Accounts */}
               {profile && profile.accounts.length > 0 && (
-                <div className="py-3 border-t border-border/50">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs text-text-secondary/70">{t('connectedAccounts')}</span>
-                    <span className="text-xs text-text-secondary/60">{profile.accounts.length} {t('connected')}</span>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
+                <div className="flex items-center py-3 border-t border-border/50">
+                  <span className="text-sm text-text-secondary/70 shrink-0 w-[60px]">{t('connectedAccounts')}</span>
+                  <div className="flex gap-2 flex-wrap ml-auto">
                     {profile.accounts
                       .filter((acc) => ['google', 'github'].includes(acc.provider))
                       .sort((a, b) => (OAUTH_ORDER[a.provider] ?? 99) - (OAUTH_ORDER[b.provider] ?? 99))
@@ -372,30 +409,6 @@ export default function AccountClient() {
                 </div>
               )}
             </div>
-          </div>
-        </div>
-
-        {/* ── Card 2: Security ── */}
-        <div className="bg-card rounded-sm border border-border overflow-hidden">
-          <div className="h-1 bg-gradient-to-r from-amber-400 to-amber-200" />
-          <div className="p-5 sm:p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="text-sm">🔒</span>
-              <h2 className="text-sm font-semibold text-text-primary">{t('security')}</h2>
-            </div>
-
-            <div className="space-y-0">
-              <div className="flex items-center justify-between py-3 border-t border-border/50">
-                <span className="text-sm text-text-secondary/70">{t('passwordLogin')}</span>
-                <span className="text-sm text-text-primary flex items-center gap-3">
-                  <span className="text-text-secondary/60 text-sm">{profile?.hasPassword ? '••••••••' : t('noPassword')}</span>
-                  <button onClick={() => { setShowPwdForm(!showPwdForm); setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdError('') }}
-                    className="text-sm text-accent hover:underline">
-                    {profile?.hasPassword ? t('changePassword') : t('setPassword')}
-                  </button>
-                </span>
-              </div>
-            </div>
 
             {/* Inline password form */}
             {showPwdForm && (
@@ -432,32 +445,25 @@ export default function AccountClient() {
 
             {/* Export */}
             <div className="flex items-center justify-between py-3 border-t border-border/50">
-              <span className="text-sm text-text-secondary/70">{t('exportTitle')}</span>
+              <div className="min-w-0">
+                <span className="text-sm text-text-secondary/70">{t('exportTitle')}</span>
+                <p className="text-xs text-text-secondary/50 mt-0.5">{t('exportDesc')}</p>
+              </div>
               <button onClick={handleExport}
-                className="px-4 py-2 rounded-sm bg-accent text-white text-sm font-medium hover:opacity-90 transition-opacity shrink-0">
+                className="ml-4 px-4 py-2 rounded-sm bg-accent text-white text-sm font-medium hover:opacity-90 transition-opacity shrink-0">
                 {t('exportButton')}
               </button>
             </div>
 
             {/* Delete */}
             <div className="flex items-center justify-between py-3 border-t border-border/50">
-              <span className="text-sm text-text-secondary/70">{t('deleteAccount')}</span>
+              <div className="min-w-0">
+                <span className="text-sm text-text-secondary/70">{t('deleteAccount')}</span>
+                <p className="text-xs text-text-secondary/50 mt-0.5">{t('deleteConfirm')}</p>
+              </div>
               <button onClick={() => { setShowDeleteModal(true); setDeleteCode(''); setDeleteCodeSent(false); setDeleteError('') }}
-                className="px-4 py-2 rounded-sm border border-error/30 text-sm text-error hover:bg-error/5 transition-colors shrink-0">
+                className="ml-4 px-4 py-2 rounded-sm border border-error/30 text-sm text-error hover:bg-error/5 transition-colors shrink-0">
                 {t('deleteAccount')}
-              </button>
-            </div>
-
-            {/* Logout */}
-            <div className="pt-3 border-t border-border/50">
-              <button onClick={handleLogout}
-                className="flex items-center gap-2 px-4 py-2 rounded-sm text-sm text-text-secondary/70 hover:text-error transition-colors">
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                  <polyline points="16 17 21 12 16 7" />
-                  <line x1="21" y1="12" x2="9" y2="12" />
-                </svg>
-                {t('logout')}
               </button>
             </div>
           </div>
