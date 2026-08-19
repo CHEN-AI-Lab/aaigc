@@ -282,11 +282,11 @@ export default function AccountClient() {
             </div>
 
             {/* Avatar + Name */}
-            <div className="flex items-center gap-4 mb-5">
+            <div className="flex items-center gap-5 mb-6 pb-6 border-b border-border/50">
               {profile?.image || session.user?.image ? (
-                <img src={profile?.image || session.user?.image || ''} alt="" className="w-16 h-16 rounded-full object-cover shrink-0 border-2 border-border" />
+                <img src={profile?.image || session.user?.image || ''} alt="" className="w-14 h-14 rounded-full object-cover shrink-0 border-2 border-border" />
               ) : (
-                <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center text-accent text-xl font-semibold shrink-0 border-2 border-border">
+                <div className="w-14 h-14 rounded-full bg-accent/10 flex items-center justify-center text-accent text-lg font-semibold shrink-0 border-2 border-border">
                   {(profile?.name || session.user?.name || session.user?.email || '?')[0].toUpperCase()}
                 </div>
               )}
@@ -299,53 +299,48 @@ export default function AccountClient() {
                       value={nameInput}
                       onChange={e => setNameInput(e.target.value)}
                       onKeyDown={e => { if (e.key === 'Enter') handleSaveName(); if (e.key === 'Escape') setEditingName(false) }}
-                      className="flex-1 p-1.5 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30"
+                      className="flex-1 p-2 bg-surface border border-border rounded-sm text-sm text-text-primary focus:outline-none focus:border-accent/30"
                       maxLength={30}
                       autoFocus
                     />
                     <button onClick={handleSaveName} disabled={nameSaving}
                       className="text-xs text-accent hover:underline disabled:opacity-50">{nameSaving ? '...' : t('save')}</button>
                     <button onClick={() => setEditingName(false)}
-                      className="text-xs text-text-secondary/50 hover:text-text-secondary">{t('cancel')}</button>
+                      className="text-xs text-text-secondary/60 hover:text-text-primary">{t('cancel')}</button>
                   </div>
                 ) : (
                   <div className="flex items-center gap-2">
-                    <span className="text-base font-medium text-text-primary">{profile?.name || session.user?.name || t('noName')}</span>
+                    <span className="text-lg font-medium text-text-primary">{profile?.name || session.user?.name || t('noName')}</span>
                     <button onClick={() => { setNameInput(profile?.name || session.user?.name || ''); setEditingName(true) }}
-                      className="text-xs text-text-secondary/50 hover:text-accent transition-colors">✏️ {t('editName')}</button>
+                      className="text-xs text-accent hover:underline">{t('editName')}</button>
                   </div>
                 )}
-                <p className="text-xs text-text-secondary/50 mt-0.5">
-                  {(profile?.role || session.user?.role || 'user') === 'admin' ? `👑 ${t('admin')}` : `👤 ${t('user')}`}
-                  {profile?.createdAt && ` · ${t('memberSince')} ${formatDate(profile.createdAt)}`}
+                <p className="text-xs text-text-secondary/60 mt-1.5">
+                  {(profile?.role || session.user?.role || 'user') === 'admin' ? `👑 ${t('admin')}` : `👤 ${t('user')}`}{profile?.createdAt && ` · ${t('memberSince')} ${formatDate(profile.createdAt)}`}
                 </p>
               </div>
             </div>
 
-            {/* Info rows — 参考 CookMate 模式：左标签右值，统一布局 */}
             <div className="space-y-0">
-              <div className="flex items-center justify-between py-2.5 border-t border-border/50">
-                <span className="text-xs text-text-secondary">{t('email')}</span>
-                <span className="text-xs text-text-primary flex items-center gap-1.5">
-                  {session.user?.email}
-                  <span className="text-green-500 font-medium">{t('emailVerified')}</span>
-                </span>
+              <div className="flex items-center justify-between py-3 border-t border-border/50">
+                <span className="text-sm text-text-secondary/70">{t('email')}</span>
+                <span className="text-sm text-text-primary truncate ml-4">{session.user?.email}</span>
               </div>
 
               {profile && profile.accounts.length > 0 && (
-                <div className="py-2.5 border-t border-border/50">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-[10px] text-text-secondary/60">{t('connectedAccounts')}</span>
-                    <span className="text-[10px] text-text-secondary/40">{profile.accounts.length} {t('connected')}</span>
+                <div className="py-3 border-t border-border/50">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs text-text-secondary/70">{t('connectedAccounts')}</span>
+                    <span className="text-xs text-text-secondary/60">{profile.accounts.length} {t('connected')}</span>
                   </div>
-                  <div className="flex flex-wrap gap-2 mt-1.5">
+                  <div className="flex flex-wrap gap-2">
                     {profile.accounts
                       .filter((acc) => ['google', 'github'].includes(acc.provider))
                       .sort((a, b) => (OAUTH_ORDER[a.provider] ?? 99) - (OAUTH_ORDER[b.provider] ?? 99))
                       .map((acc) => (
-                        <span key={acc.provider} className="inline-flex items-center gap-1 px-2 py-1 bg-surface border border-border rounded-sm text-[10px] text-text-primary group">
+                        <span key={acc.provider} className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-surface border border-border rounded-sm text-xs text-text-primary">
                           {acc.provider === 'google' && (
-                            <svg className="w-3 h-3" viewBox="0 0 24 24">
+                            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24">
                               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
                               <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
                               <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12c0 1.78.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
@@ -358,14 +353,14 @@ export default function AccountClient() {
                             </svg>
                           )}
                           {OAUTH_NAMES[acc.provider] || acc.provider}
-                          <span className="text-green-500">✓</span>
+                          <span className="text-green-500 text-[10px]">✓</span>
                           <button
                             onClick={(e) => { e.stopPropagation(); handleUnlinkClick(acc.provider) }}
                             disabled={unlinking === acc.provider}
-                            className="ml-1 text-text-secondary/40 hover:text-error transition-colors disabled:opacity-50"
+                            className="text-text-secondary/60 hover:text-error transition-colors disabled:opacity-50"
                             title={t('unlink')}
                           >
-                            <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                               <polyline points="16 17 21 12 16 7" />
                               <line x1="21" y1="12" x2="9" y2="12" />
@@ -390,12 +385,12 @@ export default function AccountClient() {
             </div>
 
             <div className="space-y-0">
-              <div className="flex items-center py-2.5 border-t border-border/50">
-                <span className="text-xs text-text-secondary w-24 shrink-0">{t('passwordLogin')}</span>
-                <span className="text-xs text-text-primary flex items-center gap-2 flex-wrap">
-                  <span className="text-text-secondary/50">{profile?.hasPassword ? '••••••••' : t('noPassword')}</span>
+              <div className="flex items-center justify-between py-3 border-t border-border/50">
+                <span className="text-sm text-text-secondary/70">{t('passwordLogin')}</span>
+                <span className="text-sm text-text-primary flex items-center gap-3">
+                  <span className="text-text-secondary/60 text-sm">{profile?.hasPassword ? '••••••••' : t('noPassword')}</span>
                   <button onClick={() => { setShowPwdForm(!showPwdForm); setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdError('') }}
-                    className="text-accent hover:underline text-xs">
+                    className="text-sm text-accent hover:underline">
                     {profile?.hasPassword ? t('changePassword') : t('setPassword')}
                   </button>
                 </span>
@@ -437,18 +432,18 @@ export default function AccountClient() {
 
             {/* Export */}
             <div className="flex items-center justify-between py-3 border-t border-border/50">
-              <span className="text-xs text-text-secondary">{t('exportTitle')}</span>
+              <span className="text-sm text-text-secondary/70">{t('exportTitle')}</span>
               <button onClick={handleExport}
-                className="px-3 py-1.5 rounded-sm bg-accent text-white text-xs font-medium hover:opacity-90 transition-opacity shrink-0">
+                className="px-4 py-2 rounded-sm bg-accent text-white text-sm font-medium hover:opacity-90 transition-opacity shrink-0">
                 {t('exportButton')}
               </button>
             </div>
 
             {/* Delete */}
             <div className="flex items-center justify-between py-3 border-t border-border/50">
-              <span className="text-xs text-text-secondary">{t('deleteAccount')}</span>
+              <span className="text-sm text-text-secondary/70">{t('deleteAccount')}</span>
               <button onClick={() => { setShowDeleteModal(true); setDeleteCode(''); setDeleteCodeSent(false); setDeleteError('') }}
-                className="px-3 py-1.5 rounded-sm border border-error/30 text-xs text-error hover:bg-error/5 transition-colors shrink-0">
+                className="px-4 py-2 rounded-sm border border-error/30 text-sm text-error hover:bg-error/5 transition-colors shrink-0">
                 {t('deleteAccount')}
               </button>
             </div>
@@ -456,8 +451,8 @@ export default function AccountClient() {
             {/* Logout */}
             <div className="pt-3 border-t border-border/50">
               <button onClick={handleLogout}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-sm border border-border text-xs text-text-secondary hover:bg-accent/5 hover:text-error transition-colors">
-                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                className="flex items-center gap-2 px-4 py-2 rounded-sm text-sm text-text-secondary/70 hover:text-error transition-colors">
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                   <polyline points="16 17 21 12 16 7" />
                   <line x1="21" y1="12" x2="9" y2="12" />
