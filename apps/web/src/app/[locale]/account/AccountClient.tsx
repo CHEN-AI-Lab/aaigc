@@ -348,18 +348,6 @@ export default function AccountClient() {
               <span className="text-sm text-text-primary truncate ml-4">{session.user?.email}</span>
             </div>
 
-            {/* Password */}
-            <div className="flex items-center justify-between py-3 border-t border-border/50">
-              <span className="text-sm text-text-secondary/70 shrink-0 w-[60px]">{t('passwordLogin')}</span>
-              <span className="text-right flex items-center gap-3 shrink-0 min-w-0">
-                <span className="text-sm text-text-secondary/60">{profile?.hasPassword ? '••••••••' : t('noPassword')}</span>
-                <button onClick={() => { setShowPwdForm(!showPwdForm); setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdError('') }}
-                  className="text-sm text-accent hover:underline shrink-0">
-                  {profile?.hasPassword ? t('changePassword') : t('setPassword')}
-                </button>
-              </span>
-            </div>
-
             {/* Connected Accounts */}
             {profile && profile.accounts.length > 0 && (
               <div className="flex items-center py-3 border-t border-border/50">
@@ -401,6 +389,18 @@ export default function AccountClient() {
                 </div>
               </div>
             )}
+
+            {/* Password */}
+            <div className="flex items-center justify-between py-3 border-t border-border/50">
+              <span className="text-sm text-text-secondary/70 shrink-0 w-[60px]">{t('passwordLogin')}</span>
+              <span className="text-right flex items-center gap-3 shrink-0 min-w-0">
+                <span className="text-sm text-text-secondary/60">{profile?.hasPassword ? '••••••••' : t('noPassword')}</span>
+                <button onClick={() => { setShowPwdForm(!showPwdForm); setPwdOld(''); setPwdNew(''); setPwdConfirm(''); setPwdError('') }}
+                  className="text-sm text-accent hover:underline shrink-0">
+                  {profile?.hasPassword ? t('changePassword') : t('setPassword')}
+                </button>
+              </span>
+            </div>
 
             {/* Inline password form */}
             {showPwdForm && (
