@@ -1153,7 +1153,8 @@
     "recentFavorites": "最近收藏",
     "unfavorite": "取消收藏",
     "tool": "工具",
-    "all": "全部"
+    "all": "全部",
+    "renFsApiUnsupported": "當前瀏覽器不支援直接重新命名，請使用 ZIP 下載模式。"
   },
   "ui": {
     "toolLinks": {

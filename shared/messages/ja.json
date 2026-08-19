@@ -1153,7 +1153,8 @@
     "recentFavorites": "最近のお気に入り",
     "unfavorite": "お気に入りを解除",
     "tool": "ツール",
-    "all": "すべて"
+    "all": "すべて",
+    "renFsApiUnsupported": "このブラウザでは直接リネームができません。ZIP ダウンロードを使用してください。"
   },
   "ui": {
     "aboutLink": "AAIGCについて →",

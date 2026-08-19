@@ -11,6 +11,28 @@ import {
   type PreviewItem,
 } from 'shared/utils/fileRename'
 
+
+// ─── Rule with all fields (for UI rendering without narrowing) ──
+type RuleWithFields = RenameRule & {
+  find?: string
+  replace?: string
+  text?: string
+  start?: number
+  digits?: number
+  level?: number
+  position?: string
+  mode?: string
+  removeSpaces?: boolean
+  removeSpecialChars?: boolean
+  spaceReplacement?: string
+  pattern?: string
+  replacement?: string
+  replaceOriginal?: boolean
+  perFolder?: boolean
+  folderMode?: boolean
+  folderLevel?: number
+}
+
 // ─── Rule type config ──────────────────────────
 
 interface RuleConfig {
@@ -203,8 +225,7 @@ export default function FileRenamer() {
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    setCanDirectRename(typeof window !== 'undefined' && typeof (window as any).showDirectoryPicker === 'function')
+    setCanDirectRename(typeof window !== 'undefined' && typeof window.showDirectoryPicker === 'function')
   }, [])
 
   // ── File selection ────────────────────────────
@@ -219,8 +240,7 @@ export default function FileRenamer() {
     for (let i = 0; i < fileList.length; i++) {
       const f = fileList[i]
       // webkitRelativePath gives the full relative path including folder
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const relPath = (f as any).webkitRelativePath || f.name
+      const relPath = f.webkitRelativePath || f.name
       if (seen.has(relPath)) continue
       seen.add(relPath)
       entries.push(f)
@@ -325,17 +345,14 @@ export default function FileRenamer() {
   const handleClick = useCallback(async () => {
     // Try showDirectoryPicker first (Chrome/Edge) — clean native dialog, no scary warning
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      if (typeof (window as any).showDirectoryPicker === 'function') {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const dirHandle = await (window as any).showDirectoryPicker()
+      if (typeof window.showDirectoryPicker === 'function') {
+        const dirHandle = await window.showDirectoryPicker()
         const entries: File[] = []
         const paths: FileWithPath[] = []
         const seen = new Set<string>()
 
         async function walk(dir: FileSystemDirectoryHandle, basePath: string) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const iter = (dir as any).entries()
+          const iter = dir.entries()
           for await (const [name, handle] of iter) {
             if (handle.kind === 'directory') {
               await walk(handle as FileSystemDirectoryHandle, `${basePath}${name}/`)
@@ -407,7 +424,6 @@ export default function FileRenamer() {
 
   const hasConflicts = useMemo(() => preview.some(p => p.conflict), [preview])
   const treeNodes = useMemo(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const hasFolderMode = rules.some(r => r.folderMode || r.type === 'numberFolders')
     return buildTree(preview, hasFolderMode)
   }, [preview, rules])
@@ -415,8 +431,11 @@ export default function FileRenamer() {
   // ── Rename/Download helpers ──────────────────
 
   const directRename = useCallback(async (origFolderName: string) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const dirHandle = await (window as any).showDirectoryPicker()
+    if (typeof window.showDirectoryPicker !== 'function') {
+      setError(t('renFsApiUnsupported'))
+      return
+    }
+    const dirHandle = await window.showDirectoryPicker()
     if (dirHandle.name !== origFolderName) {
       setError(t('renWrongFolder', { folder: origFolderName }))
       return
@@ -439,8 +458,7 @@ export default function FileRenamer() {
         try {
           const file = await handle.getFileHandle(oldName)
           const blob = await file.getFile()
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const writable = await handle.getFileHandle(newName, { create: true }).then((h: any) => h.createWritable())
+          const writable = await handle.getFileHandle(newName, { create: true }).then(h => h.createWritable())
           await writable.write(blob)
           await writable.close()
           await handle.removeEntry(oldName)
@@ -482,8 +500,7 @@ export default function FileRenamer() {
 
     try {
       // Try showDirectoryPicker (File System Access API) for direct rename
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      if (typeof (window as any).showDirectoryPicker === 'function') {
+      if (typeof window.showDirectoryPicker === 'function') {
         const firstSlash = files[0].path.indexOf('/')
         const origFolderName = firstSlash > 0 ? files[0].path.slice(0, firstSlash) : ''
         if (origFolderName) {
@@ -582,6 +599,7 @@ export default function FileRenamer() {
 
           {rules.map((rule, i) => {
             const cfg = ruleConfigs.find(c => c.type === rule.type)
+    const r = rule as RuleWithFields
             return (
               <div key={i} className="flex flex-wrap items-center gap-2 p-3 bg-surface rounded-lg">
                 {/* Rule type selector */}
@@ -598,32 +616,28 @@ export default function FileRenamer() {
                 {/* Rule-specific fields */}
                 {cfg?.hasFind && (
                   <input
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    type="text" placeholder={t('renFind')} value={(rule as any).find}
+                    type="text" placeholder={t('renFind')} value={r.find}
                     onChange={e => updateRule(i, r => ({ ...r, find: e.target.value }))}
                     className="w-28 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                   />
                 )}
                 {cfg?.hasReplace && (
                   <input
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    type="text" placeholder={t('renReplace')} value={(rule as any).replace}
+                    type="text" placeholder={t('renReplace')} value={r.replace}
                     onChange={e => updateRule(i, r => ({ ...r, replace: e.target.value }))}
                     className="w-28 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                   />
                 )}
                 {cfg?.hasText && (
                   <input
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    type="text" placeholder={t('renText')} value={(rule as any).text}
+                    type="text" placeholder={t('renText')} value={r.text}
                     onChange={e => updateRule(i, r => ({ ...r, text: e.target.value }))}
                     className="w-28 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                   />
                 )}
                 {cfg?.hasDelete && (
                   <input
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    type="text" placeholder={t('renDeleteText')} value={(rule as any).text}
+                    type="text" placeholder={t('renDeleteText')} value={r.text}
                     onChange={e => updateRule(i, r => ({ ...r, text: e.target.value }))}
                     className="w-28 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                   />
@@ -632,8 +646,7 @@ export default function FileRenamer() {
                   <label className="flex items-center gap-1 text-xs text-text-secondary">
                     {t('renStart')}
                     <input
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      type="number" min="0" value={(rule as any).start}
+                      type="number" min="0" value={r.start}
                       onChange={e => updateRule(i, r => ({ ...r, start: Math.max(0, parseInt(e.target.value) || 0) }))}
                       className="w-16 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                     />
@@ -643,8 +656,7 @@ export default function FileRenamer() {
                   <label className="flex items-center gap-1 text-xs text-text-secondary">
                     {t('renDigits')}
                     <input
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      type="number" min="1" max="10" value={(rule as any).digits}
+                      type="number" min="1" max="10" value={r.digits}
                       onChange={e => updateRule(i, r => ({ ...r, digits: Math.max(1, Math.min(10, parseInt(e.target.value) || 1)) }))}
                       className="w-14 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                     />
@@ -654,8 +666,7 @@ export default function FileRenamer() {
                   <label className="flex items-center gap-1 text-xs text-text-secondary">
                     <span>{t('renFolderLevel')}</span>
                     <input
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      type="number" min="0" max="5" value={(rule as any).level ?? 1}
+                      type="number" min="0" max="5" value={r.level ?? 1}
                       onChange={e => updateRule(i, r => ({ ...r, level: Math.max(0, Math.min(5, parseInt(e.target.value) || 0)) }))}
                       className="w-12 p-1 bg-bg border border-border rounded-lg text-xs text-text-primary text-center"
                     />
@@ -664,7 +675,6 @@ export default function FileRenamer() {
                 {rule.type === 'numberFolders' && (
                   <label className="flex items-center gap-1 text-xs text-text-secondary cursor-pointer whitespace-nowrap">
                     <input
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       type="checkbox" checked={rule.perFolder ?? false}
                       onChange={e => updateRule(i, r => ({ ...r, perFolder: e.target.checked }))}
                       className="accent-accent"
@@ -674,8 +684,7 @@ export default function FileRenamer() {
                 )}
                 {cfg?.hasPosition && (
                   <select
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    value={(rule as any).position}
+                    value={r.position}
                     onChange={e => updateRule(i, r => ({ ...r, position: e.target.value as 'prefix' | 'suffix' }))}
                     className="p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                   >
@@ -686,8 +695,7 @@ export default function FileRenamer() {
                 {cfg?.hasReplaceOriginal && (
                   <label className="flex items-center gap-1 text-xs text-text-secondary cursor-pointer whitespace-nowrap">
                     <input
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      type="checkbox" checked={(rule as any).replaceOriginal ?? false}
+                      type="checkbox" checked={r.replaceOriginal ?? false}
                       onChange={e => updateRule(i, r => ({ ...r, replaceOriginal: e.target.checked }))}
                       className="accent-accent"
                     />
@@ -697,7 +705,6 @@ export default function FileRenamer() {
                 {rule.type === 'numbering' && (
                   <label className="flex items-center gap-1 text-xs text-text-secondary cursor-pointer whitespace-nowrap">
                     <input
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       type="checkbox" checked={rule.perFolder ?? false}
                       onChange={e => updateRule(i, r => ({ ...r, perFolder: e.target.checked }))}
                       className="accent-accent"
@@ -707,8 +714,7 @@ export default function FileRenamer() {
                 )}
                 {cfg?.hasMode && (
                   <select
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    value={(rule as any).mode}
+                    value={r.mode}
                     onChange={e => updateRule(i, r => ({ ...r, mode: e.target.value as 'upper' | 'lower' | 'capitalize' }))}
                     className="p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                   >
@@ -720,8 +726,7 @@ export default function FileRenamer() {
                 {cfg?.hasRemoveSpaces && (
                   <label className="flex items-center gap-1 text-xs text-text-secondary cursor-pointer">
                     <input
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      type="checkbox" checked={(rule as any).removeSpaces}
+                      type="checkbox" checked={r.removeSpaces}
                       onChange={e => updateRule(i, r => ({ ...r, removeSpaces: e.target.checked }))}
                       className="accent-accent"
                     />
@@ -731,21 +736,18 @@ export default function FileRenamer() {
                 {cfg?.hasRemoveSpecial && (
                   <label className="flex items-center gap-1 text-xs text-text-secondary cursor-pointer">
                     <input
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      type="checkbox" checked={(rule as any).removeSpecialChars}
+                      type="checkbox" checked={r.removeSpecialChars}
                       onChange={e => updateRule(i, r => ({ ...r, removeSpecialChars: e.target.checked }))}
                       className="accent-accent"
                     />
                     {t('renRemoveSpecial')}
                   </label>
                 )}
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                {cfg?.hasSpaceReplacement && (rule as any).removeSpaces && ( // eslint-disable-line @typescript-eslint/no-explicit-any
+                {cfg?.hasSpaceReplacement && r.removeSpaces && (
                   <label className="flex items-center gap-1 text-xs text-text-secondary">
                     {t('renReplaceWith')}
                     <input
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      type="text" maxLength={2} value={(rule as any).spaceReplacement}
+                      type="text" maxLength={2} value={r.spaceReplacement}
                       onChange={e => updateRule(i, r => ({ ...r, spaceReplacement: e.target.value }))}
                       className="w-12 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                     />
@@ -753,16 +755,14 @@ export default function FileRenamer() {
                 )}
                 {cfg?.hasPattern && (
                   <input
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    type="text" placeholder={t('renPattern')} value={(rule as any).pattern}
+                    type="text" placeholder={t('renPattern')} value={r.pattern}
                     onChange={e => updateRule(i, r => ({ ...r, pattern: e.target.value }))}
                     className="w-28 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                   />
                 )}
                 {(cfg?.hasReplacement && rule.type === 'regex') && (
                   <input
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    type="text" placeholder={t('renReplace')} value={(rule as any).replacement}
+                    type="text" placeholder={t('renReplace')} value={r.replacement}
                     onChange={e => updateRule(i, r => ({ ...r, replacement: e.target.value }))}
                     className="w-28 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                   />
@@ -771,7 +771,6 @@ export default function FileRenamer() {
                 {cfg?.hasFolderMode && (
                   <label className="flex items-center gap-1 text-xs text-text-secondary cursor-pointer whitespace-nowrap">
                     <input
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       type="checkbox" checked={rule.folderMode ?? false}
                       onChange={e => updateRule(i, r => ({ ...r, folderMode: e.target.checked }))}
                       className="accent-accent"
@@ -779,12 +778,10 @@ export default function FileRenamer() {
                     {t('renFolderMode')}
                   </label>
                 )}
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 {rule.folderMode && cfg?.hasFolderMode && (
                   <label className="flex items-center gap-1 text-xs text-text-secondary whitespace-nowrap">
                     <span>{t('renFolderLevel')}</span>
                     <input
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       type="number" min="0" max="5" value={rule.folderLevel ?? 1}
                       onChange={e => updateRule(i, r => ({ ...r, folderLevel: Math.max(0, Math.min(5, parseInt(e.target.value) || 0)) }))}
                       className="w-12 p-1 bg-bg border border-border rounded-lg text-xs text-text-primary text-center"

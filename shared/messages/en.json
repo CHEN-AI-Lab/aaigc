@@ -1153,7 +1153,8 @@
     "recentFavorites": "Recent Favorites",
     "unfavorite": "Remove from favorites",
     "tool": "Tool",
-    "all": "All"
+    "all": "All",
+    "renFsApiUnsupported": "This browser does not support direct rename. Please use the ZIP download option."
   },
   "ui": {
     "aboutLink": "About AAIGC →",

@@ -1153,7 +1153,8 @@
     "recentFavorites": "最近收藏",
     "unfavorite": "取消收藏",
     "tool": "工具",
-    "all": "全部"
+    "all": "全部",
+    "renFsApiUnsupported": "当前浏览器不支持直接重命名，请使用 ZIP 下载模式。"
   },
   "ui": {
     "aboutLink": "关于 AAIGC →",
