@@ -36,7 +36,7 @@ export default function Header() {
           <ThemeSwitcher />
           <LanguageSwitcher />
           {isLoading ? (
-            <div className="w-10 h-4 rounded sm:ml-3 bg-text-secondary/20 animate-pulse" />
+            <div className="w-7 h-7 rounded-full sm:ml-3 bg-text-secondary/20 animate-pulse" />
           ) : isAuthenticated ? (
             <Link href="/account" className="flex items-center gap-1.5 sm:ml-3 group"
               title={session.user.name || session.user.email || ''}>
