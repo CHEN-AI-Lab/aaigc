@@ -47,9 +47,9 @@ export default function ColorPicker() {
 
   return (
     <div className="mt-6 space-y-6">
-      <div className="flex items-center gap-6 p-4 bg-surface rounded-sm border border-[rgba(127,99,21,0.15)]">
+      <div className="flex items-center gap-6 p-4 bg-surface rounded-sm border border-border">
         <div className="flex flex-col items-center gap-2">
-          <input type="color" value={color} onChange={e => setColor(e.target.value)} className="w-16 h-16 rounded-sm cursor-pointer border border-[rgba(127,99,21,0.15)]" />
+          <input type="color" value={color} onChange={e => setColor(e.target.value)} className="w-16 h-16 rounded-sm cursor-pointer border border-border" />
           <span className="text-xs text-text-secondary">{t('pick')}</span>
         </div>
         <div className="flex-1 space-y-2">
@@ -71,7 +71,7 @@ export default function ColorPicker() {
         <p className="text-xs text-text-secondary mb-2">{t('presetColors')}</p>
         <div className="grid grid-cols-10 sm:grid-cols-15 gap-1.5">
           {presets.map(c => (
-            <button key={c} onClick={() => setColor(c)} className="h-8 rounded-sm border border-[rgba(127,99,21,0.1)] cursor-pointer hover:scale-110 transition-transform" style={{ backgroundColor: c }} title={c} />
+            <button key={c} onClick={() => setColor(c)} className="h-8 rounded-sm border border-border cursor-pointer hover:scale-110 transition-transform" style={{ backgroundColor: c }} title={c} />
           ))}
         </div>
       </div>

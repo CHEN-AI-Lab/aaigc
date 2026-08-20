@@ -61,7 +61,7 @@ export default function ImageConverter() {
   const [quality, setQuality] = useState(90)
   const [outputs, setOutputs] = useState<OutputFile[]>([])
   const [converting, setConverting] = useState(false)
-  const [error, setError] = useState('')
+  const [, setError] = useState('')
   const [isDragOver, setIsDragOver] = useState(false)
   const [toast, setToast] = useState<{ message: string; key: number } | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -182,7 +182,7 @@ export default function ImageConverter() {
     }
     if (loaded.length > 0) setInputs(prev => [...prev, ...loaded])
     if (loaded.length === 0) setError(t('failedToRead'))
-  }, [inputs, loadImage, t])
+  }, [inputs, loadImage, t, showToast])
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault()
@@ -333,7 +333,7 @@ export default function ImageConverter() {
               className={`flex items-center justify-center w-full border-2 border-dashed rounded-sm bg-surface cursor-pointer hover:border-accent/30 transition-colors ${
                 isDragOver
                   ? 'border-accent bg-accent/5'
-                  : 'border-[rgba(127,99,21,0.2)]'
+                  : 'border-border'
               } ${inputs.length === 0 ? 'h-40' : 'h-16'}`}
             >
               <div className="text-center pointer-events-none flex items-center gap-2">
@@ -366,7 +366,7 @@ export default function ImageConverter() {
           {toast && (
             <div
               key={toast.key}
-              className="absolute -top-3 left-1/2 -translate-x-1/2 z-10 text-sm text-red-500 bg-red-50 border border-red-200 rounded-sm px-4 py-2 shadow-md whitespace-nowrap"
+              className="absolute -top-3 left-1/2 -translate-x-1/2 z-10 text-sm text-error bg-error/10 border border-error/25 rounded-sm px-4 py-2 shadow-md whitespace-nowrap"
             >
               {toast.message}
             </div>
@@ -375,19 +375,19 @@ export default function ImageConverter() {
             {(collapsed ? inputs.slice(0, 4) : inputs).map((input) => (
               <div
                 key={input.id}
-                className="bg-surface border border-[rgba(127,99,21,0.1)] rounded-sm p-2 relative"
+                className="bg-surface border border-border rounded-sm p-2 relative"
               >
                 <button
                   onClick={() => {
                     setInputs(prev => prev.filter(i => i.id !== input.id))
                     setOutputs([])
                   }}
-                  className="absolute top-1 right-1 w-5 h-5 flex items-center justify-center text-xs bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-text-secondary hover:text-error hover:border-error/30 transition-colors z-10"
+                  className="absolute top-1 right-1 w-5 h-5 flex items-center justify-center text-xs bg-surface border border-border rounded-sm text-text-secondary hover:text-error hover:border-error/30 transition-colors z-10"
                   title={t('renClear')}
                 >
                   ✕
                 </button>
-                <div className="w-full h-24 bg-[rgba(127,99,21,0.05)] rounded-sm mb-2 flex items-center justify-center overflow-hidden">
+                <div className="w-full h-24 bg-surface rounded-sm mb-2 flex items-center justify-center overflow-hidden">
                   <img
                     src={input.dataUrl}
                     alt={input.file.name}
@@ -405,7 +405,7 @@ export default function ImageConverter() {
       )}
 
       {inputs.length > 0 && (
-        <div className="bg-surface border border-[rgba(127,99,21,0.1)] rounded-sm p-4 space-y-4">
+        <div className="bg-surface border border-border rounded-sm p-4 space-y-4">
           {/* Format target */}
           <div>
             <label className="text-sm text-text-secondary block mb-2">{t('convertTo')}</label>
@@ -419,7 +419,7 @@ export default function ImageConverter() {
                     className={`px-3 py-1.5 text-xs rounded-sm border transition-colors ${
                       targetFormat === fmt.value
                         ? 'bg-accent text-white border-accent'
-                        : 'bg-surface text-text-secondary border-[rgba(127,99,21,0.15)] hover:border-accent/30'
+                        : 'bg-surface text-text-secondary border-border hover:border-accent/30'
                     } ${isCurrent ? 'opacity-60' : 'cursor-pointer'}`}
                   >
                     {fmt.label}
@@ -444,7 +444,7 @@ export default function ImageConverter() {
                             className={`px-2 py-1 text-xs rounded-sm border transition-colors ${
                               inputs[0] && targetWidth === inputs[0].width && targetHeight === inputs[0].height
                                 ? 'bg-accent text-white border-accent'
-                                : 'bg-surface text-text-secondary border-[rgba(127,99,21,0.15)] hover:border-accent/30'
+                                : 'bg-surface text-text-secondary border-border hover:border-accent/30'
                             }`}
                           >
                             {t('resizeOriginal')}
@@ -457,7 +457,7 @@ export default function ImageConverter() {
                               className={`px-2 py-1 text-xs rounded-sm border transition-colors ${
                                 targetWidth === p.w && targetHeight === p.h
                                   ? 'bg-accent text-white border-accent'
-                                  : 'bg-surface text-text-secondary border-[rgba(127,99,21,0.15)] hover:border-accent/30'
+                                  : 'bg-surface text-text-secondary border-border hover:border-accent/30'
                               }`}
                             >
                               {p.label}
@@ -477,7 +477,7 @@ export default function ImageConverter() {
                               value={targetWidth || ''}
                               onChange={(e) => handleWidthChange(e.target.value)}
                               onFocus={(e) => e.target.select()}
-                              className="w-20 p-1.5 text-xs bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-text-primary focus:outline-none focus:border-accent/30"
+                              className="w-20 p-1.5 text-xs bg-surface border border-border rounded-sm text-text-primary focus:outline-none focus:border-accent/30"
                             />
                           </div>
                           <span className="text-text-secondary text-xs">×</span>
@@ -491,7 +491,7 @@ export default function ImageConverter() {
                               value={targetHeight || ''}
                               onChange={(e) => handleHeightChange(e.target.value)}
                               onFocus={(e) => e.target.select()}
-                              className="w-20 p-1.5 text-xs bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-text-primary focus:outline-none focus:border-accent/30"
+                              className="w-20 p-1.5 text-xs bg-surface border border-border rounded-sm text-text-primary focus:outline-none focus:border-accent/30"
                             />
                           </div>
                           <label className="flex items-center gap-1.5 text-xs text-text-secondary cursor-pointer select-none">
@@ -539,7 +539,7 @@ export default function ImageConverter() {
             </button>
             <button
               onClick={clearAll}
-              className="px-3 py-2 bg-surface text-text-primary text-sm rounded-sm border border-[rgba(127,99,21,0.15)] hover:bg-accent/10 transition-colors min-w-[5rem]"
+              className="px-3 py-2 bg-surface text-text-primary text-sm rounded-sm border border-border hover:bg-accent/10 transition-colors min-w-[5rem]"
             >
               {t('renClear')}
             </button>
@@ -565,11 +565,11 @@ export default function ImageConverter() {
             {converting && outputs.length === 0 && (
               <>
                 {inputs.map((_, i) => (
-                  <div key={i} className="bg-surface border border-[rgba(127,99,21,0.1)] rounded-sm p-2 animate-pulse">
-                    <div className="w-full h-32 bg-[rgba(127,99,21,0.08)] rounded-sm mb-2" />
-                    <div className="h-3 bg-[rgba(127,99,21,0.08)] rounded w-3/4 mb-1" />
-                    <div className="h-3 bg-[rgba(127,99,21,0.08)] rounded w-1/2 mb-2" />
-                    <div className="h-6 bg-[rgba(127,99,21,0.08)] rounded" />
+                  <div key={i} className="bg-surface border border-border rounded-sm p-2 animate-pulse">
+                    <div className="w-full h-32 bg-surface rounded-sm mb-2" />
+                    <div className="h-3 bg-surface rounded w-3/4 mb-1" />
+                    <div className="h-3 bg-surface rounded w-1/2 mb-2" />
+                    <div className="h-6 bg-surface rounded" />
                   </div>
                 ))}
               </>
@@ -577,9 +577,9 @@ export default function ImageConverter() {
             {outputs.map((out, i) => (
               <div
                 key={i}
-                className="bg-surface border border-[rgba(127,99,21,0.1)] rounded-sm p-2"
+                className="bg-surface border border-border rounded-sm p-2"
               >
-                <div className="w-full h-32 bg-[rgba(127,99,21,0.05)] rounded-sm mb-2 flex items-center justify-center overflow-hidden">
+                <div className="w-full h-32 bg-surface rounded-sm mb-2 flex items-center justify-center overflow-hidden">
                   <img
                     src={out.url}
                     alt={out.name}

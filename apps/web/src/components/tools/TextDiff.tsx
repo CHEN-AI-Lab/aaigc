@@ -17,11 +17,11 @@ export default function TextDiff() {
   return (
     <div className="mt-6 space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <textarea value={left} onChange={e => setLeft(e.target.value)} placeholder={t('originalText')} className="w-full h-48 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
-        <textarea value={right} onChange={e => setRight(e.target.value)} placeholder={t('modifiedText')} className="w-full h-48 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
+        <textarea value={left} onChange={e => setLeft(e.target.value)} placeholder={t('originalText')} className="w-full h-48 p-3 bg-surface border border-border rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
+        <textarea value={right} onChange={e => setRight(e.target.value)} placeholder={t('modifiedText')} className="w-full h-48 p-3 bg-surface border border-border rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
       </div>
       {diffResult && (
-        <div className="border border-[rgba(127,99,21,0.15)] rounded-sm overflow-hidden">
+        <div className="border border-border rounded-sm overflow-hidden">
           <div className="text-xs font-mono">
             {diffResult.map((part, i) => {
               const lines = part.value.split('\n')
@@ -30,10 +30,10 @@ export default function TextDiff() {
               if (lines.length === 0) return null
               return lines.map((line, j) => {
                 if (part.added) {
-                  return <div key={`${i}-${j}`} className="flex px-3 py-0.5 bg-green-50 text-green-700"><span className="w-6 shrink-0 text-green-500">+</span><span className="break-all">{line}</span></div>
+                  return <div key={`${i}-${j}`} className="flex px-3 py-0.5 bg-success/10 text-success"><span className="w-6 shrink-0 text-success">+</span><span className="break-all">{line}</span></div>
                 }
                 if (part.removed) {
-                  return <div key={`${i}-${j}`} className="flex px-3 py-0.5 bg-red-50 text-red-700"><span className="w-6 shrink-0 text-red-500">-</span><span className="break-all">{line}</span></div>
+                  return <div key={`${i}-${j}`} className="flex px-3 py-0.5 bg-error/10 text-error"><span className="w-6 shrink-0 text-error">-</span><span className="break-all">{line}</span></div>
                 }
                 return <div key={`${i}-${j}`} className="flex px-3 py-0.5 text-text-secondary"><span className="w-6 shrink-0 opacity-50">{' '}</span><span className="break-all">{line}</span></div>
               })

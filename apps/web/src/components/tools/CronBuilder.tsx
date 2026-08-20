@@ -40,7 +40,7 @@ export default function CronBuilder() {
 
   return (
     <div className="mt-6 space-y-4">
-      <div className="p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-xs text-text-secondary leading-relaxed">
+      <div className="p-3 bg-surface border border-border rounded-sm text-xs text-text-secondary leading-relaxed">
         <p className="font-semibold text-text-primary mb-1">Cron</p>
         <p>{t('cronExplain')}</p>
         <ul className="list-disc pl-4 mt-1 space-y-0.5">
@@ -54,48 +54,48 @@ export default function CronBuilder() {
       <div className="flex gap-2 flex-wrap">
         {PRESETS.map(p => (
           <button key={p.expr} onClick={() => preset(p.expr)}
-            className={`px-3 py-1.5 text-xs rounded-sm transition-colors ${expression === p.expr ? 'bg-accent text-white' : 'bg-surface text-text-primary border border-[rgba(127,99,21,0.15)]'}`}
+            className={`px-3 py-1.5 text-xs rounded-sm transition-colors ${expression === p.expr ? 'bg-accent text-white' : 'bg-surface text-text-primary border border-border'}`}
             title={t(p.desc)}>{t(p.label)}</button>
         ))}
       </div>
 
       {dangerous && (
-        <div className="p-3 bg-red-50 border border-red-200 rounded-sm text-xs text-red-700 leading-relaxed">
+        <div className="p-3 bg-error/10 border border-error/25 rounded-sm text-xs text-error leading-relaxed">
           <p className="font-semibold mb-1">⚠️ {t('cronWarning')}</p>
           <button onClick={() => { setMinute('0'); setHour('0') }}
-            className="mt-1 px-3 py-1 bg-red-500 text-white rounded-sm hover:opacity-90">{t('cronFix')}</button>
+            className="mt-1 px-3 py-1 bg-error text-white rounded-sm hover:opacity-90">{t('cronFix')}</button>
         </div>
       )}
 
       <div className="grid grid-cols-5 gap-3">
         <div><label className="text-xs text-text-secondary block mb-1">{t('cronMinute')}</label>
-          <select value={minute} onChange={e => setMinute(e.target.value)} className="w-full p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-xs text-text-primary">
+          <select value={minute} onChange={e => setMinute(e.target.value)} className="w-full p-2 bg-surface border border-border rounded-sm text-xs text-text-primary">
             <option value="*">{t('cronEvery')}</option>
             {Array.from({length:60},(_,i)=>i).map(i => <option key={i} value={i}>{i}</option>)}
           </select></div>
         <div><label className="text-xs text-text-secondary block mb-1">{t('cronHour')}</label>
-          <select value={hour} onChange={e => setHour(e.target.value)} className="w-full p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-xs text-text-primary">
+          <select value={hour} onChange={e => setHour(e.target.value)} className="w-full p-2 bg-surface border border-border rounded-sm text-xs text-text-primary">
             <option value="*">{t('cronEvery')}</option>
             {Array.from({length:24},(_,i)=>i).map(i => <option key={i} value={i}>{i}</option>)}
           </select></div>
         <div><label className="text-xs text-text-secondary block mb-1">{t('cronDay')}</label>
-          <select value={day} onChange={e => setDay(e.target.value)} className="w-full p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-xs text-text-primary">
+          <select value={day} onChange={e => setDay(e.target.value)} className="w-full p-2 bg-surface border border-border rounded-sm text-xs text-text-primary">
             <option value="*">{t('cronEvery')}</option>
             {Array.from({length:31},(_,i)=>i+1).map(i => <option key={i} value={i}>{i}</option>)}
           </select></div>
         <div><label className="text-xs text-text-secondary block mb-1">{t('cronMonth')}</label>
-          <select value={month} onChange={e => setMonth(e.target.value)} className="w-full p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-xs text-text-primary">
+          <select value={month} onChange={e => setMonth(e.target.value)} className="w-full p-2 bg-surface border border-border rounded-sm text-xs text-text-primary">
             <option value="*">{t('cronEvery')}</option>
             {Array.from({length:12},(_,i)=>i+1).map(i => <option key={i} value={i}>{i}</option>)}
           </select></div>
         <div><label className="text-xs text-text-secondary block mb-1">{t('cronDow')}</label>
-          <select value={dow} onChange={e => setDow(e.target.value)} className="w-full p-2 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-xs text-text-primary">
+          <select value={dow} onChange={e => setDow(e.target.value)} className="w-full p-2 bg-surface border border-border rounded-sm text-xs text-text-primary">
             <option value="*">{t('cronEvery')}</option>
             {DOW.map((d, i) => <option key={i} value={i}>{t('cronWeekPrefix')}{t(d)}</option>)}
           </select></div>
       </div>
 
-      <div className="p-4 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-center">
+      <div className="p-4 bg-surface border border-border rounded-sm text-center">
         <p className="text-xs text-text-secondary mb-1">{t('cronResult')}</p>
         <p className="text-lg font-mono font-semibold text-accent">{expression}</p>
         {currentPreset && <p className="text-xs text-text-secondary mt-1">{t(currentPreset.desc)}</p>}

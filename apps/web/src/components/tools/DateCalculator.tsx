@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
+import { dateLocale } from 'shared/utils/locale'
 
 function pad(n: number, len: number) {
   return String(n).padStart(len, '0')
@@ -12,7 +13,7 @@ function daysInMonth(y: number, m: number) {
 }
 
 // ─── ClampInput — module-level ───
-function ClampInput({ value, onChange, min, max, label, field, hint }: {
+function ClampInput({ value, onChange, min, max, label: _label, field, hint }: {
   value: string; onChange: (v: string) => void; min: number; max: number; label: string; field: string; hint: { field: string; msg: string } | null
 }) {
   const hintFor = (f: string) => hint?.field === f ? hint.msg : null
@@ -27,9 +28,9 @@ function ClampInput({ value, onChange, min, max, label, field, hint }: {
           if (isNaN(n)) { onChange('0'); return }
           onChange(String(Math.max(min, Math.min(max, n))))
         }}
-        className="w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary text-center focus:outline-none focus:border-accent/30 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
+        className="w-full px-2 py-2 bg-bg border border-border rounded-sm text-sm text-text-primary text-center focus:outline-none focus:border-accent/30 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
       {hintFor(field) && (
-        <div className="absolute -bottom-4 left-0 right-0 text-[10px] text-red-500 text-center whitespace-nowrap">{hintFor(field)}</div>
+        <div className="absolute -bottom-4 left-0 right-0 text-[10px] text-error text-center whitespace-nowrap">{hintFor(field)}</div>
       )}
     </div>
   )
@@ -43,17 +44,17 @@ function DateSelect({ year, month, day, onYear, onMonth, onDay, years, months, d
   return (
     <div className="flex gap-1.5">
       <div className="w-20">
-        <select value={year} onChange={e => onYear(e.target.value)} className="w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-sm text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
+        <select value={year} onChange={e => onYear(e.target.value)} className="w-full px-2 py-2 bg-bg border border-border rounded-sm text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
           {years.map(y => <option key={y} value={y}>{y}</option>)}
         </select>
       </div>
       <div className="w-16">
-        <select value={month} onChange={e => onMonth(e.target.value)} className="w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-sm text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
+        <select value={month} onChange={e => onMonth(e.target.value)} className="w-full px-2 py-2 bg-bg border border-border rounded-sm text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
           {months.map(m => <option key={m} value={m}>{pad(m, 2)}</option>)}
         </select>
       </div>
       <div className="w-16">
-        <select value={day} onChange={e => onDay(e.target.value)} className="w-full px-2 py-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-sm text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
+        <select value={day} onChange={e => onDay(e.target.value)} className="w-full px-2 py-2 bg-bg border border-border rounded-sm text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
           {days.map(d => <option key={d} value={d}>{pad(d, 2)}</option>)}
         </select>
       </div>
@@ -118,7 +119,7 @@ export default function DateCalculator() {
     } else {
       setter(trimmed)
     }
-  }, [locale, showHint])
+  }, [showHint, t])
 
   const calcDiff = useCallback(() => {
     setError('')
@@ -135,7 +136,7 @@ export default function DateCalculator() {
     const h = Math.floor((abs % 86400000) / 3600000)
     const m = Math.floor((abs % 3600000) / 60000)
     setDiff(`${prefix}${d} ${t('days')}, ${h} ${t('hours')}, ${m} ${t('minutes')}`)
-  }, [d1y, d1m, d1d, d1h, d1min, d1s, d2y, d2m, d2d, d2h, d2min, d2s, locale])
+  }, [d1y, d1m, d1d, d1h, d1min, d1s, d2y, d2m, d2d, d2h, d2min, d2s, t])
 
   const calcAdd = useCallback(() => {
     setError('')
@@ -144,8 +145,8 @@ export default function DateCalculator() {
     const n = parseInt(addDays, 10)
         if (isNaN(n)) { setError(t('enterNumberOfDays')); return }
     d.setDate(d.getDate() + n)
-    setAddResult(d.toLocaleDateString(locale === 'ja' ? 'ja-JP' : locale === 'en' ? 'en-US' : 'zh-CN'))
-  }, [addY, addM, addD, addDays, locale])
+    setAddResult(d.toLocaleDateString(dateLocale(locale)))
+  }, [addY, addM, addD, addDays, locale, t])
 
   const todayBtn = (setters: { y: (v: string) => void; m: (v: string) => void; d: (v: string) => void; h?: (v: string) => void; min?: (v: string) => void; s?: (v: string) => void }) => {
     const d = new Date()
@@ -159,7 +160,7 @@ export default function DateCalculator() {
 
   return (
     <div className="mt-6 space-y-6">
-      <div className="p-4 bg-surface rounded-sm border border-[rgba(127,99,21,0.15)]">
+      <div className="p-4 bg-surface rounded-sm border border-border">
         <h3 className="text-sm font-medium text-text-primary mb-1">{t('dateDifference')}</h3>
         <p className="text-xs text-text-secondary mb-3">{t('calculateDiffDesc')}</p>
 
@@ -172,7 +173,7 @@ export default function DateCalculator() {
             </label>
             <div className="flex items-center gap-1.5 flex-wrap">
               <DateSelect year={d1y} month={d1m} day={d1d} onYear={setD1y} onMonth={setD1m} onDay={setD1d} years={years} months={months} days={Array.from({ length: d1days }, (_, i) => i + 1)} />
-              <div className="w-px h-6 bg-[rgba(127,99,21,0.15)]" />
+              <div className="w-px h-6 bg-border" />
               <div className="flex gap-1">
                 <div className="w-12">
                   <ClampInput value={d1h} onChange={v => clampNow(v, 0, 23, 'd1h', 'HH', setD1h)} min={0} max={23} label="HH" field="d1h" hint={hint} />
@@ -195,7 +196,7 @@ export default function DateCalculator() {
             </label>
             <div className="flex items-center gap-1.5 flex-wrap">
               <DateSelect year={d2y} month={d2m} day={d2d} onYear={setD2y} onMonth={setD2m} onDay={setD2d} years={years} months={months} days={Array.from({ length: d2days }, (_, i) => i + 1)} />
-              <div className="w-px h-6 bg-[rgba(127,99,21,0.15)]" />
+              <div className="w-px h-6 bg-border" />
               <div className="flex gap-1">
                 <div className="w-12">
                   <ClampInput value={d2h} onChange={v => clampNow(v, 0, 23, 'd2h', 'HH', setD2h)} min={0} max={23} label="HH" field="d2h" hint={hint} />
@@ -214,13 +215,13 @@ export default function DateCalculator() {
         <button onClick={calcDiff} className="px-4 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('calculate')}</button>
 
         {diff && (
-          <div className="mt-2 p-2 bg-bg rounded-sm border border-[rgba(127,99,21,0.1)]">
+          <div className="mt-2 p-2 bg-bg rounded-sm border border-border">
             <p className="text-sm text-text-primary">{diff}</p>
           </div>
         )}
       </div>
 
-      <div className="p-4 bg-surface rounded-sm border border-[rgba(127,99,21,0.15)]">
+      <div className="p-4 bg-surface rounded-sm border border-border">
         <h3 className="text-sm font-medium text-text-primary mb-1">{t('addSubtractDays')}</h3>
         <p className="text-xs text-text-secondary mb-3">{t('addDaysDesc')}</p>
         <div className="flex flex-wrap gap-2 mb-3 items-end">
@@ -235,18 +236,18 @@ export default function DateCalculator() {
           </div>
           <div className="w-24">
             <label className="block text-[10px] text-text-secondary mb-0.5">{t('days')}</label>
-            <input type="number" value={addDays} onChange={e => setAddDays(e.target.value)} placeholder={t('days')} className="w-full p-2 bg-bg border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary text-center focus:outline-none focus:border-accent/30 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
+            <input type="number" value={addDays} onChange={e => setAddDays(e.target.value)} placeholder={t('days')} className="w-full p-2 bg-bg border border-border rounded-sm text-sm text-text-primary text-center focus:outline-none focus:border-accent/30 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
           </div>
         </div>
         <button onClick={calcAdd} className="px-4 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('calculate')}</button>
         {addResult && (
-          <div className="mt-2 p-2 bg-bg rounded-sm border border-[rgba(127,99,21,0.1)]">
+          <div className="mt-2 p-2 bg-bg rounded-sm border border-border">
             <p className="text-sm text-text-primary">{t('result')}: {addResult}</p>
           </div>
         )}
       </div>
 
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {error && <p className="text-error text-sm">{error}</p>}
     </div>
   )
 }

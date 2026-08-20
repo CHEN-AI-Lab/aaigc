@@ -1,7 +1,8 @@
 import { defineConfig, devices } from '@playwright/test'
 
-const CHROMIUM_PATH = process.env.PLAYWRIGHT_CHROMIUM_PATH ||
-  '/home/ubuntu/.cloakbrowser/chromium-146.0.7680.177.5/chrome'
+// Only override executable path when env var is explicitly set.
+// On CI / default machines, use Playwright's bundled Chromium (installed via `npx playwright install chromium`).
+const CHROMIUM_PATH = process.env.PLAYWRIGHT_CHROMIUM_PATH;
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -14,12 +15,18 @@ export default defineConfig({
     baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000',
     trace: 'on-first-retry',
   },
+  webServer: {
+    command: 'pnpm build && pnpm start',
+    url: 'http://localhost:3000',
+    reuseExistingServer: !process.env.CI,
+    cwd: './apps/web',
+  },
   projects: [
     {
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-        launchOptions: { executablePath: CHROMIUM_PATH },
+        ...(CHROMIUM_PATH ? { launchOptions: { executablePath: CHROMIUM_PATH } } : {}),
       },
     },
     // Install additional browsers (npx playwright install firefox webkit) to enable:

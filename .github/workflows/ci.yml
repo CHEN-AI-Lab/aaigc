@@ -11,8 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
-        with:
-          version: 10
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -24,14 +22,26 @@ jobs:
       - name: Structure check
         run: bash scripts/check-structure.sh
 
+      - name: Migration safety check
+        run: bash scripts/check-migration-safety.sh
+
       - name: Translation key check
         run: python3 scripts/check-translations.py
 
       - name: Lint
         run: pnpm --filter web lint
 
+      - name: TypeScript type check
+        run: pnpm --filter web exec -- tsc --noEmit
+
       - name: Unit tests
         run: pnpm test
 
       - name: Build
         run: pnpm build
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
+
+      - name: E2E tests
+        run: pnpm exec playwright test --workers=1

@@ -1,8 +1,11 @@
 'use client'
 
+import { useVisitTracking } from 'shared/hooks/useVisitTracking'
 import { lazy, Suspense } from 'react'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
+import { useSession } from '@/auth-client'
+import FavoriteButton from './FavoriteButton'
 
 type Props = {
   slug: string
@@ -52,7 +55,11 @@ const toolModules: Record<string, React.LazyExoticComponent<React.ComponentType>
 export default function ToolPageClient({ slug }: Props) {
   const t = useTranslations('tools')
   const tu = useTranslations('ui')
+  const { data: session } = useSession()
   const Component = toolModules[slug]
+
+  // Track tool usage (page already tracked by VisitTracker, only pass tool)
+  useVisitTracking('aaigc', null, slug, session?.user?.id)
 
   return (
     <div>
@@ -68,6 +75,9 @@ export default function ToolPageClient({ slug }: Props) {
         <h1 className="text-2xl font-semibold text-text-primary mb-1">
           {t(`${slug}.name`)}
         </h1>
+        <div className="flex items-center gap-2 mb-6">
+          <FavoriteButton itemId={slug} type="tool" />
+        </div>
         <div className="min-h-[400px]">
           <Suspense fallback={null}>
             {Component && <Component />}

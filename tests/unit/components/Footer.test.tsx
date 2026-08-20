@@ -12,7 +12,6 @@ const mockTranslations = vi.hoisted(() => {
     'footer.more': 'More...',
     'footer.updates': 'Updates',
     'footer.privacy': 'Privacy',
-    'footer.email': 'chen@aaigc.online',
     'footer.copyright': 'AAIGC. All rights reserved.',
   }
   return (ns: string) => (key: string) => map[`${ns}.${key}`] || key
@@ -68,9 +67,9 @@ describe('Footer', () => {
 
   it('has a mailto link with the email address', async () => {
     await renderFooter()
-    const emailLink = screen.getByText(/chen@aaigc\.online/)
+    const emailLink = screen.getByText(/AAIGC@aaigc\.online/)
     expect(emailLink).toBeInTheDocument()
-    expect(emailLink.closest('a')).toHaveAttribute('href', 'mailto:chen@aaigc.online')
+    expect(emailLink.closest('a')).toHaveAttribute('href', 'mailto:AAIGC@aaigc.online')
   })
 
   it('renders copyright with current year', async () => {

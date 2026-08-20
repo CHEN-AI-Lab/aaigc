@@ -1,6 +1,18 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL
+
+  if (!baseUrl) {
+    // No public URL configured — disallow all crawlers
+    return {
+      rules: {
+        userAgent: '*',
+        disallow: '/',
+      },
+    }
+  }
+
   return {
     rules: [
       {
@@ -9,6 +21,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: '/api/',
       },
     ],
-    sitemap: 'https://aaigc.online/sitemap.xml',
+    sitemap: `${baseUrl}/sitemap.xml`,
   }
 }

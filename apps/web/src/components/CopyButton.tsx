@@ -20,7 +20,7 @@ export default function CopyButton({ text, className }: { text: string; classNam
       onClick={handleCopy}
       className={`text-xs px-2 py-1 rounded-sm transition-all duration-200 shrink-0 ${
         copied
-          ? 'bg-green-500 text-white scale-105'
+          ? 'bg-success text-white scale-105'
           : 'bg-accent text-white hover:opacity-90'
       } ${className || ''}`}
     >

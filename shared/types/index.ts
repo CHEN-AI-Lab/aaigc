@@ -40,3 +40,17 @@ export interface Tool {
   isClientOnly: boolean
   npmDeps?: string[]
 }
+
+// ─── Favorites / Likes ──────────────────────────
+
+export interface FavoriteItem {
+  id: string
+  toolId: string
+  type: string
+  createdAt: string
+}
+
+export interface LikeStatus {
+  liked: boolean
+  count: number
+}

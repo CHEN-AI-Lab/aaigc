@@ -3,6 +3,7 @@ import { Link } from '@/i18n/navigation'
 import { products } from 'data/products'
 import { tools, toolCategories } from 'data/tools'
 import ProductCard from '../../components/ProductCard'
+import HomeToolRanking from '../../components/HomeToolRanking'
 
 type Props = { params: Promise<{ locale: string }> }
 
@@ -15,7 +16,6 @@ export default async function HomePage({ params }: Props) {
   const tt = await getTranslations({ locale, namespace: 'tools' })
 
   const featuredProducts = products.slice(0, 4)
-  const popularTools = ['json-formatter', 'base64', 'qrcode', 'timestamp', 'password-generator', 'calculator', 'word-counter', 'url-encode', 'markdown-preview', 'color-picker', 'regex-tester', 'ip-lookup', 'html-preview', 'emoji-picker', 'http-status-codes']
 
   return (
     <div>
@@ -83,7 +83,7 @@ export default async function HomePage({ params }: Props) {
           <p className="text-text-secondary text-center mb-12 max-w-lg mx-auto">{t('toolsDesc')}</p>
 
           {/* Category grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
             {toolCategories.map((cat) => {
               const count = tools.filter((t) => t.category === cat.id).length
               if (count === 0) return null
@@ -103,20 +103,7 @@ export default async function HomePage({ params }: Props) {
           </div>
 
           {/* Popular tools quick links */}
-          <div className="mt-12 text-center">
-            <p className="text-xs text-text-secondary mb-4">{t('popularTools')}</p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 max-w-2xl mx-auto">
-              {popularTools.map((toolId) => (
-                <Link
-                  key={toolId}
-                  href={`/tools/${toolId}`}
-                  className="text-xs px-2 py-1.5 bg-bg text-text-secondary hover:text-accent hover:bg-accent/5 rounded-sm transition-colors border border-[rgba(127,99,21,0.1)] truncate"
-                >
-                  {tt(`${toolId}.name`)}
-                </Link>
-              ))}
-            </div>
-          </div>
+          <HomeToolRanking tools={tools} locale={locale} />
         </div>
       </section>
 

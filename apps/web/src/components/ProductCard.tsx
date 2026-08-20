@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import type { Product } from 'shared/types'
+import FavoriteStar from './FavoriteStar'
 
 export default function ProductCard({ product }: { product: Product }) {
   const tc = useTranslations('common')
@@ -15,13 +16,16 @@ export default function ProductCard({ product }: { product: Product }) {
   return (
     <Link
       href={`/products/${product.id}`}
-      className="block bg-card rounded-sm p-6 shadow-warm-sm hover:shadow-warm transition-shadow group text-center cursor-pointer border border-card"
+      className="block relative bg-card rounded-sm p-6 shadow-warm-sm hover:shadow-warm transition-shadow group text-center cursor-pointer border border-card"
     >
+      <div className="absolute top-2 right-2 z-10">
+        <FavoriteStar itemId={product.id} type="product" />
+      </div>
       <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">{product.icon}</div>
       <h3 className="card-title text-text-primary mb-2 text-center">{name}</h3>
       {desc && <p className="text-sm text-text-secondary mb-4 line-clamp-2 text-center leading-relaxed">{desc}</p>}
       <span className={`inline-block text-xs px-3 py-1 rounded-sm font-medium ${
-        isLive ? 'bg-green-500 text-white' : 'bg-surface text-text-secondary'
+        isLive ? 'bg-success text-white' : 'bg-surface text-text-secondary'
       }`}>
         {isLive ? tc('live') : tc('comingSoon')}
       </span>

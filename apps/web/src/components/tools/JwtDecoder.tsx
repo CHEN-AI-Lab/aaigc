@@ -67,9 +67,9 @@ export default function JwtDecoder() {
 
   return (
     <div className="mt-6 space-y-4">
-      <textarea value={input} onChange={e => setInput(e.target.value)} placeholder="eyJhbG...NiIs..." className="w-full h-24 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
+      <textarea value={input} onChange={e => setInput(e.target.value)} placeholder="eyJhbG...NiIs..." className="w-full h-24 p-3 bg-surface border border-border rounded-sm text-sm font-mono text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
       <button onClick={decode} className="px-6 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('decode')}</button>
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {error && <p className="text-error text-sm">{error}</p>}
       {header && (
         <div className="space-y-3">
           <div>
@@ -79,13 +79,13 @@ export default function JwtDecoder() {
                 ref={headerRef}
                 readOnly
                 value={header}
-                className="w-full min-h-[120px] max-h-[40vh] p-3 pr-16 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary resize-none overflow-y-auto"
+                className="w-full min-h-[120px] max-h-[40vh] p-3 pr-16 bg-surface border border-border rounded-sm text-sm font-mono text-text-primary resize-none overflow-y-auto"
               />
               <button
                 onClick={handleCopyHeader}
                 className={`absolute top-2 right-6 text-xs px-2.5 py-1.5 rounded-sm transition-all duration-200 min-w-[4.5rem] text-center ${
                   copied === 'header'
-                    ? 'bg-green-500 text-white scale-105'
+                    ? 'bg-success text-white scale-105'
                     : 'bg-accent text-white hover:opacity-90'
                 }`}
               >
@@ -100,13 +100,13 @@ export default function JwtDecoder() {
                 ref={payloadRef}
                 readOnly
                 value={payload}
-                className="w-full min-h-[180px] max-h-[60vh] p-3 pr-16 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm font-mono text-text-primary resize-none overflow-y-auto"
+                className="w-full min-h-[180px] max-h-[60vh] p-3 pr-16 bg-surface border border-border rounded-sm text-sm font-mono text-text-primary resize-none overflow-y-auto"
               />
               <button
                 onClick={handleCopyPayload}
                 className={`absolute top-2 right-6 text-xs px-2.5 py-1.5 rounded-sm transition-all duration-200 min-w-[4.5rem] text-center ${
                   copied === 'payload'
-                    ? 'bg-green-500 text-white scale-105'
+                    ? 'bg-success text-white scale-105'
                     : 'bg-accent text-white hover:opacity-90'
                 }`}
               >

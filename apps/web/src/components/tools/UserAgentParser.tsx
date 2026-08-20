@@ -1,10 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
 
 export default function UserAgentParser() {
-  const t = useTranslations('tools')
   const [ua, setUa] = useState('')
 
   useEffect(() => { setUa(navigator.userAgent) }, [])
@@ -34,12 +32,12 @@ export default function UserAgentParser() {
       <p className="text-xs text-text-secondary mb-3">输入浏览器 User-Agent 字符串，自动解析出浏览器类型、操作系统和设备信息。默认显示当前浏览器的 UA。</p>
 
       <textarea value={ua} onChange={e => setUa(e.target.value)} rows={3}
-        className="w-full p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-xs text-text-primary font-mono resize-none focus:outline-none focus:border-accent/30" />
+        className="w-full p-3 bg-surface border border-border rounded-sm text-xs text-text-primary font-mono resize-none focus:outline-none focus:border-accent/30" />
 
       {info.length > 0 && (
         <div className="grid grid-cols-3 gap-3">
           {info.map((item, i) => (
-            <div key={i} className="p-4 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-center">
+            <div key={i} className="p-4 bg-surface border border-border rounded-sm text-center">
               <p className="text-xs text-text-secondary mb-1">{item.label}</p>
               <p className="text-sm font-semibold text-text-primary">{item.value}</p>
             </div>

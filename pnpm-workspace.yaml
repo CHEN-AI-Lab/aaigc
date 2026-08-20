@@ -1,4 +1,10 @@
 packages:
-  - 'shared'
-  - 'apps/*'
-  - 'tests'
+  - shared
+  - apps/*
+  - tests
+
+onlyBuiltDependencies:
+  - '@prisma/client'
+  - '@swc/core'
+  - esbuild
+  - sharp

@@ -11,6 +11,28 @@ import {
   type PreviewItem,
 } from 'shared/utils/fileRename'
 
+
+// ─── Rule with all fields (for UI rendering without narrowing) ──
+type RuleWithFields = RenameRule & {
+  find?: string
+  replace?: string
+  text?: string
+  start?: number
+  digits?: number
+  level?: number
+  position?: string
+  mode?: string
+  removeSpaces?: boolean
+  removeSpecialChars?: boolean
+  spaceReplacement?: string
+  pattern?: string
+  replacement?: string
+  replaceOriginal?: boolean
+  perFolder?: boolean
+  folderMode?: boolean
+  folderLevel?: number
+}
+
 // ─── Rule type config ──────────────────────────
 
 interface RuleConfig {
@@ -114,8 +136,8 @@ function buildTree(items: PreviewItem[], hideFiles = false): TreeNode[] {
       // For files, check if name changed
       // For dirs, compute newName if the dir name changed
       let newName: string | undefined
-      let changed = false
-      let conflict = false
+      let changed: boolean
+      let conflict: boolean
 
       if (isLast) {
         // File - only check if the filename itself changed, not the folder path
@@ -126,6 +148,7 @@ function buildTree(items: PreviewItem[], hideFiles = false): TreeNode[] {
       } else {
         // Directory - compare individual segment, not cumulative path
         changed = origPart !== part
+        conflict = false
         newName = changed ? part : undefined
       }
 
@@ -177,7 +200,7 @@ function renderTreeNode(node: TreeNode, depth: number, isLast: boolean): React.R
         <span className="shrink-0">{icon}</span>
         <span className="text-text-secondary/40 shrink-0">{prefix}</span>
         <span className="truncate">{name}</span>
-        {node.conflict && <span className="text-red-500 shrink-0">⚠️</span>}
+        {node.conflict && <span className="text-error shrink-0">⚠️</span>}
       </div>
       {children}
     </div>
@@ -202,7 +225,7 @@ export default function FileRenamer() {
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    setCanDirectRename(typeof window !== 'undefined' && typeof (window as any).showDirectoryPicker === 'function')
+    setCanDirectRename(typeof window !== 'undefined' && typeof window.showDirectoryPicker === 'function')
   }, [])
 
   // ── File selection ────────────────────────────
@@ -217,7 +240,7 @@ export default function FileRenamer() {
     for (let i = 0; i < fileList.length; i++) {
       const f = fileList[i]
       // webkitRelativePath gives the full relative path including folder
-      const relPath = (f as any).webkitRelativePath || f.name
+      const relPath = f.webkitRelativePath || f.name
       if (seen.has(relPath)) continue
       seen.add(relPath)
       entries.push(f)
@@ -244,6 +267,61 @@ export default function FileRenamer() {
     e.preventDefault()
     setDragOver(false)
     setError(''); setSuccessMsg('')
+
+    async function handleFolderDrop(items: DataTransferItemList, fallbackFiles: FileList) {
+      const entries: File[] = []
+      const paths: FileWithPath[] = []
+      const seen = new Set<string>()
+
+      async function walk(entry: FileSystemEntry, basePath: string) {
+        if (entry.isDirectory) {
+          const reader = (entry as FileSystemDirectoryEntry).createReader()
+          const readBatch = (): Promise<void> =>
+            new Promise((resolve, reject) => {
+              reader.readEntries((batch) => {
+                if (batch.length === 0) return resolve()
+                Promise.all(batch.map(e => walk(e, `${basePath}${entry.name}/`)))
+                  .then(() => readBatch().then(resolve))
+                  .catch(reject)
+              }, reject)
+            })
+          await readBatch()
+        } else {
+          const file = await new Promise<File>((resolve, reject) =>
+            (entry as FileSystemFileEntry).file(resolve, reject)
+          )
+          const relPath = `${basePath}${file.name}`
+          if (seen.has(relPath)) return
+          seen.add(relPath)
+          entries.push(file)
+          paths.push({ name: file.name, path: relPath })
+        }
+      }
+
+      try {
+        const tasks: Promise<void>[] = []
+        for (let i = 0; i < items.length; i++) {
+          const entry = items[i].webkitGetAsEntry?.()
+          if (entry) tasks.push(walk(entry, ''))
+        }
+        await Promise.all(tasks)
+
+        if (paths.length === 0) {
+          handleFiles(fallbackFiles)
+          return
+        }
+        const [sortedEntries, sortedPaths] = sortFiles(entries, paths)
+        setFileEntries(sortedEntries)
+        setFiles(sortedPaths)
+        const firstSlash = sortedPaths[0].path.indexOf('/')
+        if (firstSlash > 0) {
+          setOrigFolderName(sortedPaths[0].path.slice(0, firstSlash))
+        }
+      } catch {
+        handleFiles(fallbackFiles)
+      }
+    }
+
     try {
       // Try folder drag via webkitGetAsEntry (Chrome/Edge/Firefox/Safari)
       const items = e.dataTransfer.items
@@ -264,71 +342,17 @@ export default function FileRenamer() {
     }
   }, [handleFiles])
 
-  async function handleFolderDrop(items: DataTransferItemList, fallbackFiles: FileList) {
-    const entries: File[] = []
-    const paths: FileWithPath[] = []
-    const seen = new Set<string>()
-
-    async function walk(entry: FileSystemEntry, basePath: string) {
-      if (entry.isDirectory) {
-        const reader = (entry as FileSystemDirectoryEntry).createReader()
-        const readBatch = (): Promise<void> =>
-          new Promise((resolve, reject) => {
-            reader.readEntries((batch) => {
-              if (batch.length === 0) return resolve()
-              Promise.all(batch.map(e => walk(e, `${basePath}${entry.name}/`)))
-                .then(() => readBatch().then(resolve))
-                .catch(reject)
-            }, reject)
-          })
-        await readBatch()
-      } else {
-        const file = await new Promise<File>((resolve, reject) =>
-          (entry as FileSystemFileEntry).file(resolve, reject)
-        )
-        const relPath = `${basePath}${file.name}`
-        if (seen.has(relPath)) return
-        seen.add(relPath)
-        entries.push(file)
-        paths.push({ name: file.name, path: relPath })
-      }
-    }
-
-    try {
-      const tasks: Promise<void>[] = []
-      for (let i = 0; i < items.length; i++) {
-        const entry = items[i].webkitGetAsEntry?.()
-        if (entry) tasks.push(walk(entry, ''))
-      }
-      await Promise.all(tasks)
-
-      if (paths.length === 0) {
-        handleFiles(fallbackFiles)
-        return
-      }
-      const [sortedEntries, sortedPaths] = sortFiles(entries, paths)
-      setFileEntries(sortedEntries)
-      setFiles(sortedPaths)
-      const firstSlash = sortedPaths[0].path.indexOf('/')
-      if (firstSlash > 0) {
-        setOrigFolderName(sortedPaths[0].path.slice(0, firstSlash))
-      }
-    } catch {
-      handleFiles(fallbackFiles)
-    }
-  }
-
   const handleClick = useCallback(async () => {
     // Try showDirectoryPicker first (Chrome/Edge) — clean native dialog, no scary warning
     try {
-      if (typeof (window as any).showDirectoryPicker === 'function') {
-        const dirHandle = await (window as any).showDirectoryPicker()
+      if (typeof window.showDirectoryPicker === 'function') {
+        const dirHandle = await window.showDirectoryPicker()
         const entries: File[] = []
         const paths: FileWithPath[] = []
         const seen = new Set<string>()
 
         async function walk(dir: FileSystemDirectoryHandle, basePath: string) {
-          const iter = (dir as any).entries()
+          const iter = dir.entries()
           for await (const [name, handle] of iter) {
             if (handle.kind === 'directory') {
               await walk(handle as FileSystemDirectoryHandle, `${basePath}${name}/`)
@@ -400,9 +424,68 @@ export default function FileRenamer() {
 
   const hasConflicts = useMemo(() => preview.some(p => p.conflict), [preview])
   const treeNodes = useMemo(() => {
-    const hasFolderMode = rules.some(r => (r as any).folderMode || r.type === 'numberFolders')
+    const hasFolderMode = rules.some(r => r.folderMode || r.type === 'numberFolders')
     return buildTree(preview, hasFolderMode)
   }, [preview, rules])
+
+  // ── Rename/Download helpers ──────────────────
+
+  const directRename = useCallback(async (origFolderName: string) => {
+    if (typeof window.showDirectoryPicker !== 'function') {
+      setError(t('renFsApiUnsupported'))
+      return
+    }
+    const dirHandle = await window.showDirectoryPicker()
+    if (dirHandle.name !== origFolderName) {
+      setError(t('renWrongFolder', { folder: origFolderName }))
+      return
+    }
+
+    let renamed = 0
+    for (const item of preview) {
+      if (!item.changed) continue
+      const relPath = item.originalPath.slice(origFolderName.length + 1)
+      const parts = relPath.split('/')
+      let handle = dirHandle
+
+      for (let i = 0; i < parts.length - 1; i++) {
+        handle = await handle.getDirectoryHandle(parts[i])
+      }
+
+      const newName = item.newName
+      const oldName = parts[parts.length - 1]
+      if (oldName !== newName) {
+        try {
+          const file = await handle.getFileHandle(oldName)
+          const blob = await file.getFile()
+          const writable = await handle.getFileHandle(newName, { create: true }).then(h => h.createWritable())
+          await writable.write(blob)
+          await writable.close()
+          await handle.removeEntry(oldName)
+          renamed++
+        } catch {
+          // skip files that can't be renamed
+        }
+      }
+    }
+    setSuccessMsg(t('renamedCount', { count: renamed }))
+  }, [preview, t])
+
+  const zipDownload = useCallback(async () => {
+    const zip = new JSZip()
+
+    for (let i = 0; i < preview.length; i++) {
+      const item = preview[i]
+      const entry = fileEntries[i]
+      if (!entry) continue
+      zip.file(item.newPath, entry)
+    }
+
+    const zipBytes = await zip.generateAsync({ type: 'uint8array' })
+    const zipName = origFolderName ? `${origFolderName}_renamed.zip` : 'renamed_files.zip'
+    downloadBlob(zipBytes, zipName)
+    setSuccessMsg(t('renZipped', { count: files.length }))
+  }, [preview, fileEntries, origFolderName, files, t])
 
   // ── Execute ─────────────────────────────────
 
@@ -417,7 +500,7 @@ export default function FileRenamer() {
 
     try {
       // Try showDirectoryPicker (File System Access API) for direct rename
-      if (typeof (window as any).showDirectoryPicker === 'function') {
+      if (typeof window.showDirectoryPicker === 'function') {
         const firstSlash = files[0].path.indexOf('/')
         const origFolderName = firstSlash > 0 ? files[0].path.slice(0, firstSlash) : ''
         if (origFolderName) {
@@ -438,64 +521,7 @@ export default function FileRenamer() {
       setError(err instanceof Error ? err.message : t('renError'))
     }
     setProcessing(false)
-  }, [files, rules, hasConflicts, t, preview])
-
-  async function directRename(origFolderName: string) {
-    const dirHandle = await (window as any).showDirectoryPicker()
-    // Verify the user picked the right folder
-    if (dirHandle.name !== origFolderName) {
-      setError(t('renWrongFolder', { folder: origFolderName }))
-      return
-    }
-
-    let renamed = 0
-    for (const item of preview) {
-      if (!item.changed) continue
-      // Reconstruct the path relative to the folder
-      const relPath = item.originalPath.slice(origFolderName.length + 1)
-      const parts = relPath.split('/')
-      let handle = dirHandle
-
-      for (let i = 0; i < parts.length - 1; i++) {
-        handle = await handle.getDirectoryHandle(parts[i])
-      }
-
-      const newName = item.newName
-      const oldName = parts[parts.length - 1]
-      if (oldName !== newName) {
-        try {
-          const file = await handle.getFileHandle(oldName)
-          // File System Access API for rename is limited:
-          // We can't directly rename, so we copy the file content to a new name and delete the old one
-          const blob = await file.getFile()
-          const writable = await handle.getFileHandle(newName, { create: true }).then((h: any) => h.createWritable())
-          await writable.write(blob)
-          await writable.close()
-          await handle.removeEntry(oldName)
-          renamed++
-        } catch {
-          // skip files that can't be renamed
-        }
-      }
-    }
-    setSuccessMsg(t('renamedCount', { count: renamed }))
-  }
-
-  async function zipDownload() {
-    const zip = new JSZip()
-
-    for (let i = 0; i < preview.length; i++) {
-      const item = preview[i]
-      const entry = fileEntries[i]
-      if (!entry) continue
-      zip.file(item.newPath, entry)
-    }
-
-    const zipBytes = await zip.generateAsync({ type: 'uint8array' })
-    const zipName = origFolderName ? `${origFolderName}_renamed.zip` : 'renamed_files.zip'
-    downloadBlob(zipBytes, zipName)
-    setSuccessMsg(t('renZipped', { count: files.length }))
-  }
+  }, [files, rules, hasConflicts, t, directRename, zipDownload])
 
   // ── Render ──────────────────────────────────
 
@@ -551,7 +577,7 @@ export default function FileRenamer() {
       </div>
 
       {canDirectRename === false && (
-        <p className="text-xs text-text-secondary/60 text-center bg-surface py-2 px-4 rounded-lg border border-[rgba(127,99,21,0.1)]">
+        <p className="text-xs text-text-secondary/60 text-center bg-surface py-2 px-4 rounded-lg border border-border">
           {t('renBrowserHint')}
         </p>
       )}
@@ -573,13 +599,14 @@ export default function FileRenamer() {
 
           {rules.map((rule, i) => {
             const cfg = ruleConfigs.find(c => c.type === rule.type)
+    const r = rule as RuleWithFields
             return (
               <div key={i} className="flex flex-wrap items-center gap-2 p-3 bg-surface rounded-lg">
                 {/* Rule type selector */}
                 <select
                   value={rule.type}
                   onChange={e => changeRuleType(i, e.target.value as RenameRuleType)}
-                  className="p-1.5 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary"
+                  className="p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                 >
                   {ruleConfigs.map(c => (
                     <option key={c.type} value={c.type}>{t(c.labelKey)}</option>
@@ -589,39 +616,39 @@ export default function FileRenamer() {
                 {/* Rule-specific fields */}
                 {cfg?.hasFind && (
                   <input
-                    type="text" placeholder={t('renFind')} value={(rule as any).find}
+                    type="text" placeholder={t('renFind')} value={r.find}
                     onChange={e => updateRule(i, r => ({ ...r, find: e.target.value }))}
-                    className="w-28 p-1.5 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary"
+                    className="w-28 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                   />
                 )}
                 {cfg?.hasReplace && (
                   <input
-                    type="text" placeholder={t('renReplace')} value={(rule as any).replace}
+                    type="text" placeholder={t('renReplace')} value={r.replace}
                     onChange={e => updateRule(i, r => ({ ...r, replace: e.target.value }))}
-                    className="w-28 p-1.5 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary"
+                    className="w-28 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                   />
                 )}
                 {cfg?.hasText && (
                   <input
-                    type="text" placeholder={t('renText')} value={(rule as any).text}
+                    type="text" placeholder={t('renText')} value={r.text}
                     onChange={e => updateRule(i, r => ({ ...r, text: e.target.value }))}
-                    className="w-28 p-1.5 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary"
+                    className="w-28 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                   />
                 )}
                 {cfg?.hasDelete && (
                   <input
-                    type="text" placeholder={t('renDeleteText')} value={(rule as any).text}
+                    type="text" placeholder={t('renDeleteText')} value={r.text}
                     onChange={e => updateRule(i, r => ({ ...r, text: e.target.value }))}
-                    className="w-28 p-1.5 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary"
+                    className="w-28 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                   />
                 )}
                 {cfg?.hasStart && (
                   <label className="flex items-center gap-1 text-xs text-text-secondary">
                     {t('renStart')}
                     <input
-                      type="number" min="0" value={(rule as any).start}
+                      type="number" min="0" value={r.start}
                       onChange={e => updateRule(i, r => ({ ...r, start: Math.max(0, parseInt(e.target.value) || 0) }))}
-                      className="w-16 p-1.5 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary"
+                      className="w-16 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                     />
                   </label>
                 )}
@@ -629,9 +656,9 @@ export default function FileRenamer() {
                   <label className="flex items-center gap-1 text-xs text-text-secondary">
                     {t('renDigits')}
                     <input
-                      type="number" min="1" max="10" value={(rule as any).digits}
+                      type="number" min="1" max="10" value={r.digits}
                       onChange={e => updateRule(i, r => ({ ...r, digits: Math.max(1, Math.min(10, parseInt(e.target.value) || 1)) }))}
-                      className="w-14 p-1.5 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary"
+                      className="w-14 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                     />
                   </label>
                 )}
@@ -639,16 +666,16 @@ export default function FileRenamer() {
                   <label className="flex items-center gap-1 text-xs text-text-secondary">
                     <span>{t('renFolderLevel')}</span>
                     <input
-                      type="number" min="0" max="5" value={(rule as any).level ?? 1}
+                      type="number" min="0" max="5" value={r.level ?? 1}
                       onChange={e => updateRule(i, r => ({ ...r, level: Math.max(0, Math.min(5, parseInt(e.target.value) || 0)) }))}
-                      className="w-12 p-1 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary text-center"
+                      className="w-12 p-1 bg-bg border border-border rounded-lg text-xs text-text-primary text-center"
                     />
                   </label>
                 )}
                 {rule.type === 'numberFolders' && (
                   <label className="flex items-center gap-1 text-xs text-text-secondary cursor-pointer whitespace-nowrap">
                     <input
-                      type="checkbox" checked={(rule as any).perFolder ?? false}
+                      type="checkbox" checked={rule.perFolder ?? false}
                       onChange={e => updateRule(i, r => ({ ...r, perFolder: e.target.checked }))}
                       className="accent-accent"
                     />
@@ -657,9 +684,9 @@ export default function FileRenamer() {
                 )}
                 {cfg?.hasPosition && (
                   <select
-                    value={(rule as any).position}
+                    value={r.position}
                     onChange={e => updateRule(i, r => ({ ...r, position: e.target.value as 'prefix' | 'suffix' }))}
-                    className="p-1.5 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary"
+                    className="p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                   >
                     <option value="prefix">{t('renPrefix')}</option>
                     <option value="suffix">{t('renSuffix')}</option>
@@ -668,7 +695,7 @@ export default function FileRenamer() {
                 {cfg?.hasReplaceOriginal && (
                   <label className="flex items-center gap-1 text-xs text-text-secondary cursor-pointer whitespace-nowrap">
                     <input
-                      type="checkbox" checked={(rule as any).replaceOriginal ?? false}
+                      type="checkbox" checked={r.replaceOriginal ?? false}
                       onChange={e => updateRule(i, r => ({ ...r, replaceOriginal: e.target.checked }))}
                       className="accent-accent"
                     />
@@ -678,7 +705,7 @@ export default function FileRenamer() {
                 {rule.type === 'numbering' && (
                   <label className="flex items-center gap-1 text-xs text-text-secondary cursor-pointer whitespace-nowrap">
                     <input
-                      type="checkbox" checked={(rule as any).perFolder ?? false}
+                      type="checkbox" checked={rule.perFolder ?? false}
                       onChange={e => updateRule(i, r => ({ ...r, perFolder: e.target.checked }))}
                       className="accent-accent"
                     />
@@ -687,9 +714,9 @@ export default function FileRenamer() {
                 )}
                 {cfg?.hasMode && (
                   <select
-                    value={(rule as any).mode}
+                    value={r.mode}
                     onChange={e => updateRule(i, r => ({ ...r, mode: e.target.value as 'upper' | 'lower' | 'capitalize' }))}
-                    className="p-1.5 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary"
+                    className="p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                   >
                     <option value="upper">{t('renUpper')}</option>
                     <option value="lower">{t('renLower')}</option>
@@ -699,7 +726,7 @@ export default function FileRenamer() {
                 {cfg?.hasRemoveSpaces && (
                   <label className="flex items-center gap-1 text-xs text-text-secondary cursor-pointer">
                     <input
-                      type="checkbox" checked={(rule as any).removeSpaces}
+                      type="checkbox" checked={r.removeSpaces}
                       onChange={e => updateRule(i, r => ({ ...r, removeSpaces: e.target.checked }))}
                       className="accent-accent"
                     />
@@ -709,55 +736,55 @@ export default function FileRenamer() {
                 {cfg?.hasRemoveSpecial && (
                   <label className="flex items-center gap-1 text-xs text-text-secondary cursor-pointer">
                     <input
-                      type="checkbox" checked={(rule as any).removeSpecialChars}
+                      type="checkbox" checked={r.removeSpecialChars}
                       onChange={e => updateRule(i, r => ({ ...r, removeSpecialChars: e.target.checked }))}
                       className="accent-accent"
                     />
                     {t('renRemoveSpecial')}
                   </label>
                 )}
-                {cfg?.hasSpaceReplacement && (rule as any).removeSpaces && (
+                {cfg?.hasSpaceReplacement && r.removeSpaces && (
                   <label className="flex items-center gap-1 text-xs text-text-secondary">
                     {t('renReplaceWith')}
                     <input
-                      type="text" maxLength={2} value={(rule as any).spaceReplacement}
+                      type="text" maxLength={2} value={r.spaceReplacement}
                       onChange={e => updateRule(i, r => ({ ...r, spaceReplacement: e.target.value }))}
-                      className="w-12 p-1.5 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary"
+                      className="w-12 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                     />
                   </label>
                 )}
                 {cfg?.hasPattern && (
                   <input
-                    type="text" placeholder={t('renPattern')} value={(rule as any).pattern}
+                    type="text" placeholder={t('renPattern')} value={r.pattern}
                     onChange={e => updateRule(i, r => ({ ...r, pattern: e.target.value }))}
-                    className="w-28 p-1.5 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary"
+                    className="w-28 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                   />
                 )}
                 {(cfg?.hasReplacement && rule.type === 'regex') && (
                   <input
-                    type="text" placeholder={t('renReplace')} value={(rule as any).replacement}
+                    type="text" placeholder={t('renReplace')} value={r.replacement}
                     onChange={e => updateRule(i, r => ({ ...r, replacement: e.target.value }))}
-                    className="w-28 p-1.5 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary"
+                    className="w-28 p-1.5 bg-bg border border-border rounded-lg text-xs text-text-primary"
                   />
                 )}
 
                 {cfg?.hasFolderMode && (
                   <label className="flex items-center gap-1 text-xs text-text-secondary cursor-pointer whitespace-nowrap">
                     <input
-                      type="checkbox" checked={(rule as any).folderMode ?? false}
+                      type="checkbox" checked={rule.folderMode ?? false}
                       onChange={e => updateRule(i, r => ({ ...r, folderMode: e.target.checked }))}
                       className="accent-accent"
                     />
                     {t('renFolderMode')}
                   </label>
                 )}
-                {(rule as any).folderMode && cfg?.hasFolderMode && (
+                {rule.folderMode && cfg?.hasFolderMode && (
                   <label className="flex items-center gap-1 text-xs text-text-secondary whitespace-nowrap">
                     <span>{t('renFolderLevel')}</span>
                     <input
-                      type="number" min="0" max="5" value={(rule as any).folderLevel ?? 1}
+                      type="number" min="0" max="5" value={rule.folderLevel ?? 1}
                       onChange={e => updateRule(i, r => ({ ...r, folderLevel: Math.max(0, Math.min(5, parseInt(e.target.value) || 0)) }))}
-                      className="w-12 p-1 bg-bg border border-[rgba(127,99,21,0.15)] rounded-lg text-xs text-text-primary text-center"
+                      className="w-12 p-1 bg-bg border border-border rounded-lg text-xs text-text-primary text-center"
                     />
                   </label>
                 )}
@@ -765,7 +792,7 @@ export default function FileRenamer() {
                 {/* Delete rule */}
                 <button
                   onClick={() => removeRule(i)}
-                  className="ml-auto text-xs text-red-500 hover:text-red-600 shrink-0"
+                  className="ml-auto text-xs text-error hover:text-error shrink-0"
                 >✕</button>
               </div>
             )
@@ -799,7 +826,7 @@ export default function FileRenamer() {
               </div>
               <p className="text-text-secondary/60 mt-1">{t('renEx5Desc')}</p>
             </div>
-            <hr className="border-[rgba(127,99,21,0.08)]" />
+            <hr className="border-border" />
             <div>
               <p className="font-medium text-text-primary mb-1">{t('renEx6Title')}</p>
               <div className="grid grid-cols-[1fr_auto_1fr] gap-x-3 gap-y-0.5 text-text-secondary">
@@ -812,7 +839,7 @@ export default function FileRenamer() {
               </div>
               <p className="text-text-secondary/60 mt-1">{t('renEx6Desc')}</p>
             </div>
-            <hr className="border-[rgba(127,99,21,0.08)]" />
+            <hr className="border-border" />
             <div>
               <p className="font-medium text-text-primary mb-1">{t('renEx3Title')}</p>
               <div className="grid grid-cols-[1fr_auto_1fr] gap-x-3 gap-y-0.5 text-text-secondary">
@@ -832,7 +859,7 @@ export default function FileRenamer() {
   <span className="pl-[3em] block">{t('renEx3Desc3')}</span>
 </p>
             </div>
-            <hr className="border-[rgba(127,99,21,0.08)]" />
+            <hr className="border-border" />
             <div>
               <p className="font-medium text-text-primary mb-1">{t('renEx1Title')}</p>
               <div className="grid grid-cols-[1fr_auto_1fr] gap-x-3 gap-y-0.5 text-text-secondary">
@@ -845,7 +872,7 @@ export default function FileRenamer() {
               </div>
               <p className="text-text-secondary/60 mt-1">{t('renEx1Desc')}</p>
             </div>
-            <hr className="border-[rgba(127,99,21,0.08)]" />
+            <hr className="border-border" />
             <div>
               <p className="font-medium text-text-primary mb-1">{t('renEx2Title')}</p>
               <div className="grid grid-cols-[1fr_auto_1fr] gap-x-3 gap-y-0.5 text-text-secondary">
@@ -858,7 +885,7 @@ export default function FileRenamer() {
               </div>
               <p className="text-text-secondary/60 mt-1">{t('renEx2Desc')}</p>
             </div>
-            <hr className="border-[rgba(127,99,21,0.08)]" />
+            <hr className="border-border" />
             <div>
               <p className="font-medium text-text-primary mb-1">{t('renEx4Title')}</p>
               <div className="grid grid-cols-[1fr_auto_1fr] gap-x-3 gap-y-0.5 text-text-secondary">
@@ -889,7 +916,7 @@ export default function FileRenamer() {
 
       {/* Error / info message */}
       {(error || successMsg) && (
-        <p className={`text-sm text-center ${successMsg ? 'text-green-500' : 'text-red-500'}`}>
+        <p className={`text-sm text-center ${successMsg ? 'text-success' : 'text-error'}`}>
           {successMsg || error}
         </p>
       )}
@@ -905,7 +932,7 @@ export default function FileRenamer() {
             >{processing ? t('renProcessing') : t('renExecute')}</button>
             <button
               onClick={() => { setFiles([]); setFileEntries([]); setRules([]); setError(''); setSuccessMsg('') }}
-              className="px-6 py-3 bg-surface text-text-primary text-sm font-medium rounded-lg border border-[rgba(127,99,21,0.15)] hover:bg-accent/5 transition-colors"
+              className="px-6 py-3 bg-surface text-text-primary text-sm font-medium rounded-lg border border-border hover:bg-accent/5 transition-colors"
             >{t('renClear')}</button>
           </div>
           {canDirectRename !== undefined && (

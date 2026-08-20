@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
+import { CONTACT_EMAIL } from 'shared/constants'
 import { products } from 'data/products'
 import { tools } from 'data/tools'
 
@@ -13,13 +14,13 @@ export default function Footer() {
   const tt = useTranslations('tools')
   const tc = useTranslations('common')
 
-  if (pathname?.includes('/tools/')) return null
+  if (pathname?.includes('/tools/') || pathname?.includes('/account')) return null
 
   const liveProducts = products.filter(p => p.status === 'live')
   const featureTools = tools.slice(0, 3)
 
   return (
-    <footer className="border-t border-[rgba(127,99,21,0.1)] bg-bg mt-auto">
+    <footer className="border-t border-border bg-bg mt-auto">
       <div className="max-w-6xl mx-auto px-6 py-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div>
@@ -64,13 +65,14 @@ export default function Footer() {
             <ul className="space-y-2 text-xs text-text-secondary">
               <li><Link href="/updates" className="hover:text-accent transition-colors">{t('updates')}</Link></li>
               <li><Link href="/about" className="hover:text-accent transition-colors">{tc('about')}</Link></li>
-              <li><a href="mailto:chen@aaigc.online" className="hover:text-accent transition-colors">{t('email')}</a></li>
+              <li><a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-accent transition-colors">{CONTACT_EMAIL}</a></li>
             </ul>
           </div>
         </div>
-        <div className="border-t border-[rgba(127,99,21,0.1)] mt-8 pt-8 flex items-center justify-center gap-6 text-xs text-text-secondary">
+        <div className="border-t border-border mt-8 pt-8 flex items-center justify-center gap-6 text-xs text-text-secondary">
           <span>&copy; {new Date().getFullYear()} {t('copyright')}</span>
           <Link href="/privacy" className="hover:text-accent transition-colors">{t('privacy')}</Link>
+          <Link href="/terms" className="hover:text-accent transition-colors">{t('terms')}</Link>
         </div>
       </div>
     </footer>

@@ -1,0 +1,45 @@
+import { NextResponse } from "next/server"
+import { prisma } from "shared/utils/prisma"
+import { auth } from "@/auth"
+
+export async function GET() {
+  const session = await auth()
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "loginRequired" }, { status: 401 })
+  }
+
+  const favorites = await prisma.favorite.findMany({
+    where: { userId: session.user.id },
+    orderBy: { createdAt: "desc" },
+  })
+
+  return NextResponse.json({ favorites })
+}
+
+export async function POST(req: Request) {
+  const session = await auth()
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "loginRequired" }, { status: 401 })
+  }
+
+  const { toolId, type } = await req.json()
+  if (!toolId) {
+    return NextResponse.json({ error: "missingToolId" }, { status: 400 })
+  }
+
+  const userId = session.user.id
+  const itemType = type || "tool"
+
+  // Toggle favorite
+  const existing = await prisma.favorite.findUnique({
+    where: { userId_toolId_type: { userId, toolId, type: itemType } },
+  })
+
+  if (existing) {
+    await prisma.favorite.delete({ where: { id: existing.id } })
+    return NextResponse.json({ isFavorited: false })
+  }
+
+  await prisma.favorite.create({ data: { userId, toolId, type: itemType } })
+  return NextResponse.json({ isFavorited: true })
+}

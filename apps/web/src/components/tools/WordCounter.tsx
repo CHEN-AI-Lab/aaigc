@@ -18,7 +18,7 @@ export default function WordCounter() {
 
   return (
     <div className="mt-6 space-y-4">
-      <textarea value={text} onChange={e => setText(e.target.value)} placeholder={t('typeOrPasteText')} className="w-full h-48 p-3 bg-surface border border-[rgba(127,99,21,0.15)] rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
+      <textarea value={text} onChange={e => setText(e.target.value)} placeholder={t('typeOrPasteText')} className="w-full h-48 p-3 bg-surface border border-border rounded-sm text-sm text-text-primary placeholder:text-text-secondary/50 resize-none focus:outline-none focus:border-accent/30" />
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
         <div className="bg-surface p-3 rounded-sm text-center">
           <div className="text-lg font-semibold text-accent">{stats.chars}</div>

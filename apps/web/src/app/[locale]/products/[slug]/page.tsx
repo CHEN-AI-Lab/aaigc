@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { products } from 'data/products'
+import FavoriteButton from '@/components/FavoriteButton'
 
 type Props = { params: Promise<{ locale: string; slug: string }> }
 
@@ -43,13 +44,17 @@ export default async function ProductDetailPage({ params }: Props) {
             <div className="flex items-center gap-3 mb-3">
               <h1 className="text-3xl font-semibold text-text-primary">{name}</h1>
               <span className={`shrink-0 text-xs px-2.5 py-0.5 rounded-sm font-medium ${
-                isLive ? 'bg-green-500 text-white' : 'bg-surface text-text-secondary'
+                isLive ? 'bg-success text-white' : 'bg-surface text-text-secondary'
               }`}>
                 {isLive ? tc('live') : tc('comingSoon')}
               </span>
             </div>
             {desc && <p className="text-text-secondary leading-relaxed">{desc}</p>}
           </div>
+        </div>
+
+        <div className="mb-6">
+          <FavoriteButton itemId={slug} type="product" />
         </div>
 
         {features && features.length > 0 && (

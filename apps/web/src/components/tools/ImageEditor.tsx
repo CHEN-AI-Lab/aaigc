@@ -194,7 +194,7 @@ export default function ImageEditor() {
       {!dataUrl && (
         <div onDrop={handleDrop} onDragOver={e => { e.preventDefault(); setIsDragOver(true) }} onDragLeave={() => setIsDragOver(false)}
           onClick={() => inputRef.current?.click()}
-          className={`flex items-center justify-center w-full h-40 border-2 border-dashed rounded-sm bg-surface cursor-pointer hover:border-accent/30 transition-colors ${isDragOver ? 'border-accent bg-accent/5' : 'border-[rgba(127,99,21,0.2)]'}`}>
+          className={`flex items-center justify-center w-full h-40 border-2 border-dashed rounded-sm bg-surface cursor-pointer hover:border-accent/30 transition-colors ${isDragOver ? 'border-accent bg-accent/5' : 'border-border'}`}>
           <div className="text-center pointer-events-none">
             <div className="text-3xl mb-2">🖼️</div>
             <p className="text-sm text-text-secondary">{t('dropImage')}</p>
@@ -206,7 +206,7 @@ export default function ImageEditor() {
       {dataUrl && (
         <>
           {/* Preview */}
-          <div ref={containerRef} className="relative bg-surface border border-[rgba(127,99,21,0.1)] rounded-sm overflow-hidden cursor-crosshair select-none"
+          <div ref={containerRef} className="relative bg-surface border border-border rounded-sm overflow-hidden cursor-crosshair select-none"
             onMouseDown={handleMouseDown} onMouseMove={(e) => {
               handleMouseMove(e)
               if (imgRef.current) {
@@ -217,13 +217,13 @@ export default function ImageEditor() {
                   setShowZoom(mx >= offsetX && mx <= offsetX + contentW && my >= offsetY && my <= offsetY + contentH)
                 }
               }
-            }} onMouseUp={handleMouseUp} onMouseLeave={(e) => { handleMouseUp(); setShowZoom(false) }}>
+            }} onMouseUp={handleMouseUp} onMouseLeave={(_e) => { handleMouseUp(); setShowZoom(false) }}>
             <img ref={imgRef} src={dataUrl} alt="Preview" className="w-full h-auto max-h-[60vh] object-contain" draggable={false} />
             {showZoom && imgRef.current && (() => {
               const { offsetX, offsetY, contentW } = getDisplayContent(imgRef.current)
               return (
                 <button onClick={() => setLightboxOpen(true)}
-                  className="absolute text-xs px-2 py-1 bg-surface/80 border border-[rgba(127,99,21,0.15)] rounded-sm text-text-secondary hover:bg-surface transition-opacity z-10"
+                  className="absolute text-xs px-2 py-1 bg-surface/80 border border-border rounded-sm text-text-secondary hover:bg-surface transition-opacity z-10"
                   style={{ left: offsetX + contentW - 36, top: offsetY + 4 }}>
                   🔍
                 </button>
@@ -241,11 +241,11 @@ export default function ImageEditor() {
           </div>
 
           {/* Controls */}
-          <div className="bg-surface border border-[rgba(127,99,21,0.1)] rounded-sm p-4 space-y-4">
+          <div className="bg-surface border border-border rounded-sm p-4 space-y-4">
             <div className="flex gap-2">
               {(['crop', 'rotate', 'flip'] as Mode[]).map(m => (
                 <button key={m} onClick={() => setMode(m)}
-                  className={`px-3 py-1.5 text-xs rounded-sm border transition-colors ${mode === m ? 'bg-accent text-white border-accent' : 'bg-surface text-text-secondary border-[rgba(127,99,21,0.15)] hover:border-accent/30'}`}>
+                  className={`px-3 py-1.5 text-xs rounded-sm border transition-colors ${mode === m ? 'bg-accent text-white border-accent' : 'bg-surface text-text-secondary border-border hover:border-accent/30'}`}>
                   {t(m)}
                 </button>
               ))}
@@ -254,8 +254,8 @@ export default function ImageEditor() {
             {mode === 'rotate' && (
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center gap-2">
-                  <button onClick={() => setAngle(a => (a - 90 + 360) % 360)} className="px-3 py-1.5 text-xs rounded-sm border border-[rgba(127,99,21,0.15)] bg-surface text-text-secondary hover:border-accent/30 transition-colors">{t('rotateLeft')}</button>
-                  <button onClick={() => setAngle(a => (a + 90) % 360)} className="px-3 py-1.5 text-xs rounded-sm border border-[rgba(127,99,21,0.15)] bg-surface text-text-secondary hover:border-accent/30 transition-colors">{t('rotateRight')}</button>
+                  <button onClick={() => setAngle(a => (a - 90 + 360) % 360)} className="px-3 py-1.5 text-xs rounded-sm border border-border bg-surface text-text-secondary hover:border-accent/30 transition-colors">{t('rotateLeft')}</button>
+                  <button onClick={() => setAngle(a => (a + 90) % 360)} className="px-3 py-1.5 text-xs rounded-sm border border-border bg-surface text-text-secondary hover:border-accent/30 transition-colors">{t('rotateRight')}</button>
                   <span className="text-xs text-text-secondary ml-1">{angle}°</span>
                   <input type="range" min={0} max={360} value={angle} onChange={e => setAngle(Number(e.target.value))} className="w-20 accent-accent" />
                 </div>
@@ -265,9 +265,9 @@ export default function ImageEditor() {
             {mode === 'flip' && (
               <div className="flex gap-2">
                 <button onClick={() => setFlipH(h => !h)}
-                  className={`px-3 py-1.5 text-xs rounded-sm border transition-colors ${flipH ? 'bg-accent text-white border-accent' : 'bg-surface text-text-secondary border-[rgba(127,99,21,0.15)] hover:border-accent/30'}`}>{t('flipH')}</button>
+                  className={`px-3 py-1.5 text-xs rounded-sm border transition-colors ${flipH ? 'bg-accent text-white border-accent' : 'bg-surface text-text-secondary border-border hover:border-accent/30'}`}>{t('flipH')}</button>
                 <button onClick={() => setFlipV(v => !v)}
-                  className={`px-3 py-1.5 text-xs rounded-sm border transition-colors ${flipV ? 'bg-accent text-white border-accent' : 'bg-surface text-text-secondary border-[rgba(127,99,21,0.15)] hover:border-accent/30'}`}>{t('flipV')}</button>
+                  className={`px-3 py-1.5 text-xs rounded-sm border transition-colors ${flipV ? 'bg-accent text-white border-accent' : 'bg-surface text-text-secondary border-border hover:border-accent/30'}`}>{t('flipV')}</button>
               </div>
             )}
 
@@ -277,8 +277,8 @@ export default function ImageEditor() {
                 {processing ? t('renProcessing') : t('apply')}
               </button>
               <button onClick={resetAll} disabled={!hasEdited}
-                className="px-3 py-2 text-sm text-text-secondary border border-[rgba(127,99,21,0.15)] rounded-sm bg-surface hover:border-accent/30 transition-colors disabled:opacity-30">{t('reset')}</button>
-              <button onClick={clearAll} className="px-3 py-2 text-sm text-text-secondary border border-[rgba(127,99,21,0.15)] rounded-sm bg-surface hover:border-accent/30 transition-colors">{t('renClear')}</button>
+                className="px-3 py-2 text-sm text-text-secondary border border-border rounded-sm bg-surface hover:border-accent/30 transition-colors disabled:opacity-30">{t('reset')}</button>
+              <button onClick={clearAll} className="px-3 py-2 text-sm text-text-secondary border border-border rounded-sm bg-surface hover:border-accent/30 transition-colors">{t('renClear')}</button>
               {hasEdited && (
                 <button onClick={download}
                   className="px-3 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90 transition-opacity">
@@ -288,7 +288,7 @@ export default function ImageEditor() {
             </div>
           </div>
 
-          {error && <p className="text-red-500 text-sm">{error}</p>}
+          {error && <p className="text-error text-sm">{error}</p>}
 
           {/* Lightbox */}
           {lightboxOpen && (
