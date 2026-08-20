@@ -1305,7 +1305,7 @@
     "hasAccount": "Already have an account?",
     "loginWithGoogle": "Sign in with Google",
     "loginWithGithub": "Sign in with GitHub",
-    "or": "or",
+    "or": "または",
     "fillRequired": "Please fill in all fields",
     "passwordTooShort": "Password must be at least 8 characters",
     "passwordNeedsTypes": "Password must contain at least 2 character types (uppercase, lowercase, numbers, symbols)",
