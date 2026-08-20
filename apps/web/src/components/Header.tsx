@@ -35,7 +35,9 @@ export default function Header() {
         <div className="flex items-center gap-1 sm:gap-2">
           <ThemeSwitcher />
           <LanguageSwitcher />
-          {isLoading ? null : isAuthenticated ? (
+          {isLoading ? (
+            <div className="w-10 h-4 rounded sm:ml-3 bg-text-secondary/20 animate-pulse" />
+          ) : isAuthenticated ? (
             <Link href="/account" className="flex items-center gap-1.5 sm:ml-3 group"
               title={session.user.name || session.user.email || ''}>
               {session.user.image ? (
