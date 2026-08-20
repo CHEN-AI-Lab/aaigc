@@ -36,14 +36,9 @@ echo "    🔒 数据库迁移安全检查"
 echo "=========================================="
 echo ""
 
-# Collect files first to avoid subshell variable scoping issues
-FILES=()
-while IFS= read -r -d '' FILE; do
-  FILES+=("$FILE")
-done < <(find "$MIGRATIONS_DIR" -name "migration.sql" -print0 2>/dev/null || true)
-
-for FILE in "${FILES[@]}"; do
-  [[ "$FILE" != *.sql ]] && continue
+# Use glob instead of find + process substitution (incompatible with Vercel)
+for FILE in "$MIGRATIONS_DIR"/*/migration.sql; do
+  [ -f "$FILE" ] || continue
   MIGRATION_NAME=$(basename "$(dirname "$FILE")")
   [ -s "$FILE" ] || continue
   CONTENT=$(cat "$FILE")
