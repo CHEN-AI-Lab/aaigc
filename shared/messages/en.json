@@ -45,6 +45,7 @@
     "visit": "Visit",
     "cookmate": {
       "name": "CookMate",
+      "tag": "Smart Recipes",
       "description": "AI-powered recipe planning. Generate recipes from ingredients, plan weekly meals, and create shopping lists.",
       "features": [
         "AI recipe generation from any ingredients",
@@ -63,6 +64,7 @@
     },
     "short-drama": {
       "name": "Short Drama",
+      "tag": "Short Drama",
       "description": "AI-powered short drama script generator. Create episode outlines, scene breakdowns, and full scripts.",
       "features": [
         "10+ genres including CEO romance, time travel, xianxia",
@@ -72,6 +74,7 @@
     },
     "resume-optimizer": {
       "name": "Resume Optimizer",
+      "tag": "Resume",
       "description": "AI resume optimization tool. Analyze and optimize your resume to increase interview chances.",
       "features": [
         "AI-powered resume analysis",
@@ -93,18 +96,22 @@
     },
     "maestro": {
       "name": "Maestro",
+      "tag": "Music",
       "description": "AI music composition and audio processing tool."
     },
     "ai-portfolio-studio": {
       "name": "AI Portfolio Studio",
+      "tag": "Portfolio",
       "description": "AI-powered portfolio website builder for creators."
     },
     "ai-toolbox": {
       "name": "AI Toolbox",
+      "tag": "Toolbox",
       "description": "Collection of AI-powered utilities and tools."
     },
     "content-ai-site": {
       "name": "Content AI Site",
+      "tag": "Content Site",
       "description": "AI-driven content management and publishing platform."
     }
   },
@@ -1164,9 +1171,23 @@
   },
   "about": {
     "title": "About AAIGC",
-    "desc": "AAIGC is a collection of AI-driven tools and applications.",
-    "desc2": "Our mission is to make AI accessible, practical, and useful for everyone.",
-    "contact": "Contact"
+    "subtitle": "AI Tools & Product Matrix",
+    "subtitle2": "We provide free online tools and incubate AI-powered SaaS products across multiple domains.",
+    "toolsTitle": "Free Online Tools",
+    "toolsDesc": "No registration needed, ready to use. A continuously growing collection of online tools covering development, text, image, security, network and more.",
+    "productsTitle": "AI Product Matrix",
+    "productsDesc": "Continuously incubating AI-powered SaaS products across multiple domains, each operating independently.",
+    "free": "Free to Use",
+    "freeDesc": "All online tools are completely free, no registration required, ready to use instantly.",
+    "lang": "Multi-language",
+    "langDesc": "English, Simplified Chinese, Traditional Chinese, and Japanese — switch with one click.",
+    "local": "Client-side, No Upload",
+    "localDesc": "Tools run entirely in your browser — your data never leaves your device.",
+    "matrix": "Independent Product Matrix",
+    "matrixDesc": "Each product operates independently, offering professional-grade SaaS services.",
+    "contact": "Contact",
+    "toolsCta": "Explore Free Tools",
+    "productsCta": "View Product Matrix"
   },
   "errors": {
     "notFound": "Page not found",

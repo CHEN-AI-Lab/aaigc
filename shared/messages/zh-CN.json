@@ -63,6 +63,7 @@
     },
     "short-drama": {
       "name": "Short Drama",
+      "tag": "短剧生成",
       "description": "AI 短剧脚本生成器。输入题材，AI 自动生成分集大纲、场景拆解和完整剧本。",
       "features": [
         "支持霸总、穿越、甜宠等 10+ 题材",
@@ -72,6 +73,7 @@
     },
     "resume-optimizer": {
       "name": "Resume Optimizer",
+      "tag": "简历优化",
       "description": "AI 简历优化工具。智能分析简历内容，提供优化建议，提升面试通过率。",
       "features": [
         "AI 智能分析简历内容",
@@ -93,18 +95,22 @@
     },
     "maestro": {
       "name": "Maestro",
+      "tag": "音乐创作",
       "description": "AI 音乐创作与音频处理工具。"
     },
     "ai-portfolio-studio": {
       "name": "AI Portfolio Studio",
+      "tag": "作品集",
       "description": "AI 驱动的作品集网站构建器。"
     },
     "ai-toolbox": {
       "name": "AI Toolbox",
+      "tag": "工具箱",
       "description": "AI 实用工具和功能集合。"
     },
     "content-ai-site": {
       "name": "Content AI Site",
+      "tag": "内容管理",
       "description": "AI 驱动的内容管理与发布平台。"
     }
   },
@@ -1164,9 +1170,23 @@
   },
   "about": {
     "title": "关于 AAIGC",
-    "desc": "AAIGC 是一系列 AI 驱动的工具和应用集合。",
-    "desc2": "我们的使命是让 AI 对每个人都触手可及、实用有效。",
-    "contact": "联系方式"
+    "subtitle": "AI 工具与产品矩阵",
+    "subtitle2": "AAIGC 是 AI 产品矩阵门户。我们提供免费在线工具，同时孵化 AI 驱动的 SaaS 产品，覆盖生活、创作、效率等多个垂直领域。",
+    "toolsTitle": "免费在线工具",
+    "toolsDesc": "无需注册、即开即用。持续更新的在线工具集，覆盖开发、文本、图像、安全、网络等多个领域。",
+    "productsTitle": "AI 产品矩阵",
+    "productsDesc": "持续孵化 AI 驱动的 SaaS 产品，覆盖生活、创作、效率等多个垂直领域，各自独立运营。",
+    "free": "工具免费使用",
+    "freeDesc": "所有在线工具完全免费，无需注册，即开即用。",
+    "lang": "多语言支持",
+    "langDesc": "英文、简体中文、繁体中文、日语一键切换。",
+    "local": "纯前端，不上传",
+    "localDesc": "工具在浏览器本地运行，数据不离开你的设备。",
+    "matrix": "独立产品矩阵",
+    "matrixDesc": "旗下产品各自独立运营，提供专业级 SaaS 服务。",
+    "contact": "联系方式",
+    "toolsCta": "探索免费工具",
+    "productsCta": "查看产品矩阵"
   },
   "errors": {
     "notFound": "页面未找到",

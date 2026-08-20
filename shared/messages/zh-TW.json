@@ -46,7 +46,8 @@
         "智慧週計劃與購物清單",
         "支援飲食偏好定製"
       ],
-      "name": "CookMate"
+      "name": "Cookmate",
+            "tag": "智慧食譜"
     },
     "aihub": {
       "description": "中文 AI 工具導航與評測平台。收錄數百款 AI 工具的真實用戶評測。",
@@ -55,7 +56,8 @@
         "真實用戶評分與評測",
         "分類導航與搜尋"
       ],
-      "name": "AIHub"
+      "name": "Aihub",
+            "tag": "AI 導航"
     },
     "short-drama": {
       "description": "AI 短劇腳本生成器。輸入題材，AI 自動生成分集大綱、場景拆解和完整劇本。",
@@ -64,7 +66,8 @@
         "分集大綱 + 場景拆分 + 完整劇本",
         "人物弧光自動生成"
       ],
-      "name": "Short Drama"
+      "name": "Short Drama",
+      "tag": "短劇生成"
     },
     "resume-optimizer": {
       "description": "AI 履歷優化工具。智慧分析履歷內容，提供優化建議，提升面試通過率。",
@@ -73,15 +76,18 @@
         "針對目標崗位定製優化建議",
         "多種履歷模板"
       ],
-      "name": "Resume Optimizer"
+      "name": "Resume-optimizer",
+            "tag": "履歷優化"
     },
     "copycraft": {
       "description": "AI 驅動的文案創作工具。生成行銷文案、產品描述和廣告內容。",
-      "name": "CopyCraft"
+      "name": "Copycraft",
+            "tag": "文案創作"
     },
     "contentforge": {
       "description": "AI 內容生成平台，支援部落格、文章和社交媒體內容。",
-      "name": "ContentForge"
+      "name": "Contentforge",
+            "tag": "內容生成"
     },
     "postforge": {
       "description": "社交媒體帖子生成與排程工具，AI 驅動內容創作。",
@@ -89,19 +95,23 @@
     },
     "maestro": {
       "description": "AI 音樂創作與音頻處理工具。",
-      "name": "Maestro"
+      "name": "Maestro",
+      "tag": "音樂創作"
     },
     "ai-portfolio-studio": {
       "description": "AI 驅動的作品集網站構建器。",
-      "name": "AI Portfolio Studio"
+      "name": "Ai-portfolio-studio",
+            "tag": "作品集"
     },
     "ai-toolbox": {
       "description": "AI 實用工具和功能集合。",
-      "name": "AI Toolbox"
+      "name": "Ai-toolbox",
+            "tag": "工具箱"
     },
     "content-ai-site": {
       "description": "AI 驅動的內容管理與發佈平台。",
-      "name": "Content AI Site"
+      "name": "Content-ai-site",
+            "tag": "內容管理"
     },
     "title": "我們的產品",
     "subtitle": "探索 AAIGC 產品矩陣",
@@ -1164,9 +1174,23 @@
   },
   "about": {
     "title": "關於 AAIGC",
-    "desc": "AAIGC 是一系列 AI 驅動的工具和應用集合。",
-    "desc2": "我們的使命是讓 AI 對每個人都觸手可及、實用有效。",
-    "contact": "聯絡方式"
+    "subtitle": "AI 工具與產品矩陣",
+    "subtitle2": "AAIGC 是 AI 產品矩陣門戶。我們提供免費線上工具，同時孵化 AI 驅動的 SaaS 產品，涵蓋生活、創作、效率等多個垂直領域。",
+    "toolsTitle": "免費線上工具",
+    "toolsDesc": "無需註冊、即開即用。持續更新的線上工具集，涵蓋開發、文字、圖像、安全、網路等多個領域。",
+    "productsTitle": "AI 產品矩陣",
+    "productsDesc": "持續孵化 AI 驅動的 SaaS 產品，涵蓋生活、創作、效率等多個垂直領域，各自獨立運營。",
+    "free": "工具免費使用",
+    "freeDesc": "所有線上工具完全免費，無需註冊，即開即用。",
+    "lang": "多語言支援",
+    "langDesc": "英文、簡體中文、繁體中文、日語一鍵切換。",
+    "local": "純前端，不上傳",
+    "localDesc": "工具在瀏覽器本地執行，資料不離開你的裝置。",
+    "matrix": "獨立產品矩陣",
+    "matrixDesc": "旗下產品各自獨立運營，提供專業級 SaaS 服務。",
+    "contact": "聯絡方式",
+    "toolsCta": "探索免費工具",
+    "productsCta": "查看產品矩陣"
   },
   "errors": {
     "notFound": "頁面未找到",
