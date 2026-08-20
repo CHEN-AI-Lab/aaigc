@@ -18,10 +18,12 @@
   "peerDependencies": {
     "next-intl": "^4.0.0"
   },
-  "devDependencies": {
-    "typescript": "^5.7.0"
-  },
   "dependencies": {
     "next-intl": "^4.13.0"
+  },
+  "devDependencies": {
+    "@prisma/adapter-neon": "^7.9.1",
+    "@neondatabase/serverless": "^1.1.0",
+    "typescript": "^5.7.0"
   }
 }
