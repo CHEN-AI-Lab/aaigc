@@ -19,9 +19,11 @@ export async function sendVerificationEmail(
   locale: string = 'en',
   purpose: string = 'verify'
 ): Promise<{ success: boolean; error?: string; devCode?: string }> {
-  const isDev = process.env.NODE_ENV === 'development'
+  // devCode 仅在显式启用且非部署环境时返回。
+  // 防止误配置 NODE_ENV=development 导致生产环境泄露验证码。
+  const allowDevCode = process.env.ALLOW_DEV_CODE === 'true' && !process.env.VERCEL_ENV
 
-  if (isDev) {
+  if (allowDevCode) {
     // Dev mode: don't log the code anywhere, return it in the response
     // so the frontend can display it for testing
     return { success: true, devCode: code }

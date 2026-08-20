@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { prisma } from "shared/utils/prisma"
+import { consumeVerificationCode } from "shared/utils/verification-code"
+import { normalizeEmail } from "shared/utils/verification"
+import { checkLoginRateLimit, recordLoginAttempt } from "shared/utils/login-rate-limit"
+import { isSameOrigin } from "shared/utils/csrf"
 
 // 密码强度验证
 function validatePassword(password: string): string | null {
@@ -23,10 +27,16 @@ function validatePassword(password: string): string | null {
 
 export async function POST(req: Request) {
   try {
-    const session = await auth()
-    const { password, code } = await req.json()
+    // CSRF 防护：校验同源
+    if (!isSameOrigin(req)) {
+      return NextResponse.json({ error: "forbidden" }, { status: 403 })
+    }
 
-    // 已登录用户：通过 session 设置密码（无需验证码）
+    const session = await auth()
+    // 一次性读取 body（修复原来二次 req.json() 导致忘记密码流程必然 500 的 bug）
+    const { password, code, email: rawEmail, currentPassword } = await req.json()
+
+    // 已登录用户：通过 session 设置密码
     if (session?.user?.id) {
       if (!password) {
         return NextResponse.json({ error: "invalidParams" }, { status: 400 })
@@ -35,8 +45,26 @@ export async function POST(req: Request) {
       if (pwdErr) {
         return NextResponse.json({ error: pwdErr }, { status: 400 })
       }
+
+      const me = await prisma.user.findUnique({
+        where: { id: session.user.id },
+        select: { passwordHash: true },
+      })
+
+      // 若已设密码，服务端强制校验当前密码（防止会话劫持后无重认证即改密）
+      if (me?.passwordHash) {
+        if (!currentPassword) {
+          return NextResponse.json({ error: "currentPasswordWrong" }, { status: 401 })
+        }
+        const bcrypt = await import("bcryptjs")
+        const ok = await bcrypt.compare(currentPassword, me.passwordHash)
+        if (!ok) {
+          return NextResponse.json({ error: "currentPasswordWrong" }, { status: 401 })
+        }
+      }
+
       const bcrypt = await import("bcryptjs")
-      const salt = await bcrypt.genSalt(10)
+      const salt = await bcrypt.genSalt(12)
       const passwordHash = await bcrypt.hash(password, salt)
       await prisma.user.update({
         where: { id: session.user.id },
@@ -45,8 +73,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: true })
     }
 
-    // 未登录用户：需要 email + 验证码（用于忘记密码重置）
-    const { email } = await req.json()
+    // 未登录用户：忘记密码重置（email + 验证码）
+    const email = normalizeEmail(rawEmail ?? '')
     if (!email || !password || !code) {
       return NextResponse.json({ error: "invalidParams" }, { status: 400 })
     }
@@ -56,25 +84,30 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: pwdErr }, { status: 400 })
     }
 
-    const record = await prisma.verificationCode.findFirst({
-      where: { email, code, used: false, expiresAt: { gte: new Date() } },
-      orderBy: { createdAt: "desc" },
-    })
-    if (!record) {
+    // 限流：按邮箱计数（修复双读 bug 后该分支可达，必须加限流以防验证码爆破）
+    const rateKey = `reset:${email}`
+    const rateCheck = checkLoginRateLimit(rateKey)
+    if (!rateCheck.allowed) {
+      const minutesRemaining = Math.ceil((rateCheck.lockedUntil! - Date.now()) / 60000)
+      return NextResponse.json({ error: "tooManyAttempts", minutesRemaining }, { status: 429 })
+    }
+
+    // 原子消费验证码（用途绑定 forgotPassword + 失败计数）
+    const ok = await consumeVerificationCode(email, code, 'forgotPassword')
+    if (!ok) {
+      recordLoginAttempt(rateKey, false)
       return NextResponse.json({ error: "verifyFailed" }, { status: 401 })
     }
-    await prisma.verificationCode.update({
-      where: { id: record.id },
-      data: { used: true },
-    })
+    recordLoginAttempt(rateKey, true)
 
     const user = await prisma.user.findUnique({ where: { email } })
     if (!user) {
-      return NextResponse.json({ error: "emailNotRegistered" }, { status: 404 })
+      // 不泄露邮箱是否注册
+      return NextResponse.json({ error: "verifyFailed" }, { status: 401 })
     }
 
     const bcrypt = await import("bcryptjs")
-    const salt = await bcrypt.genSalt(10)
+    const salt = await bcrypt.genSalt(12)
     const passwordHash = await bcrypt.hash(password, salt)
     await prisma.user.update({
       where: { id: user.id },

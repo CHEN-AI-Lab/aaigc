@@ -21,9 +21,12 @@ export default function PasswordGenerator() {
     if (symbols) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?'
     if (!chars) return
 
+    // 使用加密安全的 CSPRNG，避免 Math.random() 的可预测性
+    const random = new Uint32Array(length)
     let result = ''
     for (let i = 0; i < length; i++) {
-      result += chars[Math.floor(Math.random() * chars.length)]
+      crypto.getRandomValues(random)
+      result += chars[random[0] % chars.length]
     }
     setPassword(result)
 

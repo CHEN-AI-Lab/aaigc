@@ -20,6 +20,8 @@ import Credentials from "next-auth/providers/credentials"
 import { prisma } from "shared/utils/prisma"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { checkLoginRateLimit, recordLoginAttempt } from "shared/utils/login-rate-limit"
+import { consumeVerificationCode } from "shared/utils/verification-code"
+import { normalizeEmail } from "shared/utils/verification"
 
 const providers = []
 
@@ -33,21 +35,24 @@ providers.push(
       code: { label: "验证码", type: "text" },
     },
     async authorize(credentials) {
-      const email = credentials?.email as string
+      const email = normalizeEmail(credentials?.email as string ?? '')
       const code = credentials?.code as string
       if (!email || !code) return null
 
-      const verification = await prisma.verificationCode.findFirst({
-        where: { email, code, used: false, expiresAt: { gte: new Date() } },
-        orderBy: { createdAt: "desc" },
-      })
-      if (!verification) return null
+      // 限流：按邮箱计数失败尝试，防止验证码爆破
+      const rateKey = `email-code:${email}`
+      const rateCheck = checkLoginRateLimit(rateKey)
+      if (!rateCheck.allowed) {
+        return null
+      }
 
-      // Mark as used
-      await prisma.verificationCode.update({
-        where: { id: verification.id },
-        data: { used: true },
-      })
+      // 原子消费验证码（用途绑定 login + 并发安全 + 失败计数）
+      const ok = await consumeVerificationCode(email, code, 'login')
+      if (!ok) {
+        recordLoginAttempt(rateKey, false)
+        return null
+      }
+      recordLoginAttempt(rateKey, true)
 
       // Find or create user, 同时设置 emailVerified（验证码本身就是邮箱验证）
       const user = await prisma.user.findUnique({ where: { email } })
@@ -75,13 +80,13 @@ providers.push(
       password: { label: "密码", type: "password" },
     },
     async authorize(credentials) {
-      const email = credentials?.email as string
+      const email = normalizeEmail(credentials?.email as string ?? '')
       const password = credentials?.password as string
 
       if (!email || !password) return null
 
       // Rate limit check
-      const rateKey = `login:${(email || '').toLowerCase()}`
+      const rateKey = `login:${email}`
       const rateCheck = checkLoginRateLimit(rateKey)
       if (!rateCheck.allowed) {
         return null
@@ -109,7 +114,6 @@ if (process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET) {
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
-      allowDangerousEmailAccountLinking: true,
     })
   )
 }
@@ -120,7 +124,6 @@ if (process.env.AUTH_GITHUB_ID && process.env.AUTH_GITHUB_SECRET) {
     GitHub({
       clientId: process.env.AUTH_GITHUB_ID,
       clientSecret: process.env.AUTH_GITHUB_SECRET,
-      allowDangerousEmailAccountLinking: true,
     })
   )
 }

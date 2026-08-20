@@ -136,38 +136,6 @@ export default function LoginClient() {
 
     setLoading('password')
     try {
-      const checkRes = await fetch('/api/auth/check-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      })
-      const checkData = await checkRes.json()
-      if (!checkData.userExists) {
-        setError(t('accountNotFound'))
-        setErrorType('error')
-        setLoading(null)
-        return
-      }
-      if (!checkData.hasPassword) {
-        setError(t('noPasswordSet'))
-        setErrorType('info')
-        setLoading(null)
-        return
-      }
-
-      const lockRes = await fetch(`/api/auth/check-lockout?email=${encodeURIComponent(email)}`)
-      const lockData = await lockRes.json()
-      if (lockData.locked) {
-        setError(err('accountLocked').replace('{minutes}', String(lockData.minutesRemaining)))
-        setErrorType('error')
-        setLoading(null)
-        return
-      }
-    } catch {
-      // ignore pre-check failure, proceed with login
-    }
-
-    try {
       const result = await signIn('password', {
         email,
         password,

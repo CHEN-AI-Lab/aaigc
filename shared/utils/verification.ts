@@ -1,8 +1,15 @@
 // Email validation helpers
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 export function isValidEmail(email: string): boolean {
-  // RFC 5322 simplified - reasonable email format check
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  if (typeof email !== 'string' || email.length > 254) return false
+  return EMAIL_RE.test(email)
+}
+
+// 邮箱大小写归一化：注册/登录/限流均使用小写邮箱，避免大小写变体绕过唯一约束与计数
+export function normalizeEmail(email: string): string {
+  return email.trim().toLowerCase()
 }
 
 export function isDisposableEmail(email: string): boolean {
@@ -13,13 +20,16 @@ export function isDisposableEmail(email: string): boolean {
     'mailinator.com', 'guerrillamail.com', 'tempmail.com',
     'throwaway.email', 'yopmail.com', '10minutemail.com',
     'sharklasers.com', 'trashmail.com', 'maildrop.cc',
-    'temp-mail.org', 'fakeinbox.com', 'mailnator.com',
+    'temp-mail.org', 'fakeinbox.com',
   ])
   return disposable.has(domain)
 }
 
 export function generateVerificationCode(): string {
-  return Math.floor(100000 + Math.random() * 900000).toString()
+  // 使用加密安全的随机数生成器，避免 Math.random() 的可预测性
+  // （V8 xorshift128+ 内部状态可由少量输出恢复，会导致验证码可预测）
+  const { randomInt } = require('crypto')
+  return randomInt(100000, 1000000).toString()
 }
 
 export function isExpired(createdAt: Date, ttlMs: number): boolean {

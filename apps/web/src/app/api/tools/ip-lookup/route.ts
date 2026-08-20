@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getTrustedClientIp, isPrivateOrReservedIp } from 'shared/utils/ip'
+import { checkRateLimit } from 'shared/utils/rate-limit'
 
 const DATACENTER_KEYWORDS = ['cloud', 'datacenter', 'hosting', 'amazon', 'google cloud', 'azure', 'alibaba', 'tencent', 'huawei cloud', 'backbone', 'idc', 'ovh', 'digitalocean', 'linode', 'vultr', 'hetzner']
 const EDU_KEYWORDS = ['edu', 'university', 'college', 'school', 'cernet', 'ac.cn', 'sch.cn']
@@ -59,7 +61,7 @@ function translateIsp(name: string, lang: string): string {
 }
 
 async function tryIpinfo(ip: string, lang: string) {
-  const res = await fetch(`https://ipinfo.io/${ip}/json`, { signal: AbortSignal.timeout(5000) })
+  const res = await fetch(`https://ipinfo.io/${encodeURIComponent(ip)}/json`, { signal: AbortSignal.timeout(5000) })
   const data = await res.json()
   if (data.city) {
     return {
@@ -75,7 +77,7 @@ async function tryIpinfo(ip: string, lang: string) {
 }
 
 async function tryIpsb(ip: string, lang: string) {
-  const res = await fetch(`https://api.ip.sb/geoip/${ip}`, { signal: AbortSignal.timeout(5000) })
+  const res = await fetch(`https://api.ip.sb/geoip/${encodeURIComponent(ip)}`, { signal: AbortSignal.timeout(5000) })
   const data = await res.json()
   if (data.city) {
     return {
@@ -92,7 +94,8 @@ async function tryIpsb(ip: string, lang: string) {
 
 async function tryIpapi(ip: string, lang: string) {
   const langParam = lang.startsWith('zh') ? 'zh-CN' : 'en'
-  const res = await fetch(`http://ip-api.com/json/${ip}?fields=query,city,regionName,country,isp,org,as,hosting,mobile,proxy&lang=${langParam}`, {
+  // 使用 HTTPS（原先用 HTTP 会在网络路径上泄露查询的 IP）
+  const res = await fetch(`https://ip-api.com/json/${encodeURIComponent(ip)}?fields=query,city,regionName,country,isp,org,as,hosting,mobile,proxy&lang=${langParam}`, {
     signal: AbortSignal.timeout(5000),
   })
   const data = await res.json()
@@ -114,15 +117,22 @@ async function tryIpapi(ip: string, lang: string) {
 }
 
 export async function GET(request: NextRequest) {
+  // 限流：每 IP 每分钟 15 次查询
+  const ip = getTrustedClientIp(request)
+  const rl = checkRateLimit(`ip-lookup:${ip}`, 15, 60_000)
+  if (!rl.allowed) {
+    return NextResponse.json({ error: "tooManyRequests" }, { status: 429, headers: { "Retry-After": String(Math.ceil((rl.resetAt - Date.now()) / 1000)) } })
+  }
+
   const { searchParams } = new URL(request.url)
   const lang = searchParams.get('lang') || 'en'
 
-  const forwarded = request.headers.get('x-forwarded-for')
-  const realIp = request.headers.get('x-real-ip')
-  const clientIp = forwarded?.split(',')[0]?.trim() || realIp || ''
+  // 使用可信 IP 提取（替换原先直接读取 x-forwarded-for）
+  const clientIp = ip
 
-  if (clientIp) {
-    if (clientIp === '::1' || clientIp.startsWith('127.') || clientIp.startsWith('10.') || clientIp.startsWith('192.168.') || clientIp.startsWith('172.16.')) {
+  if (clientIp && clientIp !== 'unknown') {
+    // SSRF 防护：私有/保留地址不发送给外部查询服务
+    if (isPrivateOrReservedIp(clientIp)) {
       return NextResponse.json({ ip: clientIp })
     }
 

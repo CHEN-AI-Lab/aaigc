@@ -138,11 +138,11 @@ export default function AccountClient() {
 
     setPwdSaving(true); setPwdError('')
     try {
-      // 已登录用户直接调 set-password API（无需验证码）
+      // 已登录用户调 set-password API；若已设密码则附带 currentPassword 供服务端重新认证
       const res = await fetch('/api/auth/set-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: pwdNew }),
+        body: JSON.stringify({ password: pwdNew, currentPassword: pwdOld }),
       })
       const data = await res.json()
       if (!res.ok) {

@@ -11,10 +11,8 @@ export default function UuidGenerator() {
   const generate = () => {
     const results: string[] = []
     for (let i = 0; i < count; i++) {
-      results.push('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-        const r = (Math.random() * 16) | 0
-        return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16)
-      }))
+      // 使用加密安全的 crypto.randomUUID()，避免 Math.random() 的可预测性
+      results.push(crypto.randomUUID())
     }
     setUuid(results.join('\n'))
   }
