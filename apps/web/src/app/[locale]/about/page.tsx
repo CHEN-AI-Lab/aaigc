@@ -11,10 +11,16 @@ export default async function AboutPage({ params }: Props) {
   const { locale } = await params
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'about' })
+  const tt = await getTranslations({ locale, namespace: 'tools' })
   const tp = await getTranslations({ locale, namespace: 'products' })
+  const ta = await getTranslations({ locale, namespace: 'auth' })
+
+  const activeCategories = toolCategories.filter(
+    cat => tools.some(tool => tool.category === cat.id)
+  )
 
   return (
-    <div className="max-w-3xl mx-auto px-6 py-20">
+    <div className="max-w-5xl mx-auto px-6 py-20">
 
       {/* ── Hero ── */}
       <div className="text-center mb-16">
@@ -33,11 +39,11 @@ export default async function AboutPage({ params }: Props) {
           <div className="text-xs text-text-secondary mt-1">{t('toolsTitle')}</div>
         </div>
         <div className="bg-card border border-border rounded-sm p-6 text-center">
-          <div className="text-3xl font-bold text-accent">{products.length}+</div>
+          <div className="text-3xl font-bold text-accent">{products.length}</div>
           <div className="text-xs text-text-secondary mt-1">{t('productsTitle')}</div>
         </div>
         <div className="bg-card border border-border rounded-sm p-6 text-center">
-          <div className="text-3xl font-bold text-accent">{toolCategories.length}</div>
+          <div className="text-3xl font-bold text-accent">{activeCategories.length}</div>
           <div className="text-xs text-text-secondary mt-1">分类</div>
         </div>
         <div className="bg-card border border-border rounded-sm p-6 text-center">
@@ -56,12 +62,12 @@ export default async function AboutPage({ params }: Props) {
             {t('toolsDesc')}
           </p>
           <div className="flex flex-wrap gap-1.5 mt-4">
-            {toolCategories.map(cat => (
+            {activeCategories.map(cat => (
               <span
                 key={cat.id}
                 className="text-xs px-2.5 py-1 bg-surface border border-border rounded-sm text-text-secondary"
               >
-                {cat.icon} {cat.nameEn}
+                {cat.icon} {tt(`${cat.id}Tools`)}
               </span>
             ))}
           </div>
@@ -135,7 +141,9 @@ export default async function AboutPage({ params }: Props) {
         >
           {t('toolsCta')} →
         </Link>
-        <span className="inline-block mx-3 text-xs text-text-secondary">或</span>
+        <span className="inline-block mx-3 text-xs text-text-secondary">
+          {ta('or')}
+        </span>
         <Link
           href="/products"
           className="inline-block text-sm text-accent hover:underline"
