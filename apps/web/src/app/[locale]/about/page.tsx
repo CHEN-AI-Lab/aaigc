@@ -13,7 +13,6 @@ export default async function AboutPage({ params }: Props) {
   const t = await getTranslations({ locale, namespace: 'about' })
   const tt = await getTranslations({ locale, namespace: 'tools' })
   const tp = await getTranslations({ locale, namespace: 'products' })
-  const ta = await getTranslations({ locale, namespace: 'auth' })
 
   const activeCategories = toolCategories.filter(
     cat => tools.some(tool => tool.category === cat.id)
