@@ -9,7 +9,10 @@ import ThemeSwitcher from './ThemeSwitcher'
 export default function Header() {
   const t = useTranslations('common')
   const authT = useTranslations('auth')
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
+
+  const isAuthenticated = status === 'authenticated'
+  const isLoading = status === 'loading'
 
   return (
     <header className="border-b border-border bg-bg/80 backdrop-blur-md sticky top-0 z-50">
@@ -32,7 +35,10 @@ export default function Header() {
         <div className="flex items-center gap-1 sm:gap-2">
           <ThemeSwitcher />
           <LanguageSwitcher />
-          {session?.user ? (
+          {isLoading ? (
+            /* Placeholder same size as avatar to prevent layout flash */
+            <div className="w-7 h-7 rounded-full sm:ml-3" />
+          ) : isAuthenticated ? (
             <Link href="/account" className="flex items-center gap-1.5 sm:ml-3 group"
               title={session.user.name || session.user.email || ''}>
               {session.user.image ? (
