@@ -7,6 +7,19 @@ import { WORKER_URL, FALLBACK_URL } from '../constants'
 const ENV =
   (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_VERCEL_ENV) || 'development'
 
+// 设备 UUID：localStorage 存一次，不清理就不变
+function getDeviceId(): string {
+  let id: string | null = null
+  if (typeof window !== 'undefined') {
+    id = localStorage.getItem('_did')
+    if (!id) {
+      id = crypto.randomUUID()
+      localStorage.setItem('_did', id)
+    }
+  }
+  return id || 'unknown'
+}
+
 export function useVisitTracking(project: string, page?: string | null, tool?: string, userId?: string | null) {
   useEffect(() => {
     const payload = JSON.stringify({
@@ -16,6 +29,7 @@ export function useVisitTracking(project: string, page?: string | null, tool?: s
       type: tool ? 'tool' : 'page',
       env: ENV,
       platform: 'web',
+      deviceId: getDeviceId(),
       ...(userId ? { userId } : {}),
     })
 
