@@ -55,6 +55,7 @@
     },
     "aihub": {
       "name": "AIHub",
+      "tag": "AI Hub",
       "description": "AI tool directory & review platform. Discover and compare hundreds of AI tools with real user reviews.",
       "features": [
         "50+ categories, hundreds of AI tools",
@@ -84,14 +85,17 @@
     },
     "copycraft": {
       "name": "CopyCraft",
+      "tag": "Copy Craft",
       "description": "AI-powered copywriting tool. Generate marketing copy, product descriptions, and ad content."
     },
     "contentforge": {
       "name": "ContentForge",
+      "tag": "Content Forge",
       "description": "AI content generation platform for blogs, articles, and social media."
     },
     "postforge": {
       "name": "PostForge",
+      "tag": "Post Forge",
       "description": "Social media post generator and scheduler with AI-powered content creation."
     },
     "maestro": {

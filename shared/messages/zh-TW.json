@@ -47,7 +47,7 @@
         "支援飲食偏好定製"
       ],
       "name": "Cookmate",
-            "tag": "智慧食譜"
+      "tag": "智慧食譜"
     },
     "aihub": {
       "description": "中文 AI 工具導航與評測平台。收錄數百款 AI 工具的真實用戶評測。",
@@ -57,7 +57,7 @@
         "分類導航與搜尋"
       ],
       "name": "Aihub",
-            "tag": "AI 導航"
+      "tag": "AI 導航"
     },
     "short-drama": {
       "description": "AI 短劇腳本生成器。輸入題材，AI 自動生成分集大綱、場景拆解和完整劇本。",
@@ -77,21 +77,22 @@
         "多種履歷模板"
       ],
       "name": "Resume-optimizer",
-            "tag": "履歷優化"
+      "tag": "履歷優化"
     },
     "copycraft": {
       "description": "AI 驅動的文案創作工具。生成行銷文案、產品描述和廣告內容。",
       "name": "Copycraft",
-            "tag": "文案創作"
+      "tag": "文案創作"
     },
     "contentforge": {
       "description": "AI 內容生成平台，支援部落格、文章和社交媒體內容。",
       "name": "Contentforge",
-            "tag": "內容生成"
+      "tag": "內容生成"
     },
     "postforge": {
       "description": "社交媒體帖子生成與排程工具，AI 驅動內容創作。",
-      "name": "PostForge"
+      "name": "PostForge",
+      "tag": "發布工坊"
     },
     "maestro": {
       "description": "AI 音樂創作與音頻處理工具。",
@@ -101,17 +102,17 @@
     "ai-portfolio-studio": {
       "description": "AI 驅動的作品集網站構建器。",
       "name": "Ai-portfolio-studio",
-            "tag": "作品集"
+      "tag": "作品集"
     },
     "ai-toolbox": {
       "description": "AI 實用工具和功能集合。",
       "name": "Ai-toolbox",
-            "tag": "工具箱"
+      "tag": "工具箱"
     },
     "content-ai-site": {
       "description": "AI 驅動的內容管理與發佈平台。",
       "name": "Content-ai-site",
-            "tag": "內容管理"
+      "tag": "內容管理"
     },
     "title": "我們的產品",
     "subtitle": "探索 AAIGC 產品矩陣",

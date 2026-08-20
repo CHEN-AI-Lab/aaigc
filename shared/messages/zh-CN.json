@@ -45,6 +45,7 @@
     "visit": "前往",
     "cookmate": {
       "name": "CookMate",
+      "tag": "智能食谱",
       "description": "AI 智能食谱与餐食规划平台。输入食材，AI 自动生成菜谱，支持周计划、购物清单、饮食定制。",
       "features": [
         "AI 菜谱生成，输入冰箱里的食材即可",
@@ -54,6 +55,7 @@
     },
     "aihub": {
       "name": "AIHub",
+      "tag": "AI 中心",
       "description": "中文 AI 工具导航与评测平台。收录数百款 AI 工具的真实用户评测。",
       "features": [
         "收录 50+ 类别、数百款 AI 工具",
@@ -83,14 +85,17 @@
     },
     "copycraft": {
       "name": "CopyCraft",
+      "tag": "文案工坊",
       "description": "AI 驱动的文案创作工具。生成营销文案、产品描述和广告内容。"
     },
     "contentforge": {
       "name": "ContentForge",
+      "tag": "内容工坊",
       "description": "AI 内容生成平台，支持博客、文章和社交媒体内容。"
     },
     "postforge": {
       "name": "PostForge",
+      "tag": "发布工坊",
       "description": "社交媒体帖子生成与调度工具，AI 驱动内容创作。"
     },
     "maestro": {
