@@ -9,6 +9,9 @@
     "./messages/*": "./messages/*",
     "./constants/*": "./constants/*",
     "./utils/*": "./utils/*",
+    "./hooks/*": "./hooks/*",
+    "./types/*": "./types/*",
+    "./i18n/*": "./i18n/*",
     "./api/*": "./api/*"
   },
   "scripts": {

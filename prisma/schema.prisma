@@ -63,12 +63,15 @@ model VerificationCode {
   email     String?
   phone     String?
   code      String
+  purpose   String   @default("verify") // 用途绑定：verify/login/register/forgotPassword/changePassword/deleteAccount，防止跨用途重放
+  attempts  Int      @default(0)        // 失败尝试计数，达到阈值后该码失效
   expiresAt DateTime
   used      Boolean  @default(false)
   createdAt DateTime @default(now())
 
   @@index([email, code])
   @@index([phone, code])
+  @@index([email, purpose])
 }
 
 model Favorite {

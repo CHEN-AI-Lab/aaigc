@@ -32,32 +32,8 @@ export default function ToolsClient() {
     }
   }, [])
 
-  // Preload all tool components so clicking is instant
-  useEffect(() => {
-    const componentMap: Record<string, string> = {
-      'json-formatter': 'JsonFormatter', 'regex-tester': 'RegexTester',
-      'base64': 'Base64Codec', 'url-encode': 'UrlEncoder', 'jwt-decoder': 'JwtDecoder',
-      'uuid-generator': 'UuidGenerator', 'html-preview': 'HtmlPreview',
-      'css-minifier': 'CssMinifier', 'markdown-preview': 'MarkdownPreview',
-      'word-counter': 'WordCounter', 'text-diff': 'TextDiff',
-      'case-converter': 'CaseConverter', 'lorem-ipsum': 'LoremIpsum',
-      'text-to-slug': 'TextToSlug', 'list-sorter': 'ListSorter',
-      'timestamp': 'TimestampConverter', 'date-calculator': 'DateCalculator',
-      'qrcode': 'QrCodeGenerator', 'color-picker': 'ColorPicker',
-      'image-to-base64': 'ImageToBase64', 'number-base': 'NumberBaseConverter',
-      'yaml-json': 'YamlJsonConverter', 'html-entities': 'HtmlEntities',
-      'password-generator': 'PasswordGenerator',
-      'calculator': 'Calculator',
-      'ip-lookup': 'IpLookup', 'dns-lookup': 'DnsLookup',
-      'http-status-codes': 'HttpStatusCodes', 'user-agent-parser': 'UserAgentParser',
-      'random-generator': 'RandomGenerator', 'cron-builder': 'CronBuilder',
-      'emoji-picker': 'EmojiPicker',
-    }
-    tools.forEach(tool => {
-      const name = componentMap[tool.id]
-      if (name) import(`./tools/${name}`).catch(() => {})
-    })
-  }, [])
+  // 工具组件由 ToolPageClient.tsx 通过 React.lazy 按需加载，
+  // 列表页无需预加载全部 38 个组件 chunk（原先的预加载会在首屏产生 32+ 个无用网络请求）。
 
   const filtered = useMemo(() => {
     if (!query.trim()) return null

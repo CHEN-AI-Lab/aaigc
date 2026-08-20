@@ -1,18 +1,39 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "shared/utils/prisma"
 import { auth } from "@/auth"
+import { checkRateLimit } from "shared/utils/rate-limit"
+import { isSameOrigin } from "shared/utils/csrf"
 
-export async function POST(request: Request) {
+// 合法的可解绑 provider 白名单
+const VALID_PROVIDERS = new Set(["google", "github", "password"])
+
+export async function POST(req: NextRequest) {
   const session = await auth()
   if (!session?.user?.id) {
     return NextResponse.json({ error: "loginRequired" }, { status: 401 })
   }
 
-  const userId = session.user.id
-  const body = await request.json()
-  const provider = body?.provider as string
+  // CSRF 防护：校验同源
+  if (!isSameOrigin(req)) {
+    return NextResponse.json({ error: "forbidden" }, { status: 403 })
+  }
 
-  if (!provider) {
+  // 限流：每用户每分钟 5 次解绑操作
+  const rl = checkRateLimit(`unlink:${session.user.id}`, 5, 60_000)
+  if (!rl.allowed) {
+    return NextResponse.json({ error: "tooManyRequests" }, { status: 429, headers: { "Retry-After": String(Math.ceil((rl.resetAt - Date.now()) / 1000)) } })
+  }
+
+  const userId = session.user.id
+  let body: unknown
+  try {
+    body = await req.json()
+  } catch {
+    return NextResponse.json({ error: "invalidJson" }, { status: 400 })
+  }
+
+  const provider = (body as Record<string, unknown>)?.provider
+  if (!provider || typeof provider !== "string" || !VALID_PROVIDERS.has(provider)) {
     return NextResponse.json({ error: "invalidProvider" }, { status: 400 })
   }
 

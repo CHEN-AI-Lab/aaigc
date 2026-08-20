@@ -7,9 +7,16 @@ AI-powered tools and applications. Product portal and online utility collection.
 | Product | URL | Status |
 |---------|-----|--------|
 | CookMate | https://cookmate.aaigc.online | ✅ Live |
-| AIHub | https://aihub.aaigc.online | ✅ Live |
-| Short Drama | https://short-drama.aaigc.online | 🔧 WIP |
-| Resume Optimizer | https://resume-optimizer.aaigc.online | 🔧 WIP |
+| AIHub | https://aihub.aaigc.online | 🔧 WIP |
+| Short Drama | — | 🔧 WIP |
+| Resume Optimizer | — | 🔧 WIP |
+| CopyCraft | — | 🔧 WIP |
+| ContentForge | — | 🔧 WIP |
+| PostForge | — | 🔧 WIP |
+| Maestro | — | 🔧 WIP |
+| AI Portfolio Studio | — | 🔧 WIP |
+| AI Toolbox | — | 🔧 WIP |
+| Content AI Site | — | 🔧 WIP |
 
 ## Online Tools
 

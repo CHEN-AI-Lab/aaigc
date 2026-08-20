@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-AI-powered tools and product portal. 38 free online utilities + 4 product showcases (CookMate, AIHub, Short Drama, Resume Optimizer).
+AI-powered tools and product portal. 38 free online utilities + 11 product showcases (CookMate, AIHub, Short Drama, Resume Optimizer, CopyCraft, ContentForge, PostForge, Maestro, AI Portfolio Studio, AI Toolbox, Content AI Site).
 
 ## Tech Stack
 
