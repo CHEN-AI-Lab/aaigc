@@ -146,7 +146,7 @@ export default async function AboutPage({ params }: Props) {
         </span>
         <Link
           href="/products"
-          className="inline-block border border-accent text-accent px-6 py-2.5 rounded-full text-sm font-medium hover:bg-accent/10 transition-colors"
+          className="inline-block text-sm text-accent hover:underline"
         >
           {t('productsCta')} →
         </Link>
