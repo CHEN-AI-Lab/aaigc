@@ -1412,7 +1412,13 @@
     "setPasswordFirst": "请先设置密码，再绑定手机号",
     "tooManyRequests": "操作过于频繁，请稍后再试",
     "loginMethodTitle": "登录方式提醒",
-    "loginMethodDesc": "您的账号当前登录方式较少，忘记密码或邮箱不可用时可能无法登录。建议设置密码、绑定手机号或第三方账号。"
+    "loginMethodDesc": "您的账号当前登录方式较少，忘记密码或邮箱不可用时可能无法登录。建议设置密码、绑定手机号或第三方账号。",
+    "linkErrorTitle": "关联失败",
+    "linkEmailTaken": "该邮箱已被其他账号绑定",
+    "linkEmailTakenDesc": "您尝试关联的社交账号已被另一个账号使用。请使用该邮箱对应的账号登录，或更换社交账号后再试。",
+    "linkOtherError": "登录过程中出现异常，请重试。",
+    "backToAccount": "返回账号设置",
+    "backHome": "返回首页"
   },
   "terms": {
     "title": "服务条款",

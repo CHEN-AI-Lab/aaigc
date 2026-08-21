@@ -195,6 +195,7 @@ const { handlers: nextAuthHandlers, auth: nextAuthAuth, signIn, signOut } = Next
   },
   pages: {
     signIn: "/login",
+    error: "/error",
   },
 })
 
