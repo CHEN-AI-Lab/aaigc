@@ -584,19 +584,21 @@ export default function LoginClient() {
         </div>
 
         {!isLoggedIn && (
-          <p className="text-center text-sm text-text-secondary mt-6">
-            {t('noAccount')}{' '}
-            <Link href={`/${locale}/register`} className="text-text-primary font-medium hover:underline">
-              {t('register')}
-            </Link>
-          </p>
+          <>
+            <p className="text-center text-xs text-text-secondary mt-6 leading-relaxed">
+              {t('continueAgree')}{' '}
+              <Link href={`/${locale}/terms`} className="text-accent hover:underline">{t('termsOfService')}</Link>{' '}
+              {t('and')}{' '}
+              <Link href={`/${locale}/privacy`} className="text-accent hover:underline">{t('privacyPolicy')}</Link>
+            </p>
+            <p className="text-center text-sm text-text-secondary mt-4">
+              {t('noAccount')}{' '}
+              <Link href={`/${locale}/register`} className="text-text-primary font-medium hover:underline">
+                {t('register')}
+              </Link>
+            </p>
+          </>
         )}
-        <p className="text-center text-xs text-text-secondary mt-4 leading-relaxed">
-          {t('continueAgree')}{' '}
-          <Link href={`/${locale}/terms`} className="text-accent hover:underline">{t('termsOfService')}</Link>{' '}
-          {t('and')}{' '}
-          <Link href={`/${locale}/privacy`} className="text-accent hover:underline">{t('privacyPolicy')}</Link>
-        </p>
         </div>
       </div>
     </>

@@ -172,6 +172,11 @@ export default function RegisterClient() {
   }
 
   const handleOAuth = async (provider: string) => {
+    if (!agreeTerms) {
+      setShaking(true)
+      setTermsError(t('agreeTermsRequired'))
+      return
+    }
     setOauthProvider(provider)
     setError('')
     try {
@@ -388,14 +393,7 @@ export default function RegisterClient() {
             )}
           </div>
 
-          <p className="text-center text-xs text-text-secondary mt-6">
-            {t('continueAgree')}{' '}
-            <Link href={`/${locale}/terms`} className="text-accent hover:underline">{t('termsOfService')}</Link>{' '}
-            {t('and')}{' '}
-            <Link href={`/${locale}/privacy`} className="text-accent hover:underline">{t('privacyPolicy')}</Link>
-          </p>
-
-          <p className="text-center text-sm text-text-secondary mt-4">
+          <p className="text-center text-sm text-text-secondary mt-6">
             {t('hasAccount')}{' '}
             <Link href={`/${locale}/login`} className="text-text-primary font-medium hover:underline">
               {t('login')}
