@@ -1419,7 +1419,8 @@
     "linkEmailTakenDesc": "The social account you tried to link is already in use by another account. Please sign in with the account that uses this email, or try a different social account.",
     "linkOtherError": "Something went wrong during sign-in. Please try again.",
     "backToAccount": "Back to Account Settings",
-    "backHome": "Back to Home"
+    "backHome": "Back to Home",
+    "oauthAccountNotLinked": "This email is linked to another account. Please sign in with your email verification code or password instead."
   },
   "terms": {
     "title": "Terms of Service",

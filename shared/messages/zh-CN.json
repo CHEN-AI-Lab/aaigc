@@ -1419,7 +1419,8 @@
     "linkEmailTakenDesc": "您尝试关联的社交账号已被另一个账号使用。请使用该邮箱对应的账号登录，或更换社交账号后再试。",
     "linkOtherError": "登录过程中出现异常，请重试。",
     "backToAccount": "返回账号设置",
-    "backHome": "返回首页"
+    "backHome": "返回首页",
+    "oauthAccountNotLinked": "该邮箱已绑定其他账号，请使用邮箱验证码或密码登录"
   },
   "terms": {
     "title": "服务条款",

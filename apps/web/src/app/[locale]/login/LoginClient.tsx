@@ -19,6 +19,7 @@ export default function LoginClient() {
   const { data: session } = useSession()
   const isLoggedIn = !!session?.user
   const registered = searchParams.get('registered')
+  const oauthError = searchParams.get('error')
 
   // 已登录用户访问登录页 → 自动跳转到账号页
   useEffect(() => {
@@ -322,6 +323,11 @@ export default function LoginClient() {
             <>
               {/* OAuth buttons */}
               <div className="flex flex-col gap-3 mb-6">
+                {oauthError === 'OAuthAccountNotLinked' && (
+                  <div className="text-xs rounded-xl px-3 py-2 text-center bg-error/10 border border-error/25 text-error">
+                    {t('oauthAccountNotLinked')}
+                  </div>
+                )}
                 <button
                   onClick={() => handleOAuth('google')}
                   disabled={!!loading || !!oauthProvider}

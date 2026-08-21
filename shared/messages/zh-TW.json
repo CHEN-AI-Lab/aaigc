@@ -1419,7 +1419,8 @@
     "linkEmailTakenDesc": "您嘗試關聯的社交帳號已被其他帳號使用。請使用該郵箱對應的帳號登入，或更換社交帳號後再試。",
     "linkOtherError": "登入過程中發生異常，請重試。",
     "backToAccount": "返回帳號設定",
-    "backHome": "返回首頁"
+    "backHome": "返回首頁",
+    "oauthAccountNotLinked": "此郵箱已綁定其他帳號，請使用郵箱驗證碼或密碼登入"
   },
   "terms": {
     "tools": "線上工具",
