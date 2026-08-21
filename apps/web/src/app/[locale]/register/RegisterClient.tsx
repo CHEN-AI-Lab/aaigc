@@ -2,7 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { useTranslations, useLocale } from 'next-intl'
-import { signIn } from 'next-auth/react'
+import { signIn, signOut } from 'next-auth/react'
+import { useSession } from '@/auth-client'
 import { useRouter } from '@/i18n/navigation'
 import Link from 'next/link'
 import PasswordInput from '@/components/PasswordInput'
@@ -13,6 +14,7 @@ export default function RegisterClient() {
   const err = useTranslations('errors')
   const locale = useLocale()
   const router = useRouter()
+  const { data: session } = useSession()
 
   const [email, setEmail] = useState('')
   const [code, setCode] = useState('')
@@ -47,6 +49,22 @@ export default function RegisterClient() {
       return () => clearTimeout(t)
     }
   }, [shaking])
+
+  // 注册页 OAuth 回跳：标记来自注册页的快捷注册。若已是注册用户（老用户回来被直接登录），
+  // 提示「该邮箱已注册」并登出；全新用户则正常进入首页。
+  useEffect(() => {
+    if (sessionStorage.getItem('aaigc_oauth_register') !== '1') return
+    if (!session?.user) return
+    sessionStorage.removeItem('aaigc_oauth_register')
+    if (session.user.isNewUser === false) {
+      setErrorType('error')
+      setError(err('emailRegistered'))
+      setOauthProvider(null)
+      signOut({ redirect: false })
+    } else {
+      router.push(`/${locale}`)
+    }
+  }, [session, err, router, locale, setError, setErrorType, setOauthProvider])
 
   const handleSendCode = async () => {
     setError('')
@@ -177,14 +195,17 @@ export default function RegisterClient() {
       setTermsError(t('agreeTermsRequired'))
       return
     }
+    // 标记本次来自注册页，OAuth 回跳后用于区分「新注册」与「老用户回来」
+    sessionStorage.setItem('aaigc_oauth_register', '1')
     setOauthProvider(provider)
     setError('')
     try {
-      const result = await signIn(provider, { redirect: false, callbackUrl: `/${locale}` })
+      const result = await signIn(provider, { redirect: false, callbackUrl: `/${locale}/register` })
       if (result?.url) {
         window.location.href = result.url
       }
     } catch {
+      sessionStorage.removeItem('aaigc_oauth_register')
       setError(t('oauthNotConfigured'))
       setOauthProvider(null)
     }
