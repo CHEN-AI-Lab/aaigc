@@ -19,6 +19,21 @@ export default function LoginClient() {
   const { data: session } = useSession()
   const isLoggedIn = !!session?.user
   const registered = searchParams.get('registered')
+  const oauthError = searchParams.get('error')
+
+  // 登录成功后的回跳地址（仅允许站内相对路径，防止开放重定向）
+  const localePrefix = `/${locale}`
+  const rawCallbackUrl = searchParams.get('callbackUrl')
+  const callbackUrl = (() => {
+    if (!rawCallbackUrl || !rawCallbackUrl.startsWith('/') || rawCallbackUrl.startsWith('//')) return '/'
+    return rawCallbackUrl.startsWith(localePrefix) ? (rawCallbackUrl.slice(localePrefix.length) || '/') : rawCallbackUrl
+  })()
+
+  // OAuth 通用错误文案映射（?error= 出现在 OAuth 回调失败回跳时）
+  const OAUTH_ERROR_KEYS: Record<string, string> = {
+    AccessDenied: 'oauthAccessDenied',
+    Configuration: 'oauthConfigError',
+  }
 
   // 已登录用户访问登录页 → 自动跳转到账号页
   useEffect(() => {
@@ -39,6 +54,17 @@ export default function LoginClient() {
   const [successMsg, setSuccessMsg] = useState(registered ? t('registerSuccess') : '')
   const [loading, setLoading] = useState<string | null>(null)
   const [oauthProvider, setOauthProvider] = useState<string | null>(null)
+  const [oauthBannerDismissed, setOauthBannerDismissed] = useState(false)
+
+  // OAuth 错误提示仅在 OAuth 回调失败回跳时展示；关闭后清理 URL 上的 ?error= 参数，避免刷新后再次出现
+  const showOauthError = !!oauthError && !oauthBannerDismissed && !isLoggedIn
+  const dismissOauthError = () => {
+    setOauthBannerDismissed(true)
+    const params = new URLSearchParams(window.location.search)
+    params.delete('error')
+    const qs = params.toString()
+    window.history.replaceState({}, '', `${window.location.pathname}${qs ? `?${qs}` : ''}`)
+  }
 
   // Forgot password state
   const [forgotMode, setForgotMode] = useState(false)
@@ -82,7 +108,7 @@ export default function LoginClient() {
       const data = await res.json()
       if (!res.ok) {
         if (data.remainingSeconds) setCountdown(data.remainingSeconds)
-        setError(data.error ? err(data.error) : t('sendFailed'))
+        setError(data.error ? err(data.error, data.remainingSeconds ? { seconds: data.remainingSeconds } : undefined) : t('sendFailed'))
         setErrorType('error')
         return
       }
@@ -115,7 +141,7 @@ export default function LoginClient() {
         setError(t('loginFailed'))
         setErrorType('error')
       } else {
-        router.push('/')
+        router.push(callbackUrl)
       }
     } catch {
       setError(t('loginFailed'))
@@ -157,7 +183,7 @@ export default function LoginClient() {
         }
         setErrorType('error')
       } else {
-        router.push('/')
+        router.push(callbackUrl)
       }
     } catch {
       setError(t('loginFailed'))
@@ -173,7 +199,7 @@ export default function LoginClient() {
     setSuccessMsg('')
     try {
       if (isLoggedIn) await signOut({ redirect: false })
-      const result = await signIn(provider, { redirect: false, callbackUrl: `/${locale}` })
+      const result = await signIn(provider, { redirect: false, callbackUrl: callbackUrl === '/' ? `/${locale}` : `${localePrefix}${callbackUrl}` })
       if (result?.url) {
         window.location.href = result.url
       }
@@ -200,7 +226,7 @@ export default function LoginClient() {
       const data = await res.json()
       if (!res.ok) {
         if (data.remainingSeconds) setForgotCountdown(data.remainingSeconds)
-        setError(data.error ? err(data.error) : t('sendFailed'))
+        setError(data.error ? err(data.error, data.remainingSeconds ? { seconds: data.remainingSeconds } : undefined) : t('sendFailed'))
         setErrorType('error')
         return
       }
@@ -320,6 +346,36 @@ export default function LoginClient() {
 
           {!isLoggedIn && (
             <>
+              {/* OAuth 错误提示：仅在 OAuth 回调失败回跳时出现，可一键关闭 */}
+              {showOauthError && (
+                <div className="relative mb-6 p-3 pr-8 rounded-xl bg-error/10 border border-error/25 text-xs text-error leading-relaxed">
+                  <button
+                    type="button"
+                    onClick={dismissOauthError}
+                    aria-label={tc('close')}
+                    className="absolute top-2 right-2 w-5 h-5 flex items-center justify-center rounded-full text-error/60 hover:text-error hover:bg-error/10 transition-colors"
+                  >
+                    <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="18" y1="6" x2="6" y2="18" />
+                      <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                  </button>
+                  {oauthError === 'OAuthAccountNotLinked' ? (
+                    <p>
+                      {t.rich('oauthAccountNotLinked', {
+                        link: (chunks) => (
+                          <Link href={`/${locale}/login?callbackUrl=/${locale}/account`} className="text-accent font-medium hover:underline">
+                            {chunks}
+                          </Link>
+                        ),
+                      })}
+                    </p>
+                  ) : (
+                    <p>{t((oauthError && OAUTH_ERROR_KEYS[oauthError]) || 'oauthErrorGeneric')}</p>
+                  )}
+                </div>
+              )}
+
               {/* OAuth buttons */}
               <div className="flex flex-col gap-3 mb-6">
                 <button
@@ -404,13 +460,6 @@ export default function LoginClient() {
                         className="w-full px-4 py-3 rounded-xl bg-accent text-white text-sm font-medium hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50"
                       >
                         {loading === 'login' ? tc('sending') : t('loginButton')}
-                                              </button>
-                                              <button
-                                                onClick={handleSendCode}
-                                                disabled={countdown > 0 || loading === 'send'}
-                                                className="w-full text-center text-xs text-text-secondary hover:text-text-primary transition-colors disabled:opacity-50"
-                                              >
-                                                {countdown > 0 ? `${countdown}${tc('seconds')}` : t('resendCode')}
                       </button>
                     </>
                   )}
@@ -505,9 +554,6 @@ export default function LoginClient() {
                           <button onClick={handleForgotVerifyCode} disabled={loading === 'forgotVerify'} className="w-full px-4 py-3 rounded-xl bg-accent text-white text-sm font-medium hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50">
                             {loading === 'forgotVerify' ? tc('sending') : t('verifyCode')}
                           </button>
-                          <button onClick={handleForgotSendCode} disabled={forgotCountdown > 0 || loading === 'forgotSend'} className="w-full text-center text-xs text-text-secondary hover:text-text-primary transition-colors disabled:opacity-50">
-                            {forgotCountdown > 0 ? `${forgotCountdown}${tc('seconds')}` : t('resendCode')}
-                          </button>
                         </>
                       )}
                     </>
@@ -538,19 +584,21 @@ export default function LoginClient() {
         </div>
 
         {!isLoggedIn && (
-          <p className="text-center text-sm text-text-secondary mt-6">
-            {t('noAccount')}{' '}
-            <Link href={`/${locale}/register`} className="text-text-primary font-medium hover:underline">
-              {t('register')}
-            </Link>
-          </p>
+          <>
+            <p className="text-center text-xs text-text-secondary mt-6 leading-relaxed">
+              {t('continueAgree')}{' '}
+              <Link href={`/${locale}/terms`} className="text-accent hover:underline">{t('termsOfService')}</Link>{' '}
+              {t('and')}{' '}
+              <Link href={`/${locale}/privacy`} className="text-accent hover:underline">{t('privacyPolicy')}</Link>
+            </p>
+            <p className="text-center text-sm text-text-secondary mt-4">
+              {t('noAccount')}{' '}
+              <Link href={`/${locale}/register`} className="text-text-primary font-medium hover:underline">
+                {t('register')}
+              </Link>
+            </p>
+          </>
         )}
-        <p className="text-center text-xs text-text-secondary mt-4 leading-relaxed">
-          {t('continueAgree')}{' '}
-          <Link href={`/${locale}/terms`} className="text-accent hover:underline">{t('termsOfService')}</Link>{' '}
-          {t('and')}{' '}
-          <Link href={`/${locale}/privacy`} className="text-accent hover:underline">{t('privacyPolicy')}</Link>
-        </p>
         </div>
       </div>
     </>

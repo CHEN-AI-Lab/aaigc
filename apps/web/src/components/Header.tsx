@@ -13,6 +13,13 @@ export default function Header() {
 
   const isAuthenticated = status === 'authenticated'
   const isLoading = status === 'loading'
+  const isAdmin = isAuthenticated && session?.user?.role === 'admin'
+
+  // 统计面板地址（环境感知）
+  const vercelEnv = process.env.NEXT_PUBLIC_VERCEL_ENV || 'development'
+  const statsUrl = vercelEnv === 'production'
+    ? 'https://stats.aaigc.online'
+    : 'https://stats-pre.aaigc.online'
 
   return (
     <header className="border-b border-border bg-bg/80 backdrop-blur-md sticky top-0 z-50">
@@ -31,6 +38,16 @@ export default function Header() {
           <Link href="/about" className="hidden md:inline text-sm text-text-secondary hover:text-accent transition-colors">
             {t('about')}
           </Link>
+          {isAdmin && (
+            <a
+              href={statsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden md:inline text-sm text-text-secondary hover:text-accent transition-colors"
+            >
+              {t('stats')}
+            </a>
+          )}
         </nav>
         <div className="flex items-center gap-1 sm:gap-2">
           <ThemeSwitcher />

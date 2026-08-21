@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations, useLocale } from 'next-intl'
-import { useSession, signOut } from 'next-auth/react'
+import { useSession, signOut, signIn } from 'next-auth/react'
 import Link from 'next/link'
 import { useCallback, useEffect, useState, useRef } from 'react'
 import PasswordInput from '@/components/PasswordInput'
@@ -9,12 +9,15 @@ import PasswordInput from '@/components/PasswordInput'
 interface UserProfile {
   id: string
   email: string | null
+  phone: string | null
   name: string | null
   role: string
   image: string | null
   createdAt: string
   hasPassword: boolean
   accounts: { provider: string }[]
+  googleConfigured: boolean
+  githubConfigured: boolean
 }
 
 // OAuth 账号的顺序和显示名称
@@ -78,6 +81,16 @@ export default function AccountClient() {
   useEffect(() => {
     if (session) fetchProfile()
   }, [session, fetchProfile])
+
+  // 从 OAuth 关联回调回来时，提示结果并清理 URL 参数
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const linked = params.get('linked')
+    if (linked) {
+      showToast(t('linkSuccess'))
+      window.history.replaceState({}, '', `/${locale}/account`)
+    }
+  }, [locale, t])
 
   useEffect(() => {
     if (editingName && nameRef.current) nameRef.current.focus()
@@ -215,6 +228,16 @@ export default function AccountClient() {
 
   const handleLogout = async () => { await signOut({ callbackUrl: '/' }) }
 
+  // ── Link OAuth ──
+  // 已登录用户点"关联"→ 走 OAuth 授权 → Auth.js 自动把新账号绑到当前用户
+  const handleLink = async (provider: string) => {
+    try {
+      await signIn(provider, { callbackUrl: `/${locale}/account?linked=${provider}` })
+    } catch {
+      showToast(t('linkFailed'))
+    }
+  }
+
   // ── Unlink OAuth ──
   const [unlinking, setUnlinking] = useState<string | null>(null)
   const [unlinkConfirmProvider, setUnlinkConfirmProvider] = useState<string | null>(null)
@@ -251,6 +274,36 @@ export default function AccountClient() {
       }
     } catch { setUnlinkError(t('unlinkFailed')) }
     finally { setUnlinking(null) }
+  }
+
+  // ── Bind phone ──
+  const [showBindPhone, setShowBindPhone] = useState(false)
+  const [bindPhone, setBindPhone] = useState('')
+  const [bindPassword, setBindPassword] = useState('')
+  const [bindSaving, setBindSaving] = useState(false)
+  const [bindError, setBindError] = useState('')
+
+  const handleBindPhone = async () => {
+    if (!/^1[3-9]\d{9}$/.test(bindPhone)) { setBindError(t('invalidPhone')); return }
+    if (!bindPassword) { setBindError(t('fillRequired')); return }
+    setBindSaving(true); setBindError('')
+    try {
+      const res = await fetch('/api/user/bind-phone', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: bindPhone, password: bindPassword }),
+      })
+      const data = await res.json()
+      if (res.ok) {
+        setShowBindPhone(false)
+        setBindPhone(''); setBindPassword('')
+        await fetchProfile()
+        showToast(t('bindSuccess'))
+      } else {
+        setBindError(t(data.error) || t('bindFailed'))
+      }
+    } catch { setBindError(t('bindFailed')) }
+    finally { setBindSaving(false) }
   }
 
   // ── Loading / Not logged in ──
@@ -302,6 +355,25 @@ export default function AccountClient() {
               </button>
             </div>
 
+            {/* Login method warning: 只有 <=1 种登录方式时提醒补足保底 */}
+            {profile && (
+              (() => {
+                const loginMethods =
+                  (profile.hasPassword ? 1 : 0) +
+                  profile.accounts.filter((a) => ['google', 'github'].includes(a.provider)).length +
+                  (profile.phone ? 1 : 0)
+                if (loginMethods <= 1) {
+                  return (
+                    <div className="mb-5 rounded-sm border border-amber-300/60 bg-amber-50 px-3 py-2.5 text-xs text-amber-800">
+                      <p className="font-medium">⚠️ {t('loginMethodTitle')}</p>
+                      <p className="mt-1 opacity-80">{t('loginMethodDesc')}</p>
+                    </div>
+                  )
+                }
+                return null
+              })()
+            )}
+
             {/* Avatar + Name */}
             <div className="flex items-center gap-4 mb-5">
               {profile?.image || session.user?.image ? (
@@ -336,9 +408,9 @@ export default function AccountClient() {
                       className="text-xs text-accent hover:underline">{t('editName')}</button>
                   </div>
                 )}
-                <p className="text-xs text-text-secondary/60 mt-1">
-                  {(profile?.role || session.user?.role || 'user') === 'admin' ? `👑 ${t('admin')}` : `👤 ${t('user')}`}{profile?.createdAt && ` · ${t('memberSince')} ${formatDate(profile.createdAt)}`}
-                </p>
+                {(profile?.role || session.user?.role || 'user') === 'admin' && (
+                  <p className="text-xs text-text-secondary/60 mt-1">👑 {t('admin')}</p>
+                )}
               </div>
             </div>
 
@@ -348,11 +420,66 @@ export default function AccountClient() {
               <span className="text-sm text-text-primary truncate ml-4">{session.user?.email}</span>
             </div>
 
+            {/* Phone */}
+            <div className="flex items-center justify-between py-3 border-t border-border/50">
+              <span className="text-sm text-text-secondary/70 shrink-0">{t('phone')}</span>
+              <span className="text-sm text-text-primary truncate ml-4 flex items-center gap-2">
+                {profile?.phone
+                  ? profile.phone
+                  : <span className="text-text-secondary/60">{t('notBound')}</span>}
+                {!profile?.phone && (
+                  <button onClick={() => { setShowBindPhone(!showBindPhone); setBindPhone(''); setBindPassword(''); setBindError('') }}
+                    className="text-sm text-accent hover:underline shrink-0">
+                    {t('bindAction')}
+                  </button>
+                )}
+              </span>
+            </div>
+
+            {/* Inline bind-phone form */}
+            {showBindPhone && (
+              <div className="mt-2 space-y-3 px-1">
+                <div className="rounded-sm border border-amber-300/60 bg-amber-50 px-3 py-2">
+                  <p className="text-xs font-medium text-amber-800">⚠️ {t('bindWarningTitle')}</p>
+                  <p className="text-xs text-amber-700 mt-1">{t('bindWarning')}</p>
+                </div>
+                <div>
+                  <label className="text-xs text-text-secondary">{t('phone')}</label>
+                  <input
+                    type="tel"
+                    maxLength={11}
+                    placeholder={t('bindPhonePlaceholder')}
+                    value={bindPhone}
+                    onChange={e => setBindPhone(e.target.value.replace(/\D/g, ''))}
+                    className="w-full border border-border rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-accent mt-1"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-text-secondary">{t('bindPasswordPlaceholder')}</label>
+                  <PasswordInput
+                    placeholder={t('bindPasswordPlaceholder')}
+                    value={bindPassword}
+                    onChange={setBindPassword}
+                    className="w-full border border-border rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-accent mt-1"
+                  />
+                </div>
+                {bindError && <p className="text-xs text-error">{bindError}</p>}
+                <div className="flex items-center gap-2">
+                  <button onClick={handleBindPhone} disabled={bindSaving || !bindPhone || !bindPassword}
+                    className="bg-accent text-white px-4 py-2 rounded-xl text-sm font-medium hover:opacity-90 disabled:bg-gray-300 transition-all whitespace-nowrap">
+                    {bindSaving ? t('bindLoading') : t('bindConfirm')}
+                  </button>
+                  <button onClick={() => setShowBindPhone(false)}
+                    className="text-sm text-text-secondary/60 hover:text-text-secondary whitespace-nowrap">{t('cancel')}</button>
+                </div>
+              </div>
+            )}
+
             {/* Connected Accounts */}
-            {profile && profile.accounts.length > 0 && (
+            {profile && (profile.accounts.length > 0 || profile.googleConfigured || profile.githubConfigured) && (
               <div className="flex items-center justify-between py-3 border-t border-border/50">
                 <span className="text-sm text-text-secondary/70 shrink-0">{t('connectedAccounts')}</span>
-                <div className="flex gap-2 flex-wrap justify-end">
+                <div className="flex gap-2 flex-wrap justify-end items-center">
                   {profile.accounts
                     .filter((acc) => ['google', 'github'].includes(acc.provider))
                     .sort((a, b) => (OAUTH_ORDER[a.provider] ?? 99) - (OAUTH_ORDER[b.provider] ?? 99))
@@ -386,6 +513,18 @@ export default function AccountClient() {
                         </button>
                       </span>
                     ))}
+                  {profile.googleConfigured && !profile.accounts.some((a) => a.provider === 'google') && (
+                    <button onClick={() => handleLink('google')}
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-accent text-white rounded-sm text-xs hover:opacity-90 transition-opacity">
+                      + {t('linkGoogle')}
+                    </button>
+                  )}
+                  {profile.githubConfigured && !profile.accounts.some((a) => a.provider === 'github') && (
+                    <button onClick={() => handleLink('github')}
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-accent text-white rounded-sm text-xs hover:opacity-90 transition-opacity">
+                      + {t('linkGitHub')}
+                    </button>
+                  )}
                 </div>
               </div>
             )}
@@ -446,6 +585,12 @@ export default function AccountClient() {
                 </div>
               </div>
             )}
+
+            {/* Member since */}
+            <div className="flex items-center justify-between py-3 border-t border-border/50">
+              <span className="text-sm text-text-secondary/70 shrink-0">{t('memberSince')}</span>
+              <span className="text-sm text-text-primary truncate ml-4">{profile?.createdAt ? formatDate(profile.createdAt) : '—'}</span>
+            </div>
           </div>
         </div>
 

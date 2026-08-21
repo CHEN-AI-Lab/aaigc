@@ -8,10 +8,6 @@ declare module "next-auth" {
       role: string
     } & DefaultSession["user"]
   }
-
-  interface JWT {
-    role: string
-  }
 }
 
 import Google from "next-auth/providers/google"
@@ -195,6 +191,7 @@ const { handlers: nextAuthHandlers, auth: nextAuthAuth, signIn, signOut } = Next
   },
   pages: {
     signIn: "/login",
+    error: "/error",
   },
 })
 
