@@ -16,6 +16,7 @@ export async function GET() {
       select: {
         id: true,
         email: true,
+        phone: true,
         emailVerified: true,
         name: true,
         role: true,
@@ -41,6 +42,7 @@ export async function GET() {
     user: {
       id: user.id,
       email: user.email,
+      phone: user.phone,
       emailVerified: user.emailVerified,
       name: user.name,
       role: user.role,
@@ -48,6 +50,9 @@ export async function GET() {
       createdAt: user.createdAt,
       hasPassword: !!pw?.passwordHash,
       accounts: accounts.map((a) => ({ provider: a.provider })),
+      // 哪些 OAuth provider 已配置了环境变量，可用于"关联账号"
+      googleConfigured: !!(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET),
+      githubConfigured: !!(process.env.AUTH_GITHUB_ID && process.env.AUTH_GITHUB_SECRET),
     },
   })
 }

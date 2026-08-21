@@ -9,6 +9,7 @@ datasource db {
 model User {
   id           String    @id @default(cuid())
   email        String?   @unique
+  phone        String?   @unique    // 绑定手机号（不可解绑，见设置页提示）
   emailVerified DateTime?
   passwordHash String?              // bcrypt hash，仅密码用户有
   name         String?
