@@ -29,6 +29,15 @@ export default async function ProductDetailPage({ params }: Props) {
   const features = productData?.features as string[] | undefined
   const isLive = product.status === 'live'
 
+  // 环境感知 URL：preview 环境用 previewUrl，production 环境用 productionUrl
+  // 如果环境专属 URL 为空，回退到 url 字段（兼容旧数据）
+  const vercelEnv = process.env.NEXT_PUBLIC_VERCEL_ENV || 'development'
+  const envUrl = vercelEnv === 'preview'
+    ? product.previewUrl || product.productionUrl || product.url || ''
+    : vercelEnv === 'production'
+      ? product.productionUrl || product.url || ''
+      : product.previewUrl || product.productionUrl || product.url || ''
+
   return (
     <div className="max-w-4xl mx-auto px-6 py-16">
       <div className="mb-8">
@@ -71,9 +80,9 @@ export default async function ProductDetailPage({ params }: Props) {
           </div>
         )}
 
-        {isLive && product.url && (
+        {isLive && envUrl && (
           <a
-            href={product.url}
+            href={envUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center w-full px-6 py-3.5 bg-accent text-white text-sm font-medium rounded-sm hover:opacity-90 transition-opacity"

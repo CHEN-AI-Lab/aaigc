@@ -13,6 +13,8 @@ export interface Product {
   icon: string
   status: ProductStatus
   url?: string
+  previewUrl?: string
+  productionUrl?: string
 }
 
 // ─── Tool category ─────────────────────────────
