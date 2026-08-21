@@ -414,12 +414,6 @@ export default function AccountClient() {
               </div>
             </div>
 
-            {/* Member since */}
-            <div className="flex items-center justify-between py-3 border-t border-border/50">
-              <span className="text-sm text-text-secondary/70 shrink-0">{t('memberSince')}</span>
-              <span className="text-sm text-text-primary truncate ml-4">{profile?.createdAt ? formatDate(profile.createdAt) : '—'}</span>
-            </div>
-
             {/* Email */}
             <div className="flex items-center justify-between py-3 border-t border-border/50">
               <span className="text-sm text-text-secondary/70 shrink-0">{t('email')}</span>
@@ -591,6 +585,12 @@ export default function AccountClient() {
                 </div>
               </div>
             )}
+
+            {/* Member since */}
+            <div className="flex items-center justify-between py-3 border-t border-border/50">
+              <span className="text-sm text-text-secondary/70 shrink-0">{t('memberSince')}</span>
+              <span className="text-sm text-text-primary truncate ml-4">{profile?.createdAt ? formatDate(profile.createdAt) : '—'}</span>
+            </div>
           </div>
         </div>
 
