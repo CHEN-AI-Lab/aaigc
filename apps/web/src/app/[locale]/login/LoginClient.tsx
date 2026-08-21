@@ -460,13 +460,6 @@ export default function LoginClient() {
                         className="w-full px-4 py-3 rounded-xl bg-accent text-white text-sm font-medium hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50"
                       >
                         {loading === 'login' ? tc('sending') : t('loginButton')}
-                                              </button>
-                                              <button
-                                                onClick={handleSendCode}
-                                                disabled={countdown > 0 || loading === 'send'}
-                                                className="w-full text-center text-xs text-text-secondary hover:text-text-primary transition-colors disabled:opacity-50"
-                                              >
-                                                {countdown > 0 ? `${countdown}${tc('seconds')}` : t('resendCode')}
                       </button>
                     </>
                   )}
@@ -560,9 +553,6 @@ export default function LoginClient() {
                           </div>
                           <button onClick={handleForgotVerifyCode} disabled={loading === 'forgotVerify'} className="w-full px-4 py-3 rounded-xl bg-accent text-white text-sm font-medium hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50">
                             {loading === 'forgotVerify' ? tc('sending') : t('verifyCode')}
-                          </button>
-                          <button onClick={handleForgotSendCode} disabled={forgotCountdown > 0 || loading === 'forgotSend'} className="w-full text-center text-xs text-text-secondary hover:text-text-primary transition-colors disabled:opacity-50">
-                            {forgotCountdown > 0 ? `${forgotCountdown}${tc('seconds')}` : t('resendCode')}
                           </button>
                         </>
                       )}

@@ -408,12 +408,16 @@ export default function AccountClient() {
                       className="text-xs text-accent hover:underline">{t('editName')}</button>
                   </div>
                 )}
-                <p className="text-xs text-text-secondary/60 mt-1">
-                  {(profile?.role || session.user?.role || 'user') === 'admin' && `👑 ${t('admin')}`}
-                  {(profile?.role || session.user?.role || 'user') === 'admin' && profile?.createdAt && ' · '}
-                  {profile?.createdAt && `${t('memberSince')} ${formatDate(profile.createdAt)}`}
-                </p>
+                {(profile?.role || session.user?.role || 'user') === 'admin' && (
+                  <p className="text-xs text-text-secondary/60 mt-1">👑 {t('admin')}</p>
+                )}
               </div>
+            </div>
+
+            {/* Member since */}
+            <div className="flex items-center justify-between py-3 border-t border-border/50">
+              <span className="text-sm text-text-secondary/70 shrink-0">{t('memberSince')}</span>
+              <span className="text-sm text-text-primary truncate ml-4">{profile?.createdAt ? formatDate(profile.createdAt) : '—'}</span>
             </div>
 
             {/* Email */}

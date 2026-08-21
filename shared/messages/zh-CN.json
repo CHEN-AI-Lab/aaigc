@@ -1427,7 +1427,7 @@
     "linkOtherError": "登录过程中出现异常，请重试。",
     "backToAccount": "返回账号设置",
     "backHome": "返回首页",
-    "oauthAccountNotLinked": "该邮箱已绑定其他账号，无法直接用第三方账号登录。请先用邮箱验证码或密码登录，<link>关联第三方账号</link>即可。",
+    "oauthAccountNotLinked": "该邮箱已绑定其他账号，请先登录后<link>关联此账号</link>。",
     "oauthAccessDenied": "您取消了第三方授权。如想继续，请重新点击第三方登录按钮。",
     "oauthConfigError": "第三方登录配置异常，请稍后再试或改用邮箱登录。",
     "oauthErrorGeneric": "第三方登录失败，请重试，或改用邮箱验证码/密码登录。"
