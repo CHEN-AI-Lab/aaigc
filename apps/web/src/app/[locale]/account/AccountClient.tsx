@@ -425,7 +425,7 @@ export default function AccountClient() {
               <span className="text-sm text-text-secondary/70 shrink-0">{t('phone')}</span>
               <span className="text-sm text-text-primary truncate ml-4 flex items-center gap-2">
                 {profile?.phone
-                  ? profile.phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')
+                  ? profile.phone
                   : <span className="text-text-secondary/60">{t('notBound')}</span>}
                 {!profile?.phone && (
                   <button onClick={() => { setShowBindPhone(!showBindPhone); setBindPhone(''); setBindPassword(''); setBindError('') }}
