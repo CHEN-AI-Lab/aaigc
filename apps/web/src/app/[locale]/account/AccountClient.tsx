@@ -409,7 +409,9 @@ export default function AccountClient() {
                   </div>
                 )}
                 <p className="text-xs text-text-secondary/60 mt-1">
-                  {(profile?.role || session.user?.role || 'user') === 'admin' ? `👑 ${t('admin')}` : `👤 ${t('user')}`}{profile?.createdAt && ` · ${t('memberSince')} ${formatDate(profile.createdAt)}`}
+                  {(profile?.role || session.user?.role || 'user') === 'admin' && `👑 ${t('admin')}`}
+                  {(profile?.role || session.user?.role || 'user') === 'admin' && profile?.createdAt && ' · '}
+                  {profile?.createdAt && `${t('memberSince')} ${formatDate(profile.createdAt)}`}
                 </p>
               </div>
             </div>

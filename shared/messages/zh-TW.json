@@ -15,7 +15,8 @@
     "showPassword": "顯示密碼",
     "hidePassword": "隱藏密碼",
     "seconds": "秒",
-    "sending": "發送中"
+    "sending": "發送中",
+    "close": "關閉"
   },
   "home": {
     "heroSubtitle": "AI 應用與線上工具的集合",
@@ -1204,6 +1205,12 @@
     "registerFailed": "註冊失敗",
     "accountLocked": "登入失敗次數過多，帳號已鎖定，請 {minutes} 分鐘後再試。",
     "attemptsRemaining": "（還剩 {count} 次機會）",
+    "codeRecentlySent": "驗證碼發送過於頻繁，請 {seconds} 秒後重試",
+    "rateLimited": "操作過於頻繁，請稍後再試",
+    "invalidEmail": "信箱格式不正確",
+    "realEmail": "請使用真實信箱地址",
+    "emailNotRegistered": "該信箱尚未註冊",
+    "emailRegistered": "該信箱已註冊",
     "agreeTermsRequired": "請同意服務條款和隱私政策"
   },
   "footer": {
@@ -1356,7 +1363,7 @@
     "signupWithGoogle": "Google 注册",
     "signupWithGithub": "GitHub 注册",
     "and": "和",
-    "agreeTermsRequired": "请同意服务条款和隐私政策",
+    "agreeTermsRequired": "請同意服務條款和隱私政策",
     "termsOfService": "服务条款",
     "privacyPolicy": "隐私政策",
     "view": "查看",
@@ -1420,7 +1427,10 @@
     "linkOtherError": "登入過程中發生異常，請重試。",
     "backToAccount": "返回帳號設定",
     "backHome": "返回首頁",
-    "oauthAccountNotLinked": "此郵箱已綁定其他帳號，請使用郵箱驗證碼或密碼登入"
+    "oauthAccountNotLinked": "該信箱已綁定其他帳號，無法直接用第三方帳號登入。請先用信箱驗證碼或密碼登入，<link>關聯第三方帳號</link>即可。",
+    "oauthAccessDenied": "您已取消第三方授權。如想繼續，請重新點擊第三方登入按鈕。",
+    "oauthConfigError": "第三方登入配置異常，請稍後再試或改用信箱登入。",
+    "oauthErrorGeneric": "第三方登入失敗，請重試，或改用信箱驗證碼/密碼登入。"
   },
   "terms": {
     "tools": "線上工具",

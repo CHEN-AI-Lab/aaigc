@@ -15,7 +15,8 @@
     "showPassword": "Show password",
     "hidePassword": "Hide password",
     "seconds": "s",
-    "sending": "Sending..."
+    "sending": "Sending...",
+    "close": "Close"
   },
   "home": {
     "heroSubtitle": "Explore · Use · Create",
@@ -1204,6 +1205,12 @@
     "registerFailed": "Registration failed",
     "accountLocked": "Too many failed attempts. Your account is locked for {minutes} minutes.",
     "attemptsRemaining": "({count} attempt(s) remaining)",
+    "codeRecentlySent": "Verification code sent too frequently. Please try again in {seconds} seconds.",
+    "rateLimited": "Too many requests. Please try again later.",
+    "invalidEmail": "Invalid email format",
+    "realEmail": "Please use a real email address",
+    "emailNotRegistered": "This email is not registered",
+    "emailRegistered": "This email is already registered",
     "agreeTermsRequired": "Please agree to the Terms of Service and Privacy Policy"
   },
   "footer": {
@@ -1420,7 +1427,10 @@
     "linkOtherError": "Something went wrong during sign-in. Please try again.",
     "backToAccount": "Back to Account Settings",
     "backHome": "Back to Home",
-    "oauthAccountNotLinked": "This email is linked to another account. Please sign in with your email verification code or password instead."
+    "oauthAccountNotLinked": "This email is linked to another account, so you can't sign in with this third-party account directly. Please sign in with your email verification code or password first, then <link>link this third-party account</link>.",
+    "oauthAccessDenied": "You cancelled the third-party authorization. To continue, please click the third-party sign-in button again.",
+    "oauthConfigError": "The third-party sign-in service is misconfigured. Please try again later or sign in with your email.",
+    "oauthErrorGeneric": "Third-party sign-in failed. Please try again, or sign in with your email verification code or password."
   },
   "terms": {
     "title": "Terms of Service",

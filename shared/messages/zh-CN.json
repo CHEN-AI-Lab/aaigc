@@ -15,7 +15,8 @@
     "showPassword": "显示密码",
     "hidePassword": "隐藏密码",
     "seconds": "秒",
-    "sending": "发送中"
+    "sending": "发送中",
+    "close": "关闭"
   },
   "home": {
     "heroSubtitle": "探索 · 使用 · 创造",
@@ -1204,6 +1205,12 @@
     "registerFailed": "注册失败",
     "accountLocked": "登录失败次数过多，账号已锁定，请 {minutes} 分钟后再试。",
     "attemptsRemaining": "（还剩 {count} 次机会）",
+    "codeRecentlySent": "验证码发送过于频繁，请 {seconds} 秒后重试",
+    "rateLimited": "操作过于频繁，请稍后重试",
+    "invalidEmail": "邮箱格式不正确",
+    "realEmail": "请使用真实邮箱地址",
+    "emailNotRegistered": "该邮箱未注册",
+    "emailRegistered": "该邮箱已注册",
     "agreeTermsRequired": "请同意服务条款和隐私政策"
   },
   "footer": {
@@ -1420,7 +1427,10 @@
     "linkOtherError": "登录过程中出现异常，请重试。",
     "backToAccount": "返回账号设置",
     "backHome": "返回首页",
-    "oauthAccountNotLinked": "该邮箱已绑定其他账号，请使用邮箱验证码或密码登录"
+    "oauthAccountNotLinked": "该邮箱已绑定其他账号，无法直接用第三方账号登录。请先用邮箱验证码或密码登录，<link>关联第三方账号</link>即可。",
+    "oauthAccessDenied": "您取消了第三方授权。如想继续，请重新点击第三方登录按钮。",
+    "oauthConfigError": "第三方登录配置异常，请稍后再试或改用邮箱登录。",
+    "oauthErrorGeneric": "第三方登录失败，请重试，或改用邮箱验证码/密码登录。"
   },
   "terms": {
     "title": "服务条款",

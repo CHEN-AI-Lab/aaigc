@@ -15,7 +15,8 @@
     "showPassword": "パスワードを表示",
     "hidePassword": "パスワードを隠す",
     "seconds": "秒",
-    "sending": "送信中..."
+    "sending": "送信中...",
+    "close": "閉じる"
   },
   "home": {
     "heroSubtitle": "AI アプリケーションとオンラインツールのコレクション",
@@ -1204,6 +1205,12 @@
     "registerFailed": "登録に失敗しました",
     "accountLocked": "ログイン試行回数が多すぎます。アカウントは{minutes}分間ロックされています。",
     "attemptsRemaining": "（残り{count}回）",
+    "codeRecentlySent": "確認コードの送信が頻繁すぎます。{seconds} 秒後にもう一度お試しください。",
+    "rateLimited": "操作が多すぎます。しばらくしてからもう一度お試しください。",
+    "invalidEmail": "メールアドレスの形式が正しくありません",
+    "realEmail": "実在するメールアドレスをご使用ください",
+    "emailNotRegistered": "このメールアドレスは登録されていません",
+    "emailRegistered": "このメールアドレスは既に登録されています",
     "agreeTermsRequired": "利用規約とプライバシーポリシーに同意してください"
   },
   "footer": {
@@ -1356,7 +1363,7 @@
     "signupWithGoogle": "Sign up with Google",
     "signupWithGithub": "Sign up with GitHub",
     "and": "and",
-    "agreeTermsRequired": "Please agree to the Terms of Service and Privacy Policy",
+    "agreeTermsRequired": "利用規約とプライバシーポリシーに同意してください",
     "termsOfService": "Terms of Service",
     "privacyPolicy": "Privacy Policy",
     "view": "表示",
@@ -1420,7 +1427,10 @@
     "linkOtherError": "ログイン中にエラーが発生しました。もう一度お試しください。",
     "backToAccount": "アカウント設定に戻る",
     "backHome": "ホームに戻る",
-    "oauthAccountNotLinked": "このメールアドレスは別のアカウントに紐付けられています。メール認証コードまたはパスワードでログインしてください。"
+    "oauthAccountNotLinked": "このメールアドレスは別のアカウントに紐付けられているため、このサードパーティアカウントでは直接ログインできません。まずメール認証コードまたはパスワードでログインし、<link>サードパーティアカウントを連携</link>してください。",
+    "oauthAccessDenied": "サードパーティの認証をキャンセルしました。続行する場合は、もう一度サードパーティのログインボタンをクリックしてください。",
+    "oauthConfigError": "サードパーティのログイン設定に問題があります。しばらくしてから再試行するか、メールでログインしてください。",
+    "oauthErrorGeneric": "サードパーティのログインに失敗しました。再試行するか、メール認証コードまたはパスワードでログインしてください。"
   },
   "terms": {
     "title": "利用規約",
