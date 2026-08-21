@@ -43,6 +43,14 @@ for FILE in "$MIGRATIONS_DIR"/*/migration.sql; do
   [ -s "$FILE" ] || continue
   CONTENT=$(cat "$FILE")
 
+  # 豁免标记：迁移 SQL 中显式声明 "safety: ignore" 时跳过检查。
+  # 用于人工确认过的危险操作（如幂等空操作的删表补记）。
+  # 参考 prisma-strong-migrations 的 psm-disable-next-line 注释豁免机制。
+  if echo "$CONTENT" | grep -q "safety: ignore"; then
+    echo "⏭️  [${MIGRATION_NAME}] 含 safety: ignore 标记（人工确认），跳过检查。"
+    continue
+  fi
+
   for entry in "${DANGEROUS_PATTERNS[@]}"; do
     DESC="${entry%%|*}"
     REGEX="${entry#*|}"
