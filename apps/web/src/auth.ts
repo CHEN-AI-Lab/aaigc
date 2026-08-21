@@ -6,8 +6,6 @@ declare module "next-auth" {
     user: {
       id: string
       role: string
-      // OAuth 注册/登录时由 jwt 回调写入：本次是否为全新注册用户
-      isNewUser?: boolean
     } & DefaultSession["user"]
   }
 }
@@ -164,18 +162,12 @@ const { handlers: nextAuthHandlers, auth: nextAuthAuth, signIn, signOut } = Next
       if (session.user && token.sub) {
         session.user.id = token.sub
         session.user.role = token.role as string
-        // JWT 基础类型带 [key: string]: unknown 索引签名，读取时按目标类型转型
-        session.user.isNewUser = token.oauthIsNew as boolean | undefined
       }
       return session
     },
-    async jwt({ token, account, trigger, session, isNewUser }) {
+    async jwt({ token, account, trigger, session }) {
       if (account) {
         token.provider = account.provider
-        // OAuth 注册/登录时记录本次是否为全新用户，供注册页区分「新注册」与「老用户回来」
-        if (account.type === 'oauth') {
-          token.oauthIsNew = !!isNewUser
-        }
       }
       // 客户端 update() 刷新 session 时，把新名字写进 JWT
       if (trigger === 'update' && session?.name) {
