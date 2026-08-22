@@ -445,6 +445,12 @@ export default function LoginClient() {
                       </button>
                     </div>
                   </div>
+                  {/* 错误提示放在邮箱输入下方、codeSent 块外：发送验证码被限流时（刷新后 codeSent 已归零）也能显示 */}
+                  {error && (
+                    <div className={`text-xs rounded-xl px-3 py-2 text-center ${errorColors[errorType]}`}>
+                      {error}
+                    </div>
+                  )}
                   {codeSent && (
                     <>
                       <div>
@@ -458,11 +464,6 @@ export default function LoginClient() {
                           className="w-full px-4 py-3 rounded-xl border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors text-center tracking-[8px]"
                         />
                       </div>
-                      {error && (
-                        <div className={`text-xs rounded-xl px-3 py-2 text-center ${errorColors[errorType]}`}>
-                          {error}
-                        </div>
-                      )}
                       <button
                         onClick={handleCodeLogin}
                         disabled={loading === 'login' || !code}
