@@ -6,6 +6,7 @@ import { signIn } from 'next-auth/react'
 import { useRouter } from '@/i18n/navigation'
 import Link from 'next/link'
 import PasswordInput from '@/components/PasswordInput'
+import { useToast } from '@/components/ui/Toast'
 
 export default function RegisterClient() {
   const t = useTranslations('auth')
@@ -13,6 +14,7 @@ export default function RegisterClient() {
   const err = useTranslations('errors')
   const locale = useLocale()
   const router = useRouter()
+  const { showToast } = useToast()
 
   const [email, setEmail] = useState('')
   const [code, setCode] = useState('')
@@ -81,6 +83,7 @@ export default function RegisterClient() {
       setCodeSent(true)
       setCountdown(120)
       if (data.devCode) setDevCode(data.devCode)
+      else showToast(t('codeSentEmail'), 'success')
     } catch {
       setError(t('sendFailed'))
       setErrorType('error')

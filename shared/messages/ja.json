@@ -1335,6 +1335,7 @@
     "user": "User",
     "noName": "No name",
     "registerSuccess": "Account created successfully. Please log in.",
+    "codeSentEmail": "認証コードをメールに送信しました。ご確認ください。",
     "forgotPassword": "Forgot password?",
     "sendCode": "Send verification code",
     "verificationCode": "Verification code",

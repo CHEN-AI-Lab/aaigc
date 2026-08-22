@@ -1332,6 +1332,7 @@
     "user": "用户",
     "noName": "未设置昵称",
     "registerSuccess": "注册成功，请登录",
+    "codeSentEmail": "验证码已发送到您的邮箱，请查收",
     "forgotPassword": "忘记密码？",
     "sendCode": "发送验证码",
     "verificationCode": "验证码",

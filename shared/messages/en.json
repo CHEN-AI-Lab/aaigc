@@ -1332,6 +1332,7 @@
     "user": "User",
     "noName": "No name",
     "registerSuccess": "Account created successfully. Please log in.",
+    "codeSentEmail": "The verification code has been sent to your email. Please check.",
     "forgotPassword": "Forgot password?",
     "sendCode": "Send verification code",
     "verificationCode": "Verification code",

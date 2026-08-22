@@ -6,6 +6,7 @@ import Footer from '../../components/Footer'
 import VisitTracker from '../../components/VisitTracker'
 import AuthProvider from '../../components/AuthProvider'
 import { FavoritesProvider } from '../../components/FavoritesProvider'
+import { ToastProvider } from '../../components/ui/Toast'
 
 type Props = {
   children: React.ReactNode
@@ -23,16 +24,18 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <NextIntlClientProvider key={locale} locale={locale} messages={messages}>
-      <AuthProvider>
-        <FavoritesProvider>
-          <VisitTracker />
-          <div className="flex flex-col min-h-screen">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-        </FavoritesProvider>
-      </AuthProvider>
+      <ToastProvider>
+        <AuthProvider>
+          <FavoritesProvider>
+            <VisitTracker />
+            <div className="flex flex-col min-h-screen">
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+          </FavoritesProvider>
+        </AuthProvider>
+      </ToastProvider>
     </NextIntlClientProvider>
   )
 }

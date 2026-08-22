@@ -8,6 +8,7 @@ import { useSession } from '@/auth-client'
 import { useRouter } from '@/i18n/navigation'
 import Link from 'next/link'
 import PasswordInput from '@/components/PasswordInput'
+import { useToast } from '@/components/ui/Toast'
 
 export default function LoginClient() {
   const t = useTranslations('auth')
@@ -16,6 +17,7 @@ export default function LoginClient() {
   const locale = useLocale()
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { showToast } = useToast()
   const { data: session } = useSession()
   const isLoggedIn = !!session?.user
   const registered = searchParams.get('registered')
@@ -115,6 +117,7 @@ export default function LoginClient() {
       setCodeSent(true)
       setCountdown(120)
       if (data.devCode) setSuccessMsg(t('devCodeHint').replace('{code}', data.devCode))
+      else showToast(t('codeSentEmail'), 'success')
     } catch {
       setError(t('sendFailed'))
       setErrorType('error')
