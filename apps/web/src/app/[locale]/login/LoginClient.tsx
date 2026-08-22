@@ -138,13 +138,13 @@ export default function LoginClient() {
         redirect: false,
       })
       if (result?.error) {
-        setError(t('loginFailed'))
+        setError(t('verifyFailed'))
         setErrorType('error')
       } else {
         router.push(callbackUrl)
       }
     } catch {
-      setError(t('loginFailed'))
+      setError(t('verifyFailed'))
       setErrorType('error')
     } finally {
       setLoading(null)
@@ -429,7 +429,7 @@ export default function LoginClient() {
                       <input
                         type="email"
                         value={email}
-                        onChange={(e) => { setEmail(e.target.value); setCodeSent(false) }}
+                        onChange={(e) => { setEmail(e.target.value); if (e.target.value === '') setCodeSent(false) }}
                         placeholder="name@example.com"
                         className="flex-1 px-4 py-3 rounded-xl border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors"
                       />
@@ -455,19 +455,19 @@ export default function LoginClient() {
                           className="w-full px-4 py-3 rounded-xl border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors text-center tracking-[8px]"
                         />
                       </div>
+                      {error && (
+                        <div className={`text-xs rounded-xl px-3 py-2 text-center ${errorColors[errorType]}`}>
+                          {error}
+                        </div>
+                      )}
                       <button
                         onClick={handleCodeLogin}
                         disabled={loading === 'login' || !code}
                         className="w-full px-4 py-3 rounded-xl bg-accent text-white text-sm font-medium hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50"
                       >
-                        {loading === 'login' ? tc('sending') : t('loginButton')}
+                        {loading === 'login' ? t('loginVerifying') : t('loginButton')}
                       </button>
                     </>
-                  )}
-                  {error && (
-                    <div className={`text-xs rounded-xl px-3 py-2 text-center ${errorColors[errorType]}`}>
-                      {error}
-                    </div>
                   )}
                 </div>
               )}
@@ -553,7 +553,7 @@ export default function LoginClient() {
                             <input type="text" value={forgotCode} onChange={(e) => setForgotCode(e.target.value.replace(/\D/g, ''))} placeholder={t('codePlaceholder')} maxLength={6} className="w-full px-4 py-3 rounded-xl border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors text-center tracking-[8px]" />
                           </div>
                           <button onClick={handleForgotVerifyCode} disabled={loading === 'forgotVerify'} className="w-full px-4 py-3 rounded-xl bg-accent text-white text-sm font-medium hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50">
-                            {loading === 'forgotVerify' ? tc('sending') : t('verifyCode')}
+                            {loading === 'forgotVerify' ? t('codeVerifying') : t('verifyCode')}
                           </button>
                         </>
                       )}
@@ -570,7 +570,7 @@ export default function LoginClient() {
                       </div>
                       {error && <div className={`text-xs rounded-xl px-3 py-2 text-center ${errorColors[errorType]}`}>{error}</div>}
                       <button onClick={handleForgotResetPassword} disabled={loading === 'forgotReset'} className="w-full px-4 py-3 rounded-xl bg-accent text-white text-sm font-medium hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50">
-                        {loading === 'forgotReset' ? tc('sending') : t('resetPasswordBtn')}
+                        {loading === 'forgotReset' ? t('resetting') : t('resetPasswordBtn')}
                       </button>
                     </>
                   )}
