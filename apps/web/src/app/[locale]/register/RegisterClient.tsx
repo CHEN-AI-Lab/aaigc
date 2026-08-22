@@ -76,7 +76,7 @@ export default function RegisterClient() {
       const data = await res.json()
       if (!res.ok) {
         if (data.remainingSeconds) setCountdown(data.remainingSeconds)
-        setError(data.error ? err(data.error) : t('sendFailed'))
+        setError(data.error ? err(data.error, data.remainingSeconds ? { seconds: data.remainingSeconds } : undefined) : t('sendFailed'))
         setErrorType('error')
         return
       }
