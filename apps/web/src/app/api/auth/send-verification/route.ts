@@ -38,19 +38,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "rateLimited" }, { status: 429 })
     }
 
-    // Check 120-second send interval（无条件时间窗，不依赖 used 状态，
-    // 防止攻击者将上一枚码标记为 used 后立即绕过冷却）
-    const recent = await prisma.verificationCode.findFirst({
-      where: { email, createdAt: { gte: new Date(Date.now() - 120000) } },
-      orderBy: { createdAt: "desc" },
-    })
-    if (recent) {
-      const elapsed = Math.floor((Date.now() - recent.createdAt.getTime()) / 1000)
-      const remaining = Math.max(1, 120 - elapsed)
-      return NextResponse.json({ error: "codeRecentlySent", remainingSeconds: remaining }, { status: 429 })
-    }
-
-    // Check email registration status
+    // Check email registration status（先于冷却检查：已注册是永久事实，优先提示，避免被"过于频繁"遮蔽）
     if (purpose === 'login') {
       // 登录：必须已注册
       const existing = await prisma.user.findUnique({ where: { email } })
@@ -63,6 +51,18 @@ export async function POST(req: NextRequest) {
       if (existing) {
         return NextResponse.json({ error: "emailRegistered" }, { status: 409 })
       }
+    }
+
+    // Check 120-second send interval（无条件时间窗，不依赖 used 状态，
+    // 防止攻击者将上一枚码标记为 used 后立即绕过冷却）
+    const recent = await prisma.verificationCode.findFirst({
+      where: { email, createdAt: { gte: new Date(Date.now() - 120000) } },
+      orderBy: { createdAt: "desc" },
+    })
+    if (recent) {
+      const elapsed = Math.floor((Date.now() - recent.createdAt.getTime()) / 1000)
+      const remaining = Math.max(1, 120 - elapsed)
+      return NextResponse.json({ error: "codeRecentlySent", remainingSeconds: remaining }, { status: 429 })
     }
 
     // Generate code（加密安全，见 verification.ts）
