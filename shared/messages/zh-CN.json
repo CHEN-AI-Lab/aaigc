@@ -1337,7 +1337,7 @@
     "verifyFailed": "验证码错误或已过期",
     "emailVerified": "邮箱已验证 ✓",
     "memberSince": "加入时间",
-    "connectedAccounts": "已绑定账号",
+    "connectedAccounts": "账号绑定",
     "passwordLogin": "密码登录",
     "changePassword": "修改密码",
     "setPassword": "设置密码",
