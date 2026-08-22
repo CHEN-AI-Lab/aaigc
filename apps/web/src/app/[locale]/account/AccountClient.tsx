@@ -86,8 +86,12 @@ export default function AccountClient() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const linked = params.get('linked')
+    const linkError = params.get('linkError')
     if (linked) {
       showToast(t('linkSuccess'))
+      window.history.replaceState({}, '', `/${locale}/account`)
+    } else if (linkError) {
+      showToast(t(linkError === 'failed' ? 'linkFailed' : 'linkEmailTaken'))
       window.history.replaceState({}, '', `/${locale}/account`)
     }
   }, [locale, t])
