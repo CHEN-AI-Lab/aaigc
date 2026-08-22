@@ -1305,6 +1305,7 @@
     "confirmPassword": "确认密码",
     "name": "昵称",
     "loginButton": "登录",
+    "verifying": "验证中...",
     "registerButton": "注册",
     "noAccount": "没有账号？",
     "hasAccount": "已有账号？",

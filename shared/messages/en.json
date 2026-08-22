@@ -1305,6 +1305,7 @@
     "confirmPassword": "Confirm Password",
     "name": "Name",
     "loginButton": "Login",
+    "verifying": "Verifying...",
     "registerButton": "Register",
     "noAccount": "Don't have an account?",
     "hasAccount": "Already have an account?",
