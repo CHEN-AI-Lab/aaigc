@@ -205,6 +205,7 @@ export default function LoginClient() {
       }
     } catch {
       setError(t('oauthNotConfigured'))
+    } finally {
       setOauthProvider(null)
     }
   }
