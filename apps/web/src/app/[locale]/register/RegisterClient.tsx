@@ -169,7 +169,7 @@ export default function RegisterClient() {
         return
       }
 
-      router.push(`/${locale}/login?registered=true&email=${encodeURIComponent(email)}`)
+      router.push(`/login?registered=true&email=${encodeURIComponent(email)}`)
     } catch {
       setError(t('registerFailed'))
       setErrorType('error')
