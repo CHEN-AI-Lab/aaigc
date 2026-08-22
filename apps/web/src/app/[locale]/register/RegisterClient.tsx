@@ -75,7 +75,11 @@ export default function RegisterClient() {
       })
       const data = await res.json()
       if (!res.ok) {
-        if (data.remainingSeconds) setCountdown(data.remainingSeconds)
+        // 限流 = 该邮箱已有有效验证码在途：同样显示验证码输入框，让用户可输入之前收到的码
+        if (data.error === 'codeRecentlySent' && data.remainingSeconds) {
+          setCodeSent(true)
+          setCountdown(data.remainingSeconds)
+        }
         setError(data.error ? err(data.error, data.remainingSeconds ? { seconds: data.remainingSeconds } : undefined) : t('sendFailed'))
         setErrorType('error')
         return
