@@ -283,14 +283,7 @@ const { handlers: nextAuthHandlers, auth: nextAuthAuth, signIn, signOut } = Next
             // 绑在别人身上 → 拒绝，不切换登录态
             return `/account?linkError=bound&provider=${account.provider}`
           }
-          // OAuth 邮箱已被其他账号占用 → 拒绝
           const email = normalizeEmail(profile?.email ?? user.email ?? "")
-          if (email) {
-            const emailOwner = await prisma.user.findUnique({ where: { email } })
-            if (emailOwner && emailOwner.id !== currentUserId) {
-              return "/account?linkError=emailTaken"
-            }
-          }
           // 无冲突 → 把 OAuth 账号绑到当前用户名下（当前登录态保持不变）
           try {
             await prisma.account.create({
