@@ -6,7 +6,7 @@ import { getTrustedClientIp } from "shared/utils/ip"
 import { isSameOrigin } from "shared/utils/csrf"
 
 // 合法的收藏类型白名单
-const VALID_FAV_TYPES = new Set(["tool", "article", "snippet"])
+const VALID_FAV_TYPES = new Set(["tool", "product", "article", "snippet"])
 
 export async function GET() {
   const session = await auth()
