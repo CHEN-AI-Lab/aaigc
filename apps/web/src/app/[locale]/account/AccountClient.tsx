@@ -61,10 +61,10 @@ export default function AccountClient() {
   const [toast, setToast] = useState('')
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  function showToast(msg: string) {
+  function showToast(msg: string, duration?: number) {
     setToast(msg)
     if (toastTimer.current) clearTimeout(toastTimer.current)
-    toastTimer.current = setTimeout(() => setToast(''), 6000)
+    toastTimer.current = setTimeout(() => setToast(''), duration ?? 6000)
   }
 
   const fetchProfile = useCallback(async () => {
@@ -278,9 +278,9 @@ export default function AccountClient() {
         setUnlinkConfirmProvider(null)
         if (data.needsManualRevoke) {
           setNeedsManualRevoke(true)
-          showToast(t('githubUnlinked'))
+          showToast(t('githubUnlinked'), 3000)
         } else {
-          showToast(unlinkConfirmProvider === 'github' ? t('githubUnlinked') : t('googleUnlinked'))
+          showToast(unlinkConfirmProvider === 'github' ? t('githubUnlinked') : t('googleUnlinked'), 3000)
         }
       } else {
         setUnlinkError(t(data.error || 'unlinkFailed'))
