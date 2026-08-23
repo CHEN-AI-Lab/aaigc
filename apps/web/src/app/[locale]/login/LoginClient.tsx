@@ -39,10 +39,15 @@ export default function LoginClient() {
 
   // 已登录用户访问登录页 → 自动跳转到账号页
   useEffect(() => {
-    if (isLoggedIn) {
-      router.replace('/account')
+    if (!isLoggedIn) return
+    // 关联 OAuth 失败回跳（已登录 + OAuthAccountNotLinked/AccountNotLinked）：
+    // 带 linkError 参数跳回账号页，由账号页提示"该邮箱已被其他账号绑定"，避免停在登录页闪烁
+    if (oauthError === 'OAuthAccountNotLinked' || oauthError === 'AccountNotLinked') {
+      router.replace('/account?linkError=bound')
+      return
     }
-  }, [isLoggedIn, router])
+    router.replace('/account')
+  }, [isLoggedIn, router, oauthError])
 
   const [tab, setTab] = useState<'email' | 'password'>('email')
   const [email, setEmail] = useState(registered ? (searchParams.get('email') || '') : '')
