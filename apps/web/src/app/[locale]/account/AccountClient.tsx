@@ -278,9 +278,9 @@ export default function AccountClient() {
         setUnlinkConfirmProvider(null)
         if (data.needsManualRevoke) {
           setNeedsManualRevoke(true)
-          showToast(t('githubManualRevoke'))
+          showToast(t('githubUnlinked'))
         } else {
-          showToast(t('unlinkSuccess'))
+          showToast(unlinkConfirmProvider === 'github' ? t('githubUnlinked') : t('googleUnlinked'))
         }
       } else {
         setUnlinkError(t(data.error || 'unlinkFailed'))

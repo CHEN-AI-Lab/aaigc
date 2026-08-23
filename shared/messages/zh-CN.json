@@ -1395,6 +1395,8 @@
     "unlinkConfirm": "确定要解绑 {provider} 吗？解绑后将无法使用该账号登录。",
     "unlinkSuccess": "已解绑",
     "unlinkFailed": "解绑失败",
+    "googleUnlinked": "Google已解绑",
+    "githubUnlinked": "GitHub已解绑",
     "confirmUnlink": "确认解绑",
     "githubRevokeNote": "GitHub 网站不支持自动解绑，解绑后请前往 GitHub 设置 → 应用 手动取消授权。",
     "githubManualRevokeDone": "GitHub 账号已从本站解绑。",

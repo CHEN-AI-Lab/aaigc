@@ -1395,6 +1395,8 @@
     "unlinkConfirm": "Unlink {provider}? You will no longer be able to sign in with this account.",
     "unlinkSuccess": "Account unlinked successfully",
     "unlinkFailed": "Failed to unlink account",
+    "googleUnlinked": "Google unlinked",
+    "githubUnlinked": "GitHub unlinked",
     "confirmUnlink": "Confirm Unlink",
     "githubRevokeNote": "GitHub does not support automatic unbinding. After unlinking, please go to GitHub Settings → Applications to cancel authorization manually.",
     "githubManualRevokeDone": "GitHub account has been unlinked from this site.",

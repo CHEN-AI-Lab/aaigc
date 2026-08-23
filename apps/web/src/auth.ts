@@ -267,7 +267,6 @@ const { handlers: nextAuthHandlers, auth: nextAuthAuth, signIn, signOut } = Next
         // signIn() 本质是登录（会把 session 切到 OAuth 身份甚至新建用户），
         // 真正的关联在这里拦截：返回字符串 = 直接重定向且不签发新 session，当前登录态保持不变
         const currentUserId = await getSessionUserId()
-        console.log("[link-account] getSessionUserId 返回=" + currentUserId)
         if (currentUserId) {
           // 该 OAuth 账号是否已被绑定
           const existingAccount = await prisma.account.findUnique({
