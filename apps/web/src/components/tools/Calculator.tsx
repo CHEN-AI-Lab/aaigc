@@ -1328,16 +1328,15 @@ function TitleCalc() {
 
   return (
       <div className="max-w-lg mx-auto space-y-3">
-        <div className="bg-surface border border-border rounded-sm p-3 text-xs text-text-secondary leading-relaxed space-y-1">
+        <div className="bg-surface border border-border rounded-sm p-3 text-xs text-text-secondary leading-relaxed">
           {t('calcTitleNote')}
-          <p>{t('chinaOnlyNote')}</p>
         </div>
         <div className="bg-surface rounded-sm border border-border p-4">
           <div className="flex items-center justify-between mb-3">
                     <p className="text-xs text-text-secondary/60">{t('calcTitleSelectRelation')}</p>
                   </div>
           <div className="flex items-center gap-2">
-            <div className="grid grid-cols-5 gap-1.5 flex-1">
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5 flex-1">
               {row1.map(name => (
                 <button key={name} onClick={() => setSelected1(selected1 === name ? '' : name)}
                   className={btnClass(selected1 === name)}>{name}</button>
@@ -1346,7 +1345,7 @@ function TitleCalc() {
             <div className="shrink-0">
               <span className="text-base text-text-secondary font-medium">的</span>
             </div>
-            <div className="grid grid-cols-5 gap-1.5 flex-1">
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5 flex-1">
               {row3.map(name => (
                 <button key={name} onClick={() => setSelected3(selected3 === name ? '' : name)}
                   className={btnClass(selected3 === name)}>{name}</button>
