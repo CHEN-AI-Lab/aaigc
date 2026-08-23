@@ -64,7 +64,7 @@ export default function AccountClient() {
   function showToast(msg: string) {
     setToast(msg)
     if (toastTimer.current) clearTimeout(toastTimer.current)
-    toastTimer.current = setTimeout(() => setToast(''), 3000)
+    toastTimer.current = setTimeout(() => setToast(''), 6000)
   }
 
   const fetchProfile = useCallback(async () => {
@@ -91,7 +91,16 @@ export default function AccountClient() {
       showToast(t('linkSuccess'))
       window.history.replaceState({}, '', `/${locale}/account`)
     } else if (linkError) {
-      showToast(t(linkError === 'failed' ? 'linkFailed' : 'linkEmailTaken'))
+      if (linkError === 'failed') {
+        showToast(t('linkFailed'))
+      } else if (linkError === 'bound') {
+        const providerParam = params.get('provider') || ''
+        const providerNames: Record<string, string> = { google: 'Google', github: 'GitHub' }
+        const providerName = providerNames[providerParam] ?? providerParam
+        showToast(providerName ? t('linkAccountBound', { provider: providerName }) : t('linkEmailTaken'))
+      } else {
+        showToast(t('linkEmailTaken'))
+      }
       window.history.replaceState({}, '', `/${locale}/account`)
     }
   }, [locale, t])

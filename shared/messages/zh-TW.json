@@ -1427,6 +1427,7 @@
     "loginMethodDesc": "您的帳號目前登入方式較少，忘記密碼或信箱不可用時可能無法登入。建議設定密碼、綁定手機號碼或第三方帳號。",
     "linkErrorTitle": "關聯失敗",
     "linkEmailTaken": "此郵箱已被其他帳號綁定",
+    "linkAccountBound": "該{provider}帳號已被其他使用者綁定",
     "linkEmailTakenDesc": "您嘗試關聯的社交帳號已被其他帳號使用。請使用該郵箱對應的帳號登入，或更換社交帳號後再試。",
     "linkOtherError": "登入過程中發生異常，請重試。",
     "backToAccount": "返回帳號設定",

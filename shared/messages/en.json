@@ -1427,6 +1427,7 @@
     "loginMethodDesc": "Your account currently has limited login methods. If you forget your password or lose access to your email, you may not be able to log in. We recommend setting a password, binding a phone number, or linking a third-party account.",
     "linkErrorTitle": "Connection failed",
     "linkEmailTaken": "This email is already linked to another account",
+    "linkAccountBound": "This {provider} account is already linked to another user",
     "linkEmailTakenDesc": "The social account you tried to link is already in use by another account. Please sign in with the account that uses this email, or try a different social account.",
     "linkOtherError": "Something went wrong during sign-in. Please try again.",
     "backToAccount": "Back to Account Settings",
