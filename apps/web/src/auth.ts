@@ -263,6 +263,7 @@ const { handlers: nextAuthHandlers, auth: nextAuthAuth, signIn, signOut } = Next
   callbacks: {
     async signIn({ user, account, profile }) {
       console.log("[link-account] signIn 回调触发 provider=" + (account?.provider ?? "?") + " type=" + (account?.type ?? "?"))
+      console.error("[link-account] signIn 诊断: account?.provider=", account?.provider, "account?.type=", account?.type, "user.id=", user?.id, "profile?.email=", profile?.email)
       if (account?.type === "oauth") {
         // ── 关联模式：已登录用户从设置页发起 OAuth = "关联账号"操作 ──
         // signIn() 本质是登录（会把 session 切到 OAuth 身份甚至新建用户），
