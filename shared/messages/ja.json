@@ -559,7 +559,6 @@
     "calcTitleInvalid": "無効",
     "calcTitleNotFound": "未収録",
     "calcTitleSelectRelation": "関係を選択",
-    "calcTitleCommonRelations": "よく使う関係",
     "calcBaseError": "入力に無効な文字が含まれています。{base}で許可される文字: {chars}",
     "calcBaseBinary": "2進数",
     "calcBaseOctal": "8進数",

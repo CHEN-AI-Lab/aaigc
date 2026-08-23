@@ -261,7 +261,7 @@ export default function RegisterClient() {
                   <label className="block text-xs font-medium text-text-secondary mb-1.5">
                     {t('email')}
                   </label>
-                  <div className="flex gap-2 mt-1.5">
+                  <div className="flex flex-col sm:flex-row gap-2 mt-1.5">
                     <input
                       type="email"
                       value={email}
@@ -273,7 +273,7 @@ export default function RegisterClient() {
                     <button
                       onClick={handleSendCode}
                       disabled={loading === 'send' || countdown > 0 || !email}
-                      className="px-4 py-3 rounded-xl text-sm font-medium bg-hover text-text-primary hover:bg-border disabled:opacity-40 whitespace-nowrap transition-colors"
+                      className="px-4 py-3 rounded-xl text-sm font-medium bg-hover text-text-primary hover:bg-border disabled:opacity-40 whitespace-nowrap transition-colors sm:w-auto w-full"
                     >
                       {countdown > 0 ? `${countdown}${tc('seconds')}` : loading === 'send' ? tc('sending') : t('sendCode')}
                     </button>

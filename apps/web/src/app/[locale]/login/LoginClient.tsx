@@ -441,7 +441,7 @@ export default function LoginClient() {
                 <div className="flex flex-col gap-4">
                   <div>
                     <label className="block text-xs font-medium text-text-secondary mb-1.5">{t('email')}</label>
-                    <div className="flex gap-2 mt-1.5">
+                    <div className="flex flex-col sm:flex-row gap-2 mt-1.5">
                       <input
                         type="email"
                         value={email}
@@ -452,7 +452,7 @@ export default function LoginClient() {
                       <button
                         onClick={handleSendCode}
                         disabled={loading === 'send' || countdown > 0 || !email}
-                        className="px-4 py-3 rounded-xl text-sm font-medium bg-hover text-text-primary hover:bg-border disabled:opacity-40 whitespace-nowrap transition-colors"
+                        className="px-4 py-3 rounded-xl text-sm font-medium bg-hover text-text-primary hover:bg-border disabled:opacity-40 whitespace-nowrap transition-colors sm:w-auto w-full"
                       >
                         {countdown > 0 ? `${countdown}${tc('seconds')}` : loading === 'send' ? tc('sending') : t('sendCode')}
                       </button>
@@ -552,9 +552,9 @@ export default function LoginClient() {
                     <>
                       <div>
                         <label className="block text-xs font-medium text-text-secondary mb-1.5">{t('email')}</label>
-                        <div className="flex gap-2 mt-1.5">
+                        <div className="flex flex-col sm:flex-row gap-2 mt-1.5">
                           <input type="email" value={forgotEmail} onChange={(e) => setForgotEmail(e.target.value)} placeholder="name@example.com" disabled={forgotCodeSent} className="flex-1 px-4 py-3 rounded-xl border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors disabled:opacity-50" />
-                          <button onClick={handleForgotSendCode} disabled={loading === 'forgotSend' || forgotCountdown > 0 || !forgotEmail} className="px-4 py-3 rounded-xl text-sm font-medium bg-hover text-text-primary hover:bg-border disabled:opacity-40 whitespace-nowrap transition-colors">
+                          <button onClick={handleForgotSendCode} disabled={loading === 'forgotSend' || forgotCountdown > 0 || !forgotEmail} className="px-4 py-3 rounded-xl text-sm font-medium bg-hover text-text-primary hover:bg-border disabled:opacity-40 whitespace-nowrap transition-colors sm:w-auto w-full">
                             {forgotCountdown > 0 ? `${forgotCountdown}${tc('seconds')}` : loading === 'forgotSend' ? tc('sending') : t('sendCode')}
                           </button>
                         </div>

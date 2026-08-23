@@ -1321,17 +1321,8 @@ function TitleCalc() {
       : relations[key] || `${key}（${t('calcTitleNotFound')}）`
     : ''
 
-  // Most common 15 relations for quick reference (3 columns × 5 rows)
-  const commonRelations = [
-    '爸爸的爸爸', '爸爸的妈妈', '妈妈的爸爸',
-    '妈妈的妈妈', '爸爸的哥哥', '爸爸的弟弟',
-    '爸爸的姐妹', '妈妈的哥哥', '妈妈的弟弟',
-    '妈妈的姐妹', '哥哥的老婆', '弟弟的老婆',
-    '姐姐的老公', '妹妹的老公', '爷爷的爸爸',
-  ]
-
   const btnClass = (selected: boolean) =>
-    `px-2.5 py-1.5 text-xs rounded-sm transition-colors ${
+    `px-2.5 py-1.5 text-xs rounded-sm transition-colors text-center ${
       selected ? 'bg-accent text-white' : 'bg-card text-text-secondary border border-border hover:border-accent/30'
     }`
 
@@ -1372,28 +1363,6 @@ function TitleCalc() {
             }`}>{result}</p>
           </div>
         )}
-      </div>
-      <div className="bg-surface rounded-sm border border-border p-3">
-        <p className="text-xs text-text-secondary/60 mb-2">{t('calcTitleCommonRelations')}</p>
-        <div className="grid grid-cols-3 gap-1">
-          {commonRelations.map(k => {
-            const parts = k.split('的')
-            return (
-              <button key={k} onClick={() => {
-                if (parts.length === 2) {
-                  setSelected1(parts[0])
-                  setSelected3(parts[1])
-                } else if (parts.length === 3) {
-                  setSelected1(`${parts[0]}的${parts[1]}`)
-                  setSelected3(parts[2])
-                }
-              }}
-                className="text-left text-xs p-1.5 bg-card rounded-sm hover:bg-accent/5 text-text-primary">
-                {k} → {relations[k]}
-              </button>
-            )
-          })}
-        </div>
       </div>
     </div>
   )

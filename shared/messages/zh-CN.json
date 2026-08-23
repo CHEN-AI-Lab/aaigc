@@ -563,7 +563,6 @@
     "calcTitleInvalid": "不合法",
     "calcTitleNotFound": "暂未收录",
     "calcTitleSelectRelation": "选择关系",
-    "calcTitleCommonRelations": "常用关系查询",
     "calcBaseError": "输入包含无效字符。{base}只允许: {chars}",
     "calcBaseBinary": "二进制",
     "calcBaseOctal": "八进制",

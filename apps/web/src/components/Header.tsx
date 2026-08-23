@@ -43,7 +43,7 @@ export default function Header() {
               href={statsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden md:inline text-sm text-text-secondary hover:text-accent transition-colors"
+              className="text-xs sm:text-sm text-text-secondary hover:text-accent transition-colors"
             >
               {t('stats')}
             </a>

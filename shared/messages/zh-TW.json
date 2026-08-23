@@ -486,7 +486,6 @@
     "calcInputNumber": "輸入數字",
     "calcTitleNotFound": "暫未收錄",
     "calcTitleSelectRelation": "選擇關係",
-    "calcTitleCommonRelations": "常用關係查詢",
     "calcBaseError": "輸入包含無效字元。{base}只允許: {chars}",
     "calcEnterNumber": "輸入數值",
     "calcYearRepayment": "還款 ¥{amount}",
