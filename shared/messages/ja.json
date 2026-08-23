@@ -449,6 +449,7 @@
     "tabSpeed": "速度",
     "tabTime": "時間",
     "chinaOnlyLabel": "中国",
+    "chinaOnlyNote": "このツールは中国本土のユーザーのみ対象です。データとルールは中国の税法/住宅ローン制度に基づいています。",
     "currencyUSD": "米ドル",
     "currencyCNY": "人民元",
     "currencyEUR": "ユーロ",

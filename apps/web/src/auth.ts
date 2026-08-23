@@ -15,6 +15,7 @@ import GitHub from "next-auth/providers/github"
 import Credentials from "next-auth/providers/credentials"
 import { decode } from "next-auth/jwt"
 import { cookies } from "next/headers"
+import { AsyncLocalStorage } from "node:async_hooks"
 import { prisma } from "shared/utils/prisma"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { checkLoginRateLimit, recordLoginAttempt } from "shared/utils/login-rate-limit"
@@ -126,9 +127,80 @@ if (process.env.AUTH_GITHUB_ID && process.env.AUTH_GITHUB_SECRET) {
   )
 }
 
+// ── 关联账号用的会话读取（核心改造） ──
+// 在 OAuth 回调路由里，next/headers 的 cookies() 读不到会话 cookie（catch-all 路由处理器直接吃原始 Request），
+// 导致 signIn 回调拦截失败、核心抛出 OAuthAccountNotLinked 后跳登录页。
+// 解决：路由层把浏览器发来的原始 Cookie 头注入 AsyncLocalStorage，signIn 回调从这里可靠读取当前会话。
+
+// 存储"本次请求的原始 Cookie 头"的异步上下文
+const requestCookieStore = new AsyncLocalStorage<string>()
+
+// 路由层包裹 handlers.GET/POST：把 Cookie 请求头注入当前异步上下文（OAuth 回调会在此上下文内同步触发 signIn 回调）
+export function runWithRequestCookie<T>(cookieHeader: string, fn: () => T): T {
+  return requestCookieStore.run(cookieHeader, fn)
+}
+
+// 解析 Cookie 请求头（name=value; ...）→ 普通对象。值不解码（JWT 为 base64url，无需转义）
+function parseCookieHeader(header: string): Record<string, string> {
+  const out: Record<string, string> = {}
+  if (!header) return out
+  for (const pair of header.split(";")) {
+    const idx = pair.indexOf("=")
+    if (idx <= 0) continue
+    const name = pair.slice(0, idx).trim()
+    const value = pair.slice(idx + 1).trim()
+    if (name) out[name] = value
+  }
+  return out
+}
+
+// 从 Cookie 头里取会话 token（含分片拼接）并解码，返回 userId
+async function decodeSessionFromCookieHeader(cookieHeader: string): Promise<string | null> {
+  const secret = process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET
+  if (!secret) {
+    console.error("[link-account] 缺少 AUTH_SECRET / 缺少 NEXTAUTH_SECRET")
+    return null
+  }
+  try {
+    const parsed = parseCookieHeader(cookieHeader)
+    const baseNames = ["__Secure-authjs.session-token", "authjs.session-token"]
+    for (const base of baseNames) {
+      const escaped = base.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+      const full = parsed[base]
+      if (full) {
+        const decoded = await decode({ token: full, salt: base, secret })
+        if (decoded?.sub) return decoded.sub
+      }
+      // 分片拼接：__Secure-authjs.session-token.0 / .1 ...
+      const indices: number[] = []
+      for (const key of Object.keys(parsed)) {
+        const m = key.match(new RegExp(`^${escaped}\\.(\\d+)$`))
+        if (m) indices.push(Number(m[1]))
+      }
+      if (indices.length > 0) {
+        indices.sort((a, b) => a - b)
+        const token = indices.map((i) => parsed[`${base}.${i}`]).join("")
+        const decoded = await decode({ token, salt: base, secret })
+        if (decoded?.sub) return decoded.sub
+      }
+    }
+  } catch (e) {
+    console.error("[link-account] 从请求头解码 session 异常:", e)
+  }
+  return null
+}
+
 // 读取当前登录会话的用户 id（"关联账号"场景判定：已登录用户发起的 OAuth = 关联操作）。
-// 直接解码 session cookie，避免在回调里递归调用 auth()
+// 优先用 AsyncLocalStorage 里路由层注入的原始 Cookie 头（在 OAuth 回调上下文可靠可读），
+// 仅在缺失时回退到 next/headers 的 cookies()。
 async function getSessionUserId(): Promise<string | null> {
+  const injectedCookie = requestCookieStore.getStore()
+  if (injectedCookie !== undefined) {
+    const userId = await decodeSessionFromCookieHeader(injectedCookie)
+    if (userId) return userId
+    // 注入存在但解不出 → 回退 next/headers 兜底一次
+  }
+
   try {
     const cookieStore = await cookies()
     const all = cookieStore.getAll()

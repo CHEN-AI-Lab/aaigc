@@ -1,10 +1,10 @@
-import { handlers } from "@/auth"
+import { handlers, runWithRequestCookie } from "@/auth"
 import type { NextRequest } from "next/server"
 
 export async function GET(req: NextRequest) {
-  return handlers.GET(req)
+  return runWithRequestCookie(req.headers.get("cookie") ?? "", () => handlers.GET(req))
 }
 
 export async function POST(req: NextRequest) {
-  return handlers.POST(req)
+  return runWithRequestCookie(req.headers.get("cookie") ?? "", () => handlers.POST(req))
 }
