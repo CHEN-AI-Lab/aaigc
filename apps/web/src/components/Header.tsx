@@ -86,7 +86,7 @@ export default function Header() {
                 )}
               </button>
               {avatarOpen && (
-                <div className="absolute right-0 mt-2 bg-card border border-border rounded-md shadow-md z-[60] w-36 overflow-hidden">
+                <div className="absolute right-0 mt-2 bg-card border border-border rounded-md shadow-md z-[60] overflow-hidden">
                   <Link href="/account" onClick={() => setAvatarOpen(false)}
                     className="block px-3 py-2 text-xs text-text-primary hover:bg-accent/10 transition-colors">
                     {authT('account')}
