@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
 
     // 邮箱级失败计数（防分布式 IP 爆破验证码）
     const rateKey = `register-code:${email}`
-    const rateCheck = checkLoginRateLimit(rateKey)
+    const rateCheck = await checkLoginRateLimit(rateKey)
     if (!rateCheck.allowed) {
       const minutesRemaining = Math.ceil((rateCheck.lockedUntil! - Date.now()) / 60000)
       return NextResponse.json({ error: "tooManyAttempts", minutesRemaining }, { status: 429 })
@@ -84,10 +84,10 @@ export async function POST(req: NextRequest) {
 
     const ok = await consumeVerificationCode(email, code, 'register')
     if (!ok) {
-      recordLoginAttempt(rateKey, false)
+      await recordLoginAttempt(rateKey, false)
       return NextResponse.json({ error: "verifyFailed" }, { status: 401 })
     }
-    recordLoginAttempt(rateKey, true)
+    await recordLoginAttempt(rateKey, true)
 
     // Check email not already registered
     const existing = await prisma.user.findUnique({ where: { email } })

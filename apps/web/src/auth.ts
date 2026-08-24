@@ -40,7 +40,7 @@ providers.push(
 
       // 限流：按邮箱计数失败尝试，防止验证码爆破
       const rateKey = `email-code:${email}`
-      const rateCheck = checkLoginRateLimit(rateKey)
+      const rateCheck = await checkLoginRateLimit(rateKey)
       if (!rateCheck.allowed) {
         return null
       }
@@ -48,10 +48,10 @@ providers.push(
       // 原子消费验证码（用途绑定 login + 并发安全 + 失败计数）
       const ok = await consumeVerificationCode(email, code, 'login')
       if (!ok) {
-        recordLoginAttempt(rateKey, false)
+        await recordLoginAttempt(rateKey, false)
         return null
       }
-      recordLoginAttempt(rateKey, true)
+      await recordLoginAttempt(rateKey, true)
 
       // Find or create user, 同时设置 emailVerified（验证码本身就是邮箱验证）
       const user = await prisma.user.findUnique({ where: { email } })
@@ -86,7 +86,7 @@ providers.push(
 
       // Rate limit check
       const rateKey = `login:${email}`
-      const rateCheck = checkLoginRateLimit(rateKey)
+      const rateCheck = await checkLoginRateLimit(rateKey)
       if (!rateCheck.allowed) {
         return null
       }
@@ -97,11 +97,11 @@ providers.push(
       const bcrypt = await import("bcryptjs")
       const valid = await bcrypt.compare(password, user.passwordHash)
       if (!valid) {
-        recordLoginAttempt(rateKey, false)
+        await recordLoginAttempt(rateKey, false)
         return null
       }
 
-      recordLoginAttempt(rateKey, true)
+      await recordLoginAttempt(rateKey, true)
       return { id: user.id, name: user.name, email: user.email!, role: user.role }
     },
   })

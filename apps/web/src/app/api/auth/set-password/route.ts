@@ -86,7 +86,7 @@ export async function POST(req: Request) {
 
     // 限流：按邮箱计数（修复双读 bug 后该分支可达，必须加限流以防验证码爆破）
     const rateKey = `reset:${email}`
-    const rateCheck = checkLoginRateLimit(rateKey)
+    const rateCheck = await checkLoginRateLimit(rateKey)
     if (!rateCheck.allowed) {
       const minutesRemaining = Math.ceil((rateCheck.lockedUntil! - Date.now()) / 60000)
       return NextResponse.json({ error: "tooManyAttempts", minutesRemaining }, { status: 429 })
@@ -95,10 +95,10 @@ export async function POST(req: Request) {
     // 原子消费验证码（用途绑定 forgotPassword + 失败计数）
     const ok = await consumeVerificationCode(email, code, 'forgotPassword')
     if (!ok) {
-      recordLoginAttempt(rateKey, false)
+      await recordLoginAttempt(rateKey, false)
       return NextResponse.json({ error: "verifyFailed" }, { status: 401 })
     }
-    recordLoginAttempt(rateKey, true)
+    await recordLoginAttempt(rateKey, true)
 
     const user = await prisma.user.findUnique({ where: { email } })
     if (!user) {

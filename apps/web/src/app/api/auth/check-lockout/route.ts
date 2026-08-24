@@ -10,7 +10,7 @@ export async function GET(req: Request) {
   }
 
   const rateKey = `login:${email.toLowerCase()}`
-  const check = checkLoginRateLimit(rateKey)
+  const check = await checkLoginRateLimit(rateKey)
 
   if (!check.allowed) {
     const minutesRemaining = Math.ceil((check.lockedUntil! - Date.now()) / 60000)

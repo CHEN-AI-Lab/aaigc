@@ -32,7 +32,7 @@ export async function POST(req: Request) {
 
     // 限流：按邮箱计数，防止验证码爆破
     const rateKey = `delete:${email}`
-    const rateCheck = checkLoginRateLimit(rateKey)
+    const rateCheck = await checkLoginRateLimit(rateKey)
     if (!rateCheck.allowed) {
       const minutesRemaining = Math.ceil((rateCheck.lockedUntil! - Date.now()) / 60000)
       return NextResponse.json({ error: "tooManyAttempts", minutesRemaining }, { status: 429 })
@@ -41,10 +41,10 @@ export async function POST(req: Request) {
     // 原子消费验证码（用途绑定 deleteAccount）
     const ok = await consumeVerificationCode(email, code, 'deleteAccount')
     if (!ok) {
-      recordLoginAttempt(rateKey, false)
+      await recordLoginAttempt(rateKey, false)
       return NextResponse.json({ error: "verifyFailed" }, { status: 401 })
     }
-    recordLoginAttempt(rateKey, true)
+    await recordLoginAttempt(rateKey, true)
 
     const userId = session.user.id
     await prisma.$transaction([

@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
 
     // 邮箱级限流（防分布式 IP 爆破）
     const rateKey = `verify:${email}`
-    const rateCheck = checkLoginRateLimit(rateKey)
+    const rateCheck = await checkLoginRateLimit(rateKey)
     if (!rateCheck.allowed) {
       const minutesRemaining = Math.ceil((rateCheck.lockedUntil! - Date.now()) / 60000)
       return NextResponse.json({ error: "tooManyAttempts", minutesRemaining }, { status: 429 })
@@ -37,10 +37,10 @@ export async function POST(req: NextRequest) {
     // 原实现在此标记 used:true，导致随后 register 的 findFirst(used:false) 必然失败 → 注册流程不可用。
     const ok = await checkVerificationCode(email, code, 'register')
     if (!ok) {
-      recordLoginAttempt(rateKey, false)
+      await recordLoginAttempt(rateKey, false)
       return NextResponse.json({ error: "verifyFailed" }, { status: 401 })
     }
-    recordLoginAttempt(rateKey, true)
+    await recordLoginAttempt(rateKey, true)
 
     return NextResponse.json({ success: true, verified: true })
   } catch (error) {
