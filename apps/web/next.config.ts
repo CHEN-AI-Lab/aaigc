@@ -27,23 +27,11 @@ const securityHeaders = [
     key: 'Strict-Transport-Security',
     value: 'max-age=31536000; includeSubDomains; preload',
   },
-  // CSP：限制资源加载来源，防止 XSS/数据外泄
-  // 注意：script-src 'unsafe-inline' 用于 Next.js 注入的运行时脚本和主题检测内联脚本；
-  //       生产环境可升级为 nonce-based CSP 以移除 'unsafe-inline'。
-  {
-    key: 'Content-Security-Policy',
-    value: [
-      "default-src 'self'",
-      "script-src 'self' 'unsafe-inline'",
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-      "font-src 'self' data: https://fonts.gstatic.com",
-      "img-src 'self' data: https:",
-      "connect-src 'self' https:",
-      "frame-ancestors 'none'",
-      "base-uri 'self'",
-      "form-action 'self'",
-    ].join('; '),
-  },
+  // 注意：Content-Security-Policy 由 src/proxy.ts 注入（含一次性 nonce 的强防护方案）。
+  // 是否启用强防护由运行时环境变量 AAIGC_STRICT_CSP 控制：
+  //   - 未设置（默认）= 快模式，script-src 'self' 'unsafe-inline'，页面静态预渲染；
+  //   - 'true' = 强防护，script-src 'self' 'nonce-xxx' 'strict-dynamic'，动态渲染。
+  // next.config 的静态 CSP 无法为每次请求提供独立 nonce，故交由 proxy.ts 处理。
 ]
 
 const nextConfig: NextConfig = {
