@@ -1531,7 +1531,7 @@
     "trafficCardTitle": "管理员：流量与安全状态",
     "trafficLabel": "注册用户数",
     "thresholdLabel": "提醒阈值",
-    "belowThresholdHint": "未达提醒阈值。达到后需开启 CSP 强防护：在部署平台（Vercel）把环境变量 CSP_STRICT 设为 true 并重新部署，无需改代码；届时本卡片会变黄提示并提供一键复制。",
+    "belowThresholdHint": "📌 达到提醒阈值时需开启 CSP 强防护。\n开启方式：在部署平台（Vercel）添加环境变量 `CSP_STRICT=true` 并重新部署。",
     "alertTitle": "建议开启 CSP 强防护",
     "alertDesc": "注册用户已达 {count}，建议开启 CSP 强防护以抵御 XSS 攻击（代价：首字节稍慢）。开启方法：在部署平台（Vercel）把下方环境变量设为 \"true\" 并重新部署，无需改代码。",
     "copyButton": "复制",

@@ -71,7 +71,7 @@ export default async function AdminTrafficCard() {
           </div>
         ) : (
           <div className="rounded-sm border border-border bg-surface p-3">
-            <p className="text-xs text-text-secondary/80">
+            <p className="text-xs text-text-secondary/80 whitespace-pre-line">
               {t('belowThresholdHint')}
             </p>
           </div>
