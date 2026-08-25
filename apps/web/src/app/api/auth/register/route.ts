@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
 
     // 限流（注册路由原本无任何限流，验证码校验可被无限爆破 + bcrypt CPU DoS）
     const ip = getTrustedClientIp(req)
-    const ipRate = checkRateLimit(`register:${ip}`, 5, 60_000)
+    const ipRate = await checkRateLimit(`register:${ip}`, 5, 60_000)
     if (!ipRate.allowed) {
       return NextResponse.json({ error: "tooManyAttempts" }, { status: 429 })
     }

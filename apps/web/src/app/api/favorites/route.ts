@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
 
   // 限流：每 IP 每分钟 30 次收藏操作
   const ip = getTrustedClientIp(req)
-  const rl = checkRateLimit(`fav:${ip}`, 30, 60_000)
+  const rl = await checkRateLimit(`fav:${ip}`, 30, 60_000)
   if (!rl.allowed) {
     return NextResponse.json({ error: "tooManyRequests" }, { status: 429, headers: { "Retry-After": String(Math.ceil((rl.resetAt - Date.now()) / 1000)) } })
   }

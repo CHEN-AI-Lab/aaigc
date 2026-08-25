@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
 
     // IP 限流（可信来源）
     const ip = getTrustedClientIp(req)
-    const ipRate = checkRateLimit(`verify-attempt:${ip}`, 5, 60_000)
+    const ipRate = await checkRateLimit(`verify-attempt:${ip}`, 5, 60_000)
     if (!ipRate.allowed) {
       return NextResponse.json({ error: "tooManyAttempts" }, { status: 429 })
     }

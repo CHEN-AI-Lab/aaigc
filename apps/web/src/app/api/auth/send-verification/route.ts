@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
 
     // Rate limit（基于平台可信 IP，避免 X-Forwarded-For 伪造绕过）
     const ip = getTrustedClientIp(req)
-    const rateCheck = checkRateLimit(`verify:${ip}`, 3, 60_000)
+    const rateCheck = await checkRateLimit(`verify:${ip}`, 3, 60_000)
     if (!rateCheck.allowed) {
       return NextResponse.json({ error: "rateLimited" }, { status: 429 })
     }
