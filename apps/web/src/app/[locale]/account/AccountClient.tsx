@@ -344,8 +344,8 @@ export default function AccountClient() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-200px)] px-4 py-10">
-      <div className="max-w-xl mx-auto space-y-6">
+    <>
+        <div className="space-y-6">
 
         {/* ── Card 1: Profile ── */}
         <div className="bg-card rounded-sm border border-border overflow-hidden">
@@ -636,7 +636,7 @@ export default function AccountClient() {
               </div>
               <button onClick={() => { setShowDeleteModal(true); setDeleteCode(''); setDeleteCodeSent(false); setDeleteError('') }}
                 className="ml-4 px-4 py-2 rounded-sm border border-error/30 text-sm text-error hover:bg-error/5 transition-colors shrink-0">
-                {t('deleteAccount')}
+                {t('deleteAccountButton')}
               </button>
             </div>
           </div>
@@ -645,7 +645,6 @@ export default function AccountClient() {
       </div>
 
       {/* ── Delete Account Modal ── */}
-      {showDeleteModal && (
         <div className="fixed inset-0 z-[90] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/30" onClick={() => { setShowDeleteModal(false); setDeleteCodeSent(false) }} />
           <div className="relative bg-card rounded-sm border border-border shadow-lg p-6 w-full max-w-sm">
@@ -755,6 +754,6 @@ export default function AccountClient() {
           </div>
         </div>
       )}
-    </div>
+    </>
   )
 }

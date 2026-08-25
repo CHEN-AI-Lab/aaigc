@@ -1410,6 +1410,7 @@
     "view": "View",
     "lastActive": "Last active",
     "deleteAccount": "Delete account",
+    "deleteAccountButton": "Delete account",
     "deleteConfirm": "Are you sure? This cannot be undone.",
     "confirm": "Confirm",
     "forgotPasswordTitle": "Reset Password",

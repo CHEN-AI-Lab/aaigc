@@ -1365,6 +1365,7 @@
     "view": "表示",
     "lastActive": "最終アクティブ",
     "deleteAccount": "アカウント削除",
+    "deleteAccountButton": "アカウント削除",
     "deleteConfirm": "本当に削除しますか？この操作は取り消せません。",
     "confirm": "確認",
     "forgotPasswordTitle": "パスワードをリセット",
