@@ -638,7 +638,7 @@ export default function AccountClient({ children }: { children?: ReactNode }) {
               </div>
               <button onClick={() => { setShowDeleteModal(true); setDeleteCode(''); setDeleteCodeSent(false); setDeleteError('') }}
                 className="ml-4 px-4 py-2 rounded-sm border border-error/30 text-sm text-error hover:bg-error/5 transition-colors shrink-0">
-                {t('deleteAccount')}
+                {t('deleteAccountButton')}
               </button>
             </div>
           </div>
