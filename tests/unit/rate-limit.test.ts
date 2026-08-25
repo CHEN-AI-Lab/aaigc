@@ -6,6 +6,7 @@ const { mockRateLimit } = vi.hoisted(() => ({
     upsert: vi.fn(),
     update: vi.fn(),
     delete: vi.fn(),
+    deleteMany: vi.fn(),
   },
 }))
 
