@@ -18,6 +18,15 @@ export default {
         'warm': 'rgba(127, 99, 21, 0.12) -8px 16px 39px, rgba(127, 99, 21, 0.1) -33px 64px 72px',
         'warm-sm': 'rgba(127, 99, 21, 0.08) 0px 4px 12px',
       },
+      keyframes: {
+        'toast-in': {
+          from: { opacity: '0', transform: 'translateY(-8px) scale(0.96)' },
+          to: { opacity: '1', transform: 'translateY(0) scale(1)' },
+        },
+      },
+      animation: {
+        'toast-in': 'toast-in 0.25s ease-out',
+      },
     },
   },
   plugins: [],

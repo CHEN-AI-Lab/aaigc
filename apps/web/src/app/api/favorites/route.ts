@@ -6,7 +6,7 @@ import { getTrustedClientIp } from "shared/utils/ip"
 import { isSameOrigin } from "shared/utils/csrf"
 
 // 合法的收藏类型白名单
-const VALID_FAV_TYPES = new Set(["tool", "article", "snippet"])
+const VALID_FAV_TYPES = new Set(["tool", "product", "article", "snippet"])
 
 export async function GET() {
   const session = await auth()
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
 
   // 限流：每 IP 每分钟 30 次收藏操作
   const ip = getTrustedClientIp(req)
-  const rl = checkRateLimit(`fav:${ip}`, 30, 60_000)
+  const rl = await checkRateLimit(`fav:${ip}`, 30, 60_000)
   if (!rl.allowed) {
     return NextResponse.json({ error: "tooManyRequests" }, { status: 429, headers: { "Retry-After": String(Math.ceil((rl.resetAt - Date.now()) / 1000)) } })
   }

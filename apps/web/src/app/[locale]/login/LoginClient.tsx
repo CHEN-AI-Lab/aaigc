@@ -8,6 +8,7 @@ import { useSession } from '@/auth-client'
 import { useRouter } from '@/i18n/navigation'
 import Link from 'next/link'
 import PasswordInput from '@/components/PasswordInput'
+import { useToast } from '@/components/ui/Toast'
 
 export default function LoginClient() {
   const t = useTranslations('auth')
@@ -16,6 +17,7 @@ export default function LoginClient() {
   const locale = useLocale()
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { showToast } = useToast()
   const { data: session } = useSession()
   const isLoggedIn = !!session?.user
   const registered = searchParams.get('registered')
@@ -37,10 +39,15 @@ export default function LoginClient() {
 
   // 已登录用户访问登录页 → 自动跳转到账号页
   useEffect(() => {
-    if (isLoggedIn) {
-      router.replace('/account')
+    if (!isLoggedIn) return
+    // 关联 OAuth 失败回跳（已登录 + OAuthAccountNotLinked/AccountNotLinked）：
+    // 带 linkError 参数跳回账号页，由账号页提示"该邮箱已被其他账号绑定"，避免停在登录页闪烁
+    if (oauthError === 'OAuthAccountNotLinked' || oauthError === 'AccountNotLinked') {
+      router.replace('/account?linkError=bound')
+      return
     }
-  }, [isLoggedIn, router])
+    router.replace('/account')
+  }, [isLoggedIn, router, oauthError])
 
   const [tab, setTab] = useState<'email' | 'password'>('email')
   const [email, setEmail] = useState(registered ? (searchParams.get('email') || '') : '')
@@ -107,7 +114,11 @@ export default function LoginClient() {
       })
       const data = await res.json()
       if (!res.ok) {
-        if (data.remainingSeconds) setCountdown(data.remainingSeconds)
+        // 限流 = 该邮箱已有有效验证码在途：同样显示验证码输入框，让用户可输入之前收到的码
+        if (data.error === 'codeRecentlySent' && data.remainingSeconds) {
+          setCodeSent(true)
+          setCountdown(data.remainingSeconds)
+        }
         setError(data.error ? err(data.error, data.remainingSeconds ? { seconds: data.remainingSeconds } : undefined) : t('sendFailed'))
         setErrorType('error')
         return
@@ -115,6 +126,7 @@ export default function LoginClient() {
       setCodeSent(true)
       setCountdown(120)
       if (data.devCode) setSuccessMsg(t('devCodeHint').replace('{code}', data.devCode))
+      else showToast(t('codeSentEmail'), 'success')
     } catch {
       setError(t('sendFailed'))
       setErrorType('error')
@@ -138,13 +150,13 @@ export default function LoginClient() {
         redirect: false,
       })
       if (result?.error) {
-        setError(t('loginFailed'))
+        setError(t('verifyFailed'))
         setErrorType('error')
       } else {
         router.push(callbackUrl)
       }
     } catch {
-      setError(t('loginFailed'))
+      setError(t('verifyFailed'))
       setErrorType('error')
     } finally {
       setLoading(null)
@@ -205,6 +217,7 @@ export default function LoginClient() {
       }
     } catch {
       setError(t('oauthNotConfigured'))
+    } finally {
       setOauthProvider(null)
     }
   }
@@ -225,7 +238,11 @@ export default function LoginClient() {
       })
       const data = await res.json()
       if (!res.ok) {
-        if (data.remainingSeconds) setForgotCountdown(data.remainingSeconds)
+        // 限流 = 该邮箱已有有效验证码在途：同样显示验证码输入框，让用户可输入之前收到的码
+        if (data.error === 'codeRecentlySent' && data.remainingSeconds) {
+          setForgotCodeSent(true)
+          setForgotCountdown(data.remainingSeconds)
+        }
         setError(data.error ? err(data.error, data.remainingSeconds ? { seconds: data.remainingSeconds } : undefined) : t('sendFailed'))
         setErrorType('error')
         return
@@ -424,23 +441,29 @@ export default function LoginClient() {
                 <div className="flex flex-col gap-4">
                   <div>
                     <label className="block text-xs font-medium text-text-secondary mb-1.5">{t('email')}</label>
-                    <div className="flex gap-2 mt-1.5">
+                    <div className="flex flex-col sm:flex-row gap-2 mt-1.5">
                       <input
                         type="email"
                         value={email}
-                        onChange={(e) => { setEmail(e.target.value); setCodeSent(false) }}
+                        onChange={(e) => { setEmail(e.target.value); if (e.target.value === '') setCodeSent(false) }}
                         placeholder="name@example.com"
                         className="flex-1 px-4 py-3 rounded-xl border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors"
                       />
                       <button
                         onClick={handleSendCode}
                         disabled={loading === 'send' || countdown > 0 || !email}
-                        className="px-4 py-3 rounded-xl text-sm font-medium bg-hover text-text-primary hover:bg-border disabled:opacity-40 whitespace-nowrap transition-colors"
+                        className="px-4 py-3 rounded-xl text-sm font-medium bg-hover text-text-primary hover:bg-border disabled:opacity-40 whitespace-nowrap transition-colors sm:w-auto w-full"
                       >
                         {countdown > 0 ? `${countdown}${tc('seconds')}` : loading === 'send' ? tc('sending') : t('sendCode')}
                       </button>
                     </div>
                   </div>
+                  {/* 错误提示放在邮箱输入下方、codeSent 块外：发送验证码被限流时（刷新后 codeSent 已归零）也能显示 */}
+                  {error && (
+                    <div className={`text-xs rounded-xl px-3 py-2 text-center ${errorColors[errorType]}`}>
+                      {error}
+                    </div>
+                  )}
                   {codeSent && (
                     <>
                       <div>
@@ -459,14 +482,9 @@ export default function LoginClient() {
                         disabled={loading === 'login' || !code}
                         className="w-full px-4 py-3 rounded-xl bg-accent text-white text-sm font-medium hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50"
                       >
-                        {loading === 'login' ? tc('sending') : t('loginButton')}
+                        {loading === 'login' ? t('loginVerifying') : t('loginButton')}
                       </button>
                     </>
-                  )}
-                  {error && (
-                    <div className={`text-xs rounded-xl px-3 py-2 text-center ${errorColors[errorType]}`}>
-                      {error}
-                    </div>
                   )}
                 </div>
               )}
@@ -518,7 +536,7 @@ export default function LoginClient() {
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                         </svg>
-                        {tc('sending')}
+                        {t('verifying')}
                       </span>
                     ) : t('loginButton')}
                   </button>
@@ -534,9 +552,9 @@ export default function LoginClient() {
                     <>
                       <div>
                         <label className="block text-xs font-medium text-text-secondary mb-1.5">{t('email')}</label>
-                        <div className="flex gap-2 mt-1.5">
+                        <div className="flex flex-col sm:flex-row gap-2 mt-1.5">
                           <input type="email" value={forgotEmail} onChange={(e) => setForgotEmail(e.target.value)} placeholder="name@example.com" disabled={forgotCodeSent} className="flex-1 px-4 py-3 rounded-xl border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors disabled:opacity-50" />
-                          <button onClick={handleForgotSendCode} disabled={loading === 'forgotSend' || forgotCountdown > 0 || !forgotEmail} className="px-4 py-3 rounded-xl text-sm font-medium bg-hover text-text-primary hover:bg-border disabled:opacity-40 whitespace-nowrap transition-colors">
+                          <button onClick={handleForgotSendCode} disabled={loading === 'forgotSend' || forgotCountdown > 0 || !forgotEmail} className="px-4 py-3 rounded-xl text-sm font-medium bg-hover text-text-primary hover:bg-border disabled:opacity-40 whitespace-nowrap transition-colors sm:w-auto w-full">
                             {forgotCountdown > 0 ? `${forgotCountdown}${tc('seconds')}` : loading === 'forgotSend' ? tc('sending') : t('sendCode')}
                           </button>
                         </div>
@@ -552,7 +570,7 @@ export default function LoginClient() {
                             <input type="text" value={forgotCode} onChange={(e) => setForgotCode(e.target.value.replace(/\D/g, ''))} placeholder={t('codePlaceholder')} maxLength={6} className="w-full px-4 py-3 rounded-xl border border-border text-sm text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors text-center tracking-[8px]" />
                           </div>
                           <button onClick={handleForgotVerifyCode} disabled={loading === 'forgotVerify'} className="w-full px-4 py-3 rounded-xl bg-accent text-white text-sm font-medium hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50">
-                            {loading === 'forgotVerify' ? tc('sending') : t('verifyCode')}
+                            {loading === 'forgotVerify' ? t('codeVerifying') : t('verifyCode')}
                           </button>
                         </>
                       )}
@@ -569,7 +587,7 @@ export default function LoginClient() {
                       </div>
                       {error && <div className={`text-xs rounded-xl px-3 py-2 text-center ${errorColors[errorType]}`}>{error}</div>}
                       <button onClick={handleForgotResetPassword} disabled={loading === 'forgotReset'} className="w-full px-4 py-3 rounded-xl bg-accent text-white text-sm font-medium hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50">
-                        {loading === 'forgotReset' ? tc('sending') : t('resetPasswordBtn')}
+                        {loading === 'forgotReset' ? t('resetting') : t('resetPasswordBtn')}
                       </button>
                     </>
                   )}

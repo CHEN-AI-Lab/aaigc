@@ -87,3 +87,11 @@ model Favorite {
   @@unique([userId, toolId, type])
   @@index([userId])
 }
+
+model RateLimit {
+  key         String   @id
+  count       Int      @default(0)
+  windowStart BigInt   @default(0)
+  lockedUntil BigInt?
+  updatedAt   DateTime @updatedAt
+}

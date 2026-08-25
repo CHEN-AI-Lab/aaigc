@@ -23,7 +23,7 @@ export async function POST(req: Request) {
     const email = normalizeEmail(session.user.email)
     // 复用登录限流 key，确保此处的失败也计入登录锁定，消除第二爆破通道
     const rateKey = `login:${email}`
-    const rateCheck = checkLoginRateLimit(rateKey)
+    const rateCheck = await checkLoginRateLimit(rateKey)
     if (!rateCheck.allowed) {
       const minutesRemaining = Math.ceil((rateCheck.lockedUntil! - Date.now()) / 60000)
       return NextResponse.json({ error: "tooManyAttempts", minutesRemaining }, { status: 429 })
@@ -40,11 +40,11 @@ export async function POST(req: Request) {
     const bcrypt = await import("bcryptjs")
     const isValid = await bcrypt.compare(password, user.passwordHash)
     if (!isValid) {
-      recordLoginAttempt(rateKey, false)
+      await recordLoginAttempt(rateKey, false)
       return NextResponse.json({ hasPassword: true, valid: false }, { status: 401 })
     }
 
-    recordLoginAttempt(rateKey, true)
+    await recordLoginAttempt(rateKey, true)
     return NextResponse.json({ hasPassword: true, valid: true })
   } catch {
     return NextResponse.json({ error: "requestFailed" }, { status: 500 })

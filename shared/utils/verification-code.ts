@@ -15,17 +15,29 @@ export type VerificationPurpose =
   | 'deleteAccount'
 
 function failureIncrement(email: string, code: string, purpose: string) {
-  // 失败时原子递增同 email+purpose+code 的未使用码尝试次数
-  return prisma.verificationCode.updateMany({
-    where: {
-      email,
-      code,
-      purpose,
-      used: false,
-      expiresAt: { gte: new Date() },
-    },
-    data: { attempts: { increment: 1 } },
-  }).catch(() => {})
+  // 防爆破 H3 修复：失败时不再对 email+purpose+code 原子 updateMany
+  // （攻击者每次都试不同错误码也碰不到这条记录），
+  // 而是定位到「同 email+purpose 的最新未用码」用 update 增量 attempts。
+  // 这样不论提交错码对码，只要该邮箱最新未用码还在，attempts 就累加，达到 MAX 即封禁。
+  // 无未用码时安静返回（不要抛错，调用方已经把请求判为失败了）。
+  return prisma.verificationCode
+    .findFirst({
+      where: {
+        email,
+        purpose,
+        used: false,
+        expiresAt: { gte: new Date() },
+      },
+      orderBy: { createdAt: 'desc' },
+    })
+    .then((latest) => {
+      if (!latest) return null
+      return prisma.verificationCode.update({
+        where: { id: latest.id },
+        data: { attempts: { increment: 1 } },
+      })
+    })
+    .catch(() => null)
 }
 
 /**

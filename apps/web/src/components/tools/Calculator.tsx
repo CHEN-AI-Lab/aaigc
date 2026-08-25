@@ -1321,32 +1321,22 @@ function TitleCalc() {
       : relations[key] || `${key}（${t('calcTitleNotFound')}）`
     : ''
 
-  // Most common 15 relations for quick reference (3 columns × 5 rows)
-  const commonRelations = [
-    '爸爸的爸爸', '爸爸的妈妈', '妈妈的爸爸',
-    '妈妈的妈妈', '爸爸的哥哥', '爸爸的弟弟',
-    '爸爸的姐妹', '妈妈的哥哥', '妈妈的弟弟',
-    '妈妈的姐妹', '哥哥的老婆', '弟弟的老婆',
-    '姐姐的老公', '妹妹的老公', '爷爷的爸爸',
-  ]
-
   const btnClass = (selected: boolean) =>
-    `px-2.5 py-1.5 text-xs rounded-sm transition-colors ${
+    `px-2.5 py-1.5 text-xs rounded-sm transition-colors text-center ${
       selected ? 'bg-accent text-white' : 'bg-card text-text-secondary border border-border hover:border-accent/30'
     }`
 
   return (
       <div className="max-w-lg mx-auto space-y-3">
-        <div className="bg-surface border border-border rounded-sm p-3 text-xs text-text-secondary leading-relaxed space-y-1">
+        <div className="bg-surface border border-border rounded-sm p-3 text-xs text-text-secondary leading-relaxed">
           {t('calcTitleNote')}
-          <p>{t('chinaOnlyNote')}</p>
         </div>
         <div className="bg-surface rounded-sm border border-border p-4">
           <div className="flex items-center justify-between mb-3">
                     <p className="text-xs text-text-secondary/60">{t('calcTitleSelectRelation')}</p>
                   </div>
           <div className="flex items-center gap-2">
-            <div className="grid grid-cols-5 gap-1.5 flex-1">
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5 flex-1">
               {row1.map(name => (
                 <button key={name} onClick={() => setSelected1(selected1 === name ? '' : name)}
                   className={btnClass(selected1 === name)}>{name}</button>
@@ -1355,7 +1345,7 @@ function TitleCalc() {
             <div className="shrink-0">
               <span className="text-base text-text-secondary font-medium">的</span>
             </div>
-            <div className="grid grid-cols-5 gap-1.5 flex-1">
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5 flex-1">
               {row3.map(name => (
                 <button key={name} onClick={() => setSelected3(selected3 === name ? '' : name)}
                   className={btnClass(selected3 === name)}>{name}</button>
@@ -1372,28 +1362,6 @@ function TitleCalc() {
             }`}>{result}</p>
           </div>
         )}
-      </div>
-      <div className="bg-surface rounded-sm border border-border p-3">
-        <p className="text-xs text-text-secondary/60 mb-2">{t('calcTitleCommonRelations')}</p>
-        <div className="grid grid-cols-3 gap-1">
-          {commonRelations.map(k => {
-            const parts = k.split('的')
-            return (
-              <button key={k} onClick={() => {
-                if (parts.length === 2) {
-                  setSelected1(parts[0])
-                  setSelected3(parts[1])
-                } else if (parts.length === 3) {
-                  setSelected1(`${parts[0]}的${parts[1]}`)
-                  setSelected3(parts[2])
-                }
-              }}
-                className="text-left text-xs p-1.5 bg-card rounded-sm hover:bg-accent/5 text-text-primary">
-                {k} → {relations[k]}
-              </button>
-            )
-          })}
-        </div>
       </div>
     </div>
   )

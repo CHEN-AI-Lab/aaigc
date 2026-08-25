@@ -3,7 +3,7 @@
 import { useTranslations, useLocale } from 'next-intl'
 import { useSession, signOut, signIn } from 'next-auth/react'
 import Link from 'next/link'
-import { useCallback, useEffect, useState, useRef } from 'react'
+import { useCallback, useEffect, useState, useRef, type ReactNode } from 'react'
 import PasswordInput from '@/components/PasswordInput'
 
 interface UserProfile {
@@ -27,7 +27,7 @@ const OAUTH_NAMES: Record<string, string> = {
   github: 'GitHub',
 }
 
-export default function AccountClient() {
+export default function AccountClient({ children }: { children?: ReactNode }) {
   const t = useTranslations('auth')
   const locale = useLocale()
   const { data: session, status, update } = useSession()
@@ -61,10 +61,10 @@ export default function AccountClient() {
   const [toast, setToast] = useState('')
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  function showToast(msg: string) {
+  function showToast(msg: string, duration?: number) {
     setToast(msg)
     if (toastTimer.current) clearTimeout(toastTimer.current)
-    toastTimer.current = setTimeout(() => setToast(''), 3000)
+    toastTimer.current = setTimeout(() => setToast(''), duration ?? 6000)
   }
 
   const fetchProfile = useCallback(async () => {
@@ -86,8 +86,21 @@ export default function AccountClient() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const linked = params.get('linked')
+    const linkError = params.get('linkError')
     if (linked) {
       showToast(t('linkSuccess'))
+      window.history.replaceState({}, '', `/${locale}/account`)
+    } else if (linkError) {
+      if (linkError === 'failed') {
+        showToast(t('linkFailed'))
+      } else if (linkError === 'bound') {
+        const providerParam = params.get('provider') || ''
+        const providerNames: Record<string, string> = { google: 'Google', github: 'GitHub' }
+        const providerName = providerNames[providerParam] ?? providerParam
+        showToast(providerName ? t('linkAccountBound', { provider: providerName }) : t('linkEmailTaken'))
+      } else {
+        showToast(t('linkEmailTaken'))
+      }
       window.history.replaceState({}, '', `/${locale}/account`)
     }
   }, [locale, t])
@@ -265,9 +278,9 @@ export default function AccountClient() {
         setUnlinkConfirmProvider(null)
         if (data.needsManualRevoke) {
           setNeedsManualRevoke(true)
-          showToast(t('githubManualRevoke'))
+          showToast(t('githubUnlinked'), 3000)
         } else {
-          showToast(t('unlinkSuccess'))
+          showToast(unlinkConfirmProvider === 'github' ? t('githubUnlinked') : t('googleUnlinked'), 3000)
         }
       } else {
         setUnlinkError(t(data.error || 'unlinkFailed'))
@@ -333,6 +346,8 @@ export default function AccountClient() {
   return (
     <div className="min-h-[calc(100vh-200px)] px-4 py-10">
       <div className="max-w-xl mx-auto space-y-6">
+
+        {children}
 
         {/* ── Card 1: Profile ── */}
         <div className="bg-card rounded-sm border border-border overflow-hidden">
@@ -623,7 +638,7 @@ export default function AccountClient() {
               </div>
               <button onClick={() => { setShowDeleteModal(true); setDeleteCode(''); setDeleteCodeSent(false); setDeleteError('') }}
                 className="ml-4 px-4 py-2 rounded-sm border border-error/30 text-sm text-error hover:bg-error/5 transition-colors shrink-0">
-                {t('deleteAccount')}
+                {t('deleteAccountButton')}
               </button>
             </div>
           </div>

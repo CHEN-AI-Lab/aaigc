@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
   }
 
   // 限流：每用户每分钟 5 次名称修改
-  const rl = checkRateLimit(`update-name:${session.user.id}`, 5, 60_000)
+  const rl = await checkRateLimit(`update-name:${session.user.id}`, 5, 60_000)
   if (!rl.allowed) {
     return NextResponse.json({ error: "tooManyRequests" }, { status: 429, headers: { "Retry-After": String(Math.ceil((rl.resetAt - Date.now()) / 1000)) } })
   }

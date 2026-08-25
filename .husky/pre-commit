@@ -7,6 +7,8 @@
 # 5. 迁移安全检查
 # 6-7. 翻译文件管理（自动学习 + 同步）
 
+# 严格模式：通过手动捕获管道退出码实现 pipefail 效果（POSIX 兼容）
+
 STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM || true)
 
 # Step 1: Structure check
@@ -16,17 +18,26 @@ echo "✅ Structure check passed"
 
 # Step 2: TypeScript type check
 echo "🔍 Running TypeScript type check..."
-(cd apps/web && npx tsc --noEmit 2>&1 | tail -20) || exit 1
+(cd apps/web && npx tsc --noEmit) > /tmp/tsc.log 2>&1
+TSC_EXIT=$?
+tail -20 /tmp/tsc.log
+[ $TSC_EXIT -eq 0 ] || exit 1
 echo "✅ TypeScript check passed"
 
 # Step 3: Lint check
 echo "🔍 Running lint check..."
-(cd apps/web && npx eslint . 2>&1 | tail -10) || exit 1
+(cd apps/web && npx eslint .) > /tmp/eslint.log 2>&1
+ESLINT_EXIT=$?
+tail -10 /tmp/eslint.log
+[ $ESLINT_EXIT -eq 0 ] || exit 1
 echo "✅ Lint check passed"
 
 # Step 4: Unit tests (lightweight, single fork)
 echo "🧪 Running unit tests..."
-pnpm vitest run --pool=forks --poolOptions.forks.singleFork --maxWorkers=1 --reporter=verbose 2>&1 | tail -10 || exit 1
+pnpm vitest run --pool=forks --poolOptions.forks.singleFork --maxWorkers=1 --reporter=verbose > /tmp/vitest.log 2>&1
+VITEST_EXIT=$?
+tail -10 /tmp/vitest.log
+[ $VITEST_EXIT -eq 0 ] || exit 1
 echo "✅ Tests passed"
 
 # Step 5: 检查迁移文件是否有危险操作

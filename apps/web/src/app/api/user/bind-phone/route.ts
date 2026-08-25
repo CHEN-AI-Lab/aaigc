@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     const userId = session.user.id
 
     // 限流：每用户 5 次 / 10 分钟
-    const rl = checkRateLimit(`bind-phone:${userId}`, 5, 600_000)
+    const rl = await checkRateLimit(`bind-phone:${userId}`, 5, 600_000)
     if (!rl.allowed) {
       const seconds = Math.ceil((rl.resetAt - Date.now()) / 1000)
       return NextResponse.json(

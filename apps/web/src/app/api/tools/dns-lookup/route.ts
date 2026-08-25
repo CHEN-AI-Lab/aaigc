@@ -35,7 +35,7 @@ async function queryDns(name: string, type: string) {
 export async function GET(request: NextRequest) {
   // 限流：每 IP 每分钟 20 次查询
   const ip = getTrustedClientIp(request)
-  const rl = checkRateLimit(`dns-lookup:${ip}`, 20, 60_000)
+  const rl = await checkRateLimit(`dns-lookup:${ip}`, 20, 60_000)
   if (!rl.allowed) {
     return NextResponse.json({ error: "tooManyRequests" }, { status: 429, headers: { "Retry-After": String(Math.ceil((rl.resetAt - Date.now()) / 1000)) } })
   }

@@ -1,40 +1,57 @@
-// Simple in-memory rate limiter for development.
-// In production, replace with Redis-based rate limiting.
+// DB-backed sliding-window rate limiter.
+// Uses the existing Prisma RateLimit table so all Vercel serverless
+// instances share the same counter. The previous in-memory Map was
+// per-instance and ineffective in production under Vercel Fluid Compute.
 
-interface RateLimitEntry {
-  count: number
-  resetAt: number
-}
+import { prisma } from './prisma'
 
-const store = new Map<string, RateLimitEntry>()
-
-export function checkRateLimit(
+export async function checkRateLimit(
   key: string,
   maxRequests: number,
   windowMs: number
-): { allowed: boolean; remaining: number; resetAt: number } {
+): Promise<{ allowed: boolean; remaining: number; resetAt: number }> {
   const now = Date.now()
-  const entry = store.get(key)
+  const record = await prisma.rateLimit.findUnique({ where: { key } })
 
-  if (!entry || now > entry.resetAt) {
-    store.set(key, { count: 1, resetAt: now + windowMs })
+  // New window (no record, or the previous window has expired)
+  if (!record || now - Number(record.windowStart) >= windowMs) {
+    await prisma.rateLimit.upsert({
+      where: { key },
+      create: { key, count: 1, windowStart: BigInt(now) },
+      update: { count: 1, windowStart: BigInt(now), lockedUntil: null },
+    })
     return { allowed: true, remaining: maxRequests - 1, resetAt: now + windowMs }
   }
 
-  if (entry.count >= maxRequests) {
-    return { allowed: false, remaining: 0, resetAt: entry.resetAt }
+  // Within window but the cap has been reached
+  if (record.count >= maxRequests) {
+    return {
+      allowed: false,
+      remaining: 0,
+      resetAt: Number(record.windowStart) + windowMs,
+    }
   }
 
-  entry.count++
-  return { allowed: true, remaining: maxRequests - entry.count, resetAt: entry.resetAt }
+  // Within window, room left — atomic increment
+  const updated = await prisma.rateLimit.update({
+    where: { key },
+    data: { count: { increment: 1 } },
+  })
+
+  return {
+    allowed: true,
+    remaining: maxRequests - updated.count,
+    resetAt: Number(record.windowStart) + windowMs,
+  }
 }
 
-// Clean up stale entries periodically
-if (typeof setInterval !== 'undefined') {
-  setInterval(() => {
-    const now = Date.now()
-    for (const [key, entry] of store) {
-      if (now > entry.resetAt) store.delete(key)
-    }
-  }, 60_000)
+
+// 清理 RateLimit 表里已经过期（早于 maxAgeMs 毫秒前开始窗口）的行。
+// 由 Vercel Cron 每天调用一次，防止表无界增长。
+export async function deleteExpiredRateLimitEntries(maxAgeMs: number): Promise<number> {
+  const threshold = BigInt(Date.now() - maxAgeMs)
+  const result = await prisma.rateLimit.deleteMany({
+    where: { windowStart: { lt: threshold } },
+  })
+  return result.count
 }
