@@ -1531,7 +1531,7 @@
     "trafficCardTitle": "管理者：トラフィックとセキュリティ状況",
     "trafficLabel": "登録ユーザー数",
     "thresholdLabel": "通知しきい値",
-    "belowThresholdHint": "しきい値未満 — 対応不要",
+    "belowThresholdHint": "しきい値未満です。到達時は CSP 厳格モードを有効化してください：デプロイプラットフォーム（Vercel）で環境変数 CSP_STRICT を true に設定して再デプロイします（コード変更不要）。その際、このカードが黄色表示になり、ワンクリックでコピーできます。",
     "alertTitle": "CSP 厳格モードの有効化を推奨",
     "alertDesc": "登録ユーザー数が {count} に達しました。XSS 対策として CSP 厳格モードの有効化を推奨します（初回描画がわずかに遅くなります）。有効化方法：デプロイプラットフォーム（Vercel）で下記の環境変数を \"true\" に設定して再デプロイしてください。コード変更は不要です。",
     "copyButton": "コピー",

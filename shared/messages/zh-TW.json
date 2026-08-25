@@ -1531,7 +1531,7 @@
     "trafficCardTitle": "管理員：流量與安全狀態",
     "trafficLabel": "註冊使用者數",
     "thresholdLabel": "提醒閾值",
-    "belowThresholdHint": "未達閾值，暫無需要處理",
+    "belowThresholdHint": "未達提醒閾值。達到後需開啟 CSP 強防護：在部署平台（Vercel）把環境變數 CSP_STRICT 設為 true 並重新部署，無需改程式碼；屆時本卡片會變黃提示並提供一鍵複製。",
     "alertTitle": "建議開啟 CSP 強防護",
     "alertDesc": "註冊使用者已達 {count}，建議開啟 CSP 強防護以抵禦 XSS 攻擊（代價：首字節稍慢）。開啟方法：在部署平台（Vercel）把下方環境變數設為 \"true\" 並重新部署，無需改程式碼。",
     "copyButton": "複製",
