@@ -16,13 +16,8 @@ export default async function AccountPage({
   setRequestLocale(locale)
 
   return (
-    <>
-      <div className="max-w-xl mx-auto px-4">
-        <div className="pt-10 pb-6">
-          <AdminTrafficCard />
-        </div>
-        <AccountClient />
-      </div>
-    </>
+    <AccountClient>
+      <AdminTrafficCard />
+    </AccountClient>
   )
 }
