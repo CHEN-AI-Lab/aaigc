@@ -13,7 +13,7 @@ vi.mock('shared/utils/prisma', () => ({
   prisma: { rateLimit: mockRateLimit },
 }))
 
-import { checkRateLimit } from 'shared/utils/rate-limit'
+import { checkRateLimit, deleteExpiredRateLimitEntries } from 'shared/utils/rate-limit'
 
 beforeEach(() => {
   vi.clearAllMocks()
@@ -71,5 +71,23 @@ describe('rate-limit (DB-backed)', () => {
     expect(r.allowed).toBe(true)
     expect(r.remaining).toBe(19)
     expect(mockRateLimit.upsert).toHaveBeenCalled()
+  })
+})
+
+describe('deleteExpiredRateLimitEntries', () => {
+  it('按 maxAgeMs 计算阈值并调用 deleteMany', async () => {
+    mockRateLimit.deleteMany.mockResolvedValue({ count: 7 })
+    const before = Date.now()
+    const deleted = await deleteExpiredRateLimitEntries(24 * 60 * 60 * 1000)
+    const after = Date.now()
+
+    expect(deleted).toBe(7)
+    expect(mockRateLimit.deleteMany).toHaveBeenCalledTimes(1)
+
+    // 验证阈值落在 [now-24h, now] 范围内
+    const call = mockRateLimit.deleteMany.mock.calls[0][0]
+    const threshold = Number(call.where.windowStart.lt)
+    expect(threshold).toBeGreaterThanOrEqual(before - 24 * 60 * 60 * 1000)
+    expect(threshold).toBeLessThanOrEqual(after - 24 * 60 * 60 * 1000)
   })
 })

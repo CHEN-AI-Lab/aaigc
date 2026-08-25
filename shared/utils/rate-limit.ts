@@ -44,3 +44,14 @@ export async function checkRateLimit(
     resetAt: Number(record.windowStart) + windowMs,
   }
 }
+
+
+// 清理 RateLimit 表里已经过期（早于 maxAgeMs 毫秒前开始窗口）的行。
+// 由 Vercel Cron 每天调用一次，防止表无界增长。
+export async function deleteExpiredRateLimitEntries(maxAgeMs: number): Promise<number> {
+  const threshold = BigInt(Date.now() - maxAgeMs)
+  const result = await prisma.rateLimit.deleteMany({
+    where: { windowStart: { lt: threshold } },
+  })
+  return result.count
+}
