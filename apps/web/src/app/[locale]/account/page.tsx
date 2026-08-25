@@ -17,11 +17,12 @@ export default async function AccountPage({
 
   return (
     <>
-      {/* 管理员专用流量与安全状态卡片（仅 admin 角色可见，组件内自检） */}
-      <div className="max-w-xl mx-auto px-4 pt-10">
-        <AdminTrafficCard />
+      <div className="max-w-xl mx-auto px-4">
+        <div className="pt-10 pb-6">
+          <AdminTrafficCard />
+        </div>
+        <AccountClient />
       </div>
-      <AccountClient />
     </>
   )
 }

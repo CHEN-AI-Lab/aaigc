@@ -25,30 +25,33 @@ export default async function AdminTrafficCard() {
     <div className="rounded-sm border border-border bg-card overflow-hidden">
       <div className="h-1 bg-gradient-to-r from-accent to-accent-light" />
       <div className="p-5 sm:p-6">
-        <div className="flex items-center gap-2 mb-3">
-          <span className="text-sm">👑</span>
-          <h2 className="text-sm font-semibold text-text-primary">
-            {t('trafficCardTitle')}
-          </h2>
+        <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center gap-2">
+            <span className="text-sm">👑</span>
+            <h2 className="text-sm font-semibold text-text-primary">
+              {t('trafficCardTitle')}
+            </h2>
+          </div>
         </div>
 
-        <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs text-text-secondary">
-          <span>
-            {t('trafficLabel')}:{' '}
-            <span className="font-semibold text-text-primary tabular-nums">
+        {/* Stats grid */}
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="rounded-sm bg-surface p-4 text-center">
+            <p className="text-xs text-text-secondary/60 mb-1">{t('trafficLabel')}</p>
+            <p className="text-xl font-semibold text-text-primary tabular-nums">
               {userCount.toLocaleString()}
-            </span>
-          </span>
-          <span>
-            {t('thresholdLabel')}:{' '}
-            <span className="font-semibold text-text-primary tabular-nums">
+            </p>
+          </div>
+          <div className="rounded-sm bg-surface p-4 text-center">
+            <p className="text-xs text-text-secondary/60 mb-1">{t('thresholdLabel')}</p>
+            <p className="text-xl font-semibold text-text-primary tabular-nums">
               {ALERT_THRESHOLD.toLocaleString()}
-            </span>
-          </span>
+            </p>
+          </div>
         </div>
 
         {overThreshold ? (
-          <div className="mt-4 rounded-sm border border-amber-300/60 bg-amber-50 p-3">
+          <div className="rounded-sm border border-amber-300/60 bg-amber-50 p-3">
             <p className="text-xs font-semibold text-amber-800">
               ⚠️ {t('alertTitle')}
             </p>
@@ -67,7 +70,7 @@ export default async function AdminTrafficCard() {
             </div>
           </div>
         ) : (
-          <p className="mt-3 text-xs text-text-secondary/80">
+          <p className="text-xs text-text-secondary/60">
             {t('belowThresholdHint')}
           </p>
         )}
