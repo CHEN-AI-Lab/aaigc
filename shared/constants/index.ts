@@ -3,6 +3,10 @@ export { locales, defaultLocale, isLocale, localeNames } from './locales'
 // 对外联系邮箱 — 所有页面统一从此常量读取
 export const CONTACT_EMAIL = 'AAIGC@aaigc.online'
 
+// 发件人显示名 — 各项目在各自代码中维护自己的品牌名。
+// MAIL_FROM 环境变量只配纯邮箱地址（如 noreply@aaigc.online），所有项目统一同一个值。
+export const SENDER_NAME = 'AAIGC'
+
 // Cloudflare Worker 统计网关地址
 // 所有项目的统计请求通过此 Worker 发送到 Turso (libSQL) 数据库
 // 生产环境可通过 NEXT_PUBLIC_WORKER_URL 环境变量覆盖

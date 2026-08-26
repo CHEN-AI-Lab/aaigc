@@ -4,10 +4,7 @@
 // Never logs verification codes to console or log files.
 
 import { VERIFICATION_CODE_TTL } from './verification'
-
-// 发件人显示名 — 本项目品牌名写死在代码里（各项目各自维护自己的名称）。
-// MAIL_FROM 只配纯邮箱地址（如 noreply@aaigc.online），所有项目统一同一个值即可。
-const SENDER_NAME = 'AAIGC'
+import { SENDER_NAME } from '../constants'
 
 /**
  * Email translation helper: zh-* locales get Chinese, everything else gets English.
