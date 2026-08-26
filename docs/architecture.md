@@ -11,7 +11,7 @@
 |--------|-----|
 | 项目标识（project） | `aaigc` |
 | Cloudflare Worker 地址 | 待部署 |
-| Upstash Redis URL | `https://crucial-egret-102760.upstash.io` |
+| Turso (libSQL) 数据库 | 统计 Worker 使用，见 stats-worker 部署文档 |
 | Neon Postgres 连接串 | 待注册 |
 | 工具数量 | 38 个 |
 | 首页展示新工具数 | 4 个 |

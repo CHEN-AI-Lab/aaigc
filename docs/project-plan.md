@@ -19,7 +19,7 @@ AAIGC 是一个**产品矩阵门户 + 在线工具箱**。主站 `aaigc.online` 
 2. **提供在线工具** — 38 个纯前端小工具，用户可直接在网站上使用，无需登录
 3. **多语言支持** — 4 种语言：中文简体、中文繁体、英文、日文，默认英文，根据浏览器语言自动适配
 4. **品牌塑造** — 通过 Mistral 暖色系设计风格，打造 AAIGC 品牌辨识度
-5. **访问统计** — 全站工具访问量统计、首页热门工具排行（Cloudflare Worker + Upstash Redis）
+5. **访问统计** — 全站工具访问量统计、首页热门工具排行（Cloudflare Worker + Turso libSQL）
 
 ### 1.3 非目标（本阶段不做）
 
@@ -43,7 +43,7 @@ AAIGC 是一个**产品矩阵门户 + 在线工具箱**。主站 `aaigc.online` 
 | 包管理 | pnpm | workspace monorepo |
 | 测试 | Vitest + Playwright | 单元测试 + E2E |
 | 部署 | Vercel | 独立项目 |
-| 统计 | Cloudflare Worker + Upstash Redis | 已部署上线 |
+| 统计 | Cloudflare Worker + Turso libSQL | 已部署上线 |
 
 ### 2.2 项目结构
 
@@ -295,7 +295,7 @@ Phase 9: 个性化推荐            📅 待开始
 
 ### Phase 5：访问统计 + 首页排行榜（✅ 已完成）
 
-**架构：** Cloudflare Worker（统计网关）+ Upstash Redis（计数）
+**架构：** Cloudflare Worker（统计网关）+ Turso libSQL（计数）
 
 **已完成：**
 | # | 任务 | 说明 |
@@ -313,7 +313,7 @@ Phase 9: 个性化推荐            📅 待开始
 
 **已完成：**
 | 5.11 | 部署 Cloudflare Worker | 已部署至 stats.aaigc.workers.dev（已验证在线） |
-| 5.12 | 配置 Upstash Redis | 已配置 Worker 环境变量 |
+| 5.12 | 配置 Turso 数据库 | 已配置 Worker 环境变量 |
 | 5.13 | 管理员鉴权 | 已随 stats 页面迁至 stats-dashboard（独立应用管理） |
 
 ### Phase 6：用户系统（✅ 已完成）
