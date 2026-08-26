@@ -34,6 +34,11 @@ export async function sendVerificationEmail(
     return { success: false, error: 'RESEND_API_KEY not configured' }
   }
 
+  if (!process.env.MAIL_FROM) {
+    // MAIL_FROM (sender address) is required — fail loudly instead of using a hardcoded fallback
+    return { success: false, error: 'MAIL_FROM not configured' }
+  }
+
   const expireMinutes = Math.floor(VERIFICATION_CODE_TTL / 60000)
 
   // 按 purpose 定制邮件内容
@@ -79,7 +84,7 @@ export async function sendVerificationEmail(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: process.env.MAIL_FROM || 'AAIGC <noreply@aaigc.online>',
+        from: process.env.MAIL_FROM as string,
         to,
         subject,
         html,
