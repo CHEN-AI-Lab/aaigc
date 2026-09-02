@@ -449,7 +449,7 @@ export default function AccountClient({ children }: { children?: ReactNode }) {
                   ? profile.phone
                   : <span className="text-text-secondary/60">{t('notBound')}</span>}
                 {!profile?.phone && (
-                  <button onClick={() => { setShowBindPhone(!showBindPhone); setBindPhone(''); setBindPassword(''); setBindError('') }}
+                  <button onClick={() => { setBindPhone(''); setBindPassword(''); setBindError(''); setShowBindPhone(!showBindPhone) }}
                     className="text-sm text-accent hover:underline shrink-0">
                     {t('bindAction')}
                   </button>
@@ -458,43 +458,42 @@ export default function AccountClient({ children }: { children?: ReactNode }) {
             </div>
 
             {/* Inline bind-phone form */}
-            {showBindPhone && (
-              <div className="mt-2 space-y-3 px-1">
-                <div className="rounded-sm border border-amber-300/60 bg-amber-50 px-3 py-2">
-                  <p className="text-xs font-medium text-amber-800">⚠️ {t('bindWarningTitle')}</p>
-                  <p className="text-xs text-amber-700 mt-1">{t('bindWarning')}</p>
-                </div>
-                <div>
-                  <label className="text-xs text-text-secondary">{t('phone')}</label>
-                  <input
-                    type="tel"
-                    maxLength={11}
-                    placeholder={t('bindPhonePlaceholder')}
-                    value={bindPhone}
-                    onChange={e => setBindPhone(e.target.value.replace(/\D/g, ''))}
-                    className="w-full border border-border rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-accent mt-1"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs text-text-secondary">{t('bindPasswordPlaceholder')}</label>
-                  <PasswordInput
-                    placeholder={t('bindPasswordPlaceholder')}
-                    value={bindPassword}
-                    onChange={setBindPassword}
-                    className="w-full border border-border rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-accent mt-1"
-                  />
-                </div>
-                {bindError && <p className="text-xs text-error">{bindError}</p>}
-                <div className="flex items-center gap-2">
-                  <button onClick={handleBindPhone} disabled={bindSaving || !bindPhone || !bindPassword}
-                    className="bg-accent text-white px-4 py-2 rounded-xl text-sm font-medium hover:opacity-90 disabled:bg-gray-300 transition-all whitespace-nowrap">
-                    {bindSaving ? t('bindLoading') : t('bindConfirm')}
-                  </button>
-                  <button onClick={() => setShowBindPhone(false)}
-                    className="text-sm text-text-secondary/60 hover:text-text-secondary whitespace-nowrap">{t('cancel')}</button>
-                </div>
+            <div className="mt-2 space-y-3 px-1" style={{ display: showBindPhone ? undefined : 'none' }}>
+              <div className="rounded-sm border border-amber-300/60 bg-amber-50 px-3 py-2">
+                <p className="text-xs font-medium text-amber-800">⚠️ {t('bindWarningTitle')}</p>
+                <p className="text-xs text-amber-700 mt-1">{t('bindWarning')}</p>
               </div>
-            )}
+              <div>
+                <label className="text-xs text-text-secondary">{t('phone')}</label>
+                <input
+                  type="tel"
+                  maxLength={11}
+                  autoComplete="off"
+                  placeholder={t('bindPhonePlaceholder')}
+                  value={bindPhone}
+                  onChange={e => setBindPhone(e.target.value.replace(/\D/g, ''))}
+                  className="w-full border border-border rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-accent mt-1"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-text-secondary">{t('bindPasswordPlaceholder')}</label>
+                <PasswordInput
+                  placeholder={t('bindPasswordPlaceholder')}
+                  value={bindPassword}
+                  onChange={setBindPassword}
+                  className="w-full border border-border rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-accent mt-1"
+                />
+              </div>
+              {bindError && <p className="text-xs text-error">{bindError}</p>}
+              <div className="flex items-center gap-2">
+                <button onClick={handleBindPhone} disabled={bindSaving || !bindPhone || !bindPassword}
+                  className="bg-accent text-white px-4 py-2 rounded-xl text-sm font-medium hover:opacity-90 disabled:bg-gray-300 transition-all whitespace-nowrap">
+                  {bindSaving ? t('bindLoading') : t('bindConfirm')}
+                </button>
+                <button onClick={() => setShowBindPhone(false)}
+                  className="text-sm text-text-secondary/60 hover:text-text-secondary whitespace-nowrap">{t('cancel')}</button>
+              </div>
+            </div>
 
             {/* Connected Accounts */}
             {profile && (profile.accounts.length > 0 || profile.googleConfigured || profile.githubConfigured) && (
