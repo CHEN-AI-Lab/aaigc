@@ -324,7 +324,7 @@ const { handlers: nextAuthHandlers, auth: nextAuthAuth, signIn, signOut } = Next
           try {
             const dbUser = await prisma.user.findUnique({
               where: { id: user.id },
-              select: { role: true, email: true, emailVerified: true },
+              select: { role: true, email: true, emailVerified: true, image: true },
             })
             // OAuth 提供方的邮箱默认视为已验证
             if (dbUser) {
@@ -334,6 +334,11 @@ const { handlers: nextAuthHandlers, auth: nextAuthAuth, signIn, signOut } = Next
               }
               if (!dbUser.emailVerified && user.email && dbUser.email === user.email) {
                 updates.emailVerified = new Date();
+              }
+              // 同步 OAuth 头像：provider 返回的 image 与库中不同时更新（解决头像变更不刷新）
+              const profileImage = (profile?.image as string | undefined) ?? user.image
+              if (profileImage && profileImage !== dbUser.image) {
+                updates.image = profileImage;
               }
               if (Object.keys(updates).length > 0) {
                 await prisma.user.update({
@@ -353,6 +358,7 @@ const { handlers: nextAuthHandlers, auth: nextAuthAuth, signIn, signOut } = Next
       if (session.user && token.sub) {
         session.user.id = token.sub
         session.user.role = token.role as string
+        session.user.image = (token.image as string | null) ?? null
       }
       return session
     },
@@ -368,10 +374,11 @@ const { handlers: nextAuthHandlers, auth: nextAuthAuth, signIn, signOut } = Next
         try {
           const dbUser = await prisma.user.findUnique({
             where: { id: token.sub },
-            select: { role: true },
+            select: { role: true, image: true },
           })
           if (dbUser) {
             token.role = dbUser.role
+            token.image = dbUser.image
           }
         } catch {
           token.role = "user"

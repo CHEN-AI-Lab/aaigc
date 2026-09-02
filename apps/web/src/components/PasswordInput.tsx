@@ -8,9 +8,10 @@ interface Props {
   placeholder?: string
   className?: string
   disabled?: boolean
+  autocomplete?: 'on' | 'off'
 }
 
-export default function PasswordInput({ value, onChange, placeholder, className = '', disabled = false }: Props) {
+export default function PasswordInput({ value, onChange, placeholder, className = '', disabled = false, autocomplete = 'off' }: Props) {
   const [show, setShow] = useState(false)
   const t = useTranslations('common')
   return (
@@ -21,6 +22,7 @@ export default function PasswordInput({ value, onChange, placeholder, className 
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         disabled={disabled}
+        autoComplete={'off' as React.HTMLInputAutoCompleteAttribute}
         className={`${className} pr-10`}
       />
       <button
