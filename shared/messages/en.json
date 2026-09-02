@@ -1497,7 +1497,14 @@
     "tooManyAttempts": "Too many attempts, please try again later",
     "userNotFound": "User not found",
     "verifyEmailFirst": "Please verify your email first",
-    "verifyError": "Verification failed"
+    "verifyError": "Verification failed",
+    "avatarSettings": "Avatar",
+    "avatarModeAuto": "Social Avatar",
+    "avatarModeLetter": "Letter Avatar",
+    "avatarModeAutoDesc": "Show your social account avatar, fall back to letter if unavailable",
+    "avatarModeLetterDesc": "Always show a letter you choose",
+    "chooseLetter": "Choose Letter",
+    "avatarUpdated": "Avatar updated"
   },
   "terms": {
     "title": "Terms of Service",

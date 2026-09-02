@@ -6,6 +6,7 @@ import { signOut } from 'next-auth/react'
 import { Link } from '@/i18n/navigation'
 import LanguageSwitcher from './LanguageSwitcher'
 import ThemeSwitcher from './ThemeSwitcher'
+import AvatarImage from './AvatarImage'
 
 export default function Header() {
   const t = useTranslations('common')
@@ -73,16 +74,17 @@ export default function Header() {
                 onClick={() => setAvatarOpen(v => !v)}
                 className="flex items-center gap-1.5 group"
                 title={session.user.name || session.user.email || ''}>
-                {session.user.image ? (
-                  <img
+                {session.user.avatarMode === 'letter' || !session.user.image ? (
+                  <div className="w-7 h-7 rounded-full bg-accent/10 flex items-center justify-center text-accent text-xs font-semibold border border-border group-hover:border-accent/30 transition-colors">
+                    {(session.user.avatarChar || session.user.name || session.user.email || '?')[0].toUpperCase()}
+                  </div>
+                ) : (
+                  <AvatarImage
                     src={session.user.image}
-                    alt=""
+                    fallbackChar={(session.user.avatarChar || session.user.name || session.user.email || '?')[0].toUpperCase()}
+                    size={28}
                     className="w-7 h-7 rounded-full object-cover border border-border group-hover:border-accent/30 transition-colors"
                   />
-                ) : (
-                  <div className="w-7 h-7 rounded-full bg-accent/10 flex items-center justify-center text-accent text-xs font-semibold border border-border group-hover:border-accent/30 transition-colors">
-                    {(session.user.name || session.user.email || '?')[0].toUpperCase()}
-                  </div>
                 )}
               </button>
               {avatarOpen && (
