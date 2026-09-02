@@ -15,8 +15,6 @@ model User {
   name         String?
   role         String   @default("user")  // "user" | "admin"
   image        String?              // OAuth 头像
-  avatarMode   String   @default("auto")  // "auto"（社交头像，加载失败兜底字母）| "letter"（固定字母头像）
-  avatarChar   String?              // 用户自选头像字母（1-2 字符）
   termsAgreedAt DateTime?           // 用户同意隐私政策的时间
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
