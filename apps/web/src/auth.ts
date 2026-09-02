@@ -6,18 +6,7 @@ declare module "next-auth" {
     user: {
       id: string
       role: string
-      avatarMode?: string
-      avatarChar?: string | null
     } & DefaultSession["user"]
-  }
-}
-
-declare module "next-auth/jwt" {
-  interface JWT {
-    role?: string
-    image?: string | null
-    avatarMode?: string
-    avatarChar?: string | null
   }
 }
 
@@ -370,8 +359,6 @@ const { handlers: nextAuthHandlers, auth: nextAuthAuth, signIn, signOut } = Next
         session.user.id = token.sub
         session.user.role = token.role as string
         session.user.image = (token.image as string | null) ?? null
-        session.user.avatarMode = (token.avatarMode as string | undefined) ?? 'auto'
-        session.user.avatarChar = (token.avatarChar as string | null) ?? null
       }
       return session
     },
@@ -383,22 +370,15 @@ const { handlers: nextAuthHandlers, auth: nextAuthAuth, signIn, signOut } = Next
       if (trigger === 'update' && session?.name) {
         token.name = session.name
       }
-      // 客户端 update() 刷新 avatarMode/avatarChar
-      if (trigger === 'update') {
-        if (session?.avatarMode !== undefined) token.avatarMode = session.avatarMode
-        if (session?.avatarChar !== undefined) token.avatarChar = session.avatarChar
-      }
       if (token.sub) {
         try {
           const dbUser = await prisma.user.findUnique({
             where: { id: token.sub },
-            select: { role: true, image: true, avatarMode: true, avatarChar: true },
+            select: { role: true, image: true },
           })
           if (dbUser) {
             token.role = dbUser.role
             token.image = dbUser.image
-            token.avatarMode = dbUser.avatarMode
-            token.avatarChar = dbUser.avatarChar
           }
         } catch {
           token.role = "user"

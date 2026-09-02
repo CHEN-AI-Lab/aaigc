@@ -1497,14 +1497,7 @@
     "nameRequired": "名前が必要です",
     "nameTooLong": "名前が長すぎます",
     "requestFailed": "リクエストに失敗しました。後でもう一度お試しください",
-    "userNotFound": "ユーザーが見つかりません",
-    "avatarSettings": "アバター",
-    "avatarModeAuto": "ソーシャルアバター",
-    "avatarModeLetter": "アルファベットアバター",
-    "avatarModeAutoDesc": "ソーシャルアカウントのアバターを表示、利用できない場合はアルファベットにフォールバック",
-    "avatarModeLetterDesc": "選択したアルファベットを常に表示",
-    "chooseLetter": "アルファベットを選択",
-    "avatarUpdated": "アバターを更新しました"
+    "userNotFound": "ユーザーが見つかりません"
   },
   "terms": {
     "title": "利用規約",

@@ -14,8 +14,6 @@ interface UserProfile {
   name: string | null
   role: string
   image: string | null
-  avatarMode: string
-  avatarChar: string | null
   createdAt: string
   hasPassword: boolean
   accounts: { provider: string }[]
@@ -36,38 +34,6 @@ export default function AccountClient({ children }: { children?: ReactNode }) {
   const { data: session, status, update } = useSession()
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [profileLoaded, setProfileLoaded] = useState(false)
-
-  // ── Avatar settings ──
-  const [avatarMode, setAvatarMode] = useState<'auto' | 'letter'>('auto')
-  const [avatarChar, setAvatarChar] = useState<string>('')
-  const [avatarSaving, setAvatarSaving] = useState(false)
-
-  // 从 profile 同步头像设置到本地 state
-  useEffect(() => {
-    if (profile) {
-      setAvatarMode(profile.avatarMode === 'letter' ? 'letter' : 'auto')
-      setAvatarChar(profile.avatarChar || (profile.name || profile.email || '?')[0].toUpperCase())
-    }
-  }, [profile])
-
-  const handleSaveAvatar = async (mode: 'auto' | 'letter', char: string) => {
-    setAvatarSaving(true)
-    try {
-      const res = await fetch('/api/user/update', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ avatarMode: mode, avatarChar: mode === 'letter' ? char : null }),
-      })
-      if (res.ok) {
-        await update({ avatarMode: mode, avatarChar: mode === 'letter' ? char : null })
-        await fetchProfile()
-        showToast(t('avatarUpdated'))
-      } else {
-        showToast(t('registerFailed'))
-      }
-    } catch { showToast(t('registerFailed')) }
-    finally { setAvatarSaving(false) }
-  }
 
   // ── Name inline edit ──
   const [editingName, setEditingName] = useState(false)
@@ -426,17 +392,17 @@ export default function AccountClient({ children }: { children?: ReactNode }) {
 
             {/* Avatar + Name */}
             <div className="flex items-center gap-4 mb-5">
-              {avatarMode === 'letter' || (!profile?.image && !session.user?.image) ? (
-                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent text-base font-semibold shrink-0 border-2 border-border">
-                  {(avatarChar || (profile?.name || session.user?.name || session.user?.email || '?')[0] || '?').toUpperCase()}
-                </div>
-              ) : (
+              {profile?.image || session.user?.image ? (
                 <AvatarImage
                   src={profile?.image || session.user?.image || ''}
                   size={48}
-                  fallbackChar={(avatarChar || (profile?.name || session.user?.name || session.user?.email || '?')[0] || '?').toUpperCase()}
+                  fallbackChar={(profile?.name || session.user?.name || session.user?.email || '?')[0].toUpperCase()}
                   className="w-12 h-12 rounded-full object-cover shrink-0 border-2 border-border"
                 />
+              ) : (
+                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent text-base font-semibold shrink-0 border-2 border-border">
+                  {(profile?.name || session.user?.name || session.user?.email || '?')[0].toUpperCase()}
+                </div>
               )}
               <div className="flex-1 min-w-0">
                 {editingName ? (
@@ -526,67 +492,6 @@ export default function AccountClient({ children }: { children?: ReactNode }) {
                   </button>
                   <button onClick={() => setShowBindPhone(false)}
                     className="text-sm text-text-secondary/60 hover:text-text-secondary whitespace-nowrap">{t('cancel')}</button>
-                </div>
-              </div>
-            )}
-
-            {/* Avatar Settings */}
-            <div className="flex items-center justify-between py-3 border-t border-border/50">
-              <span className="text-sm text-text-secondary/70 shrink-0">{t('avatarSettings')}</span>
-              <div className="flex gap-2 shrink-0">
-                <button
-                  onClick={() => {
-                    setAvatarMode('auto')
-                    handleSaveAvatar('auto', avatarChar)
-                  }}
-                  disabled={avatarSaving || avatarMode === 'auto'}
-                  className={`px-2.5 py-1 rounded-sm text-xs border transition-colors ${
-                    avatarMode === 'auto'
-                      ? 'bg-accent text-white border-accent'
-                      : 'text-text-secondary border-border hover:bg-accent/5'
-                  }`}
-                >
-                  {t('avatarModeAuto')}
-                </button>
-                <button
-                  onClick={() => {
-                    setAvatarMode('letter')
-                    handleSaveAvatar('letter', avatarChar)
-                  }}
-                  disabled={avatarSaving || avatarMode === 'letter'}
-                  className={`px-2.5 py-1 rounded-sm text-xs border transition-colors ${
-                    avatarMode === 'letter'
-                      ? 'bg-accent text-white border-accent'
-                      : 'text-text-secondary border-border hover:bg-accent/5'
-                  }`}
-                >
-                  {t('avatarModeLetter')}
-                </button>
-              </div>
-            </div>
-
-            {/* Letter picker (only shown when mode is letter) */}
-            {avatarMode === 'letter' && (
-              <div className="py-2 border-t border-border/50">
-                <p className="text-xs text-text-secondary/60 mb-2">{t('chooseLetter')}</p>
-                <div className="flex flex-wrap gap-1.5 max-h-28 overflow-y-auto">
-                  {'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(letter => (
-                    <button
-                      key={letter}
-                      onClick={() => {
-                        setAvatarChar(letter)
-                        handleSaveAvatar('letter', letter)
-                      }}
-                      disabled={avatarSaving}
-                      className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium transition-colors ${
-                        avatarChar === letter
-                          ? 'bg-accent text-white'
-                          : 'bg-accent/10 text-accent hover:bg-accent/20'
-                      }`}
-                    >
-                      {letter}
-                    </button>
-                  ))}
                 </div>
               </div>
             )}

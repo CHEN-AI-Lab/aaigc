@@ -1497,14 +1497,7 @@
     "tooManyAttempts": "尝试次数过多，请稍后再试",
     "userNotFound": "用户不存在",
     "verifyEmailFirst": "请先验证邮箱",
-    "verifyError": "验证失败",
-    "avatarSettings": "头像",
-    "avatarModeAuto": "社交头像",
-    "avatarModeLetter": "字母头像",
-    "avatarModeAutoDesc": "显示社交账号头像，加载失败时回退字母",
-    "avatarModeLetterDesc": "始终显示你选择的字母",
-    "chooseLetter": "选择字母",
-    "avatarUpdated": "头像已更新"
+    "verifyError": "验证失败"
   },
   "terms": {
     "title": "服务条款",

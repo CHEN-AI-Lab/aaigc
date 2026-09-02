@@ -1497,14 +1497,7 @@
     "understood": "知道了",
     "bindWarningTitle": "重要提醒",
     "bindCancel": "取消",
-    "missingToolId": "缺少工具 ID",
-    "avatarSettings": "頭像",
-    "avatarModeAuto": "社交頭像",
-    "avatarModeLetter": "字母頭像",
-    "avatarModeAutoDesc": "顯示社交帳號頭像，載入失敗時回退字母",
-    "avatarModeLetterDesc": "始終顯示你選擇的字母",
-    "chooseLetter": "選擇字母",
-    "avatarUpdated": "頭像已更新"
+    "missingToolId": "缺少工具 ID"
   },
   "terms": {
     "tools": "線上工具",
