@@ -6,5 +6,8 @@
   "apps/web/src/app/[locale]/account/AccountClient.tsx": "既有违规（placeholder 硬编码中文），本轮未引入，跟进：T02.4",
   "apps/web/src/app/api/tools/ip-lookup/route.ts": "ISP 中英对照表用于展示层；是否下沉为 4 语种需产品决定（涉及专有名词译法），跟进：T02.4",
   "apps/web/src/auth.ts": "既有违规（NextAuth 登录表单的中文标签），本轮未引入，跟进：T02.4",
-  "apps/desktop/vite.config.ts": "构建期诊断文案，面向开发者不面向用户（构建失败时打印，UI 上不会出现）"
+  "apps/desktop/vite.config.ts": "构建期诊断文案，面向开发者不面向用户（构建失败时打印，UI 上不会出现）",
+  "apps/weapp/src/runtime/env.ts": "构建期/运行期配置诊断（env 缺失、未配置 API 基址或 clientId 时抛错），面向开发者不面向用户",
+  "apps/weapp/src/runtime/tool-context.ts": "随机源不可用的运行期诊断，面向开发者不面向用户",
+  "apps/weapp/src/app.config.ts": "tabBar 的 text 是构建期默认值（app.config 无法取到运行期语言），已在 apps/weapp/src/app.tsx 中按 locale 用 Taro.setTabBarItem 覆写。已用 grep 确认覆写代码存在，非偷懒豁免"
 }

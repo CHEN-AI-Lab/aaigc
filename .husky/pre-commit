@@ -43,8 +43,11 @@ tail -10 /tmp/vitest.log
 echo "✅ Tests passed"
 
 # Step 4.5: i18n 硬编码检查（用户可见文案不得硬编码，注释豁免）
+# ⚠️ 必须带 --staged：只检查本次要入库的文件。
+#    若扫全仓，任何一个端处于施工中间态都会挡住**所有人的提交**，
+#    包括与之完全无关的文件——这不合理，也让门禁很快被人绕过。
 echo "🌐 Running i18n hardcode check..."
-python3 scripts/check-i18n-hardcode.py || exit 1
+python3 scripts/check-i18n-hardcode.py --staged || exit 1
 
 # Step 4.6: 桌面端语言集合一致性（防止出现第二份语言清单）
 echo "🌐 Running desktop locale sync check..."

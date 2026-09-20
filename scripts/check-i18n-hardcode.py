@@ -41,6 +41,9 @@ SCAN_ROOTS = ["apps"]
 SCAN_EXTS = (".ts", ".tsx")
 EXCLUDE_DIRS = {"node_modules", ".next", "target", "dist", "build", ".turbo", ".vercel"}
 
+# 只扫已暂存文件（pre-commit 场景）。默认 False = 扫全仓。
+ONLY_STAGED = False
+
 
 def load_allowlist() -> dict:
     if not os.path.exists(ALLOWLIST_PATH):
@@ -49,7 +52,34 @@ def load_allowlist() -> dict:
         return json.load(f)
 
 
+def staged_files() -> list[str]:
+    """只取已暂存（即将进入提交）的文件。
+
+    为什么要有这个模式：如果每次都扫全仓，那么任何一个端处于施工中间态，
+    都会挡住**所有人的提交**——包括与之完全无关的文件。这不合理。
+    门禁应该只对自己即将入库的内容负责（与 pre-commit 里翻译检查的做法一致）。
+    """
+    import subprocess
+
+    try:
+        out = subprocess.run(
+            ["git", "diff", "--cached", "--name-only", "--diff-filter=ACM"],
+            capture_output=True,
+            text=True,
+            check=False,
+        ).stdout
+    except Exception:
+        return []
+    paths = [p.strip() for p in out.splitlines() if p.strip()]
+    return [p for p in paths if p.startswith("apps/") and p.endswith(SCAN_EXTS)]
+
+
 def iter_files():
+    if ONLY_STAGED:
+        for p in staged_files():
+            if os.path.isfile(p):
+                yield p
+        return
     for root in SCAN_ROOTS:
         for dirpath, dirnames, filenames in os.walk(root):
             dirnames[:] = [d for d in dirnames if d not in EXCLUDE_DIRS]
@@ -95,8 +125,13 @@ def scan_file(path: str) -> list[tuple[int, str]]:
 
 
 def main() -> int:
+    global ONLY_STAGED
+    ONLY_STAGED = "--staged" in sys.argv
     list_only = "--list" in sys.argv
     allowlist = load_allowlist()
+
+    if ONLY_STAGED:
+        print("（模式：仅扫描已暂存文件）")
 
     violations: dict[str, list[tuple[int, str]]] = {}
     allowed_hits: dict[str, int] = {}

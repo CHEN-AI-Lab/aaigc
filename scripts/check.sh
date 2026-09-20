@@ -50,5 +50,11 @@ echo ""
 echo "Step 6: Production build..."
 pnpm build 2>&1
 
+# 小程序主包上限 2MB（架构 R-H）。必须先构建再量，否则门禁量不到东西。
+echo ""
+echo "Step 6.5: Weapp build + bundle size check (2MB limit)..."
+pnpm --filter weapp build 2>&1
+python3 scripts/check-weapp-bundle-size.py
+
 echo ""
 echo "=== ✅ All checks passed ==="
