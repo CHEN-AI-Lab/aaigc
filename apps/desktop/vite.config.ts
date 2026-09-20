@@ -82,8 +82,10 @@ function readDesktopMessages(): Record<string, Record<string, string>> {
       throw new Error(
         [
           `构建失败：${path} 缺少 desktop 命名空间。`,
-          '壳 UI 的文案来自 shared/messages 的 desktop.*（见 apps/desktop/_desktop_messages_payload.json）。',
-          '合并 payload 之前，desktop 的 vite build 会一直失败 —— 这是刻意的，避免壳 UI 悄悄退回硬编码文案。',
+          '壳 UI 的文案来自 shared/messages 的 desktop.*。',
+          'desktop 命名空间补齐之前，vite build 会一直失败 —— 这是刻意的，避免壳 UI 悄悄退回硬编码文案。',
+          `（要新增/修改文案：改 ${path} 里的 desktop 命名空间，四个语种同时改；`,
+          '改动后需重新执行 pnpm --filter shared build:messages 同步切片。）',
         ].join('\n'),
       )
     }

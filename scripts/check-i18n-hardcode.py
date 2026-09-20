@@ -9,9 +9,15 @@
   * 在 allowlist 里登记的文件 —— 用于「已知但暂缓」的情况，
     每条都必须写明原因和跟进单，不允许无理由豁免
 
-当前不扫描 Rust（apps/desktop/src-tauri/src）：桌面端原生菜单/托盘文案
-确实需要本地化，但本机没有 Rust 工具链、改了无法验证，已登记为已知缺口，
-等有工具链时再纳入（届时应由 build.rs 从 shared/messages 生成 locales.rs）。
+当前不扫描 Rust（apps/desktop/src-tauri/src）：桌面端原生菜单/托盘/窗口标题
+已经在 src-tauri/src/locale.rs 里自持一份四语文案（菜单在页面加载前的 setup()
+就建好了，那时没有站点 i18n 运行时可用），语言集合的一致性由
+scripts/check-desktop-locale-sync.py 单独把关。
+
+注意：本机没有 Rust 工具链（无 cargo/rustup，Linux 侧原生依赖也不存在），
+locale.rs 从未经过编译验证。**不要因为本脚本不扫 Rust 就认为 Rust 侧没问题。**
+要让 Rust 侧也做到单一真源，正解是让 build.rs 在构建期从 shared/messages 生成
+locales.rs —— 但这件事**尚未实现**，别把它当成既有机制。
 
 用法：
     python3 scripts/check-i18n-hardcode.py            # 违规即退出码 1

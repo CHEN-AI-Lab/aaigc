@@ -10,7 +10,18 @@ i18n 运行时可用，所以 Rust 侧必须自持一份四语文案（src-tauri
 一旦有人在那里增删语言，locale.rs 不会跟着变，也不会报错 ——
 直到用户看到缺翻译的菜单才会暴露。
 
-本脚本把两处语言集合对齐（内容 + 顺序），不一致即失败。
+本脚本把**三处**语言集合对齐（内容 + 顺序），不一致即失败：
+
+  1. shared/constants/locales.ts 的 locales          —— 真源
+  2. apps/desktop/src-tauri/src/locale.rs 的 SUPPORTED —— 第二份清单
+  3. shared/js/messages 下实际生成的切片目录          —— 构建产物
+
+第 3 项不能省：切片是**构建产物**，别人 clone 下来不跑
+`pnpm --filter shared build:messages` 就没有这个目录，而它是小程序端要用的。
+
+⚠️ 本文件曾有一个 .sh 兄弟实现且覆盖第 3 项，但接线时接的是本文件，
+导致第 3 项实际上从未生效。历史教训：**同一个门禁只留一个实现**，
+留两个必然漂，且往往漂向「能跑的那个更弱」。
 """
 
 from __future__ import annotations
