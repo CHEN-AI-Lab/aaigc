@@ -14,7 +14,8 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "shared/*": ["../../shared/*"]
     },
     "types": ["@tarojs/taro", "@types/webpack-env", "@types/react"]
   },
