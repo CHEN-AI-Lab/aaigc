@@ -4,8 +4,11 @@
 // 与 apps/cli/src/core/i18n.ts 同一套查找/回落/插值规则（该文件在另一个 app 内，
 // 无法跨 app 导入；两处逻辑必须一致，已在交付报告里列为"下沉 shared"候选）：
 //   · 文案表全部来自 shared：错误码 = errors.<code>，工具名 = tools.<id>.name，
-//     界面文案 = common.* / auth.* / ui.*；
+//     界面文案 = common.* / auth.* / ui.* / app.*（app.* 已于本轮下沉 shared）；
 //   · 查找缺失时回落 en，en 也没有就原样返回 key —— 绝不抛错、绝不留空串。
+//   · 端内**不保留任何本地兜底表**：本地表会让 shared 缺 key 时静默走兜底，
+//     把"翻译没对齐"这种必须暴露的问题盖掉（门禁 scripts/check-i18n-hardcode.py
+//     同样禁止端内自建文案表）。缺 key 时直接看到 key 本身，就是期望行为。
 // ─────────────────────────────────────────────────────────────────────────────
 
 import enMessages from 'shared/messages/en.json'
