@@ -2,6 +2,8 @@
 
 import { useState, useCallback, useMemo, useRef } from 'react'
 import { useTranslations } from 'next-intl'
+import { createToolContext } from 'shared/tools'
+import { runJsonFormatter } from 'shared/tools/json-formatter'
 
 export default function JsonFormatter() {
   const t = useTranslations('tools')
@@ -29,6 +31,12 @@ export default function JsonFormatter() {
     setDownloadUrl(URL.createObjectURL(blob))
   }, [downloadUrl, revokeUrl])
 
+  /** 主文案仍走 i18n；shared 透出的引擎原始报错作为次要文案附后 */
+  const invalidJsonError = useCallback(
+    (detail?: string) => (detail ? `${t('invalidJson')}: ${detail}` : t('invalidJson')),
+    [t],
+  )
+
   const clearState = useCallback(() => {
     setOutput('')
     setError('')
@@ -40,29 +48,28 @@ export default function JsonFormatter() {
 
   const format = useCallback(() => {
     setError('')
-    try {
-      const parsed = JSON.parse(input)
-      const formatted = JSON.stringify(parsed, null, 2)
-      setOutput(formatted)
-      generateDownloadUrl(formatted)
-    } catch (e) {
-      setError(`${t('invalidJson')}: ${(e as Error).message}`)
+    const outcome = runJsonFormatter({ text: input, mode: 'format', indent: 2 }, createToolContext())
+    if (!outcome.ok) {
+      setError(invalidJsonError(outcome.error.detail))
       setOutput('')
       if (downloadUrl) {
         revokeUrl(downloadUrl)
         setDownloadUrl('')
       }
+      return
     }
+    setOutput(outcome.data.text)
+    generateDownloadUrl(outcome.data.text)
   }, [input, t, generateDownloadUrl, downloadUrl, revokeUrl])
 
   const validate = useCallback(() => {
     setError('')
-    try {
-      JSON.parse(input)
-      setOutput(t('validJson'))
-    } catch (e) {
-      setError(`${t('invalidJson')}: ${(e as Error).message}`)
+    const outcome = runJsonFormatter({ text: input, mode: 'validate', indent: 2 }, createToolContext())
+    if (!outcome.ok) {
+      setError(invalidJsonError(outcome.error.detail))
       setOutput('')
+    } else {
+      setOutput(t('validJson'))
     }
     if (downloadUrl) {
       revokeUrl(downloadUrl)
@@ -72,15 +79,14 @@ export default function JsonFormatter() {
 
   const minify = useCallback(() => {
     setError('')
-    try {
-      const parsed = JSON.parse(input)
-      const minified = JSON.stringify(parsed)
-      setOutput(minified)
-      generateDownloadUrl(minified)
-    } catch (e) {
-      setError(`${t('invalidJson')}: ${(e as Error).message}`)
+    const outcome = runJsonFormatter({ text: input, mode: 'minify', indent: 2 }, createToolContext())
+    if (!outcome.ok) {
+      setError(invalidJsonError(outcome.error.detail))
       clearState()
+      return
     }
+    setOutput(outcome.data.text)
+    generateDownloadUrl(outcome.data.text)
   }, [input, t, generateDownloadUrl, clearState])
 
   const handleCopy = useCallback(async () => {

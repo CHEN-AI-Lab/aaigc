@@ -12,21 +12,29 @@
     "./hooks/*": "./hooks/*",
     "./types/*": "./types/*",
     "./i18n/*": "./i18n/*",
-    "./api/*": "./api/*"
+    "./api/*": "./api/*",
+    "./tools/*": "./tools/*",
+    "./data/*": "./data/*",
+    "./validators/*": "./validators/*"
   },
   "scripts": {
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "build:js": "node ../scripts/build-shared-js.mjs",
+    "build:messages": "node ../scripts/build-shared-messages.mjs"
   },
   "peerDependencies": {
     "next-intl": "^4.0.0"
   },
   "dependencies": {
-    "next-intl": "^4.13.0"
+    "jose": "^6.2.9",
+    "next-intl": "^4.13.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@prisma/adapter-neon": "^7.9.1",
     "@neondatabase/serverless": "^1.1.0",
+    "esbuild": "^0.28.2",
     "typescript": "^5.7.0"
   }
 }

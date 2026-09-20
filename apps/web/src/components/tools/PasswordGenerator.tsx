@@ -2,6 +2,8 @@
 
 import { useState, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
+import { createToolContext } from 'shared/tools'
+import { runPasswordGenerator } from 'shared/tools/password-generator'
 
 export default function PasswordGenerator() {
   const t = useTranslations('tools')
@@ -14,30 +16,14 @@ export default function PasswordGenerator() {
   const [strength, setStrength] = useState(0)
 
   const generate = useCallback(() => {
-    let chars = ''
-    if (upper) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    if (lower) chars += 'abcdefghijklmnopqrstuvwxyz'
-    if (digits) chars += '0123456789'
-    if (symbols) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?'
-    if (!chars) return
-
-    // 使用加密安全的 CSPRNG，避免 Math.random() 的可预测性
-    const random = new Uint32Array(length)
-    let result = ''
-    for (let i = 0; i < length; i++) {
-      crypto.getRandomValues(random)
-      result += chars[random[0] % chars.length]
-    }
-    setPassword(result)
-
-    // Calculate strength
-    let score = 0
-    if (length >= 8) score += 25
-    if (length >= 12) score += 25
-    if (upper && lower) score += 15
-    if (digits) score += 15
-    if (symbols) score += 20
-    setStrength(Math.min(100, score))
+    // 随机源经 ToolContext 注入（shared 内部使用 CSPRNG），端侧不直接调 Math.random()
+    const outcome = runPasswordGenerator(
+      { length, upper, lower, digits, symbols },
+      createToolContext(),
+    )
+    if (!outcome.ok) return
+    setPassword(outcome.data.password)
+    setStrength(outcome.data.strength)
   }, [length, upper, lower, digits, symbols])
 
   const strengthColor = strength < 40 ? 'bg-red-400' : strength < 70 ? 'bg-amber-400' : 'bg-green-400'

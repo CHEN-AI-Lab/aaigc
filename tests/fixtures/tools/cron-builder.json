@@ -1,0 +1,15 @@
+{
+  "toolId": "cron-builder",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "minute": "0",
+    "hour": "9",
+    "dayOfMonth": "*",
+    "month": "*",
+    "dayOfWeek": "1-5"
+  }
+}

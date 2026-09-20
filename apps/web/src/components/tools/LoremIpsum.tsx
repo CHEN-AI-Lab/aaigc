@@ -2,8 +2,8 @@
 
 import { useState, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
-
-const WORDS = ['lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit', 'sed', 'do', 'eiusmod', 'tempor', 'incididunt', 'ut', 'labore', 'et', 'dolore', 'magna', 'aliqua', 'enim', 'ad', 'minim', 'veniam', 'quis', 'nostrud', 'exercitation', 'ullamco', 'laboris', 'nisi', 'aliquip', 'ex', 'ea', 'commodo', 'consequat', 'duis', 'aute', 'irure', 'dolor', 'reprehenderit', 'voluptate', 'velit', 'esse', 'cillum', 'dolore', 'eu', 'fugiat', 'nulla', 'pariatur']
+import { createToolContext } from 'shared/tools'
+import { runLoremIpsum } from 'shared/tools/lorem-ipsum'
 
 export default function LoremIpsum() {
   const t = useTranslations('tools')
@@ -13,29 +13,10 @@ export default function LoremIpsum() {
   const [copied, setCopied] = useState(false)
 
   const generate = useCallback(() => {
-    const n = Math.min(100, Math.max(1, count))
-    if (type === 'words') {
-      const result = Array.from({ length: n }, () => WORDS[Math.floor(Math.random() * WORDS.length)]).join(' ')
-      setOutput(result.charAt(0).toUpperCase() + result.slice(1) + '.')
-    } else if (type === 'sentences') {
-      const result = Array.from({ length: n }, () => {
-        const len = 5 + Math.floor(Math.random() * 15)
-        const s = Array.from({ length: len }, () => WORDS[Math.floor(Math.random() * WORDS.length)]).join(' ')
-        return s.charAt(0).toUpperCase() + s.slice(1) + '.'
-      }).join(' ')
-      setOutput(result)
-    } else {
-      const result = Array.from({ length: n }, () => {
-        const sentences = 3 + Math.floor(Math.random() * 5)
-        const p = Array.from({ length: sentences }, () => {
-          const len = 8 + Math.floor(Math.random() * 20)
-          const s = Array.from({ length: len }, () => WORDS[Math.floor(Math.random() * WORDS.length)]).join(' ')
-          return s.charAt(0).toUpperCase() + s.slice(1) + '.'
-        }).join(' ')
-        return p
-      }).join('\n\n')
-      setOutput(result)
-    }
+    // 词库与随机源统一走 shared（随机源经 ToolContext 注入）
+    const outcome = runLoremIpsum({ count, unit: type }, createToolContext())
+    if (!outcome.ok) return
+    setOutput(outcome.data.text)
   }, [count, type])
 
   const handleCopy = useCallback(async () => {

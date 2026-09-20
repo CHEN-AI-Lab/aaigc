@@ -1,0 +1,11 @@
+{
+  "toolId": "word-counter",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "text": "Hello 世界 world\nsecond line"
+  }
+}

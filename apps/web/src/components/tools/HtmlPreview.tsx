@@ -1,7 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useTranslations } from 'next-intl'
+import { createToolContext } from 'shared/tools'
+import { runHtmlPreview } from 'shared/tools/html-preview'
 
 const DEFAULT_HTML = `<!DOCTYPE html>
 <html>
@@ -31,6 +33,12 @@ export default function HtmlPreview() {
   const t = useTranslations('tools')
   const [html, setHtml] = useState(DEFAULT_HTML)
 
+  // 旧行为：srcDoc 原样渲染用户片段（无骨架） → 新行为：runHtmlPreview 对非完整文档补 <!DOCTYPE html>/<html>/<head>/<body>，已确认接受
+  const srcDoc = useMemo(() => {
+    const outcome = runHtmlPreview({ html }, createToolContext())
+    return outcome.ok ? outcome.data.html : html
+  }, [html])
+
   return (
     <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 min-h-[400px]">
       <div className="flex flex-col gap-2">
@@ -39,7 +47,7 @@ export default function HtmlPreview() {
       </div>
       <div className="flex flex-col gap-2">
         <span className="text-xs font-semibold text-text-secondary uppercase tracking-wider">{t('preview')}</span>
-        <iframe sandbox="allow-scripts" srcDoc={html} className="w-full flex-1 min-h-[400px] bg-white border border-border rounded-sm" />
+        <iframe sandbox="allow-scripts" srcDoc={srcDoc} className="w-full flex-1 min-h-[400px] bg-white border border-border rounded-sm" />
       </div>
     </div>
   )

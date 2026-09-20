@@ -3,14 +3,10 @@
 import { useState, useCallback, useRef } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { dateLocale } from 'shared/utils/locale'
-
-function pad(n: number, len: number) {
-  return String(n).padStart(len, '0')
-}
-
-function daysInMonth(y: number, m: number) {
-  return new Date(y, m, 0).getDate()
-}
+import { createToolContext } from 'shared/tools'
+import { padNumber } from 'shared/tools/common'
+import { addCalendar, daysInMonthUtc, runDateCalculator } from 'shared/tools/date-calculator'
+import { zonedParts } from 'shared/tools/timestamp'
 
 // ─── ClampInput — module-level ───
 function ClampInput({ value, onChange, min, max, label: _label, field, hint }: {
@@ -50,12 +46,12 @@ function DateSelect({ year, month, day, onYear, onMonth, onDay, years, months, d
       </div>
       <div className="w-16">
         <select value={month} onChange={e => onMonth(e.target.value)} className="w-full px-2 py-2 bg-bg border border-border rounded-sm text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
-          {months.map(m => <option key={m} value={m}>{pad(m, 2)}</option>)}
+          {months.map(m => <option key={m} value={m}>{padNumber(m, 2)}</option>)}
         </select>
       </div>
       <div className="w-16">
         <select value={day} onChange={e => onDay(e.target.value)} className="w-full px-2 py-2 bg-bg border border-border rounded-sm text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
-          {days.map(d => <option key={d} value={d}>{pad(d, 2)}</option>)}
+          {days.map(d => <option key={d} value={d}>{padNumber(d, 2)}</option>)}
         </select>
       </div>
     </div>
@@ -98,9 +94,19 @@ export default function DateCalculator() {
   const years = Array.from({ length: 201 }, (_, i) => 1900 + i) // 1900-2100
   const months = Array.from({ length: 12 }, (_, i) => i + 1)
 
-  const d1days = daysInMonth(parseInt(d1y) || 1970, parseInt(d1m) || 1)
-  const d2days = daysInMonth(parseInt(d2y) || 1970, parseInt(d2m) || 1)
-  const addDaysMax = daysInMonth(parseInt(addY) || 1970, parseInt(addM) || 1)
+  const d1days = daysInMonthUtc(parseInt(d1y) || 1970, parseInt(d1m) || 1)
+  const d2days = daysInMonthUtc(parseInt(d2y) || 1970, parseInt(d2m) || 1)
+  const addDaysMax = daysInMonthUtc(parseInt(addY) || 1970, parseInt(addM) || 1)
+
+  /** 时间源统一经 ToolContext 注入（端侧不直接读 Date.now） */
+  const toolContext = useCallback(
+    () =>
+      createToolContext({
+        locale,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      }),
+    [locale],
+  )
 
   const showHint = useCallback((field: string, msg: string) => {
     setHint({ field, msg })
@@ -123,36 +129,67 @@ export default function DateCalculator() {
 
   const calcDiff = useCallback(() => {
     setError('')
-    const dt1 = new Date(parseInt(d1y), parseInt(d1m) - 1, parseInt(d1d), parseInt(d1h) || 0, parseInt(d1min) || 0, parseInt(d1s) || 0)
-    const dt2 = new Date(parseInt(d2y), parseInt(d2m) - 1, parseInt(d2d), parseInt(d2h) || 0, parseInt(d2min) || 0, parseInt(d2s) || 0)
-    if (isNaN(dt1.getTime()) || isNaN(dt2.getTime())) {
+    const outcome = runDateCalculator(
+      {
+        mode: 'diff',
+        start: {
+          year: parseInt(d1y, 10),
+          month: parseInt(d1m, 10),
+          day: parseInt(d1d, 10),
+          hour: parseInt(d1h, 10) || 0,
+          minute: parseInt(d1min, 10) || 0,
+          second: parseInt(d1s, 10) || 0,
+        },
+        end: {
+          year: parseInt(d2y, 10),
+          month: parseInt(d2m, 10),
+          day: parseInt(d2d, 10),
+          hour: parseInt(d2h, 10) || 0,
+          minute: parseInt(d2min, 10) || 0,
+          second: parseInt(d2s, 10) || 0,
+        },
+        deltaYears: 0,
+        deltaMonths: 0,
+        deltaDays: 0,
+      },
+      toolContext(),
+    )
+    if (!outcome.ok || !Number.isFinite(outcome.data.epochMs)) {
       setError(t('pleaseSelectBothDates'))
       return
     }
-    const ms = dt2.getTime() - dt1.getTime()
-    const abs = Math.abs(ms)
-    const prefix = ms < 0 ? '- ' : ''
-    const d = Math.floor(abs / 86400000)
-    const h = Math.floor((abs % 86400000) / 3600000)
-    const m = Math.floor((abs % 3600000) / 60000)
-    setDiff(`${prefix}${d} ${t('days')}, ${h} ${t('hours')}, ${m} ${t('minutes')}`)
-  }, [d1y, d1m, d1d, d1h, d1min, d1s, d2y, d2m, d2d, d2h, d2min, d2s, t])
+    const { epochMs: delta, days, hours, minutes } = outcome.data
+    setDiff(`${delta < 0 ? '- ' : ''}${days} ${t('days')}, ${hours} ${t('hours')}, ${minutes} ${t('minutes')}`)
+  }, [d1y, d1m, d1d, d1h, d1min, d1s, d2y, d2m, d2d, d2h, d2min, d2s, toolContext, t])
 
   const calcAdd = useCallback(() => {
     setError('')
-    const d = new Date(parseInt(addY), parseInt(addM) - 1, parseInt(addD))
-    if (isNaN(d.getTime())) { setError(t('invalidDate')); return }
+    const base = {
+      year: parseInt(addY, 10),
+      month: parseInt(addM, 10),
+      day: parseInt(addD, 10),
+      hour: 0,
+      minute: 0,
+      second: 0,
+    }
+    if (!Number.isFinite(base.year) || !Number.isFinite(base.month) || !Number.isFinite(base.day)) {
+      setError(t('invalidDate'))
+      return
+    }
     const n = parseInt(addDays, 10)
-        if (isNaN(n)) { setError(t('enterNumberOfDays')); return }
-    d.setDate(d.getDate() + n)
-    setAddResult(d.toLocaleDateString(dateLocale(locale)))
+    if (isNaN(n)) { setError(t('enterNumberOfDays')); return }
+    // 日历加减（月末自动收敛）由 shared 提供，展示仍按端侧 locale 格式化
+    const target = addCalendar(base, 0, 0, n)
+    setAddResult(new Date(target.year, target.month - 1, target.day).toLocaleDateString(dateLocale(locale)))
   }, [addY, addM, addD, addDays, locale, t])
 
   const todayBtn = (setters: { y: (v: string) => void; m: (v: string) => void; d: (v: string) => void; h?: (v: string) => void; min?: (v: string) => void; s?: (v: string) => void }) => {
-    const d = new Date()
-    setters.y(String(d.getFullYear()))
-    setters.m(String(d.getMonth() + 1))
-    setters.d(String(d.getDate()))
+    const ctx = toolContext()
+    // 旧行为：new Date() 按浏览器本地时区取「今天」 → 新行为：zonedParts(now, 指定 IANA 时区)，跨时区/DST 下按该时区日历日，已确认接受
+    const parts = zonedParts(ctx.now(), ctx.timezone)
+    setters.y(String(parts.year))
+    setters.m(String(parts.month))
+    setters.d(String(parts.day))
     if (setters.h) setters.h('0')
     if (setters.min) setters.min('0')
     if (setters.s) setters.s('0')
@@ -228,7 +265,7 @@ export default function DateCalculator() {
           <div>
             <label className="block text-[10px] text-text-secondary mb-0.5">
               {t('date')}
-              <button onClick={() => { const d = new Date(); setAddY(String(d.getFullYear())); setAddM(String(d.getMonth() + 1)); setAddD(String(d.getDate())); setAddResult('') }} className="ml-1.5 text-[10px] text-accent hover:underline">{t('today')}</button>
+              <button onClick={() => { const ctx = toolContext(); const parts = zonedParts(ctx.now(), ctx.timezone); setAddY(String(parts.year)); setAddM(String(parts.month)); setAddD(String(parts.day)); setAddResult('') }} className="ml-1.5 text-[10px] text-accent hover:underline">{t('today')}</button>
             </label>
             <div className="flex items-center gap-1.5">
               <DateSelect year={addY} month={addM} day={addD} onYear={setAddY} onMonth={setAddM} onDay={setAddD} years={years} months={months} days={Array.from({ length: addDaysMax }, (_, i) => i + 1)} />

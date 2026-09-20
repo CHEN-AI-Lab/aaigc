@@ -1,0 +1,12 @@
+{
+  "toolId": "url-encode",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "text": "https://a.test/x?y=1&z=中",
+    "mode": "encode"
+  }
+}

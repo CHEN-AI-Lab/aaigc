@@ -1,0 +1,83 @@
+{
+  "products": {
+    "title": "Our Products",
+    "subtitle": "Explore the AAIGC product suite",
+    "features": "Features",
+    "visit": "Visit",
+    "cookmate": {
+      "name": "CookMate",
+      "tag": "Smart Recipes",
+      "description": "AI-powered recipe planning. Generate recipes from ingredients, plan weekly meals, and create shopping lists.",
+      "features": [
+        "AI recipe generation from any ingredients",
+        "Smart weekly meal planning with shopping lists",
+        "Customizable dietary preferences"
+      ]
+    },
+    "aihub": {
+      "name": "AIHub",
+      "tag": "AI Hub",
+      "description": "AI tool directory & review platform. Discover and compare hundreds of AI tools with real user reviews.",
+      "features": [
+        "50+ categories, hundreds of AI tools",
+        "Real user ratings and reviews",
+        "Category browsing and search"
+      ]
+    },
+    "short-drama": {
+      "name": "Short Drama",
+      "tag": "Short Drama",
+      "description": "AI-powered short drama script generator. Create episode outlines, scene breakdowns, and full scripts.",
+      "features": [
+        "10+ genres including CEO romance, time travel, xianxia",
+        "Episode outlines, scene breakdowns, full scripts",
+        "Automatic character arc generation"
+      ]
+    },
+    "resume-optimizer": {
+      "name": "Resume Optimizer",
+      "tag": "Resume",
+      "description": "AI resume optimization tool. Analyze and optimize your resume to increase interview chances.",
+      "features": [
+        "AI-powered resume analysis",
+        "Targeted optimization for specific roles",
+        "Multiple resume templates"
+      ]
+    },
+    "copycraft": {
+      "name": "CopyCraft",
+      "tag": "Copy Craft",
+      "description": "AI-powered copywriting tool. Generate marketing copy, product descriptions, and ad content."
+    },
+    "contentforge": {
+      "name": "ContentForge",
+      "tag": "Content Forge",
+      "description": "AI content generation platform for blogs, articles, and social media."
+    },
+    "postforge": {
+      "name": "PostForge",
+      "tag": "Post Forge",
+      "description": "Social media post generator and scheduler with AI-powered content creation."
+    },
+    "maestro": {
+      "name": "Maestro",
+      "tag": "Music",
+      "description": "AI music composition and audio processing tool."
+    },
+    "ai-portfolio-studio": {
+      "name": "AI Portfolio Studio",
+      "tag": "Portfolio",
+      "description": "AI-powered portfolio website builder for creators."
+    },
+    "ai-toolbox": {
+      "name": "AI Toolbox",
+      "tag": "Toolbox",
+      "description": "Collection of AI-powered utilities and tools."
+    },
+    "content-ai-site": {
+      "name": "Content AI Site",
+      "tag": "Content Site",
+      "description": "AI-driven content management and publishing platform."
+    }
+  }
+}

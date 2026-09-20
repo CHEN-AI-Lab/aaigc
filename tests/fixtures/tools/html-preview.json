@@ -1,0 +1,11 @@
+{
+  "toolId": "html-preview",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "html": "<h1>hi</h1>"
+  }
+}

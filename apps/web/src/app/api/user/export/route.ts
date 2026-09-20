@@ -1,14 +1,22 @@
-import { NextResponse } from "next/server"
-import { prisma } from "shared/utils/prisma"
-import { auth } from "@/auth"
+// ─────────────────────────────────────────────────────────────────────────────
+// GET /api/user/export —— 账号数据导出（GDPR 风格）
+//
+// 鉴权：resolveAuth（Bearer 优先，回退 cookie）
+// 只读接口，不做 CSRF 同源校验。
+// ─────────────────────────────────────────────────────────────────────────────
 
-export async function GET() {
-  const session = await auth()
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "loginRequired" }, { status: 401 })
-  }
+import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from 'shared/utils/prisma'
+import { resolveAuthResult } from '@/auth-guard'
+import { withCors } from '@/api-cors'
+import { errorResponse } from '@/api-response'
 
-  const userId = session.user.id
+export const GET = withCors(async (req: NextRequest) => {
+  const authResult = await resolveAuthResult(req)
+  if (!authResult.ok) return errorResponse(authResult.code)
+  const resolved = { session: authResult.session, mode: authResult.mode }
+
+  const userId = resolved.session.user.id
 
   const [user, accounts, favorites] = await Promise.all([
     prisma.user.findUnique({
@@ -26,7 +34,7 @@ export async function GET() {
   ])
 
   if (!user) {
-    return NextResponse.json({ error: "userNotFound" }, { status: 404 })
+    return errorResponse('userNotFound')
   }
 
   const exportData = {
@@ -49,8 +57,10 @@ export async function GET() {
 
   return new NextResponse(JSON.stringify(exportData, null, 2), {
     headers: {
-      "Content-Type": "application/json",
-      "Content-Disposition": `attachment; filename="aaigc-export-${new Date().toISOString().split("T")[0]}.json"`,
+      'Content-Type': 'application/json',
+      'Content-Disposition': `attachment; filename="aaigc-export-${new Date().toISOString().split('T')[0]}.json"`,
     },
   })
-}
+})
+
+export const OPTIONS = withCors(async () => new NextResponse(null, { status: 204 }))

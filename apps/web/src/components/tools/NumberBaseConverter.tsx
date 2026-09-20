@@ -2,6 +2,8 @@
 
 import { useState, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
+import { createToolContext } from 'shared/tools'
+import { runNumberBase } from 'shared/tools/number-base'
 
 const BASES = [
   { base: 2, label: 'BIN' },
@@ -21,13 +23,13 @@ export default function NumberBaseConverter() {
   const convert = useCallback(() => {
     setError('')
     if (!input.trim()) { setResults([]); return }
-    const decimal = parseInt(input, fromBase)
-    if (isNaN(decimal)) { setError(t('invalidInput')); return }
+    const outcome = runNumberBase({ value: input, fromBase }, createToolContext())
+    if (!outcome.ok) { setError(t('invalidInput')); return }
 
-    setResults(BASES.map(({ base, label }) => ({
-      base,
-      label: `${label} (${t(`base${base}`)})`,
-      value: decimal.toString(base).toUpperCase(),
+    setResults(outcome.data.values.map((entry) => ({
+      base: entry.base,
+      label: `${entry.label} (${t(`base${entry.base}`)})`,
+      value: entry.value,
     })))
   }, [input, fromBase, t])
 

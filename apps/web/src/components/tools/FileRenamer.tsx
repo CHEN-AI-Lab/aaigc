@@ -4,12 +4,13 @@ import { useState, useCallback, useRef, useMemo, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import JSZip from 'jszip'
 import {
-  applyRules,
   type FileWithPath,
   type RenameRule,
   type RenameRuleType,
   type PreviewItem,
 } from 'shared/utils/fileRename'
+import { createToolContext } from 'shared/tools'
+import { runFileRenamer } from 'shared/tools/file-renamer'
 
 
 // ─── Rule with all fields (for UI rendering without narrowing) ──
@@ -417,9 +418,14 @@ export default function FileRenamer() {
 
   // ── Preview ─────────────────────────────────
 
-  const preview = useMemo(() => {
+  const preview = useMemo<PreviewItem[]>(() => {
     if (files.length === 0 || rules.length === 0) return []
-    return applyRules(files, rules, false, origFolderName)
+    // 走 shared 工具入口（其内部复用 shared/utils/fileRename 的规则引擎，规则逻辑只有一份）
+    const outcome = runFileRenamer(
+      { files, rules, renameFolder: false, newFolderName: origFolderName },
+      createToolContext(),
+    )
+    return outcome.ok ? outcome.data.items : []
   }, [files, rules, origFolderName])
 
   const hasConflicts = useMemo(() => preview.some(p => p.conflict), [preview])
@@ -814,13 +820,13 @@ export default function FileRenamer() {
             <div>
               <p className="font-medium text-text-primary mb-1">{t('renEx5Title')}</p>
               <div className="grid grid-cols-[1fr_auto_1fr] gap-x-3 gap-y-0.5 text-text-secondary">
-                <span className="text-right truncate">📁 旅行/</span>
+                <span className="text-right truncate">📁 {t('renSampleTravel')}/</span>
                 <span className="text-text-secondary/40">→</span>
                 <span>01/</span>
-                <span className="text-right truncate">📁 工作/</span>
+                <span className="text-right truncate">📁 {t('renSampleWork')}/</span>
                 <span className="text-text-secondary/40">→</span>
                 <span>02/</span>
-                <span className="text-right truncate">📁 学习/</span>
+                <span className="text-right truncate">📁 {t('renSampleStudy')}/</span>
                 <span className="text-text-secondary/40">→</span>
                 <span>03/</span>
               </div>
@@ -830,10 +836,10 @@ export default function FileRenamer() {
             <div>
               <p className="font-medium text-text-primary mb-1">{t('renEx6Title')}</p>
               <div className="grid grid-cols-[1fr_auto_1fr] gap-x-3 gap-y-0.5 text-text-secondary">
-                <span className="text-right truncate">📁 旅行/</span>
+                <span className="text-right truncate">📁 {t('renSampleTravel')}/</span>
                 <span className="text-text-secondary/40">→</span>
                 <span>📁 vacation/</span>
-                <span className="text-right truncate">📁 工作/</span>
+                <span className="text-right truncate">📁 {t('renSampleWork')}/</span>
                 <span className="text-text-secondary/40">→</span>
                 <span>📁 work/</span>
               </div>
@@ -849,7 +855,7 @@ export default function FileRenamer() {
                 <span className="text-right truncate">Screenshot.png</span>
                 <span className="text-text-secondary/40">→</span>
                 <span>002.png</span>
-                <span className="text-right truncate">文档.pdf</span>
+                <span className="text-right truncate">{t('renSampleDoc')}</span>
                 <span className="text-text-secondary/40">→</span>
                 <span>003.pdf</span>
               </div>

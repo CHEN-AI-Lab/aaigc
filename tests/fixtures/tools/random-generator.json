@@ -1,0 +1,13 @@
+{
+  "toolId": "random-generator",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "mode": "number",
+    "min": 5,
+    "max": 9
+  }
+}

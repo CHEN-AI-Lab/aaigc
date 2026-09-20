@@ -1,0 +1,21 @@
+{
+  "common": {
+    "tagline": "AIで仕事と生活を強化",
+    "products": "製品",
+    "tools": "ツール",
+    "about": "概要",
+    "stats": "統計",
+    "viewAll": "すべて表示",
+    "comingSoon": "近日公開",
+    "live": "公開中",
+    "all": "すべて",
+    "aboutLink": "AAIGCについて →",
+    "logout": "ログアウト",
+    "showPassword": "パスワードを表示",
+    "hidePassword": "パスワードを隠す",
+    "seconds": "秒",
+    "sending": "送信中...",
+    "close": "閉じる",
+    "appName": "AAIGC"
+  }
+}

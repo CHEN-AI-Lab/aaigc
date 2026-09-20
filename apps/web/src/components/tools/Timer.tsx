@@ -2,29 +2,20 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
+import {
+  clampHours,
+  clampMinutes,
+  clampSeconds,
+  formatClock,
+  formatStopwatch,
+} from 'shared/tools/timer'
 
 type Mode = 'countdown' | 'stopwatch'
 
-const clampHours = (v: string) => {
-  const n = parseInt(v)
-  if (isNaN(n) || n < 0) return '0'
-  if (n > 99) return '99'
-  return String(n)
-}
-
-const clampMinutes = (v: string) => {
-  const n = parseInt(v)
-  if (isNaN(n) || n < 0) return '0'
-  if (n > 59) return '59'
-  return String(n)
-}
-
-const clampSeconds = (v: string) => {
-  const n = parseInt(v)
-  if (isNaN(n) || n < 0) return '0'
-  if (n > 59) return '59'
-  return String(n)
-}
+/** 输入框字符串 → 收敛后的字符串（收敛规则由 shared 提供） */
+const clampHourInput = (value: string): string => String(clampHours(Number.parseInt(value, 10)))
+const clampMinuteInput = (value: string): string => String(clampMinutes(Number.parseInt(value, 10)))
+const clampSecondInput = (value: string): string => String(clampSeconds(Number.parseInt(value, 10)))
 
 export default function Timer() {
   const t = useTranslations('tools')
@@ -162,23 +153,7 @@ export default function Timer() {
     setLaps(prev => [{ lap: lapDuration, total: elapsed }, ...prev])
   }, [elapsed])
 
-  const formatTime = (totalSecs: number) => {
-    const h = Math.floor(totalSecs / 3600)
-    const m = Math.floor((totalSecs % 3600) / 60)
-    const s = totalSecs % 60
-    if (h > 0) return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
-    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
-  }
-
-  const formatMs = (ms: number) => {
-    const totalSecs = Math.floor(ms / 1000)
-    const cs = Math.floor((ms % 1000) / 10)
-    const m = Math.floor(totalSecs / 60)
-    const s = totalSecs % 60
-    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}.${String(cs).padStart(2, '0')}`
-  }
-
-  const displayTime = mode === 'countdown' ? formatTime(remaining) : formatMs(elapsed)
+  const displayTime = mode === 'countdown' ? formatClock(remaining) : formatStopwatch(elapsed)
   const isCountdown = mode === 'countdown'
   const hasHours = isCountdown && remaining >= 3600
   const totalSet = isCountdown ? initialTotalRef.current : 0
@@ -225,7 +200,7 @@ export default function Timer() {
           </div>
           {isCountdown && (running || remaining > 0) && totalSet > 0 && (
             <div className="text-xs text-text-secondary/50 mt-2 tabular-nums tracking-normal">
-              {formatTime(totalSet)}
+              {formatClock(totalSet)}
             </div>
           )}
         </div>
@@ -236,21 +211,21 @@ export default function Timer() {
         <div className="flex items-center justify-center gap-2 relative z-10">
           <input
             type="number" min="0" max="99" value={hours}
-            onChange={e => setHours(clampHours(e.target.value))}
+            onChange={e => setHours(clampHourInput(e.target.value))}
             className="w-16 p-2 text-center bg-surface border border-border rounded-lg text-sm text-text-primary"
             placeholder="0"
           />
           <span className="text-sm text-text-secondary">:</span>
           <input
             type="number" min="0" max="59" value={minutes}
-            onChange={e => setMinutes(clampMinutes(e.target.value))}
+            onChange={e => setMinutes(clampMinuteInput(e.target.value))}
             className="w-16 p-2 text-center bg-surface border border-border rounded-lg text-sm text-text-primary"
             placeholder="0"
           />
           <span className="text-sm text-text-secondary">:</span>
           <input
             type="number" min="0" max="59" value={seconds}
-            onChange={e => setSeconds(clampSeconds(e.target.value))}
+            onChange={e => setSeconds(clampSecondInput(e.target.value))}
             className="w-16 p-2 text-center bg-surface border border-border rounded-lg text-sm text-text-primary"
             placeholder="00"
           />
@@ -325,8 +300,8 @@ export default function Timer() {
             {laps.map((item, i) => (
               <div key={i} className="grid grid-cols-3 items-center px-3 py-1.5 bg-surface rounded-lg text-sm">
                 <span className="text-text-secondary">{String(laps.length - i).padStart(2, '0')}</span>
-                <span className="text-text-primary tabular-nums text-center">{formatMs(item.lap)}</span>
-                <span className="text-text-secondary/50 tabular-nums text-right">{formatMs(item.total)}</span>
+                <span className="text-text-primary tabular-nums text-center">{formatStopwatch(item.lap)}</span>
+                <span className="text-text-secondary/50 tabular-nums text-right">{formatStopwatch(item.total)}</span>
               </div>
             ))}
           </div>

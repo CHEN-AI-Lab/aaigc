@@ -1,0 +1,11 @@
+{
+  "toolId": "markdown-preview",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "markdown": "# Title\n\nSome **bold** and `code`.\n\n- a\n- b\n"
+  }
+}

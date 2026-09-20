@@ -1,19 +1,10 @@
 'use client'
 
 import { useState, useCallback, useRef } from 'react'
-import { useTranslations } from 'next-intl'
-
-function pad(n: number, len: number) {
-  return String(n).padStart(len, '0')
-}
-
-function formatDateTime(d: Date) {
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1, 2)}-${pad(d.getDate(), 2)} ${pad(d.getHours(), 2)}:${pad(d.getMinutes(), 2)}:${pad(d.getSeconds(), 2)}.${pad(d.getMilliseconds(), 3)}`
-}
-
-function daysInMonth(y: number, m: number) {
-  return new Date(y, m, 0).getDate()
-}
+import { useLocale, useTranslations } from 'next-intl'
+import { createToolContext } from 'shared/tools'
+import { padNumber } from 'shared/tools/common'
+import { daysInMonth, runTimestamp, zonedParts } from 'shared/tools/timestamp'
 
 // ─── ClampInput — module-level, stable component ───
 function ClampInput({ value, onChange, min, max, label: _label, field, hint }: {
@@ -45,6 +36,7 @@ function ClampInput({ value, onChange, min, max, label: _label, field, hint }: {
 
 export default function TimestampConverter() {
   const t = useTranslations('tools')
+  const locale = useLocale()
   const [ts, setTs] = useState('')
   const [dateResult, setDateResult] = useState('')
   const [tsResultSec, setTsResultSec] = useState('')
@@ -61,6 +53,16 @@ export default function TimestampConverter() {
   const [mm, setMm] = useState('0')
   const [ss, setSs] = useState('0')
   const [ms, setMs] = useState('0')
+
+  /** 时间与随机源统一经 ToolContext 注入（端侧不直接读 Date.now） */
+  const toolContext = useCallback(
+    () =>
+      createToolContext({
+        locale,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      }),
+    [locale],
+  )
 
   const showHint = useCallback((field: string, msg: string) => {
     setHint({ field, msg })
@@ -84,26 +86,38 @@ export default function TimestampConverter() {
 
   const toDate = useCallback(() => {
     setError('')
-    const raw = parseInt(ts, 10)
-    if (isNaN(raw) || ts.trim() === '') { setError(t('invalidTimestamp')); return }
-    const msv = raw < 1e12 ? raw * 1000 : raw
-    setDateResult(formatDateTime(new Date(msv)))
-  }, [ts, t])
+    const outcome = runTimestamp(
+      {
+        mode: 'toDate',
+        timestamp: ts,
+        year: 1970, month: 1, day: 1, hour: 0, minute: 0, second: 0, millisecond: 0,
+      },
+      toolContext(),
+    )
+    if (!outcome.ok) { setError(t('invalidTimestamp')); return }
+    setDateResult(outcome.data.localText)
+  }, [ts, toolContext, t])
 
   const toTs = useCallback(() => {
     setError('')
-    const y = parseInt(year, 10) || 1970
-    const mo = parseInt(month, 10) || 1
-    const d = parseInt(day, 10) || 1
-    const h = parseInt(hh, 10) || 0
-    const mi = parseInt(mm, 10) || 0
-    const s = parseInt(ss, 10) || 0
-    const msv = parseInt(ms, 10) || 0
-    const dt = new Date(y, mo - 1, d, h, mi, s, msv)
-    if (isNaN(dt.getTime())) { setError(t('invalidDate')); return }
-    setTsResultSec(String(Math.floor(dt.getTime() / 1000)))
-    setTsResultMs(String(dt.getTime()))
-  }, [year, month, day, hh, mm, ss, ms, t])
+    const outcome = runTimestamp(
+      {
+        mode: 'toTimestamp',
+        timestamp: '',
+        year: parseInt(year, 10) || 1970,
+        month: parseInt(month, 10) || 1,
+        day: parseInt(day, 10) || 1,
+        hour: parseInt(hh, 10) || 0,
+        minute: parseInt(mm, 10) || 0,
+        second: parseInt(ss, 10) || 0,
+        millisecond: parseInt(ms, 10) || 0,
+      },
+      toolContext(),
+    )
+    if (!outcome.ok) { setError(t('invalidDate')); return }
+    setTsResultSec(String(outcome.data.epochSeconds))
+    setTsResultMs(String(outcome.data.epochMs))
+  }, [year, month, day, hh, mm, ss, ms, toolContext, t])
 
   const years = Array.from({ length: 201 }, (_, i) => 1900 + i) // 1900-2100
   const months = Array.from({ length: 12 }, (_, i) => i + 1)
@@ -121,7 +135,7 @@ export default function TimestampConverter() {
         </div>
         <div className="flex gap-2 mt-2">
           <button onClick={toDate} className="px-4 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('convert')}</button>
-          <button onClick={() => { const d = new Date(); setTs(String(d.getTime())); setDateResult('') }} className="px-3 py-2 bg-accent text-white text-xs rounded-lg hover:opacity-90">
+          <button onClick={() => { setTs(String(toolContext().now())); setDateResult('') }} className="px-3 py-2 bg-accent text-white text-xs rounded-lg hover:opacity-90">
             🔄 {t('now')}
           </button>
         </div>
@@ -150,14 +164,14 @@ export default function TimestampConverter() {
           <div className="w-16">
             <label className="block text-[10px] text-text-secondary mb-0.5">{t('month')}</label>
             <select value={month} onChange={e => setMonth(e.target.value)} className="w-full px-2 py-2 bg-bg border border-border rounded-sm text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
-              {months.map(m => <option key={m} value={m}>{pad(m, 2)}</option>)}
+              {months.map(m => <option key={m} value={m}>{padNumber(m, 2)}</option>)}
             </select>
           </div>
           {/* Day */}
           <div className="w-16">
             <label className="block text-[10px] text-text-secondary mb-0.5">{t('day')}</label>
             <select value={day} onChange={e => setDay(e.target.value)} className="w-full px-2 py-2 bg-bg border border-border rounded-sm text-xs text-text-primary focus:outline-none focus:border-accent/30 cursor-pointer">
-              {days.map(d => <option key={d} value={d}>{pad(d, 2)}</option>)}
+              {days.map(d => <option key={d} value={d}>{padNumber(d, 2)}</option>)}
             </select>
           </div>
 
@@ -188,7 +202,15 @@ export default function TimestampConverter() {
 
         <div className="flex gap-2 flex-wrap items-center">
           <button onClick={toTs} className="px-4 py-2 bg-accent text-white text-sm rounded-lg hover:opacity-90">{t('convert')}</button>
-          <button onClick={() => { const d = new Date(); setYear(String(d.getFullYear())); setMonth(String(d.getMonth() + 1)); setDay(String(d.getDate())); setHh(String(d.getHours())); setMm(String(d.getMinutes())); setSs(String(d.getSeconds())); setMs(String(d.getMilliseconds())); setTsResultSec(''); setTsResultMs('') }} className="px-3 py-2 bg-accent text-white text-xs rounded-lg hover:opacity-90">
+          <button onClick={() => {
+            const ctx = toolContext()
+            const nowMs = ctx.now()
+            // 旧行为：new Date() 按浏览器本地时区取年月日 → 新行为：zonedParts(ms, IANA 时区)，DST 由 Intl 正确处理，已确认接受
+            const parts = zonedParts(nowMs, ctx.timezone)
+            setYear(String(parts.year)); setMonth(String(parts.month)); setDay(String(parts.day))
+            setHh(String(parts.hour)); setMm(String(parts.minute)); setSs(String(parts.second))
+            setMs(String(nowMs % 1000)); setTsResultSec(''); setTsResultMs('')
+          }} className="px-3 py-2 bg-accent text-white text-xs rounded-lg hover:opacity-90">
             🔄 {t('now')}
           </button>
         </div>

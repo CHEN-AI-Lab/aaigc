@@ -1,47 +1,54 @@
+// POST /api/user/update —— 修改昵称
+// 改造：auth() → resolveAuthResult(req)（拿到 mode 供 CSRF 判定，并把 tokenExpired /
+// tokenInvalid 下发客户端），isSameOrigin → isTrustedRequest。
+
 import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "shared/utils/prisma"
-import { auth } from "@/auth"
+import { resolveAuthResult } from "@/auth-guard"
+import { withCors } from "@/api-cors"
+import { errorResponse, tooManyRequestsResponse } from "@/api-response"
 import { checkRateLimit } from "shared/utils/rate-limit"
-import { isSameOrigin } from "shared/utils/csrf"
+import { isTrustedRequest } from "shared/utils/csrf"
 
-export async function POST(req: NextRequest) {
-  const session = await auth()
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "loginRequired" }, { status: 401 })
+export const POST = withCors(async (req: NextRequest) => {
+  const authResult = await resolveAuthResult(req)
+  if (!authResult.ok) return errorResponse(authResult.code)
+  const resolved = { session: authResult.session, mode: authResult.mode }
+
+  // CSRF：cookie 通道沿用同源校验（Web 行为不变）；bearer 通道豁免
+  if (!isTrustedRequest(req, resolved.mode)) {
+    return errorResponse("forbidden")
   }
 
-  // CSRF 防护：校验同源
-  if (!isSameOrigin(req)) {
-    return NextResponse.json({ error: "forbidden" }, { status: 403 })
-  }
-
-  // 限流：每用户每分钟 5 次名称修改
-  const rl = await checkRateLimit(`update-name:${session.user.id}`, 5, 60_000)
+  // 限流：每用户每分钟 5 次名称修改（与改造前一致）
+  const rl = await checkRateLimit(`update-name:${resolved.session.user.id}`, 5, 60_000)
   if (!rl.allowed) {
-    return NextResponse.json({ error: "tooManyRequests" }, { status: 429, headers: { "Retry-After": String(Math.ceil((rl.resetAt - Date.now()) / 1000)) } })
+    return tooManyRequestsResponse(rl.resetAt)
   }
 
   let body: unknown
   try {
     body = await req.json()
   } catch {
-    return NextResponse.json({ error: "invalidJson" }, { status: 400 })
+    return errorResponse("invalidJson")
   }
 
-  const { name } = body as Record<string, unknown>
+  const { name } = (body ?? {}) as Record<string, unknown>
   if (!name || typeof name !== "string" || name.trim().length === 0) {
-    return NextResponse.json({ error: "invalidName" }, { status: 400 })
+    return errorResponse("invalidName")
   }
 
   const trimmed = name.trim()
   if (trimmed.length > 50) {
-    return NextResponse.json({ error: "nameTooLong" }, { status: 400 })
+    return errorResponse("nameTooLong")
   }
 
   await prisma.user.update({
-    where: { id: session.user.id },
+    where: { id: resolved.session.user.id },
     data: { name: trimmed },
   })
 
   return NextResponse.json({ ok: true })
-}
+})
+
+export const OPTIONS = withCors(async () => new NextResponse(null, { status: 204 }))

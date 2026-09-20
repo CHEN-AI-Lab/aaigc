@@ -12,6 +12,10 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
+    // 允许 localhost 兜底：这里是**测试基础设施**，不是产品运行时路径。
+    // E2E 默认就是打本地 dev/preview server，写死兜底不会掩盖任何"生产配置缺失"，
+    // 反而让 `pnpm test:e2e` 开箱可用；生产/CI 需要别的地址时仍用环境变量覆盖。
+    // （对照：产品运行时路径禁止非空 fallback，见 shared/constants/endpoints.ts）
     baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000',
     trace: 'on-first-retry',
   },

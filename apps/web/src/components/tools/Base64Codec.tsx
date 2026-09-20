@@ -2,6 +2,8 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
+import { createToolContext } from 'shared/tools'
+import { runBase64 } from 'shared/tools/base64'
 
 export default function Base64Codec() {
   const t = useTranslations('tools')
@@ -24,16 +26,10 @@ export default function Base64Codec() {
   const convert = useCallback(() => {
     setError('')
     if (!input) { setOutput(''); return }
-    try {
-      if (mode === 'encode') {
-        // Unicode-safe Base64 encoding
-        setOutput(btoa(encodeURIComponent(input).replace(/%([0-9A-F]{2})/g, (_, p1) => String.fromCharCode(parseInt(p1, 16)))))
-      } else {
-        setOutput(decodeURIComponent(atob(input).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')))
-      }
-    } catch {
-      setError(t('invalidBase64'))
-    }
+    // Unicode 安全的 Base64 编解码统一走 shared（无 btoa/atob，五端一致）
+    const outcome = runBase64({ text: input, mode }, createToolContext())
+    if (!outcome.ok) { setError(t('invalidBase64')); return }
+    setOutput(outcome.data.text)
   }, [input, mode, t])
 
   const handleCopy = useCallback(async () => {

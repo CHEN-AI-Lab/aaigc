@@ -2,8 +2,11 @@ import { MetadataRoute } from 'next'
 import { products } from 'data/products'
 import { tools } from 'data/tools'
 import { locales } from 'shared/constants/locales'
+import { siteOrigin } from 'shared/constants/domains'
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || ''
+// 站点基址唯一真源：NEXT_PUBLIC_APP_URL，未配置回落已确认的公开站 origin
+// （domains.ts，全站唯一允许出现本站域名字面量的地方）。
+const baseUrl = siteOrigin()
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = []

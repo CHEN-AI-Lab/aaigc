@@ -1,0 +1,24 @@
+{
+  "home": {
+    "heroSubtitle": "AI アプリケーションとオンラインツールのコレクション",
+    "heroProducts": "製品を見る",
+    "heroTools": "ツールを見る",
+    "productsTitle": "製品一覧",
+    "toolsTitle": "オンラインツール",
+    "toolsDesc": "無料のオンラインユーティリティ — 登録不要",
+    "devTools": "開発ツール",
+    "textTools": "テキストツール",
+    "timeTools": "時間ツール",
+    "imageTools": "画像ツール",
+    "convertTools": "変換ツール",
+    "securityTools": "セキュリティツール",
+    "mathTools": "数学ツール",
+    "toolCount": "{count} ツール",
+    "popularTools": "人気ツール",
+    "newTools": "新着ツール",
+    "discoverTools": "探す",
+    "networkTools": "ネットワークツール",
+    "aiTools": "AI ツール",
+    "otherTools": "その他ツール"
+  }
+}

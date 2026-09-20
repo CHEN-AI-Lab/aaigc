@@ -1,0 +1,17 @@
+{
+  "ui": {
+    "all": "全部",
+    "tools": "工具",
+    "loading": "加载中...",
+    "toolLinks": {
+      "jsonFormatter": "JSON 格式化",
+      "timestamp": "时间戳",
+      "qrcode": "二维码",
+      "base64": "Base64",
+      "regexTester": "正则测试",
+      "markdownPreview": "Markdown",
+      "colorPicker": "颜色选择",
+      "textDiff": "文本对比"
+    }
+  }
+}

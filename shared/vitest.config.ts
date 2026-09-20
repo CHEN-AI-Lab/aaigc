@@ -23,7 +23,7 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, '../apps/web/src'),
       shared: path.resolve(__dirname, '.'),
-      data: path.resolve(__dirname, '../data'),
+      data: path.resolve(__dirname, './data'),
     },
   },
 })

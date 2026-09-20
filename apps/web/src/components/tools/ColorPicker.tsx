@@ -1,7 +1,9 @@
 'use client'
 
-import { useState, useRef, useCallback } from 'react'
+import { useMemo, useState, useRef, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
+import { createToolContext } from 'shared/tools'
+import { runColorPicker } from 'shared/tools/color-picker'
 
 export default function ColorPicker() {
   const t = useTranslations('tools')
@@ -10,25 +12,11 @@ export default function ColorPicker() {
   const animTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const hex = color
-  const rgb = `${parseInt(color.slice(1, 3), 16)}, ${parseInt(color.slice(3, 5), 16)}, ${parseInt(color.slice(5, 7), 16)}`
-  const hsl = (() => {
-    const r = parseInt(color.slice(1, 3), 16) / 255
-    const g = parseInt(color.slice(3, 5), 16) / 255
-    const b = parseInt(color.slice(5, 7), 16) / 255
-    const max = Math.max(r, g, b), min = Math.min(r, g, b)
-    let h = 0, s = 0
-    const l = (max + min) / 2
-    if (max !== min) {
-      const d = max - min
-      s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
-      switch (max) {
-        case r: h = ((g - b) / d + (g < b ? 6 : 0)) * 60; break
-        case g: h = ((b - r) / d + 2) * 60; break
-        case b: h = ((r - g) / d + 4) * 60; break
-      }
-    }
-    return `hsl(${Math.round(h)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`
-  })()
+  // HEX ⇄ RGB ⇄ HSL 统一走 shared 纯函数
+  const { rgbText, hslText } = useMemo(() => {
+    const outcome = runColorPicker({ hex: color }, createToolContext())
+    return outcome.ok ? { rgbText: outcome.data.rgbText, hslText: outcome.data.hslText } : { rgbText: '', hslText: '' }
+  }, [color])
 
   const presets = ['#fa520f','#ffa110','#ffd900','#ff8a00','#fb6424','#1f1f1f','#767d88','#fffaeb','#fff0c2','#3ecf8e','#4a90d9','#9b59b6','#e74c3c','#2ecc71','#f39c12']
 
@@ -41,8 +29,8 @@ export default function ColorPicker() {
 
   const values = [
     { label: t('hex'), value: hex },
-    { label: 'RGB', value: `rgb(${rgb})` },
-    { label: 'HSL', value: hsl },
+    { label: 'RGB', value: rgbText },
+    { label: 'HSL', value: hslText },
   ]
 
   return (

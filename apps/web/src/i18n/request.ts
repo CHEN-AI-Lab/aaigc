@@ -2,6 +2,10 @@ import { getRequestConfig } from 'next-intl/server'
 import { hasLocale } from 'next-intl'
 import { locales, defaultLocale } from 'shared/constants/locales'
 
+// 整文件加载：每个 locale 的 messages 会**全量**进 Web bundle（当前没有按端/按 namespace 切片）。
+// 已知代价：CLI（cli.*）、桌面端等非 Web 端的文案也会一并打进 Web，量级为几 KB/语言，
+// 相对 1500+ key 可忽略，因此**暂不做切片**。
+// 若将来体积敏感，架构侧已有「按 namespace 切片」方案（T01.2），届时在这里改成按需组装即可。
 import enMessages from 'shared/messages/en.json'
 import zhMessages from 'shared/messages/zh-CN.json'
 import jaMessages from 'shared/messages/ja.json'

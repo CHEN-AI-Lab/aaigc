@@ -1,0 +1,14 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "本地壳 UI（main / settings / about）所需的最小权限集合。远程站点不在本 capability 的生效范围内（capability 默认只对本地源生效），因此站点页面拿不到任何原生能力。",
+  "windows": ["main", "settings", "about"],
+  "permissions": [
+    "core:app:allow-version",
+    "core:window:allow-close",
+    "dialog:allow-save",
+    "notification:allow-is-permission-granted",
+    "notification:allow-notify",
+    "notification:allow-request-permission"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "toolId": "image-editor",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "width": 1000,
+    "height": 800,
+    "cropX": 10,
+    "cropY": 20,
+    "cropWidth": 500,
+    "cropHeight": 400,
+    "rotation": 90,
+    "scalePercent": 100
+  }
+}

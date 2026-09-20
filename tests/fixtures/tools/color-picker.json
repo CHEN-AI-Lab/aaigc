@@ -1,0 +1,11 @@
+{
+  "toolId": "color-picker",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "hex": "#fa520f"
+  }
+}

@@ -2,6 +2,8 @@
 
 import { useState, useCallback } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
+import { convertCase } from 'shared/tools/case-converter'
+import type { CaseStyle } from 'shared/tools/case-converter'
 
 const CASES = [
   { id: 'upper' as const, label: 'UPPERCASE', desc: 'HELLO WORLD' },
@@ -19,16 +21,10 @@ export default function CaseConverter() {
   const [active, setActive] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
 
-  const convert = useCallback((type: 'upper' | 'lower' | 'title' | 'camel' | 'snake') => {
-    setActive(type)
+  const convert = useCallback((style: CaseStyle) => {
+    setActive(style)
     if (!input) { setOutput(''); return }
-    switch (type) {
-      case 'upper': setOutput(input.toUpperCase()); break
-      case 'lower': setOutput(input.toLowerCase()); break
-      case 'title': setOutput(input.replace(/\b\w/g, c => c.toUpperCase())); break
-      case 'camel': setOutput(input.replace(/[^a-zA-Z0-9]+(.)/g, (_, c) => c.toUpperCase())); break
-      case 'snake': setOutput(input.replace(/\s+/g, '_').toLowerCase()); break
-    }
+    setOutput(convertCase(input, style))
   }, [input])
 
   const handleCopy = useCallback(async () => {

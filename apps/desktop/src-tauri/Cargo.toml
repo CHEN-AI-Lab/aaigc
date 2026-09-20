@@ -1,0 +1,32 @@
+[package]
+name = "aaigc-desktop"
+version = "0.1.0"
+description = "AAIGC 桌面端外壳（Tauri 2）：原生壳 + 远程站"
+authors = ["AAIGC"]
+edition = "2021"
+rust-version = "1.77.2"
+
+[lib]
+name = "aaigc_desktop_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+# build.rs 里用 Url 解析 NEXT_PUBLIC_APP_URL：非法就构建失败，
+# 免得把「解析不了」拖到运行时。
+url = "2"
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon"] }
+tauri-plugin-dialog = "2"
+tauri-plugin-notification = "2"
+tauri-plugin-opener = "2"
+# site.rs 运行时解析 origin / 判断同源，同样需要 Url。
+url = "2"
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+panic = "abort"
+strip = true

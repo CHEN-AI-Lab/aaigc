@@ -1,0 +1,13 @@
+{
+  "toolId": "json-formatter",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "text": "{\"b\":1,\"a\":[true,null]}",
+    "mode": "format",
+    "indent": 2
+  }
+}

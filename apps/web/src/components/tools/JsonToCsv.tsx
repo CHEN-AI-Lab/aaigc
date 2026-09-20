@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
+import { escapeCsvCell, flattenObject } from 'shared/tools/json-to-csv'
 
 export default function JsonToCsv() {
   const t = useTranslations('tools')
@@ -21,24 +22,6 @@ export default function JsonToCsv() {
     URL.revokeObjectURL(url)
   }, [output])
 
-  const flatten = useCallback((obj: unknown, prefix = ''): Record<string, string> => {
-    const result: Record<string, string> = {}
-    if (obj === null || obj === undefined) return result
-    if (typeof obj !== 'object' || Array.isArray(obj)) {
-      result[prefix] = String(obj)
-      return result
-    }
-    for (const [k, v] of Object.entries(obj)) {
-      const key = prefix ? `${prefix}.${k}` : k
-      if (v !== null && typeof v === 'object' && !Array.isArray(v)) {
-        Object.assign(result, flatten(v, key))
-      } else {
-        result[key] = v === null || v === undefined ? '' : String(v)
-      }
-    }
-    return result
-  }, [])
-
   const convert = useCallback(() => {
     setError('')
     if (!input.trim()) { setOutput(''); return }
@@ -52,43 +35,24 @@ export default function JsonToCsv() {
 
         if (hasObjects) {
           // Array of objects → horizontal (standard CSV)
-          const flatRows = data.map(row => flatten(row))
+          const flatRows = data.map(row => flattenObject(row))
           const headers = [...new Set(flatRows.flatMap(r => Object.keys(r)))]
           const csv = [
             headers.join(','),
-            ...flatRows.map(row => headers.map(h => {
-              const val = row[h] ?? ''
-              const str = String(val)
-              return str.includes(',') || str.includes('"') || str.includes('\n')
-                ? `"${str.replace(/"/g, '""')}"`
-                : str
-            }).join(','))
+            ...flatRows.map(row => headers.map(h => escapeCsvCell(row[h] ?? '')).join(','))
           ].join('\n')
           setOutput(csv)
         } else {
           // Array of primitives → one column
-          const csv = [
-            'Value',
-            ...data.map(v => {
-              const str = String(v)
-              return str.includes(',') || str.includes('"') || str.includes('\n')
-                ? `"${str.replace(/"/g, '""')}"`
-                : str
-            })
-          ].join('\n')
+          const csv = ['Value', ...data.map(v => escapeCsvCell(String(v)))].join('\n')
           setOutput(csv)
         }
       } else if (data !== null && typeof data === 'object') {
         // Single object → vertical (key-value pairs)
-        const flat = flatten(data)
+        const flat = flattenObject(data)
         const csv = [
           'Key,Value',
-          ...Object.entries(flat).map(([k, v]) => {
-            const str = String(v)
-            return str.includes(',') || str.includes('"') || str.includes('\n')
-              ? `${k},"${str.replace(/"/g, '""')}"`
-              : `${k},${str}`
-          })
+          ...Object.entries(flat).map(([k, v]) => `${k},${escapeCsvCell(v)}`)
         ].join('\n')
         setOutput(csv)
       } else {
@@ -98,7 +62,7 @@ export default function JsonToCsv() {
     } catch {
       setError(t('invalidJson'))
     }
-  }, [input, t, flatten])
+  }, [input, t])
 
   const handleCopy = useCallback(async () => {
     try {

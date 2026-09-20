@@ -1,7 +1,60 @@
 export { locales, defaultLocale, isLocale, localeNames } from './locales'
 
-// 对外联系邮箱 — 所有页面统一从此常量读取
-export const CONTACT_EMAIL = 'AAIGC@aaigc.online'
+export {
+  API_ERROR_CODES,
+  LEGACY_API_ERROR_CODES,
+  MULTI_CLIENT_API_ERROR_CODES,
+  API_ERROR_STATUS,
+  isApiErrorCode,
+  apiErrorBody,
+  statusForErrorCode,
+  TOOL_ERROR_CODES,
+} from './error-codes'
+export type { ApiErrorCode, ToolErrorCodeValue } from './error-codes'
+
+export {
+  PLATFORMS,
+  PROJECT_IDS,
+  DEFAULT_PROJECT_ID,
+  CORS_PLATFORMS,
+  TELEMETRY_OFF_BY_DEFAULT_PLATFORMS,
+} from './projects'
+export type { Platform, ProjectId } from './projects'
+
+export {
+  THEME_COLOR_NAMES,
+  THEME_CSS_VARIABLES,
+  LIGHT_THEME_TOKENS,
+  THEME_MODES,
+  DEFAULT_THEME_MODE,
+  themeCssDeclarations,
+  THEME_ANSI,
+} from './theme'
+export type { ThemeColorName, ThemeMode } from './theme'
+
+export {
+  dnsDohEndpoints,
+  ipGeoEndpoints,
+  ipEchoEndpoint,
+  oauthRevokeEndpoints,
+  corsOrigins,
+  apiCorsOrigins,
+  nativeAppDownloadUrls,
+  productUrlMap,
+} from './endpoints'
+export type { ProductUrlEntry } from './endpoints'
+
+// ── 本站域名（唯一真源）── 见 shared/constants/domains.ts ──
+// 任何地方都不要再写死本站域名，一律从这里取。
+export {
+  PUBLIC_SITE_DOMAIN,
+  PUBLIC_SITE_ORIGIN,
+  STATS_SITE_ORIGIN,
+  STATS_PREVIEW_SITE_ORIGIN,
+  CONTACT_EMAIL,
+  siteOrigin,
+  isSiteOriginConfigured,
+} from './domains'
 
 // 发件人显示名 — 各项目在各自代码中维护自己的品牌名。
 // MAIL_FROM 环境变量只配纯邮箱地址（如 noreply@aaigc.online），所有项目统一同一个值。

@@ -1,0 +1,12 @@
+{
+  "toolId": "calculator",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "mode": "expression",
+    "expression": "2+3*4-(6/2)"
+  }
+}

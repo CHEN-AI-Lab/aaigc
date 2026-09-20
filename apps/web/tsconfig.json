@@ -30,7 +30,7 @@
         "../../shared/*"
       ],
       "data/*": [
-        "../../data/*"
+        "../../shared/data/*"
       ]
     },
     "allowJs": true

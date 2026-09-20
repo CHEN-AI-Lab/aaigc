@@ -2,6 +2,47 @@
 
 export type Locale = 'zh-CN' | 'en' | 'ja' | 'zh-TW'
 
+// ─── Platform / Project ─────────────────────────
+
+export { PLATFORMS, PROJECT_IDS, DEFAULT_PROJECT_ID, isPlatform, isProjectId } from './platform'
+export type { Platform, ProjectId } from './platform'
+
+// ─── Tool contract ──────────────────────────────
+
+export {
+  TOOL_IDS,
+} from './tool'
+export type {
+  ToolId,
+  ToolTier,
+  ToolCapability,
+  ToolContext,
+  ToolFetchInit,
+  ToolError,
+  ToolErrorCode,
+  ToolOutcome,
+  ToolInputField,
+  ToolDefinition,
+} from './tool'
+
+// ─── API contract ───────────────────────────────
+
+export type {
+  AuthMode,
+  UserBrief,
+  TokenPair,
+  DeviceCodeResponse,
+  GrantType,
+  FavoriteItemRecord,
+  FavoriteAction,
+  FavoriteMutation,
+  FavoriteSnapshot,
+  FavoriteSyncResult,
+  ApiErrorBody,
+  TrackPayload,
+  TokenStore,
+} from './api'
+
 // ─── Product status ────────────────────────────
 
 export type ProductStatus = 'live' | 'beta' | 'wip' | 'planned'

@@ -1,0 +1,12 @@
+{
+  "toolId": "timestamp",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "mode": "toDate",
+    "timestamp": "1700000000"
+  }
+}

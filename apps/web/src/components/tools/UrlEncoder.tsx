@@ -2,6 +2,8 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
+import { createToolContext } from 'shared/tools'
+import { runUrlEncode } from 'shared/tools/url-encode'
 
 export default function UrlEncoder() {
   const t = useTranslations('tools')
@@ -23,11 +25,9 @@ export default function UrlEncoder() {
 
   const convert = useCallback(() => {
     setError('')
-    try {
-      setOutput(mode === 'encode' ? encodeURIComponent(input) : decodeURIComponent(input))
-    } catch {
-      setError(t('invalidInput'))
-    }
+    const outcome = runUrlEncode({ text: input, mode }, createToolContext())
+    if (!outcome.ok) { setError(t('invalidInput')); return }
+    setOutput(outcome.data.text)
   }, [input, mode, t])
 
   const handleCopy = useCallback(async () => {

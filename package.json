@@ -14,7 +14,7 @@
     "test:e2e:chromium": "PORT=$(bash scripts/find-dev-server.sh) && [ \"$PORT\" != \"0\" ] && PLAYWRIGHT_BASE_URL=http://localhost:$PORT playwright test --project=chromium --workers=1 || echo \"❌ No dev server found for this project\"",
     "test:shared": "pnpm --filter shared test",
     "test:light": "pnpm vitest run --pool=forks --poolOptions.forks.singleFork --maxWorkers=1",
-    "typecheck": "pnpm --filter web exec -- tsc --noEmit && pnpm --filter shared exec -- tsc --noEmit",
+    "typecheck": "pnpm --filter web exec -- tsc --noEmit && pnpm --filter shared exec -- tsc --noEmit && pnpm --filter cli exec -- tsc --noEmit && pnpm --filter desktop exec -- tsc --noEmit",
     "check": "bash scripts/check.sh",
     "check:light": "bash scripts/check-light.sh",
     "check:syntax": "find . -name '*.mjs' -not -path '*/node_modules/*' -not -path '*/.next/*' -exec node --check {} \\;",

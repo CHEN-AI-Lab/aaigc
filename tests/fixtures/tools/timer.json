@@ -1,0 +1,14 @@
+{
+  "toolId": "timer",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "hours": 0,
+    "minutes": 5,
+    "seconds": 30,
+    "elapsedMs": 65432
+  }
+}

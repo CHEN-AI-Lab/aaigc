@@ -1,0 +1,13 @@
+{
+  "toolId": "qrcode",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "text": "https://aaigc.test",
+    "width": 256,
+    "margin": 2
+  }
+}

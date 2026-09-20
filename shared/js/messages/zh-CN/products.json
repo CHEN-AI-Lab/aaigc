@@ -1,0 +1,83 @@
+{
+  "products": {
+    "title": "我们的产品",
+    "subtitle": "探索 AAIGC 产品矩阵",
+    "features": "功能特性",
+    "visit": "前往",
+    "cookmate": {
+      "name": "CookMate",
+      "tag": "智能食谱",
+      "description": "AI 智能食谱与餐食规划平台。输入食材，AI 自动生成菜谱，支持周计划、购物清单、饮食定制。",
+      "features": [
+        "AI 菜谱生成，输入冰箱里的食材即可",
+        "智能周计划与购物清单",
+        "支持饮食偏好定制"
+      ]
+    },
+    "aihub": {
+      "name": "AIHub",
+      "tag": "AI 中心",
+      "description": "中文 AI 工具导航与评测平台。收录数百款 AI 工具的真实用户评测。",
+      "features": [
+        "收录 50+ 类别、数百款 AI 工具",
+        "真实用户评分与评测",
+        "分类导航与搜索"
+      ]
+    },
+    "short-drama": {
+      "name": "Short Drama",
+      "tag": "短剧生成",
+      "description": "AI 短剧脚本生成器。输入题材，AI 自动生成分集大纲、场景拆解和完整剧本。",
+      "features": [
+        "支持霸总、穿越、甜宠等 10+ 题材",
+        "分集大纲 + 场景拆分 + 完整剧本",
+        "人物弧光自动生成"
+      ]
+    },
+    "resume-optimizer": {
+      "name": "Resume Optimizer",
+      "tag": "简历优化",
+      "description": "AI 简历优化工具。智能分析简历内容，提供优化建议，提升面试通过率。",
+      "features": [
+        "AI 智能分析简历内容",
+        "针对目标岗位定制优化建议",
+        "多种简历模板"
+      ]
+    },
+    "copycraft": {
+      "name": "CopyCraft",
+      "tag": "文案工坊",
+      "description": "AI 驱动的文案创作工具。生成营销文案、产品描述和广告内容。"
+    },
+    "contentforge": {
+      "name": "ContentForge",
+      "tag": "内容工坊",
+      "description": "AI 内容生成平台，支持博客、文章和社交媒体内容。"
+    },
+    "postforge": {
+      "name": "PostForge",
+      "tag": "发布工坊",
+      "description": "社交媒体帖子生成与调度工具，AI 驱动内容创作。"
+    },
+    "maestro": {
+      "name": "Maestro",
+      "tag": "音乐创作",
+      "description": "AI 音乐创作与音频处理工具。"
+    },
+    "ai-portfolio-studio": {
+      "name": "AI Portfolio Studio",
+      "tag": "作品集",
+      "description": "AI 驱动的作品集网站构建器。"
+    },
+    "ai-toolbox": {
+      "name": "AI Toolbox",
+      "tag": "工具箱",
+      "description": "AI 实用工具和功能集合。"
+    },
+    "content-ai-site": {
+      "name": "Content AI Site",
+      "tag": "内容管理",
+      "description": "AI 驱动的内容管理与发布平台。"
+    }
+  }
+}

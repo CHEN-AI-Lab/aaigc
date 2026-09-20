@@ -59,7 +59,7 @@ workspace/aaigc/
 │   │   ├── zh-CN.json            # 简体中文
 │   │   ├── zh-TW.json            # 繁体中文
 │   │   └── ja.json               # 日文
-│   ├── i18n/index.ts             # t(locale, path) 通用函数
+│   ├── i18n/README.md            # 两语 t() helper 已删除；跨端文案统一走 messages/
 │   ├── utils/                    # 工具函数
 │   └── hooks/
 │       └── useVisitTracking.ts   # 统计埋点 + 数据获取 hook

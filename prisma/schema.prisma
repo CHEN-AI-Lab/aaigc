@@ -22,6 +22,8 @@ model User {
   accounts Account[]
   sessions Session[]
   favorites Favorite[]
+  refreshTokens RefreshToken[]
+  deviceCodes  DeviceCode[]
 }
 
 model Account {
@@ -94,4 +96,46 @@ model RateLimit {
   windowStart BigInt   @default(0)
   lockedUntil BigInt?
   updatedAt   DateTime @updatedAt
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 多端 Bearer 通道（架构 §4.2.1 / Q-A5）
+// additive：仅新增表，不改动任何既有表，可过 check-migration-safety.sh
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// refresh token —— 只存 SHA-256 hash，原文不落库（库泄露也无法冒用）。
+/// familyId 用于「同一登录会话的 token 链」：一旦检测到已撤销 token 被重放，
+/// 整族撤销（token 盗用检测，RFC 6749 rotation 最佳实践）。
+model RefreshToken {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  userId    String
+  familyId  String
+  clientId  String
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([familyId])
+}
+
+/// device flow（CLI / 桌面端）：deviceCode 给设备轮询，userCode 给用户核对
+model DeviceCode {
+  id           String    @id @default(cuid())
+  deviceCode   String    @unique
+  userCode     String    @unique
+  clientId     String
+  userId       String?
+  approvedAt   DateTime?
+  consumedAt   DateTime?
+  expiresAt    DateTime
+  lastPolledAt DateTime?
+  createdAt    DateTime  @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([expiresAt])
 }

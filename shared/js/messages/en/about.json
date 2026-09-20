@@ -1,0 +1,24 @@
+{
+  "about": {
+    "title": "About AAIGC",
+    "subtitle": "AI Tools & Product Matrix",
+    "subtitle2": "We provide free online tools and incubate AI-powered SaaS products across multiple domains.",
+    "toolsTitle": "Free Online Tools",
+    "toolsDesc": "No registration needed, ready to use. A continuously growing collection of online tools covering development, text, image, security, network and more.",
+    "productsTitle": "AI Product Matrix",
+    "productsDesc": "Continuously incubating AI-powered SaaS products across multiple domains, each operating independently.",
+    "free": "Free to Use",
+    "freeDesc": "All online tools are completely free, no registration required, ready to use instantly.",
+    "lang": "Multi-language",
+    "langDesc": "English, Simplified Chinese, Traditional Chinese, and Japanese — switch with one click.",
+    "local": "Client-side, No Upload",
+    "localDesc": "Tools run entirely in your browser — your data never leaves your device.",
+    "matrix": "Independent Product Matrix",
+    "matrixDesc": "Each product operates independently, offering professional-grade SaaS services.",
+    "contact": "Contact",
+    "toolsCta": "Explore Free Tools",
+    "productsCta": "View Product Matrix",
+    "categories": "Categories",
+    "languages": "Languages"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "toolId": "pdf-tool",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "operation": "extract",
+    "pageCount": 10,
+    "range": "1-3,5",
+    "fileName": "doc.pdf"
+  }
+}

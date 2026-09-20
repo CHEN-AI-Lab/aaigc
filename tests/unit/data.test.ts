@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll } from 'vitest'
-import { products } from '../../data/products'
-import { familyRelations } from '../../data/family'
+import { products } from '../../shared/data/products'
+import { familyRelations } from '../../shared/data/family'
 import type { CategoryInfo, ToolCategoryId } from '../../shared/types'
 
 describe('products', () => {
@@ -52,7 +52,7 @@ describe('tools', () => {
   let categories: CategoryInfo[]
 
   beforeAll(async () => {
-    const mod = await import('../../data/tools')
+    const mod = await import('../../shared/data/tools')
     tools = mod.tools
     categories = mod.toolCategories
   })
@@ -196,7 +196,7 @@ describe('tool categories', () => {
   let categories: CategoryInfo[]
 
   beforeAll(async () => {
-    const mod = await import('../../data/tools')
+    const mod = await import('../../shared/data/tools')
     categories = mod.toolCategories
   })
 
@@ -214,7 +214,7 @@ describe('tool categories', () => {
   })
 
   it('every tool belongs to a valid category', async () => {
-    const mod = await import('../../data/tools')
+    const mod = await import('../../shared/data/tools')
     const catIds = mod.toolCategories.map((c: CategoryInfo) => c.id)
     for (const t of mod.tools) {
       expect(catIds).toContain(t.category)

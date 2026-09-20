@@ -1,0 +1,24 @@
+{
+  "about": {
+    "title": "關於 AAIGC",
+    "subtitle": "AI 工具與產品矩陣",
+    "subtitle2": "AAIGC 是 AI 產品矩陣門戶。我們提供免費線上工具，同時孵化 AI 驅動的 SaaS 產品，涵蓋生活、創作、效率等多個垂直領域。",
+    "toolsTitle": "免費線上工具",
+    "toolsDesc": "無需註冊、即開即用。持續更新的線上工具集，涵蓋開發、文字、圖像、安全、網路等多個領域。",
+    "productsTitle": "AI 產品矩陣",
+    "productsDesc": "持續孵化 AI 驅動的 SaaS 產品，涵蓋生活、創作、效率等多個垂直領域，各自獨立運營。",
+    "free": "工具免費使用",
+    "freeDesc": "所有線上工具完全免費，無需註冊，即開即用。",
+    "lang": "多語言支援",
+    "langDesc": "英文、簡體中文、繁體中文、日語一鍵切換。",
+    "local": "純前端，不上傳",
+    "localDesc": "工具在瀏覽器本地執行，資料不離開你的裝置。",
+    "matrix": "獨立產品矩陣",
+    "matrixDesc": "旗下產品各自獨立運營，提供專業級 SaaS 服務。",
+    "contact": "聯絡方式",
+    "toolsCta": "探索免費工具",
+    "productsCta": "查看產品矩陣",
+    "categories": "分類",
+    "languages": "語言"
+  }
+}

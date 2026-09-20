@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { siteOrigin } from 'shared/constants/domains'
 import '../globals.css'
 
 export const metadata: Metadata = {

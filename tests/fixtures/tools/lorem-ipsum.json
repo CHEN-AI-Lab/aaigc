@@ -1,0 +1,12 @@
+{
+  "toolId": "lorem-ipsum",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "count": 2,
+    "unit": "sentences"
+  }
+}

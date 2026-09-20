@@ -1,0 +1,17 @@
+{
+  "ui": {
+    "all": "すべて",
+    "tools": "ツール",
+    "loading": "読み込み中...",
+    "toolLinks": {
+      "jsonFormatter": "JSON フォーマッター",
+      "timestamp": "タイムスタンプ",
+      "qrcode": "QRコード",
+      "regexTester": "正規表現テスター",
+      "colorPicker": "カラーピッカー",
+      "textDiff": "テキスト差分",
+      "base64": "Base64",
+      "markdownPreview": "Markdown"
+    }
+  }
+}

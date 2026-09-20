@@ -2,6 +2,8 @@
 
 import { useState, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
+import { createToolContext } from 'shared/tools'
+import { runCssMinifier } from 'shared/tools/css-minifier'
 
 export default function CssMinifier() {
   const t = useTranslations('tools')
@@ -15,30 +17,10 @@ export default function CssMinifier() {
   const convert = useCallback(() => {
     setError('')
     if (!input.trim()) { setOutput(''); return }
-    try {
-      if (mode === 'minify') {
-        const minified = input
-          .replace(/\/\*[\s\S]*?\*\//g, '')
-          .replace(/\s*([{}:;,])\s*/g, '$1')
-          .replace(/\s+/g, ' ')
-          .replace(/;}/g, '}')
-          .trim()
-        setOutput(minified)
-        setSaved(input.length - minified.length)
-      } else {
-        const formatted = input
-          .replace(/\{/g, ' {\n  ')
-          .replace(/;/g, ';\n  ')
-          .replace(/}/g, '\n}\n')
-          .replace(/:\s+/g, ': ')
-          .replace(/\n\s*\n/g, '\n')
-          .trim()
-        setOutput(formatted)
-        setSaved(0)
-      }
-    } catch {
-      setError(t('invalidInput'))
-    }
+    const outcome = runCssMinifier({ css: input, mode }, createToolContext())
+    if (!outcome.ok) { setError(t('invalidInput')); return }
+    setOutput(outcome.data.css)
+    setSaved(outcome.data.savedBytes)
   }, [input, mode, t])
 
   const handleCopy = useCallback(async () => {

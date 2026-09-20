@@ -1,0 +1,24 @@
+@import 'tailwindcss';
+
+/* 壳 UI 的源码位置。Tailwind v4 也能自动探测，这里写死更稳。 */
+@source '../index.html';
+@source './';
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    'Noto Sans SC',
+    'PingFang SC',
+    'Microsoft YaHei',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+}

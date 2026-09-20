@@ -1,0 +1,21 @@
+{
+  "common": {
+    "tagline": "讓 AI 賦能你的工作與生活",
+    "products": "產品",
+    "about": "關於",
+    "stats": "統計",
+    "viewAll": "檢視全部",
+    "comingSoon": "即將上線",
+    "live": "已上線",
+    "aboutLink": "關於 AAIGC",
+    "logout": "退出登入",
+    "showPassword": "顯示密碼",
+    "hidePassword": "隱藏密碼",
+    "sending": "發送中",
+    "close": "關閉",
+    "appName": "AAIGC",
+    "tools": "工具",
+    "all": "全部",
+    "seconds": "秒"
+  }
+}

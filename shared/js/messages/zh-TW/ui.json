@@ -1,0 +1,17 @@
+{
+  "ui": {
+    "toolLinks": {
+      "timestamp": "時間戳",
+      "qrcode": "二維碼",
+      "regexTester": "正則測試",
+      "colorPicker": "顏色選擇",
+      "textDiff": "文字比對",
+      "jsonFormatter": "JSON 格式化",
+      "base64": "Base64",
+      "markdownPreview": "Markdown"
+    },
+    "loading": "載入中...",
+    "all": "全部",
+    "tools": "工具"
+  }
+}

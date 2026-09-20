@@ -1,0 +1,55 @@
+{
+  "privacy": {
+    "title": "隱私政策",
+    "lastUpdated": "最後更新：2026年8月",
+    "intro": "AAIGC（「我們」）致力於保護您的隱私。本隱私政策說明了我們如何收集、使用和保護您的資訊。",
+    "dataCollect": "我們收集的資訊",
+    "dataCollectDesc": "我們只收集您主動提供的資訊：",
+    "dataCollectItems": [
+      "帳戶資訊：電子郵件地址、顯示名稱和頭像（註冊或透過 Google/GitHub 登入時）",
+      "使用數據：頁面瀏覽量和工具使用統計（匿名化）",
+      "聯絡資訊：您聯絡我們時提供的電子郵件地址"
+    ],
+    "dataUse": "我們如何使用您的資訊",
+    "dataUseDesc": "我們將您的資訊用於：",
+    "dataUseItems": [
+      "提供和維護您的帳戶",
+      "透過 OAuth 提供商（Google、GitHub）驗證您的身份",
+      "透過匿名化使用統計改進服務",
+      "回覆您的諮詢"
+    ],
+    "dataStorage": "數據存儲與安全",
+    "dataStorageDesc": "您的數據儲存在安全可靠的雲端伺服器上。我們採取合理的安全措施保護您的數據，包括傳輸加密（TLS）和靜態加密。",
+    "dataRetention": "數據保留",
+    "dataRetentionDesc": "我們保留您的帳戶數據直到您刪除帳戶。刪除帳戶後，相關數據將被徹底清除。",
+    "thirdParty": "第三方服務",
+    "thirdPartyDesc": "我們使用以下第三方服務：",
+    "thirdPartyItems": [
+      "Neon（Postgres 資料庫）- 新加坡區域",
+      "Google OAuth - 身份驗證",
+      "GitHub OAuth - 身份驗證",
+      "Resend - 郵件發送",
+      "Vercel - 網站托管",
+      "Cloudflare Workers - 統計分析"
+    ],
+    "cookiesDesc": "我們使用一個功能性 Cookie 來記住您的語言偏好。我們不使用跟蹤 Cookie 或第三方分析 Cookie。我們的使用統計是匿名化的，不涉及 Cookie。",
+    "rights": "您的權利",
+    "rightsDesc": "根據您所在地區，您可能擁有以下權利：",
+    "rightsItems": [
+      "訪問您的個人數據",
+      "更正不準確的數據",
+      "刪除您的數據（被遺忘權）",
+      "導出您的數據（數據可攜帶權）",
+      "隨時撤回同意"
+    ],
+    "contact": "聯絡我們",
+    "contactDesc": "如對本隱私政策有疑問，請聯絡：",
+    "gdpr": "GDPR 合規（歐盟用戶）",
+    "gdprDesc": "如果您在歐洲經濟區，您在 GDPR 下有額外權利。我們處理您數據的法律依據是您的同意（註冊時）和合法利益（統計分析）。",
+    "ccpa": "CCPA 合規（加州用戶）",
+    "ccpaDesc": "加州居民有權請求披露已收集的數據、請求刪除數據以及選擇不出售數據。我們不出售您的個人數據。",
+    "pip": "PIPL 合規（中國用戶）",
+    "pipDesc": "如果您在中國，您的個人數據將按照《個人信息保護法》（PIPL）處理。您的數據存儲在新加坡。",
+    "cookies": "Cookie"
+  }
+}

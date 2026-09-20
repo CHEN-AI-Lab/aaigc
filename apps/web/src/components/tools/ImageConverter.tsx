@@ -3,8 +3,14 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import JSZip from 'jszip'
-
-type Format = 'png' | 'jpeg' | 'webp' | 'bmp' | 'gif'
+import {
+  IMAGE_MIME,
+  LOSSLESS_FORMATS,
+  normalizeQuality,
+  scaleToAbsolute,
+  targetFileName,
+  type ImageFormat,
+} from 'shared/tools'
 
 interface InputFile {
   id: string
@@ -21,13 +27,23 @@ interface OutputFile {
   size: number
 }
 
-const FORMAT_OPTIONS: { value: Format; label: string; mime: string; ext: string }[] = [
-  { value: 'png',  label: 'PNG',  mime: 'image/png',           ext: '.png' },
-  { value: 'jpeg', label: 'JPG',  mime: 'image/jpeg',          ext: '.jpg' },
-  { value: 'webp', label: 'WebP', mime: 'image/webp',          ext: '.webp' },
-  { value: 'bmp',  label: 'BMP',  mime: 'image/bmp',           ext: '.bmp' },
-  { value: 'gif',  label: 'GIF',  mime: 'image/gif',           ext: '.gif' },
+/** 只保留 UI 展示用的标签；mime / 扩展名统一取自 shared 的 IMAGE_MIME + targetFileName */
+const FORMAT_OPTIONS: { value: ImageFormat; label: string }[] = [
+  { value: 'png',  label: 'PNG' },
+  { value: 'jpeg', label: 'JPG' },
+  { value: 'webp', label: 'WebP' },
+  { value: 'bmp',  label: 'BMP' },
+  { value: 'gif',  label: 'GIF' },
 ]
+
+/** IMAGE_MIME 的反查表，避免组件里再写一份 mime→format 映射 */
+const MIME_TO_FORMAT = Object.entries(IMAGE_MIME).reduce<Partial<Record<string, ImageFormat>>>(
+  (acc, [format, mime]) => {
+    acc[mime] = format as ImageFormat
+    return acc
+  },
+  {},
+)
 
 const PRESETS: { label: string; w: number; h: number; title: string; group: string }[] = [
   { label: '16:9',  w: 1920, h: 1080, title: '1920×1080',  group: '16:9' },
@@ -43,21 +59,14 @@ function formatSize(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(2)} MB`
 }
 
-function getInputFormat(file: File): Format | null {
-  const map: Record<string, Format> = {
-    'image/png': 'png',
-    'image/jpeg': 'jpeg',
-    'image/webp': 'webp',
-    'image/bmp': 'bmp',
-    'image/gif': 'gif',
-  }
-  return map[file.type] ?? null
+function getInputFormat(file: File): ImageFormat | null {
+  return MIME_TO_FORMAT[file.type] ?? null
 }
 
 export default function ImageConverter() {
   const t = useTranslations('tools')
   const [inputs, setInputs] = useState<InputFile[]>([])
-  const [targetFormat, setTargetFormat] = useState<Format>('png')
+  const [targetFormat, setTargetFormat] = useState<ImageFormat>('png')
   const [quality, setQuality] = useState(90)
   const [outputs, setOutputs] = useState<OutputFile[]>([])
   const [converting, setConverting] = useState(false)
@@ -215,7 +224,6 @@ export default function ImageConverter() {
     const useResize = resizeEnabled && targetWidth > 0 && targetHeight > 0
 
     try {
-      const fmt = FORMAT_OPTIONS.find(f => f.value === targetFormat)!
       const results: OutputFile[] = []
 
       for (const input of inputs) {
@@ -226,8 +234,13 @@ export default function ImageConverter() {
           img.src = input.dataUrl
         })
 
-        const cw = useResize ? targetWidth : img.width
-        const ch = useResize ? targetHeight : img.height
+        // 绝对像素缩放，与旧行为一致：开启缩放时用目标值，否则用原图尺寸
+        const { width: cw, height: ch } = scaleToAbsolute(
+          img.width,
+          img.height,
+          useResize ? targetWidth : 0,
+          useResize ? targetHeight : 0,
+        )
 
         const canvas = document.createElement('canvas')
         canvas.width = cw
@@ -242,24 +255,26 @@ export default function ImageConverter() {
 
         ctx.drawImage(img, 0, 0, cw, ch)
 
+        // 无损格式不传 quality（与旧行为一致），有损格式用 shared 的归一化 quality
+        const isLossless = LOSSLESS_FORMATS.includes(targetFormat)
         const blob = await new Promise<Blob | null>((resolve) => {
           canvas.toBlob(
             (b) => resolve(b),
-            fmt.mime,
-            targetFormat === 'png' || targetFormat === 'bmp' || targetFormat === 'gif'
-              ? undefined
-              : quality / 100
+            IMAGE_MIME[targetFormat],
+            isLossless ? undefined : normalizeQuality(targetFormat, quality / 100)
           )
         })
 
         if (!blob) throw new Error(t('conversionFailed'))
 
-        const baseName = input.file.name.replace(/\.[^.]+$/, '')
-        const suffix = useResize ? `_${cw}x${ch}` : ''
         results.push({
           blob,
           url: URL.createObjectURL(blob),
-          name: `${baseName}${suffix}${fmt.ext}`,
+          name: targetFileName(
+            input.file.name,
+            targetFormat,
+            useResize ? { width: cw, height: ch } : undefined
+          ),
           size: blob.size,
         })
       }
@@ -312,7 +327,7 @@ export default function ImageConverter() {
     setTargetHeight(0)
   }, [outputs])
 
-  const showQuality = targetFormat === 'jpeg' || targetFormat === 'webp'
+  const showQuality = !LOSSLESS_FORMATS.includes(targetFormat)
 
   return (
     <div className="mt-6 space-y-4">

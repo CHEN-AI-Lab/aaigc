@@ -1,0 +1,12 @@
+{
+  "toolId": "emoji-picker",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "category": "smileys",
+    "query": ""
+  }
+}

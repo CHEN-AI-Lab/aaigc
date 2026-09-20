@@ -64,6 +64,7 @@ export default function Footer() {
             <h3 className="text-sm font-semibold text-text-primary mb-3">{t('company')}</h3>
             <ul className="space-y-2 text-xs text-text-secondary">
               <li><Link href="/updates" className="hover:text-accent transition-colors">{t('updates')}</Link></li>
+              <li><Link href="/download" className="hover:text-accent transition-colors">{t('download')}</Link></li>
               <li><Link href="/about" className="hover:text-accent transition-colors">{tc('about')}</Link></li>
               <li><a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-accent transition-colors">{CONTACT_EMAIL}</a></li>
             </ul>

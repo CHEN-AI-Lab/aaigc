@@ -1,0 +1,17 @@
+{
+  "download": {
+    "title": "AAIGC をダウンロード",
+    "subtitle": "デスクトップ版、モバイル版、CLI、ミニプログラムを入手できます。",
+    "empty": "現在ダウンロードできるバージョンはありません。しばらくしてから再度お試しください。",
+    "webNote": "ウェブ版はインストール不要です。ブラウザで開くだけで利用できます。",
+    "download": "ダウンロード",
+    "desktopTitle": "デスクトップアプリ",
+    "desktopDesc": "Windows・macOS・Linux 対応のネイティブアプリ。",
+    "appTitle": "モバイルアプリ",
+    "appDesc": "iOS と Android デバイス向け。",
+    "cliTitle": "コマンドラインツール",
+    "cliDesc": "ターミナルから AAIGC ツールを実行できます。",
+    "weappTitle": "WeChat ミニプログラム",
+    "weappDesc": "WeChat 内で AAIGC を利用できます。インストール不要。"
+  }
+}

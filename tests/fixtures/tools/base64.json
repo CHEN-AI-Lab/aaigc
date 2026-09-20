@@ -1,0 +1,12 @@
+{
+  "toolId": "base64",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "text": "Hello 世界",
+    "mode": "encode"
+  }
+}

@@ -2,6 +2,8 @@
 // 用于 POST/PUT/PATCH/DELETE 等 mutating API 路由。
 // NextAuth 的 /api/auth/* 路由有内置 CSRF token 机制，无需此校验。
 
+import type { AuthMode } from '../types/api'
+
 type LikeRequest = { headers: Headers }
 
 /**
@@ -40,4 +42,26 @@ export function isSameOrigin(req: LikeRequest): boolean {
   // 既无 Origin 也无 Referer：可能是非浏览器请求（curl/Postman）
   // 这类请求不携带 cookie，CSRF 不适用，但为安全起见拒绝
   return false
+}
+
+/**
+ * 按鉴权通道判定请求是否可信（架构 §4.2.2）。
+ *
+ * - Bearer：token 存于各端安全存储，不在 cookie 中，浏览器不会自动附带
+ *   → CSRF 不适用，豁免 isSameOrigin。
+ * - Cookie：沿用既有同源校验，Web 行为 100% 不变。
+ */
+export function isTrustedRequest(req: LikeRequest, mode: AuthMode): boolean {
+  if (mode === 'bearer') return true
+  return isSameOrigin(req)
+}
+
+/** 从 Authorization 头提取 Bearer token；缺失或格式错误返回 null */
+export function readBearerToken(req: LikeRequest): string | null {
+  const header = req.headers.get('authorization')
+  if (!header) return null
+  const match = /^Bearer\s+(.+)$/i.exec(header.trim())
+  if (!match) return null
+  const token = match[1].trim()
+  return token.length > 0 ? token : null
 }

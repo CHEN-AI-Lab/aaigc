@@ -1,0 +1,12 @@
+{
+  "toolId": "yaml-json",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "text": "name: aaigc\nlist:/n  - one\n  - two\nnested:/n  k: v\n",
+    "mode": "yaml2json"
+  }
+}

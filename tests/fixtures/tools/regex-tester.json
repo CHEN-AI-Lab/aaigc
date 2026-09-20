@@ -1,0 +1,13 @@
+{
+  "toolId": "regex-tester",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "pattern": "a(b+)",
+    "flags": "g",
+    "text": "ab abb a ac"
+  }
+}

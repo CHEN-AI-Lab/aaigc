@@ -1,0 +1,15 @@
+{
+  "toolId": "date-calculator",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "mode": "add",
+    "startYear": 2024,
+    "startMonth": 1,
+    "startDay": 31,
+    "deltaMonths": 1
+  }
+}

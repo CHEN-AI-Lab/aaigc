@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
+import { toSlug } from 'shared/tools/text-to-slug'
 
 export default function TextToSlug() {
   const t = useTranslations('tools')
@@ -11,14 +12,7 @@ export default function TextToSlug() {
 
   const convert = useCallback(() => {
     if (!input.trim()) { setOutput(''); return }
-    setOutput(input
-      .toLowerCase()
-      .trim()
-      .replace(/[^\w\s-]/g, '')
-      .replace(/[\s_]+/g, '-')
-      .replace(/-+/g, '-')
-      .replace(/^-|-$/g, '')
-    )
+    setOutput(toSlug(input))
   }, [input])
 
   const handleCopy = useCallback(async () => {

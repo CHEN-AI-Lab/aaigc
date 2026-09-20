@@ -1,0 +1,11 @@
+{
+  "toolId": "uuid-generator",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "count": 3
+  }
+}

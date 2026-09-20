@@ -1,0 +1,12 @@
+{
+  "toolId": "text-diff",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "left": "a\nb\nc\n",
+    "right": "a\nB\nc\n"
+  }
+}

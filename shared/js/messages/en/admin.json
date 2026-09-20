@@ -1,0 +1,12 @@
+{
+  "admin": {
+    "trafficCardTitle": "Admin: Traffic & Security Status",
+    "trafficLabel": "Registered users",
+    "thresholdLabel": "Alert threshold",
+    "belowThresholdHint": "📌 Once the threshold is reached, enable strict CSP protection.\nHow: add the `CSP_STRICT=true` env var in your deployment platform (Vercel) and redeploy.",
+    "alertTitle": "Recommend enabling strict CSP protection",
+    "alertDesc": "Registered users reached {count}. We recommend enabling strict CSP to harden against XSS (small cost: slightly slower first paint). To enable: set the env var below to \"true\" in your deployment platform (Vercel) and redeploy. No code change needed.",
+    "copyButton": "Copy",
+    "copied": "Copied"
+  }
+}

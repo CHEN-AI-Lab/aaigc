@@ -1,0 +1,11 @@
+{
+  "toolId": "user-agent-parser",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0) Chrome/120.0 Safari/537.36"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "toolId": "image-converter",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "fileName": "photo.jpg",
+    "sourceWidth": 800,
+    "sourceHeight": 600,
+    "targetFormat": "webp",
+    "quality": 80,
+    "scalePercent": 50
+  }
+}

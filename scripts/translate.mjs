@@ -1463,6 +1463,10 @@ console.log(`🔍 还需 AI 翻译 ${needAI.length} 条，准备调用...`)
 
 // ─── AI 翻译 ───
 const API_KEY = process.env.AI_API_KEY || process.env.OPENAI_API_KEY
+// 允许默认端点兜底：这是**离线脚本**（人工在本地跑的翻译工具），不是产品运行时路径。
+// 写死 OpenAI 官方地址既不会掩盖任何部署配置缺失，也让脚本只用配一个 key 就能跑；
+// 需要自建网关 / 兼容端点时仍用 AI_BASE_URL 覆盖。
+// （对照：产品运行时路径禁止非空 fallback，见 shared/constants/endpoints.ts）
 const API_BASE = process.env.AI_BASE_URL || "https://api.openai.com/v1"
 const MODEL = process.env.AI_MODEL || "gpt-4o-mini"
 

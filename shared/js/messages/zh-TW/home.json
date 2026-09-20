@@ -1,0 +1,24 @@
+{
+  "home": {
+    "heroSubtitle": "AI 應用與線上工具的集合",
+    "heroProducts": "查看產品",
+    "heroTools": "瀏覽工具",
+    "productsTitle": "我們的產品",
+    "toolsTitle": "線上工具",
+    "toolsDesc": "免費線上工具，無需註冊",
+    "devTools": "開發工具",
+    "textTools": "文字工具",
+    "timeTools": "時間工具",
+    "imageTools": "圖像工具",
+    "convertTools": "轉換工具",
+    "mathTools": "數學工具",
+    "toolCount": "{count} 個工具",
+    "popularTools": "熱門工具",
+    "discoverTools": "探索更多",
+    "networkTools": "網路工具",
+    "securityTools": "安全工具",
+    "newTools": "新工具",
+    "aiTools": "AI 工具",
+    "otherTools": "其他工具"
+  }
+}

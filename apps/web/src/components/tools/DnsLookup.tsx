@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
+import { normalizeDomain } from 'shared/tools/dns-lookup'
 
 const TYPES = ['A', 'AAAA', 'CNAME', 'MX', 'TXT', 'NS', 'SOA']
 const TYPE_NAMES: Record<number, string> = { 1: 'A', 2: 'NS', 5: 'CNAME', 6: 'SOA', 15: 'MX', 16: 'TXT', 28: 'AAAA', 33: 'SRV', 99: 'SPF' }
@@ -22,7 +23,8 @@ export default function DnsLookup() {
     if (!domain.trim()) return
     setLoading(true); setError(''); setResult(null)
     try {
-      const r = await fetch(`/api/tools/dns-lookup?name=${domain}&type=${type}`)
+      // 旧行为：用户输入原样拼进查询串（去协议/路径/端口由后端负责） → 新行为：端侧先 normalizeDomain()（去协议/路径/端口并转小写）再请求，已确认接受
+      const r = await fetch(`/api/tools/dns-lookup?name=${normalizeDomain(domain)}&type=${type}`)
       const d = await r.json()
       if (d.Answer) {
         setResult(d.Answer)

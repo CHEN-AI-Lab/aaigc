@@ -1,20 +1,21 @@
 'use client'
 
 import { useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
+import { createToolContext } from 'shared/tools'
+import { runUuidGenerator } from 'shared/tools/uuid-generator'
 
 export default function UuidGenerator() {
   const t = useTranslations('tools')
+  const locale = useLocale()
   const [uuid, setUuid] = useState('')
   const [count, setCount] = useState(1)
 
   const generate = () => {
-    const results: string[] = []
-    for (let i = 0; i < count; i++) {
-      // 使用加密安全的 crypto.randomUUID()，避免 Math.random() 的可预测性
-      results.push(crypto.randomUUID())
-    }
-    setUuid(results.join('\n'))
+    // 随机源经 ToolContext 注入（shared 内部使用 CSPRNG），端侧不直接调 Math.random()
+    const outcome = runUuidGenerator({ count }, createToolContext({ locale }))
+    if (!outcome.ok) return
+    setUuid(outcome.data.text)
   }
 
   return (

@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
+import { MAX_IMAGE_BYTES, bytesToDataUrl, guessMimeType } from 'shared/tools/image-to-base64'
 
 export default function ImageToBase64() {
   const t = useTranslations('tools')
@@ -14,12 +15,18 @@ export default function ImageToBase64() {
     setError('')
     const file = e.target.files?.[0]
     if (!file) return
-    if (file.size > 5 * 1024 * 1024) { setError(t('fileTooLarge')); return }
+    // 旧行为：硬编码 5MB 上限、mime 缺省用空串 → 新行为：MAX_IMAGE_BYTES(5MB) + guessMimeType(按扩展名兜底)，已确认接受
+    if (file.size > MAX_IMAGE_BYTES) { setError(t('fileTooLarge')); return }
     setFileName(file.name)
     const reader = new FileReader()
-    reader.onload = () => setBase64(reader.result as string)
+    reader.onload = () => {
+      const result = reader.result
+      if (!(result instanceof ArrayBuffer)) { setError(t('failedToRead')); return }
+      // 字节 → Data URL 由 shared 纯函数完成（不依赖 btoa，五端一致）
+      setBase64(bytesToDataUrl(new Uint8Array(result), file.type || guessMimeType(file.name)))
+    }
     reader.onerror = () => setError(t('failedToRead'))
-    reader.readAsDataURL(file)
+    reader.readAsArrayBuffer(file)
   }, [t])
 
   const handleCopy = useCallback(async () => {

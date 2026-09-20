@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
+import { isDangerousCron } from 'shared/tools/cron-builder'
 
 const PRESETS = [
   { label: 'cronPreset1', desc: 'cronDesc1', expr: '0 9 * * *' },
@@ -36,7 +37,7 @@ export default function CronBuilder() {
   const currentPreset = PRESETS.find(p => p.expr === expression)
 
   // Warn when specific day/week/month is set but minute/hour are wildcard
-  const dangerous = (day !== '*' || dow !== '*' || month !== '*') && (minute === '*' || hour === '*')
+  const dangerous = isDangerousCron({ minute, hour, dayOfMonth: day, month, dayOfWeek: dow })
 
   return (
     <div className="mt-6 space-y-4">

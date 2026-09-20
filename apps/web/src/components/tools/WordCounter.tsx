@@ -2,18 +2,19 @@
 
 import { useState, useMemo } from 'react'
 import { useTranslations } from 'next-intl'
+import { createToolContext } from 'shared/tools'
+import { runWordCounter } from 'shared/tools/word-counter'
+import type { WordCounterOutput } from 'shared/tools/word-counter'
+
+const EMPTY_STATS: WordCounterOutput = { chars: 0, charsNoSpace: 0, words: 0, lines: 0, cjk: 0 }
 
 export default function WordCounter() {
   const t = useTranslations('tools')
   const [text, setText] = useState('')
 
   const stats = useMemo(() => {
-    const chars = text.length
-    const charsNoSpace = text.replace(/\s/g, '').length
-    const words = text.trim() ? text.trim().split(/\s+/).length : 0
-    const lines = text ? text.split('\n').length : 0
-    const cjk = (text.match(/[\u4e00-\u9fff\u3400-\u4dbf\uf900-\ufaff]/g) || []).length
-    return { chars, charsNoSpace, words, lines, cjk }
+    const outcome = runWordCounter({ text }, createToolContext())
+    return outcome.ok ? outcome.data : EMPTY_STATS
   }, [text])
 
   return (

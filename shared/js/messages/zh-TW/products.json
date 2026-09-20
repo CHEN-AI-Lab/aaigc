@@ -1,0 +1,83 @@
+{
+  "products": {
+    "cookmate": {
+      "description": "AI 智慧食譜與餐食規劃平台。輸入食材，AI 自動生成菜譜，支援週計劃、購物清單、飲食定製。",
+      "features": [
+        "AI 菜譜生成，輸入冰箱裡的食材即可",
+        "智慧週計劃與購物清單",
+        "支援飲食偏好定製"
+      ],
+      "name": "Cookmate",
+      "tag": "智慧食譜"
+    },
+    "aihub": {
+      "description": "中文 AI 工具導航與評測平台。收錄數百款 AI 工具的真實用戶評測。",
+      "features": [
+        "收錄 50+ 類別、數百款 AI 工具",
+        "真實用戶評分與評測",
+        "分類導航與搜尋"
+      ],
+      "name": "Aihub",
+      "tag": "AI 導航"
+    },
+    "short-drama": {
+      "description": "AI 短劇腳本生成器。輸入題材，AI 自動生成分集大綱、場景拆解和完整劇本。",
+      "features": [
+        "支援霸總、穿越、甜寵等 10+ 題材",
+        "分集大綱 + 場景拆分 + 完整劇本",
+        "人物弧光自動生成"
+      ],
+      "tag": "短劇生成",
+      "name": "Short Drama"
+    },
+    "resume-optimizer": {
+      "description": "AI 履歷優化工具。智慧分析履歷內容，提供優化建議，提升面試通過率。",
+      "features": [
+        "AI 智慧分析履歷內容",
+        "針對目標崗位定製優化建議",
+        "多種履歷模板"
+      ],
+      "name": "Resume-optimizer",
+      "tag": "履歷優化"
+    },
+    "copycraft": {
+      "description": "AI 驅動的文案創作工具。生成行銷文案、產品描述和廣告內容。",
+      "name": "Copycraft",
+      "tag": "文案創作"
+    },
+    "contentforge": {
+      "description": "AI 內容生成平台，支援部落格、文章和社交媒體內容。",
+      "name": "Contentforge",
+      "tag": "內容生成"
+    },
+    "postforge": {
+      "description": "社交媒體帖子生成與排程工具，AI 驅動內容創作。",
+      "tag": "發布工坊",
+      "name": "PostForge"
+    },
+    "maestro": {
+      "description": "AI 音樂創作與音頻處理工具。",
+      "tag": "音樂創作",
+      "name": "Maestro"
+    },
+    "ai-portfolio-studio": {
+      "description": "AI 驅動的作品集網站構建器。",
+      "name": "Ai-portfolio-studio",
+      "tag": "作品集"
+    },
+    "ai-toolbox": {
+      "description": "AI 實用工具和功能集合。",
+      "name": "Ai-toolbox",
+      "tag": "工具箱"
+    },
+    "content-ai-site": {
+      "description": "AI 驅動的內容管理與發佈平台。",
+      "name": "Content-ai-site",
+      "tag": "內容管理"
+    },
+    "title": "我們的產品",
+    "subtitle": "探索 AAIGC 產品矩陣",
+    "features": "功能特性",
+    "visit": "前往"
+  }
+}

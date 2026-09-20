@@ -1,0 +1,17 @@
+{
+  "ui": {
+    "all": "All",
+    "tools": "Tools",
+    "loading": "Loading...",
+    "toolLinks": {
+      "jsonFormatter": "JSON Formatter",
+      "timestamp": "Timestamp",
+      "qrcode": "QR Code",
+      "base64": "Base64",
+      "regexTester": "Regex Tester",
+      "markdownPreview": "Markdown",
+      "colorPicker": "Color Picker",
+      "textDiff": "Text Diff"
+    }
+  }
+}

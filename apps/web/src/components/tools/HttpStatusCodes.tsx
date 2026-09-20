@@ -1,23 +1,30 @@
 'use client'
 
 import { useState } from 'react'
-import { useTranslations, useLocale } from 'next-intl'
+import { useTranslations } from 'next-intl'
+import { HTTP_STATUS_CODES } from 'shared/tools/http-status-codes'
+import type { HttpStatusCodeEntry } from 'shared/tools/http-status-codes'
 
-const CODES = [
-  ...'100 Continue|101 Switching Protocols|102 Processing'.split('|').map(s => { const [c, ...r] = s.split(' '); return { code: parseInt(c), name: r.join(' '), key: 'httpStatus' + parseInt(c), cat: 'httpInfo' } }),
-  ...'200 OK|201 Created|202 Accepted|204 No Content|301 Moved Permanently|302 Found|304 Not Modified|307 Temporary Redirect|308 Permanent Redirect'.split('|').map(s => { const [c, ...r] = s.split(' '); return { code: parseInt(c), name: r.join(' '), key: 'httpStatus' + parseInt(c), cat: c.startsWith('30') ? 'httpRedirect' : 'httpSuccess' } }),
-  ...'400 Bad Request|401 Unauthorized|403 Forbidden|404 Not Found|405 Method Not Allowed|408 Request Timeout|409 Conflict|410 Gone|422 Unprocessable Entity|429 Too Many Requests'.split('|').map(s => { const [c, ...r] = s.split(' '); return { code: parseInt(c), name: r.join(' '), key: 'httpStatus' + parseInt(c), cat: 'httpClientError' } }),
-  ...'500 Internal Server Error|502 Bad Gateway|503 Service Unavailable|504 Gateway Timeout'.split('|').map(s => { const [c, ...r] = s.split(' '); return { code: parseInt(c), name: r.join(' '), key: 'httpStatus' + parseInt(c), cat: 'httpServerError' } }),
-]
+/** shared 返回的是完整 i18n key（tools.xxx），本组件 t 已限定在 tools 命名空间 */
+function localKey(fullKey: string): string {
+  return fullKey.replace(/^tools\./, '')
+}
 
 export default function HttpStatusCodes() {
   const t = useTranslations('tools')
-  const locale = useLocale()
   const [q, setQ] = useState('')
 
-  const isEn = locale === 'en'
+  /**
+   * 名称列：本地化名与英文名相同时只显示一次，否则显示「英文名（本地名）」。
+   * 旧实现用 `locale === 'en'` 分支判断；改成值比较后各端行为完全一致，
+   * 且不再需要感知 locale —— 小程序端可复用同一套逻辑。
+   */
+  const statusName = (c: HttpStatusCodeEntry): string => {
+    const localized = t(localKey(c.messageKey))
+    return localized === c.name ? c.name : `${c.name} (${localized})`
+  }
 
-  const filtered = CODES.filter(c => !q || `${c.code}`.includes(q) || c.name.toLowerCase().includes(q.toLowerCase()) || t(c.key).toLowerCase().includes(q.toLowerCase()))
+  const filtered = HTTP_STATUS_CODES.filter(c => !q || `${c.code}`.includes(q) || c.name.toLowerCase().includes(q.toLowerCase()) || t(localKey(c.messageKey)).toLowerCase().includes(q.toLowerCase()))
 
   return (
     <div className="mt-6 space-y-4">
@@ -33,8 +40,8 @@ export default function HttpStatusCodes() {
           <tbody>{filtered.map((c, i) => (
             <tr key={i} className="border-b border-border hover:bg-accent/5">
               <td className="p-3 pl-4 text-text-primary font-mono font-semibold">{c.code}</td>
-              <td className="p-3 text-text-primary">{isEn ? c.name : `${c.name} (${t(c.key)})`}</td>
-              <td className="p-3 text-text-secondary text-xs">{t(c.cat)}</td>
+              <td className="p-3 text-text-primary">{statusName(c)}</td>
+              <td className="p-3 text-text-secondary text-xs">{t(localKey(c.categoryKey))}</td>
             </tr>
           ))}</tbody>
         </table>

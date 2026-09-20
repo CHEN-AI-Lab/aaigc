@@ -1,0 +1,24 @@
+{
+  "home": {
+    "heroSubtitle": "探索 · 使用 · 创造",
+    "heroProducts": "查看产品",
+    "heroTools": "浏览工具",
+    "productsTitle": "我们的产品",
+    "toolsTitle": "在线工具",
+    "toolsDesc": "免费在线工具，无需注册",
+    "devTools": "开发工具",
+    "textTools": "文本工具",
+    "timeTools": "时间工具",
+    "imageTools": "图像工具",
+    "convertTools": "转换工具",
+    "securityTools": "安全工具",
+    "mathTools": "数学工具",
+    "toolCount": "{count} 个工具",
+    "popularTools": "热门工具",
+    "newTools": "新工具",
+    "discoverTools": "发现更多",
+    "networkTools": "网络工具",
+    "aiTools": "AI 工具",
+    "otherTools": "其他工具"
+  }
+}

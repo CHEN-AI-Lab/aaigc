@@ -7,7 +7,15 @@ echo "=== Structure Check ==="
 echo "Check 1: No forbidden dirs under apps/..."
 found_forbidden=false
 for dir in hooks constants utils validators messages lib; do
-  result=$(find apps -path '*/node_modules' -prune -o -path '*/.next' -prune -o -type d -name "$dir" -print 2>/dev/null || true)
+  result=$(find apps \
+    -path '*/node_modules' -prune -o \
+    -path '*/.next' -prune -o \
+    -path '*/target' -prune -o \
+    -path '*/dist' -prune -o \
+    -path '*/build' -prune -o \
+    -path '*/.turbo' -prune -o \
+    -path '*/.vercel' -prune -o \
+    -type d -name "$dir" -print 2>/dev/null || true)
   if [ -n "$result" ]; then
     echo "  ❌ Found forbidden dir '$dir' under apps/:"
     echo "$result"

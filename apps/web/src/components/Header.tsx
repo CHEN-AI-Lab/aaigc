@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl'
 import { useSession } from '@/auth-client'
 import { signOut } from 'next-auth/react'
 import { Link } from '@/i18n/navigation'
+import { STATS_SITE_ORIGIN, STATS_PREVIEW_SITE_ORIGIN } from 'shared/constants/domains'
 import LanguageSwitcher from './LanguageSwitcher'
 import ThemeSwitcher from './ThemeSwitcher'
 import AvatarImage from './AvatarImage'
@@ -29,11 +30,9 @@ export default function Header() {
     return () => document.removeEventListener('mousedown', handler)
   }, [avatarOpen])
 
-  // 统计面板地址（环境感知）
+  // 统计面板地址（环境感知）—— 域名取自唯一真源 shared/constants/domains，禁止在此硬编码
   const vercelEnv = process.env.NEXT_PUBLIC_VERCEL_ENV || 'development'
-  const statsUrl = vercelEnv === 'production'
-    ? 'https://stats.aaigc.online'
-    : 'https://stats-pre.aaigc.online'
+  const statsUrl = vercelEnv === 'production' ? STATS_SITE_ORIGIN : STATS_PREVIEW_SITE_ORIGIN
 
   return (
     <header className="border-b border-border bg-bg/80 backdrop-blur-md sticky top-0 z-50">

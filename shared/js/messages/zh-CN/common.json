@@ -1,0 +1,21 @@
+{
+  "common": {
+    "appName": "AAIGC",
+    "tagline": "让 AI 赋能你的工作与生活",
+    "products": "产品",
+    "tools": "工具",
+    "about": "关于",
+    "stats": "统计",
+    "viewAll": "查看全部",
+    "comingSoon": "即将上线",
+    "live": "已上线",
+    "all": "全部",
+    "aboutLink": "关于 AAIGC →",
+    "logout": "退出登录",
+    "showPassword": "显示密码",
+    "hidePassword": "隐藏密码",
+    "seconds": "秒",
+    "sending": "发送中",
+    "close": "关闭"
+  }
+}

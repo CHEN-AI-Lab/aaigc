@@ -1,0 +1,12 @@
+{
+  "toolId": "css-minifier",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "css": "/* c */\nbody {\n  margin : 0 ;\n  color: #333;\n}",
+    "mode": "minify"
+  }
+}

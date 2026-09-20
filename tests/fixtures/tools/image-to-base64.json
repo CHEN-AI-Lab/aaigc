@@ -1,0 +1,19 @@
+{
+  "toolId": "image-to-base64",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "bytes": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mimeType": "image/png",
+    "fileName": "a.png"
+  }
+}

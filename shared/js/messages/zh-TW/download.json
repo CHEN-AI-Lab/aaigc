@@ -1,0 +1,17 @@
+{
+  "download": {
+    "title": "下載 AAIGC",
+    "subtitle": "取得桌面版、行動版、命令列工具與小程式。",
+    "empty": "目前沒有可下載的版本，請稍後再試。",
+    "webNote": "網頁版無需安裝，直接在瀏覽器開啟即可使用。",
+    "download": "下載",
+    "desktopTitle": "桌面版應用",
+    "desktopDesc": "支援 Windows、macOS 與 Linux 的原生應用。",
+    "appTitle": "行動版應用",
+    "appDesc": "支援 iOS 與 Android 裝置。",
+    "cliTitle": "命令列工具",
+    "cliDesc": "在終端機中直接執行 AAIGC 工具。",
+    "weappTitle": "微信小程式",
+    "weappDesc": "在微信內使用 AAIGC，無需下載安裝。"
+  }
+}

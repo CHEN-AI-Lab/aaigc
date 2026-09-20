@@ -1,0 +1,11 @@
+{
+  "toolId": "text-to-slug",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "text": "  Hello, World! -- 2024  "
+  }
+}

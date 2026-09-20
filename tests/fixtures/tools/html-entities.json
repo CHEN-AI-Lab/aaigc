@@ -1,0 +1,12 @@
+{
+  "toolId": "html-entities",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "text": "<a href=\"x\">A & B</a>",
+    "mode": "escape"
+  }
+}

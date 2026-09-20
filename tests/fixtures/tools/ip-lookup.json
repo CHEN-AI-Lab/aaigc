@@ -1,0 +1,11 @@
+{
+  "toolId": "ip-lookup",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "ip": "203.0.113.9"
+  }
+}

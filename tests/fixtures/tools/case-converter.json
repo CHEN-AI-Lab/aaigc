@@ -1,0 +1,12 @@
+{
+  "toolId": "case-converter",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "text": "hello world",
+    "style": "camel"
+  }
+}

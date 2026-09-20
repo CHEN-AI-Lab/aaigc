@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
+import { escapeHtmlEntities } from 'shared/tools/html-entities'
 
 export default function HtmlEntities() {
   const t = useTranslations('tools')
@@ -26,10 +27,15 @@ export default function HtmlEntities() {
     if (!input) { setOutput(''); return }
     try {
       if (mode === 'escape') {
-        setOutput(input.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'))
+        // 转义规则固定，五端一致，直接复用 shared 纯函数
+        setOutput(escapeHtmlEntities(input))
       } else {
-        const txt = new DOMParser().parseFromString(input, 'text/html')
-        const text = txt.body.textContent
+        // Web 增强实现：浏览器 DOMParser 带完整命名实体表（数千条），
+        // 明显优于 shared 的 ~40 条退化表（unescapeHtmlEntities）。
+        // 原则：浏览器端能用更好的实现就用更好的实现，
+        // shared 的退化版供小程序 / CLI 等无 DOM 端使用。
+        const doc = new DOMParser().parseFromString(input, 'text/html')
+        const text = doc.body.textContent
         if (text === null) throw new Error('Parse failed')
         setOutput(text)
       }

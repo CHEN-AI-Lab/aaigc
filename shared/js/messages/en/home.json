@@ -1,0 +1,24 @@
+{
+  "home": {
+    "heroSubtitle": "Explore · Use · Create",
+    "heroProducts": "View Products",
+    "heroTools": "Browse Tools",
+    "productsTitle": "Our Products",
+    "toolsTitle": "Online Tools",
+    "toolsDesc": "Free online utilities — no sign-up required",
+    "devTools": "Developer Tools",
+    "textTools": "Text Tools",
+    "timeTools": "Time Tools",
+    "imageTools": "Image Tools",
+    "convertTools": "Converters",
+    "securityTools": "Security Tools",
+    "mathTools": "Math Tools",
+    "toolCount": "{count} tools",
+    "popularTools": "Popular tools",
+    "newTools": "New tools",
+    "discoverTools": "Discover",
+    "networkTools": "Network Tools",
+    "aiTools": "AI Tools",
+    "otherTools": "Other Tools"
+  }
+}

@@ -2,6 +2,8 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
+import { createToolContext } from 'shared/tools'
+import { runJwtDecoder } from 'shared/tools/jwt-decoder'
 
 export default function JwtDecoder() {
   const t = useTranslations('tools')
@@ -34,19 +36,14 @@ export default function JwtDecoder() {
     setError('')
     setHeader('')
     setPayload('')
-    const parts = input.trim().split('.')
-    if (parts.length !== 3) {
+    if (input.trim().split('.').length !== 3) {
       setError(t('invalidJwtParts'))
       return
     }
-    try {
-      const h = JSON.parse(atob(parts[0].replace(/-/g, '+').replace(/_/g, '/')))
-      const p = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')))
-      setHeader(JSON.stringify(h, null, 2))
-      setPayload(JSON.stringify(p, null, 2))
-    } catch {
-      setError(t('invalidJwt'))
-    }
+    const outcome = runJwtDecoder({ token: input }, createToolContext())
+    if (!outcome.ok) { setError(t('invalidJwt')); return }
+    setHeader(outcome.data.header)
+    setPayload(outcome.data.payload)
   }, [input, t])
 
   const handleCopyHeader = useCallback(async () => {

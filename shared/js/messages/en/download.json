@@ -1,0 +1,17 @@
+{
+  "download": {
+    "title": "Download AAIGC",
+    "subtitle": "Get the desktop app, mobile app, CLI, and mini program.",
+    "empty": "No downloads are available yet. Please check back later.",
+    "webNote": "The web version needs no installation — just open it in your browser.",
+    "download": "Download",
+    "desktopTitle": "Desktop App",
+    "desktopDesc": "Native app for Windows, macOS and Linux.",
+    "appTitle": "Mobile App",
+    "appDesc": "For iOS and Android devices.",
+    "cliTitle": "Command Line Tool",
+    "cliDesc": "Run AAIGC tools from your terminal.",
+    "weappTitle": "WeChat Mini Program",
+    "weappDesc": "Use AAIGC inside WeChat, no installation needed."
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "toolId": "dns-lookup",
+  "context": {
+    "now": 1700000000000,
+    "timezone": "UTC",
+    "locale": "en"
+  },
+  "input": {
+    "name": "https://example.com/path",
+    "type": "A"
+  }
+}

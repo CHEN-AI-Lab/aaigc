@@ -1,0 +1,21 @@
+{
+  "common": {
+    "appName": "AAIGC",
+    "tagline": "Empowering your work and life with AI",
+    "products": "Products",
+    "tools": "Tools",
+    "about": "About",
+    "stats": "Statistics",
+    "viewAll": "View All",
+    "comingSoon": "Coming Soon",
+    "live": "Live",
+    "all": "All",
+    "aboutLink": "About AAIGC →",
+    "logout": "Logout",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "seconds": "s",
+    "sending": "Sending...",
+    "close": "Close"
+  }
+}

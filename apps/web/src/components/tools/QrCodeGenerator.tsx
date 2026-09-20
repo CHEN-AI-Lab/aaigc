@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
+import { createToolContext } from 'shared/tools'
+import { parseQrCode, runQrCode } from 'shared/tools/qrcode'
 
 export default function QrCodeGenerator() {
   const t = useTranslations('tools')
@@ -11,10 +13,21 @@ export default function QrCodeGenerator() {
 
   const generate = async () => {
     setError('')
-    if (!text.trim()) { setError(t('pleaseEnterText')); return }
+    // 输入校验与渲染参数归一化统一走 shared；矩阵生成仍由端侧 qrcode 库完成（T2）
+    const parsed = parseQrCode({ text, width: 256, margin: 2 }, createToolContext())
+    if (!parsed.ok) {
+      setError(parsed.error.code === 'emptyInput' ? t('pleaseEnterText') : t('failedToGenerateQr'))
+      return
+    }
+    const params = runQrCode(parsed.data, createToolContext())
+    if (!params.ok) { setError(t('failedToGenerateQr')); return }
     try {
       const QRCode = (await import('qrcode')).default
-      const url = await QRCode.toDataURL(text, { width: 256, margin: 2, color: { dark: '#1f1f1f', light: '#ffffff' } })
+      const url = await QRCode.toDataURL(params.data.text, {
+        width: params.data.width,
+        margin: params.data.margin,
+        color: { dark: params.data.dark, light: params.data.light },
+      })
       setQrDataUrl(url)
     } catch {
       setError(t('failedToGenerateQr'))

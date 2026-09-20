@@ -1,0 +1,30 @@
+{
+  "terms": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: August 2026",
+    "intro": "By accessing or using AAIGC, you agree to be bound by these Terms of Service.",
+    "use": "Use of Service",
+    "useDesc": "AAIGC provides free online tools and access to affiliated products. You agree to use the service only for lawful purposes and in accordance with these terms.",
+    "accounts": "Accounts",
+    "accountsDesc": "When you create an account, you are responsible for maintaining its security. You must not share your password or allow unauthorized access. You must be at least 13 years old to use this service.",
+    "oauth": "OAuth Authentication",
+    "oauthDesc": "By signing in with Google or GitHub, you authorize us to access your basic profile information (name, email, avatar) from those providers. We do not post on your behalf.",
+    "tools": "Online Tools",
+    "toolsDesc": "All tools provided on AAIGC are free to use. Tools run in your browser; no data is uploaded to our servers unless explicitly stated.",
+    "prohibited": "Prohibited Conduct",
+    "prohibitedDesc": "You agree not to:",
+    "prohibitedItems": [
+      "Use the service for any illegal purpose",
+      "Attempt to disrupt or overload the service",
+      "Create multiple accounts for abusive purposes",
+      "Reverse engineer or attempt to extract source code of our tools",
+      "Use automated scripts to mass-register accounts"
+    ],
+    "liability": "Limitation of Liability",
+    "liabilityDesc": "AAIGC is provided \"as is\" without warranties. We are not liable for damages arising from your use of the service.",
+    "changes": "Changes to Terms",
+    "changesDesc": "We may update these terms at any time. Continued use after changes constitutes acceptance.",
+    "contact": "Contact",
+    "contactDesc": "For questions, contact:"
+  }
+}

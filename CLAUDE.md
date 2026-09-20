@@ -25,7 +25,7 @@ aaigc/
 │   ├── types/index.ts        # Product, Tool, ToolCategory, Locale
 │   ├── constants/            # locales, WORKER_URL, categories
 │   ├── messages/             # en.json, zh-CN.json, zh-TW.json, ja.json
-│   ├── i18n/index.ts         # t(locale, path) loader
+│   ├── i18n/README.md        # 已删除两语 helper；跨端文案一律走 messages/
 │   ├── utils/                # Pure utility functions
 │   └── hooks/                # useVisitTracking
 ├── apps/web/                 # Next.js app — UI rendering only
@@ -44,7 +44,7 @@ aaigc/
 - `types/` — Type definitions (Product, Tool, ToolCategory, Locale)
 - `constants/` — Constants (locales, WORKER_URL, tool categories)
 - `messages/` — Translation files (en.json, zh-CN.json, zh-TW.json, ja.json)
-- `i18n/` — `t(locale, path)` universal loader
+- `i18n/` — 仅保留说明文件；**没有**通用 `t()` helper（两语实现已删，见该目录 README）
 - `utils/` — Pure utility functions
 - `hooks/` — Cross-platform React hooks (useVisitTracking)
 
@@ -62,7 +62,8 @@ aaigc/
 - 4 languages: en, zh-CN, zh-TW, ja
 - Source languages: en.json and zh-CN.json are hand-written in parallel
 - Other languages: generated from English via AI translation script
-- Use `t(locale, path)` from `shared/i18n/index.ts` for server-side
+- Server-side: `getTranslations({ locale, namespace })` from `next-intl/server`
+  （非 React 端：按 locale 直接读 `shared/messages/<locale>.json`；**不要用任何两语 `t()` helper**）
 - Use `useTranslations('namespace')` from next-intl for client components
 
 ## Git Rules

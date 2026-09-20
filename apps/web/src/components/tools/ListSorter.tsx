@@ -1,24 +1,24 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
+import { createToolContext } from 'shared/tools'
+import { runListSorter } from 'shared/tools/list-sorter'
+import type { ListSorterMode } from 'shared/tools/list-sorter'
 
 export default function ListSorter() {
   const t = useTranslations('tools')
+  const locale = useLocale()
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
 
-  const sortLines = useCallback((type: 'asc' | 'desc' | 'unique' | 'shuffle') => {
+  const sortLines = useCallback((mode: ListSorterMode) => {
     if (!input.trim()) { setOutput(''); return }
-    let lines = input.split('\n')
-    switch (type) {
-      case 'asc': lines.sort((a, b) => a.localeCompare(b)); break
-      case 'desc': lines.sort((a, b) => b.localeCompare(a)); break
-      case 'unique': lines = [...new Set(lines)]; break
-      case 'shuffle': lines.sort(() => Math.random() - 0.5); break
-    }
-    setOutput(lines.join('\n'))
-  }, [input])
+    // 洗牌随机源经 ToolContext 注入，端侧不直接调 Math.random()
+    const outcome = runListSorter({ text: input, mode }, createToolContext({ locale }))
+    if (!outcome.ok) return
+    setOutput(outcome.data.text)
+  }, [input, locale])
 
   return (
     <div className="mt-6 space-y-4">

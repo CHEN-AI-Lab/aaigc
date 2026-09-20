@@ -3,14 +3,10 @@
 import { useState, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { familyRelations } from 'data/family'
+import { computeBinary } from 'shared/tools/calculator'
 
-function compute(a: number, b: number, op: string): number {
-  switch (op) {
-    case '+': return a + b; case '-': return a - b
-    case '*': return a * b; case '/': return b !== 0 ? a / b : NaN
-    default: return b
-  }
-}
+/** 四则运算统一走 shared（组件内不再内联运算符语义） */
+const compute = computeBinary
 
 const RATES: Record<string, number> = {
   USD: 1, CNY: 7.24, EUR: 0.92, JPY: 149.5, GBP: 0.79, KRW: 1320, HKD: 7.82, TWD: 32.1, SGD: 1.34, AUD: 1.53, CAD: 1.36, THB: 35.5, VND: 25450,
