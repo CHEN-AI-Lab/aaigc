@@ -74,7 +74,7 @@ export function createTranslator(locale: Locale): Translator {
   }
 }
 
-/** 解析 `--lang` / `AAIGC_LANG` 的取值；非法返回 null 由调用方转用法错误 */
+/** 解析 `--lang` / `AAIGC_CLI_LANG` 的取值；非法返回 null 由调用方转用法错误 */
 export function parseLocale(value: string): Locale | null {
   const trimmed = value.trim()
   if (isLocale(trimmed)) return trimmed

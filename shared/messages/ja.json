@@ -1832,5 +1832,15 @@
       "placeholder": "現在のバージョンは v{version} です。デスクトップ版の自動更新チャンネルは未接続で、この項目は現時点ではプレースホルダーです。",
       "failed": "バージョンを読み取れませんでした：{error}"
     }
+  },
+  "app": {
+    "deviceLogin": "デバイスコード",
+    "runtime": "実行環境",
+    "apiBaseUrl": "API ベース URL",
+    "timezone": "タイムゾーン",
+    "followSystem": "システムに従う",
+    "version": "バージョン",
+    "noFavorites": "お気に入りはまだありません",
+    "pendingSync": "{count} 件の変更が同期待ちです"
   }
 }

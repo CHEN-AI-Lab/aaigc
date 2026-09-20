@@ -17,8 +17,11 @@ apps/desktop/
     ├── build.rs          # 构建期注入站点地址（缺失即构建失败）
     ├── tauri.conf.json   # 窗口、CSP、bundle
     ├── capabilities/     # 最小权限声明
+    ├── icons/            # 应用图标（由 tauri icon 生成）
     └── src/              # main / lib / locale / menu / tray / windows / site / export
 ```
+
+完整的文件清单与逐文件符号清单见文末「符号索引」。
 
 ## 文案与语言
 
@@ -35,9 +38,20 @@ apps/desktop/
 外壳据此重建菜单与托盘、改写面板窗口标题。启动到同步之间菜单短暂使用默认语言，
 因为那时页面还没跑起来。
 
-`desktop.*` 命名空间的 key 由 `_desktop_messages_payload.json` 提交、由维护者合并进
-`shared/messages/*.json`。合并之前 `vite build` 会因「缺 `desktop` 命名空间」直接失败
-—— 这是刻意的，避免壳 UI 悄悄退回硬编码文案。
+**语言清单只有两处**：`shared/constants/locales.ts` 的 `locales`（真源）与
+`src-tauri/src/locale.rs` 的 `SUPPORTED`。壳 UI 侧**不写死数组** —— `src/shell/i18n.ts`
+的 `DESKTOP_LOCALES` 是 `Object.keys(__DESKTOP_MESSAGES__)` 推出来的，不存在第三份副本。
+两处的一致性由 `scripts/check-desktop-locale-sync.sh` 兜住：`locale.rs` 的 `match`
+负责「表内不缺项」（漏一条编译不过），脚本负责「语言集合不脱节」。
+
+`desktop.*` 命名空间的 key 以**一次性 payload 文件**（`_desktop_messages_payload.json`）
+提交、由维护者合并进 `shared/messages/*.json` 后即删除 —— **该文件不在仓库里，别去找它。**
+合并之前 `vite build` 会因「缺 `desktop` 命名空间」直接失败，这是刻意的，
+避免壳 UI 悄悄退回硬编码文案。
+
+`src-tauri/tauri.conf.json` 的 `shortDescription` / `longDescription` 固定写英文：
+它们出现在安装器与系统应用列表里，而 Tauri 的 bundle 元数据是**静态**的、只有
+per-platform 覆盖、没有 per-locale 机制，所以按产品默认语言 `en` 写。
 
 **豁免说明：`apps/desktop/` 下的代码注释（`//!` / `///` / `//` / `/* */`）一律保持中文。**
 注释不是用户可见文案，不进 `shared/messages`，也不参与
@@ -90,6 +104,8 @@ NEXT_PUBLIC_APP_URL=https://your-domain.example pnpm --filter desktop build
   所以站点页面既调不到插件命令，也调不到本项目的自定义命令。
 * **外链协议白名单**：`open_external` 与导航守卫都只放行
   `http` / `https` / `mailto` / `tel`，避免远程内容唤起任意本机协议处理器。
+* **应用自定义命令不走 ACL**：本项目的 6 个 `#[tauri::command]` 因此一条都不在
+  capabilities 里声明（capability 只管插件命令）。完整清单见文末「符号索引」。
 
 ## 命令
 
@@ -101,3 +117,115 @@ pnpm --filter desktop build       # tauri build
 
 `dev` / `build` 需要 Rust 工具链（`cargo`）以及平台原生依赖：
 Windows 需要 WebView2 + MSVC，Linux 需要 `webkit2gtk-4.1`，macOS 需要 Xcode。
+
+> **当前仓库无 `Cargo.lock`，Rust 侧从未做过任何构建验证。**
+> 本机的 `cargo` / `rustc` / `rustup` 均不可用，Linux 侧原生依赖
+> （`pkg-config`、`webkit2gtk-4.1`、`libsoup-3.0`）也不存在。
+> `src-tauri/` 下所有 Rust 代码处于**未编译验证**状态，首次在有工具链的机器上
+> `cargo build` 前请预期会有编译错误需要修。
+>
+> 壳 UI（`src/**`）不受影响：`pnpm --filter desktop typecheck` 已通过。
+
+---
+
+# 符号索引（review 底稿）
+
+> **这是快照，不是契约。** 行号是核实时刻的值；引用前请用 `file:line` 回查一次。
+> 行号漂了但符号还在 → 改行号，别改符号名；符号不在了 → 说明代码变了，这份表该更新。
+>
+> 生成方式：逐文件 `Grep` + `Read` 核实，**没有一处从目录名推断**。
+> 之所以把**私有**符号也列出来：从目录名反推函数名是最常见的引用错误来源，
+> 而私有符号恰恰是 grep 导出时最容易漏掉的一类。
+
+## 文件清单（54 个）
+
+| 位置 | 文件 |
+| --- | --- |
+| 根（7） | `package.json` · `tsconfig.json` · `tsconfig.node.json` · `vite.config.ts` · `index.html` · `README.md` · `.gitignore` |
+| `src/`（4） | `main.tsx` · `App.tsx` · `styles.css` · `vite-env.d.ts` |
+| `src/shell/`（6） | `connect.ts` · `diagnostics.ts` · `error-text.ts` · `i18n.ts` · `native.ts` · `notify.ts` |
+| `src/components/`（3） | `ActionButton.tsx` · `CheckUpdatesButton.tsx` · `PanelFrame.tsx` |
+| `src/views/`（4） | `AboutView.tsx` · `OfflineView.tsx` · `SettingsView.tsx` · `ShellView.tsx` |
+| `src-tauri/`（5） | `build.rs` · `Cargo.toml` · `tauri.conf.json` · `.gitignore` · `capabilities/default.json` |
+| `src-tauri/icons/`（17） | 15 个 PNG（`32x32` / `64x64` / `128x128` / `128x128@2x` / `icon` / `StoreLogo` / `Square30x30` … `Square310x310`）+ `icon.icns` + `icon.ico` |
+| `src-tauri/src/`（8） | `main.rs` · `lib.rs` · `menu.rs` · `tray.rs` · `windows.rs` · `site.rs` · `export.rs` · `locale.rs` |
+
+## 壳 UI 符号
+
+### `src/` 层
+
+| 文件 | 导出 | 私有 |
+| --- | --- | --- |
+| `src/main.tsx` | **无导出**（22 行，无函数定义） | `container` (:8) |
+| `src/App.tsx` | `App` (:10) | — |
+| `src/styles.css` | 无（Tailwind 入口，`@import 'tailwindcss'`） | — |
+| `src/vite-env.d.ts` | 无（只有全局声明，见下节） | — |
+
+### `src/shell/`
+
+| 文件 | 导出 | 私有 |
+| --- | --- | --- |
+| `connect.ts` | `ConnectResult`（type, :5）· `connectToSite()` (:19) | — |
+| `diagnostics.ts` | `buildDiagnostics()` (:13) | `probeAndReport()` (:27) · `describe()` (:32) |
+| `error-text.ts` | `errorText()` (:7) | — |
+| `i18n.ts` | `DESKTOP_LOCALES` (:21) · `isDesktopLocale()` (:23) · `resolveLocale()` (:33) · `activeLocale()` (:101) · `t()` (:111) · `syncNativeLocale()` (:133) | `matchLocale()` (:41) · `DEFAULT_LOCALE` (:71) · `ACTIVE_LOCALE` (:82) |
+| `native.ts` | `PanelView`（type, :4）· `getSiteOrigin()` (:7) · `probeSite()` (:12) · `openExternal()` (:17) · `openPanel()` (:22) · `exportDiagnostics()` (:30) | — |
+| `notify.ts` | `notify()` (:16) | — |
+
+### `src/components/`
+
+| 文件 | 导出 | 私有 |
+| --- | --- | --- |
+| `ActionButton.tsx` | `ActionButton` (:18) | `ActionButtonProps`（type, :3）· `BASE` (:9) · `TONES` (:12) |
+| `CheckUpdatesButton.tsx` | `CheckUpdatesButton` (:15) | — |
+| `PanelFrame.tsx` | `PanelFrame` (:14) · `PanelSection` (:43) · `PanelField` (:56) | `PanelFrameProps` (:7) · `PanelSectionProps` (:37) |
+
+### `src/views/`
+
+| 文件 | 导出 | 私有 |
+| --- | --- | --- |
+| `AboutView.tsx` | `AboutView` (:12) | — |
+| `OfflineView.tsx` | `OfflineView` (:14) | `OfflineViewProps` (:8) |
+| `SettingsView.tsx` | `SettingsView` (:13) | — |
+| `ShellView.tsx` | `ShellView` (:16) | `Phase`（type, :7）· `ConnectingView` (:66) |
+
+## 全局声明（不是 export，grep 导出扫不到，但删了直接编译报错）
+
+这三个由 `vite.config.ts` 的 `define`（:124-126）在构建期替换成字面量，
+`src/vite-env.d.ts` 只负责给它们类型。
+
+| 全局符号 | 声明 | 引用点 |
+| --- | --- | --- |
+| `__SITE_ORIGIN__: string` | `vite-env.d.ts:13` | `connect.ts:28` · `connect.ts:31` · `diagnostics.ts:18` · `OfflineView.tsx:21` · `SettingsView.tsx:54` · `AboutView.tsx:43` · `AboutView.tsx:49` |
+| `__DESKTOP_MESSAGES__: Readonly<Record<string, Readonly<Record<string, string>>>>` | `vite-env.d.ts:21` | `i18n.ts:21` · `i18n.ts:112` · `i18n.ts:114` |
+| `__DESKTOP_DEFAULT_LOCALE__: string` | `vite-env.d.ts:27` | `i18n.ts:72` |
+
+## 外壳符号（Rust）
+
+| 文件 | 导出（`pub`） | 私有 |
+| --- | --- | --- |
+| `main.rs` | 无 | `main()` (:4) |
+| `lib.rs` | `run()` (:18) | `mod export/locale/menu/site/tray/windows` (:9-14) |
+| `menu.rs` | `build()` (:29) · `refresh()` (:57) · `handle_event()` (:64) | `OPEN_MAIN` `OPEN_IN_BROWSER` `SETTINGS` `ABOUT` `CHECK_UPDATES` (:23-27) · `open_current()` (:76) · `log_panel_result()` (:86) · `app_submenu()` (:93) · `edit_submenu()` (:130) · `file_submenu()` (:142) · `help_submenu()` (:172) |
+| `tray.rs` | `build()` (:31) · `refresh()` (:67) | `TRAY_ID` (:14) · `SHOW_MAIN` `OPEN_IN_BROWSER` `QUIT` (:15-17) · `menu()` (:19) |
+| `windows.rs` | `MAIN` (:21) · `SETTINGS` (:22) · `ABOUT` (:23) · `create_main_window()` (:27) · `show_main()` (:59) · `show_panel()` (:68) · `open_panel()` (:80) | `focus_or_create()` (:84) · `is_shell_url()` (:120) · `is_site_url()` (:137) |
+| `site.rs` | `SITE_ORIGIN` (:20) · `origin()` (:32) · `open_in_browser()` (:40) · `site_origin()` (:53) · `probe_site()` (:63) · `open_external()` (:73) | `SITE_HOST` (:22) · `SITE_PORT` (:23) · `PROBE_TIMEOUT` (:26) · `probe()` (:94) |
+| `export.rs` | `export_diagnostics()` (:20) | — |
+| `locale.rs` | `Msg`（enum, :34）· `normalize()` (:195) · `set_active()` (:227) · `tr()` (:260) · `tr_args()` (:265) · `set_locale()` (:275) | `SUPPORTED` (:21) · `DEFAULT` (:27) · `translations()` (:72) · `ACTIVE` (:189) · `active()` (:221) · `locale_index()` (:235) · `render()` (:243) |
+
+## Tauri 命令 ↔ 壳 UI 调用点（6 ↔ 6，1:1 对齐）
+
+Rust 侧 6 个 `#[tauri::command]` 与壳 UI 侧 6 个 `invoke()` 完全对应，无孤儿、无缺失。
+这也是「桌面端到底暴露了什么给壳 UI」的完整答案。
+
+| 命令 | Rust 定义 | 壳 UI 调用点 |
+| --- | --- | --- |
+| `site_origin` | `site.rs:52-53` | `native.ts:7` `getSiteOrigin()` |
+| `probe_site` | `site.rs:62-63` | `native.ts:12` `probeSite()` |
+| `open_external` | `site.rs:72-73` | `native.ts:17` `openExternal()` |
+| `export_diagnostics` | `export.rs:19-20` | `native.ts:30` `exportDiagnostics()` |
+| `open_panel` | `windows.rs:79-80` | `native.ts:22` `openPanel()` |
+| `set_locale` | `locale.rs:274-275` | `i18n.ts:133` `syncNativeLocale()` |
+
+这 6 个命令**都不在 capabilities 里声明**（应用自定义命令不走 ACL）；
+capabilities 只声明插件权限，清单见上文「安全模型」。

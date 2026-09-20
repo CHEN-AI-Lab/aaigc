@@ -18,7 +18,11 @@ function displayName(user: UserBrief): string {
 
 export async function loginCommand(ctx: CommandContext): Promise<void> {
   const baseUrl = requireApiBaseUrl(ctx.config, ctx.translator)
-  const store = createFileTokenStore(ctx.config.configDir, (message) => ctx.io.diag(message))
+  const store = createFileTokenStore(
+    ctx.config.configDir,
+    ctx.config.tokenFileName,
+    (message) => ctx.io.diag(message),
+  )
   const clientId = await readOrCreateClientId(ctx.config.configDir)
 
   // 登录前必然没有凭证，tokenStore.get() 返回 null，客户端不会带 Authorization

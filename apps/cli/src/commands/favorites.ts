@@ -25,7 +25,11 @@ import type { CommandContext } from './types'
  */
 async function buildApi(ctx: CommandContext) {
   const baseUrl = requireApiBaseUrl(ctx.config, ctx.translator)
-  const store = createFileTokenStore(ctx.config.configDir, (message) => ctx.io.diag(message))
+  const store = createFileTokenStore(
+    ctx.config.configDir,
+    ctx.config.tokenFileName,
+    (message) => ctx.io.diag(message),
+  )
   if ((await store.read()) === null) {
     throw failureError('loginRequired', undefined, ctx.translator.t('cli.hintLoginRequired'))
   }

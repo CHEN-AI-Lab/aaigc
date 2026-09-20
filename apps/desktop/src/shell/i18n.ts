@@ -10,13 +10,18 @@ import { errorText } from './error-text'
  * `desktop.*` 这一棵子树，不把整份站点文案打进壳里，也不引入 i18n 运行时。
  */
 
-/** 壳 UI 支持的语言，与 `shared/constants/locales.ts` 的 `locales` 一致。 */
-export const DESKTOP_LOCALES = ['en', 'zh-CN', 'zh-TW', 'ja'] as const
+/**
+ * 壳 UI 支持的语言。
+ *
+ * **刻意不在这里写死语言数组**：直接取 `__DESKTOP_MESSAGES__` 的顶层 key，
+ * 而那棵表是 `vite.config.ts` 逐个读 `shared/constants/locales.ts` 的 `locales`
+ * 造出来的。写死就成了第三份语言清单 —— 另两份是 `locales.ts` 和 Rust 的
+ * `src-tauri/src/locale.rs`，增删语言时必然漏掉一处。
+ */
+export const DESKTOP_LOCALES: readonly string[] = Object.keys(__DESKTOP_MESSAGES__)
 
-export type DesktopLocale = (typeof DESKTOP_LOCALES)[number]
-
-export function isDesktopLocale(value: string): value is DesktopLocale {
-  return (DESKTOP_LOCALES as readonly string[]).includes(value)
+export function isDesktopLocale(value: string): boolean {
+  return DESKTOP_LOCALES.includes(value)
 }
 
 /**
@@ -25,9 +30,15 @@ export function isDesktopLocale(value: string): value is DesktopLocale {
  * 繁体按地区/书写系统判定：`zh-TW` / `zh-HK` / `zh-MO` / `zh-Hant*` 走 zh-TW，
  * 其余 `zh*` 走 zh-CN。
  */
-export function resolveLocale(tag: string): DesktopLocale | undefined {
-  const normalized = tag.trim().toLowerCase().replace(/_/g, '-')
+export function resolveLocale(tag: string): string | undefined {
+  const candidate = matchLocale(tag.trim().toLowerCase().replace(/_/g, '-'))
 
+  // 候选标签是写死的：若哪天 locales.ts 删了某个语言，这里必须返回 undefined
+  // （由调用方退到产品默认语言），而不是交回一个文案表里根本不存在的 locale。
+  return candidate !== undefined && isDesktopLocale(candidate) ? candidate : undefined
+}
+
+function matchLocale(normalized: string): string | undefined {
   if (
     normalized === 'zh-tw' ||
     normalized === 'zh-hk' ||
@@ -57,7 +68,7 @@ export function resolveLocale(tag: string): DesktopLocale | undefined {
  * vite.config.ts 已经校验过它一定在 `__DESKTOP_MESSAGES__` 里，走到这里还不合法
  * 说明注入被绕过，直接报错比悄悄换一个语言诚实。
  */
-const DEFAULT_LOCALE: DesktopLocale = (() => {
+const DEFAULT_LOCALE: string = (() => {
   const injected = __DESKTOP_DEFAULT_LOCALE__
 
   if (!isDesktopLocale(injected)) {
@@ -68,7 +79,7 @@ const DEFAULT_LOCALE: DesktopLocale = (() => {
 })()
 
 /** 当前语言：按系统语言偏好逐个试，都命中不了就用产品默认语言。 */
-const ACTIVE_LOCALE: DesktopLocale = (() => {
+const ACTIVE_LOCALE: string = (() => {
   const preferred =
     navigator.languages.length > 0 ? navigator.languages : [navigator.language]
 
@@ -87,7 +98,7 @@ const ACTIVE_LOCALE: DesktopLocale = (() => {
 // index.html 里写的是产品默认语言，这里按系统语言改写。
 document.documentElement.lang = ACTIVE_LOCALE
 
-export function activeLocale(): DesktopLocale {
+export function activeLocale(): string {
   return ACTIVE_LOCALE
 }
 

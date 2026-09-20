@@ -1832,5 +1832,15 @@
       "placeholder": "Current version v{version}. The desktop auto-update channel is not wired up yet; this entry is a placeholder.",
       "failed": "Failed to read the version: {error}"
     }
+  },
+  "app": {
+    "deviceLogin": "Device code",
+    "runtime": "Runtime",
+    "apiBaseUrl": "API base URL",
+    "timezone": "Time zone",
+    "followSystem": "Follow system",
+    "version": "Version",
+    "noFavorites": "No favorites yet",
+    "pendingSync": "{count} change(s) waiting to sync"
   }
 }

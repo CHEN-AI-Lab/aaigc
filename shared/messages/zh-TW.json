@@ -1832,5 +1832,15 @@
       "placeholder": "目前版本 v{version}。桌面端自動更新通道尚未接入，此入口目前只是佔位。",
       "failed": "讀取版本失敗：{error}"
     }
+  },
+  "app": {
+    "deviceLogin": "裝置碼登入",
+    "runtime": "執行環境",
+    "apiBaseUrl": "API 位址",
+    "timezone": "時區",
+    "followSystem": "跟隨系統",
+    "version": "版本",
+    "noFavorites": "還沒有收藏",
+    "pendingSync": "有 {count} 項變更待同步"
   }
 }

@@ -78,7 +78,7 @@ export function usageError(
   return usageErrorFor('cliUsage', params, detail)
 }
 
-/** 必需配置缺失（如 AAIGC_API_BASE_URL 未设置）→ 退出码 2，绝不悄悄兜底 */
+/** 必需配置缺失（如 AAIGC_CLI_API_BASE_URL 未设置）→ 退出码 2，绝不悄悄兜底 */
 export function configMissingError(
   params?: Record<string, string | number>,
   detail?: string,

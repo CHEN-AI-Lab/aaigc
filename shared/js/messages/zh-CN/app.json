@@ -1,0 +1,12 @@
+{
+  "app": {
+    "deviceLogin": "设备码登录",
+    "runtime": "运行环境",
+    "apiBaseUrl": "API 基址",
+    "timezone": "时区",
+    "followSystem": "跟随系统",
+    "version": "版本",
+    "noFavorites": "还没有收藏",
+    "pendingSync": "有 {count} 项变更待同步"
+  }
+}

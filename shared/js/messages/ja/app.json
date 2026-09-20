@@ -1,0 +1,12 @@
+{
+  "app": {
+    "deviceLogin": "デバイスコード",
+    "runtime": "実行環境",
+    "apiBaseUrl": "API ベース URL",
+    "timezone": "タイムゾーン",
+    "followSystem": "システムに従う",
+    "version": "バージョン",
+    "noFavorites": "お気に入りはまだありません",
+    "pendingSync": "{count} 件の変更が同期待ちです"
+  }
+}

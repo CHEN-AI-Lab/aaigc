@@ -2,6 +2,8 @@
 // 凭证落盘 —— TokenStore 的文件实现（0600 文件 / 0700 目录，原子写入）
 //
 // 落点必须**在仓库之外**（用户配置目录），否则 `git status` 会把 token 带进提交。
+// 具体路径 = <AAIGC_CLI_CONFIG_DIR>/<AAIGC_CLI_TOKEN_FILE>；文件名只允许纯文件名，
+// 由 resolveTokenFileName 把关，防止用绝对路径绕开 0700/0600 这层保护。
 // 读取一律「校验后使用」：文件被截断 / 被手工改坏 / 结构不认识，都按「未登录」处理
 // 并把原因写到 stderr —— 不猜、不修补、不静默。
 // ─────────────────────────────────────────────────────────────────────────────
@@ -10,7 +12,7 @@ import { chmod, mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import path from 'node:path'
 import type { TokenPair, TokenStore, UserBrief } from 'shared/types/api'
-import { CONFIG_DIR_MODE, SECRET_FILE_MODE, TOKEN_FILE_NAME } from './config'
+import { CONFIG_DIR_MODE, SECRET_FILE_MODE } from './config'
 import { errorCode, errorMessage } from './errors'
 
 export interface FileTokenStore extends TokenStore {
@@ -55,9 +57,11 @@ async function ensureConfigDir(configDir: string): Promise<void> {
 
 export function createFileTokenStore(
   configDir: string,
+  tokenFileName: string,
   onDiagnostic?: (message: string) => void,
 ): FileTokenStore {
-  const filePath = path.join(configDir, TOKEN_FILE_NAME)
+  // tokenFileName 已由 resolveTokenFileName 校验为纯文件名，不会逃出 configDir
+  const filePath = path.join(configDir, tokenFileName)
 
   async function read(): Promise<TokenPair | null> {
     let raw: string

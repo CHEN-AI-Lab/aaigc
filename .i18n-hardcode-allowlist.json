@@ -1,0 +1,11 @@
+{
+  "_说明": "每条豁免都必须写明原因与跟进动作。无理由的豁免会被移除。扫描器：scripts/check-i18n-hardcode.py",
+  "apps/app/src/i18n/translator.ts": "app.* 命名空间内联在端内（8 key × 4 语种），与 cli.* / desktop.* 已进 shared/messages 的做法不一致 —— 已要求下沉到 shared/messages，进行中",
+  "apps/web/src/components/tools/Calculator.tsx": "亲属称呼（堂哥/表姐→cousin 无对应词）与人民币大写（壹贰叁 英语语境不存在）属文化概念映射，不是加 key 能解决的；需产品先定映射策略，独立工单，本轮不动",
+  "apps/weapp/src/pages/index/index.tsx": "Taro 可行性验证（spike）里的临时演示输入 '你好 AAIGC'，不是产品文案；正式实现时改用 i18n",
+  "apps/web/src/app/[locale]/about/page.tsx": "既有违规（'分类'、'语言'为硬编码中文），本轮未引入，跟进：T02.4",
+  "apps/web/src/app/[locale]/account/AccountClient.tsx": "既有违规（placeholder 硬编码中文），本轮未引入，跟进：T02.4",
+  "apps/web/src/app/api/tools/ip-lookup/route.ts": "ISP 中英对照表用于展示层；是否下沉为 4 语种需产品决定（涉及专有名词译法），跟进：T02.4",
+  "apps/web/src/auth.ts": "既有违规（NextAuth 登录表单的中文标签），本轮未引入，跟进：T02.4",
+  "apps/desktop/vite.config.ts": "构建期诊断文案，面向开发者不面向用户（构建失败时打印，UI 上不会出现）"
+}

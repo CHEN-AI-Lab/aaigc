@@ -126,19 +126,45 @@ If a refresh fails, the local credentials are cleared and the CLI tells you to l
 
 ### Environment variables
 
+CLI-only variables use the `AAIGC_CLI_*` prefix, so they can never collide with the App /
+desktop variables. The single exception is `AAIGC_TELEMETRY`, a cross-platform switch shared
+with the desktop client.
+
 | Variable | Required | Purpose | If unset |
 |---|---|---|---|
-| `AAIGC_API_BASE_URL` | **Yes**, for network commands | Origin serving the AAIGC API | `login` / `logout` / `favorites` fail with `cliConfigMissing` (exit 2). `tools *` still work. |
-| `AAIGC_CONFIG_DIR` | No | Directory holding credentials | OS default (see above) |
-| `AAIGC_LANG` | No | Output language (`en` / `zh-CN` / `zh-TW` / `ja`) | `en` |
+| `AAIGC_CLI_API_BASE_URL` | **Yes**, for network commands | Origin serving the AAIGC API | `login` / `logout` / `favorites` fail with `cliConfigMissing` (exit 2). `tools *` still work. |
+| `AAIGC_CLI_CONFIG_DIR` | No | Directory holding credentials | OS default (see above) |
+| `AAIGC_CLI_TOKEN_FILE` | No | Credential file name — a **plain file name** only; always resolves to `<AAIGC_CLI_CONFIG_DIR>/<name>` | `tokens.json` |
+| `AAIGC_CLI_LANG` | No | Output language (`en` / `zh-CN` / `zh-TW` / `ja`) | `en` |
 | `AAIGC_TELEMETRY` | No | Anonymous usage reporting; `1` / `true` / `yes` / `on` enables it | Off — telemetry is opt-in for the CLI |
 
-There is deliberately **no non-empty fallback** for `AAIGC_API_BASE_URL`: an unconfigured
+There is deliberately **no non-empty fallback** for `AAIGC_CLI_API_BASE_URL`: an unconfigured
 client fails loudly instead of silently pointing at a built-in domain (SK-8).
 
-> `AAIGC_TOKEN_FILE` and `AAIGC_TELEMETRY_ENDPOINT` are **not implemented**. The token
-> filename is a constant (`tokens.json`), and telemetry endpoints come from
-> `NEXT_PUBLIC_WORKER_URL` / `NEXT_PUBLIC_FALLBACK_URL` via `shared/api/track.ts`.
+`AAIGC_CLI_TOKEN_FILE` rejects any value containing a path separator. An absolute path would
+escape the `0700` directory / `0600` file protection, so the CLI refuses it rather than
+"helpfully" resolving it.
+
+> `AAIGC_CLI_TELEMETRY_ENDPOINT` is **not implemented**. Telemetry endpoints come from
+> `NEXT_PUBLIC_WORKER_URL` / `NEXT_PUBLIC_FALLBACK_URL` via `shared/api/track.ts`; the CLI
+> deliberately holds no endpoint of its own (SK-8). A CLI-specific endpoint would require
+> adding an endpoint override to the shared `track()` first.
+
+### Testing the device flow without a browser
+
+`scripts/device-flow-auto-approve.mjs` approves a device code unattended, so CLI e2e runs
+don't need someone watching a browser. It is **off by default** and refuses to run unless
+`ALLOW_DEVICE_FLOW_AUTO_APPROVE=1` is set, and it refuses any target that is not localhost.
+It drives the existing auth chain (verification code → Bearer token → approve) and does not
+bypass the route's own authentication.
+
+```bash
+ALLOW_DEVICE_FLOW_AUTO_APPROVE=1 \
+  node scripts/device-flow-auto-approve.mjs <userCode> --email you@example.com
+```
+
+> ⚠️ Local / CI only. Never set `ALLOW_DEVICE_FLOW_AUTO_APPROVE=1` in any deployed
+> environment — it removes the human approval step of the device flow.
 
 ### Build
 

@@ -65,7 +65,10 @@ if [ -n "$TS" ] && [ -n "$RS" ] && [ "$TS" != "$RS" ]; then
   fail=1
 fi
 
-if [ -n "$TS" ] && [ -n "$SLICES" ] && [ "$TS" != "$SLICES" ]; then
+if [ -z "$SLICES" ]; then
+  echo "❌ 找不到 shared/js/messages 切片目录（需先 pnpm --filter shared build:messages）"
+  fail=1
+elif [ -n "$TS" ] && [ "$TS" != "$SLICES" ]; then
   echo "❌ messages 切片目录与 locales.ts 的 locales 不一致（需重新 pnpm --filter shared build:messages）"
   diff <(echo "$TS") <(echo "$SLICES") | sed 's/^/    /'
   fail=1

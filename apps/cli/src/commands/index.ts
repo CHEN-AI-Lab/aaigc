@@ -9,7 +9,7 @@ import type { CliArgValues } from '../core/args'
 import { EXIT_OK, type CliExitCode } from '../core/exit-codes'
 import { usageError } from '../core/errors'
 import { favoritesAddCommand, favoritesListCommand, favoritesRemoveCommand } from './favorites'
-import { renderHelp } from './help'
+import { buildHelp, renderHelp } from './help'
 import { loginCommand } from './login'
 import { logoutCommand } from './logout'
 import { toolsListCommand, toolsRunCommand } from './tools'
@@ -45,12 +45,16 @@ export async function dispatch(input: DispatchInput): Promise<CliExitCode> {
   const [command, subcommand, ...rest] = input.argv
 
   if (input.values.version === true) {
-    input.io.write(input.version)
+    // --json 下 stdout 只能有一个可解析文档，不能是裸版本号
+    if (input.io.json) input.io.writeJson({ version: input.version })
+    else input.io.write(input.version)
     return EXIT_OK
   }
 
   if (command === undefined || command === 'help' || input.values.help === true) {
-    input.io.write(renderHelp(input.translator, input.version))
+    // 同上：--json 下帮助也必须是结构化文档，不能输出人读文本
+    if (input.io.json) input.io.writeJson(buildHelp(input.translator, input.version))
+    else input.io.write(renderHelp(input.translator, input.version))
     return EXIT_OK
   }
 

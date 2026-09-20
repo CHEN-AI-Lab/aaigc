@@ -37,8 +37,8 @@
     "active": true,
     "targets": "all",
     "category": "Productivity",
-    "shortDescription": "AAIGC 桌面端",
-    "longDescription": "AAIGC 桌面端：原生外壳（菜单、托盘、系统集成）加载线上站点。",
+    "shortDescription": "AAIGC Desktop",
+    "longDescription": "AAIGC Desktop: a native shell (window, menus, tray, system integration) that loads the online site. The web app is not reimplemented, and there is no offline mode.",
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",

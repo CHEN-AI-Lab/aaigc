@@ -3,7 +3,7 @@
 //
 // 取值优先级一律是「命令行 flag → 环境变量 → 约定默认值」，
 // 但**凡是与外部服务地址相关的项，未配置就明确失败**（SK-8：禁止非空 fallback）。
-// 这里没有任何「悄悄指向生产站」的兜底：`AAIGC_API_BASE_URL` 没配，
+// 这里没有任何「悄悄指向生产站」的兜底：`AAIGC_CLI_API_BASE_URL` 没配，
 // 需要联网的命令就以 cliConfigMissing（退出码 2）停下并告诉用户怎么配。
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -20,9 +20,13 @@ import type { Translator } from './i18n'
 /** 平台维度取值（SK-6：不散落裸字符串） */
 export const CLI_PLATFORM: Platform = 'cli'
 
-export const API_BASE_URL_ENV = 'AAIGC_API_BASE_URL'
-export const CONFIG_DIR_ENV = 'AAIGC_CONFIG_DIR'
-export const LANG_ENV = 'AAIGC_LANG'
+// CLI 独占的变量统一 `AAIGC_CLI_*` 前缀，避免与 App / 桌面端将来撞名。
+export const API_BASE_URL_ENV = 'AAIGC_CLI_API_BASE_URL'
+export const CONFIG_DIR_ENV = 'AAIGC_CLI_CONFIG_DIR'
+export const LANG_ENV = 'AAIGC_CLI_LANG'
+export const TOKEN_FILE_ENV = 'AAIGC_CLI_TOKEN_FILE'
+// 例外：埋点是**跨端共享**开关（架构 Q10：CLI 与桌面端共用同一取值），
+// 加 CLI 前缀会让人误以为它只作用于 CLI，故保持不加前缀。
 export const TELEMETRY_ENV = 'AAIGC_TELEMETRY'
 
 /** 用户配置目录名（凭证落盘处，权限 0700 / 文件 0600） */
@@ -44,6 +48,8 @@ export interface CliConfig {
   /** '' = 未配置；联网命令必须用 requireApiBaseUrl 先校验 */
   apiBaseUrl: string
   configDir: string
+  /** 凭证文件名（**纯文件名**，不含路径），落点恒为 <configDir>/<tokenFileName> */
+  tokenFileName: string
   lang: Locale
   json: boolean
   color: boolean
@@ -98,6 +104,20 @@ export function resolveConfigDir(explicit: string, env: EnvLike, home: string): 
   return path.join(home, '.config', APP_DIR_NAME)
 }
 
+/**
+ * 凭证文件名。只接受**纯文件名**，含路径分隔符一律报用法错误。
+ * 放开绝对路径等于绕开「0700 目录 + 0600 文件」这层保护（凭证可能落到任何位置），
+ * 所以这里宁可拒绝，也不做"宽容处理"。
+ */
+export function resolveTokenFileName(explicit: string): string {
+  const trimmed = explicit.trim()
+  if (trimmed.length === 0) return TOKEN_FILE_NAME
+  if (trimmed.includes('/') || trimmed.includes('\\') || trimmed === '.' || trimmed === '..') {
+    throw usageError(undefined, `Invalid token file name (must be a plain file name): ${explicit}`)
+  }
+  return trimmed
+}
+
 export function resolveConfig(
   values: CliArgValues,
   env: EnvLike = process.env,
@@ -130,6 +150,8 @@ export function resolveConfig(
     os.homedir(),
   )
 
+  const tokenFileName = resolveTokenFileName(readEnv(env, TOKEN_FILE_ENV) ?? '')
+
   const forceColor = values.color === true
   const noColorEnv = readEnv(env, 'NO_COLOR')
   const disableColor = values['no-color'] === true || (noColorEnv !== undefined && noColorEnv !== '')
@@ -146,6 +168,7 @@ export function resolveConfig(
   return {
     apiBaseUrl,
     configDir,
+    tokenFileName,
     lang,
     json,
     color,
