@@ -14,7 +14,6 @@ import { renderJson } from '../format/json'
 import { displayWidth } from '../format/width'
 import { CLI_ERROR_CODES, type CliError } from './errors'
 import type { CliExitCode } from './exit-codes'
-import type { CliStringKey } from './cli-strings'
 import type { Translator } from './i18n'
 
 export interface IoOptions {
@@ -46,16 +45,21 @@ export interface Io {
   dim(text: string): string
 }
 
-function cliErrorKey(code: string): CliStringKey {
-  const suffix = code.charAt(0).toUpperCase() + code.slice(1)
-  return `err${suffix}` as CliStringKey
+/**
+ * CLI 本地错误码 → shared/messages 的 `cli.err*` key。
+ * 码 `cliUsage` / `cliConfigMissing` 去掉 `cli` 前缀，拼成
+ * `cli.errUsage` / `cli.errConfigMissing`。
+ */
+function cliErrorKey(code: string): string {
+  const suffix = code.startsWith('cli') ? code.slice(3) : code
+  return `cli.err${suffix.charAt(0).toUpperCase()}${suffix.slice(1)}`
 }
 
-/** 错误码 → 文案：工具错误带 messageKey；API 错误码走 errors.*；本地码走 CLI 文案表 */
+/** 错误码 → 文案：工具错误带 messageKey；API 错误码走 errors.*；本地码走 cli.err* */
 function errorMessage(translator: Translator, error: CliError): string {
   if (error.messageKey) return translator.t(error.messageKey, error.params)
   if ((CLI_ERROR_CODES as readonly string[]).includes(error.code)) {
-    return translator.c(cliErrorKey(error.code), error.params)
+    return translator.t(cliErrorKey(error.code), error.params)
   }
   return translator.t(`errors.${error.code}`, error.params)
 }
@@ -83,7 +87,7 @@ export function createIo(options: IoOptions): Io {
     },
 
     warn(text) {
-      const prefix = translator.c('warnPrefix')
+      const prefix = translator.t('cli.warnPrefix')
       process.stderr.write(`${options.color ? paint('accentLight', prefix, true) : prefix} ${text}\n`)
     },
 
@@ -111,7 +115,7 @@ export function createIo(options: IoOptions): Io {
         process.stderr.write(`${renderJson({ error: details })}\n`)
         return error.exitCode
       }
-      const prefix = translator.c('errorPrefix')
+      const prefix = translator.t('cli.errorPrefix')
       const head = options.color ? paint('accent', prefix, true) : prefix
       process.stderr.write(`${head} ${message}\n`)
       if (error.detail) {

@@ -1,22 +1,24 @@
 import { getVersion } from '@tauri-apps/api/app'
 
 import { errorText } from './error-text'
+import { t } from './i18n'
 import { getSiteOrigin, probeSite } from './native'
 
 /**
  * 拼一份给用户导出的诊断报告。
  *
  * 只收集排查「连不上」需要的信息，不含任何账号 / 凭据内容。
+ * 报告会落盘给用户看，所以整份文案走壳 UI 的 i18n。
  */
 export async function buildDiagnostics(): Promise<string> {
   const lines = [
-    '# AAIGC 桌面端诊断报告',
-    `生成时间：${new Date().toISOString()}`,
-    `外壳版本：${await describe(getVersion)}`,
-    `站点地址（界面侧注入）：${__SITE_ORIGIN__}`,
-    `站点地址（外壳侧注入）：${await describe(getSiteOrigin)}`,
-    `站点连通性探测：${await describe(probeAndReport)}`,
-    `运行环境：${navigator.userAgent}`,
+    t('desktop.diagnostics.report.title'),
+    t('desktop.diagnostics.report.generatedAt', { value: new Date().toISOString() }),
+    t('desktop.diagnostics.report.shellVersion', { value: await describe(getVersion) }),
+    t('desktop.diagnostics.report.siteOriginUi', { value: __SITE_ORIGIN__ }),
+    t('desktop.diagnostics.report.siteOriginShell', { value: await describe(getSiteOrigin) }),
+    t('desktop.diagnostics.report.connectivity', { value: await describe(probeAndReport) }),
+    t('desktop.diagnostics.report.environment', { value: navigator.userAgent }),
   ]
 
   return `${lines.join('\n')}\n`
@@ -24,13 +26,13 @@ export async function buildDiagnostics(): Promise<string> {
 
 async function probeAndReport(): Promise<string> {
   await probeSite()
-  return '可达'
+  return t('desktop.diagnostics.report.reachable')
 }
 
 async function describe(probe: () => Promise<string>): Promise<string> {
   try {
     return await probe()
   } catch (error) {
-    return `不可用（${errorText(error)}）`
+    return t('desktop.diagnostics.report.unavailable', { error: errorText(error) })
   }
 }

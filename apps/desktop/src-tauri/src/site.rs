@@ -2,6 +2,10 @@
 //!
 //! 站点地址来自 `build.rs` 在**构建期**注入的常量（源头是 `NEXT_PUBLIC_APP_URL`）。
 //! 这里没有任何硬编码域名，也没有非空 fallback —— 没配置就编不出来。
+//!
+//! 这里返回给壳 UI 的错误文案（探测失败原因、外链被拒原因）会显示在本地
+//! 「无法连接」页或面板状态行上，所以走 `locale` 表；纯调试用的 `eprintln!`
+//! 保持中文，不进表（见 `apps/desktop/README.md` 的豁免说明）。
 
 use std::net::{TcpStream, ToSocketAddrs};
 use std::time::Duration;
@@ -9,6 +13,8 @@ use std::time::Duration;
 use tauri::{AppHandle, Runtime};
 use tauri_plugin_opener::OpenerExt;
 use url::Url;
+
+use crate::locale::{self, Msg};
 
 /// 站点 origin（无末尾斜杠），构建期注入。
 pub const SITE_ORIGIN: &str = env!("AAIGC_SITE_ORIGIN");
@@ -57,44 +63,65 @@ pub fn site_origin() -> &'static str {
 pub async fn probe_site() -> Result<(), String> {
     tauri::async_runtime::spawn_blocking(probe)
         .await
-        .map_err(|error| format!("连接探测任务异常：{error}"))?
+        .map_err(|error| {
+            locale::tr_args(Msg::ErrConnectProbeFailed, &[("error", &error.to_string())])
+        })?
 }
 
 /// 在外壳自带的界面上，把链接交给系统默认浏览器。
 #[tauri::command]
 pub fn open_external(app: AppHandle, url: String) -> Result<(), String> {
-    let parsed = Url::parse(&url).map_err(|error| format!("非法链接：{error}"))?;
+    let parsed = Url::parse(&url)
+        .map_err(|error| locale::tr_args(Msg::ErrInvalidLink, &[("error", &error.to_string())]))?;
 
     match parsed.scheme() {
         "http" | "https" | "mailto" | "tel" => {}
-        other => return Err(format!("只允许打开 http / https / mailto / tel 链接，收到：{other}")),
+        other => {
+            return Err(locale::tr_args(
+                Msg::ErrSchemeNotAllowed,
+                &[("scheme", other)],
+            ))
+        }
     }
 
     app.opener()
         .open_url(parsed.as_str(), None::<&str>)
-        .map_err(|error| format!("用系统默认应用打开失败：{error}"))
+        .map_err(|error| {
+            locale::tr_args(Msg::ErrOpenExternalFailed, &[("error", &error.to_string())])
+        })
 }
 
 fn probe() -> Result<(), String> {
     let port: u16 = SITE_PORT
         .parse()
-        .map_err(|_| format!("站点端口不合法：{SITE_PORT}"))?;
+        .map_err(|_| locale::tr_args(Msg::ErrInvalidSitePort, &[("port", SITE_PORT)]))?;
 
-    let addrs = (SITE_HOST, port)
-        .to_socket_addrs()
-        .map_err(|error| format!("无法解析站点主机 {SITE_HOST}：{error}"))?;
+    let addrs = (SITE_HOST, port).to_socket_addrs().map_err(|error| {
+        locale::tr_args(
+            Msg::ErrResolveSiteHost,
+            &[("host", SITE_HOST), ("error", &error.to_string())],
+        )
+    })?;
 
     let mut last_error: Option<String> = None;
 
     for addr in addrs {
         match TcpStream::connect_timeout(&addr, PROBE_TIMEOUT) {
             Ok(_) => return Ok(()),
-            Err(error) => last_error = Some(format!("{addr}：{error}")),
+            // 这里是「地址 + 系统错误」的原始细节，会作为 {error} 嵌进上面那条
+            // 已本地化的文案里，所以分隔符用中性 ASCII 冒号，不掺中文标点。
+            Err(error) => last_error = Some(format!("{addr}: {error}")),
         }
     }
 
     Err(match last_error {
-        Some(error) => format!("无法连接 {SITE_HOST}:{port}（{error}）"),
-        None => format!("{SITE_HOST}:{port} 没有解析出可用地址"),
+        Some(error) => locale::tr_args(
+            Msg::ErrConnectFailed,
+            &[("host", SITE_HOST), ("port", SITE_PORT), ("error", &error)],
+        ),
+        None => locale::tr_args(
+            Msg::ErrNoResolvedAddress,
+            &[("host", SITE_HOST), ("port", SITE_PORT)],
+        ),
     })
 }

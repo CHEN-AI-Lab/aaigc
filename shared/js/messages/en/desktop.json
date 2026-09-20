@@ -1,0 +1,85 @@
+{
+  "desktop": {
+    "about": {
+      "title": "About AAIGC",
+      "subtitle": "Desktop = native shell + online site. The web app is not reimplemented here.",
+      "version": {
+        "title": "Version",
+        "shell": "Shell version",
+        "readFailed": "Failed to read the version: {error}"
+      },
+      "site": {
+        "title": "Site",
+        "open": "Open the site in your browser",
+        "openFailed": "Failed to open the browser: {error}"
+      }
+    },
+    "boot": {
+      "mountMissing": "Missing #root mount point; index.html and the entry script are out of sync."
+    },
+    "common": {
+      "close": "Close",
+      "loading": "Loading…",
+      "siteOrigin": "Site address",
+      "updates": "Updates"
+    },
+    "connect": {
+      "connecting": "Connecting to the online site…",
+      "offlineTitle": "Can't connect",
+      "offlineBody": "The AAIGC desktop app needs to reach the online site. Check your network or proxy settings and try again.",
+      "retry": "Retry",
+      "openInBrowser": "Open in browser",
+      "readOriginFailed": "Failed to read the site address injected by the shell: {error}",
+      "originMismatch": "Build-time site addresses differ: the shell has {shell}, the UI has {ui}. Rebuild the desktop app with the same NEXT_PUBLIC_APP_URL."
+    },
+    "diagnostics": {
+      "report": {
+        "title": "# AAIGC Desktop Diagnostics Report",
+        "generatedAt": "Generated at: {value}",
+        "shellVersion": "Shell version: {value}",
+        "siteOriginUi": "Site address (injected by the UI): {value}",
+        "siteOriginShell": "Site address (injected by the shell): {value}",
+        "connectivity": "Site connectivity probe: {value}",
+        "environment": "Environment: {value}",
+        "reachable": "reachable",
+        "unavailable": "unavailable ({error})"
+      }
+    },
+    "notify": {
+      "permissionDenied": "Notification permission was not granted. Allow AAIGC to send notifications in your system settings."
+    },
+    "settings": {
+      "title": "Settings",
+      "subtitle": "Local settings for the desktop shell. Site features live in the online interface.",
+      "connection": {
+        "title": "Connection",
+        "description": "The site address is injected at build time and cannot be changed at runtime."
+      },
+      "diagnostics": {
+        "title": "Diagnostics",
+        "description": "The export only contains the version, the site address and connectivity results. No account or credential data.",
+        "export": "Export diagnostics report…",
+        "generating": "Generating the diagnostics report…",
+        "cancelled": "Save cancelled.",
+        "saved": "Diagnostics report saved to {path}",
+        "failed": "Export failed: {error}"
+      },
+      "notifications": {
+        "title": "Notifications",
+        "description": "Verifies that the system notification channel works.",
+        "test": "Send test notification",
+        "sending": "Sending a test notification…",
+        "sent": "Test notification sent.",
+        "failed": "Failed to send the notification: {error}",
+        "testTitle": "AAIGC Desktop",
+        "testBody": "This is a test notification, confirming that the system notification channel works."
+      }
+    },
+    "updates": {
+      "check": "Check for updates",
+      "reading": "Reading the version…",
+      "placeholder": "Current version v{version}. The desktop auto-update channel is not wired up yet; this entry is a placeholder.",
+      "failed": "Failed to read the version: {error}"
+    }
+  }
+}

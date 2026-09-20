@@ -17,8 +17,34 @@ apps/desktop/
     ├── build.rs          # 构建期注入站点地址（缺失即构建失败）
     ├── tauri.conf.json   # 窗口、CSP、bundle
     ├── capabilities/     # 最小权限声明
-    └── src/              # main / lib / menu / tray / windows / site / export
+    └── src/              # main / lib / locale / menu / tray / windows / site / export
 ```
+
+## 文案与语言
+
+壳 UI 支持 `en` / `zh-CN` / `zh-TW` / `ja`，语言集合与默认语言都取自
+`shared/constants/locales.ts`（`locales` / `defaultLocale`）。分两处落地：
+
+| 位置 | 覆盖范围 | 真源 |
+| --- | --- | --- |
+| `src/**`（TSX） | 壳 UI 页面上的全部文案 | `shared/messages/<locale>.json` 的 `desktop.*`，构建期由 `vite.config.ts` 拍平注入 `__DESKTOP_MESSAGES__` |
+| `src-tauri/src/locale.rs` | 原生菜单 / 托盘 / 窗口标题 / 原生对话框 / 面向用户的错误文案 | 内嵌四语种表（原生控件上 TSX 碰不到，见该文件头部说明） |
+
+语言在运行期这样确定：壳 UI 按 `navigator.languages` 逐个匹配（`src/shell/i18n.ts`
+的 `resolveLocale()`），命中不了用产品默认语言；随后调 `set_locale` 同步给外壳，
+外壳据此重建菜单与托盘、改写面板窗口标题。启动到同步之间菜单短暂使用默认语言，
+因为那时页面还没跑起来。
+
+`desktop.*` 命名空间的 key 由 `_desktop_messages_payload.json` 提交、由维护者合并进
+`shared/messages/*.json`。合并之前 `vite build` 会因「缺 `desktop` 命名空间」直接失败
+—— 这是刻意的，避免壳 UI 悄悄退回硬编码文案。
+
+**豁免说明：`apps/desktop/` 下的代码注释（`//!` / `///` / `//` / `/* */`）一律保持中文。**
+注释不是用户可见文案，不进 `shared/messages`，也不参与
+`scripts/check-translations.py`（该脚本只读 `shared/messages/*.json` 与
+`shared/constants/error-codes.ts`）。同理，Rust 里开发者向的 `panic!` / `expect` /
+`eprintln!`（构建期断言、启动失败、外链被拒的调试日志）也不进 `locale.rs` 的表：
+它们面向开发者，且多数发生在「文案表本身可能还不可用」的时刻。
 
 ## 站点地址是怎么注入的
 

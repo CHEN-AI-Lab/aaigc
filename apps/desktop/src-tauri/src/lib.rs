@@ -7,6 +7,7 @@
 //! 前端壳页面则由 vite 从 `shared/constants/domains.ts` 注入同一个值。
 
 mod export;
+mod locale;
 mod menu;
 mod site;
 mod tray;
@@ -33,6 +34,7 @@ pub fn run() {
             site::open_external,
             export::export_diagnostics,
             windows::open_panel,
+            locale::set_locale,
         ])
         .setup(|app| {
             let handle = app.handle().clone();

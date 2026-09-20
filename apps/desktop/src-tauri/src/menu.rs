@@ -1,7 +1,11 @@
 //! 应用菜单。
 //!
 //! 按各平台惯例拆：macOS 走「App 菜单 + 编辑菜单 + 文件菜单」，Windows / Linux
-//! 走「文件菜单 + 帮助菜单」。菜单标签用产品默认语言（zh-CN），跟站点默认语言一致。
+//! 走「文件菜单 + 帮助菜单」。
+//!
+//! 标签语言：`setup()` 建菜单时壳 UI 还没跑起来，取不到系统语言，所以先按产品
+//! 默认语言（`en`，与 `shared/constants/locales.ts` 的 `defaultLocale` 一致）建一套；
+//! 壳 UI 加载后会调 `locale::set_locale`，再由 `refresh()` 按系统语言重建。
 
 use tauri::menu::{
     Menu, MenuBuilder, MenuItemBuilder, PredefinedMenuItem, Submenu, SubmenuBuilder,
@@ -12,6 +16,7 @@ use tauri::{AppHandle, Runtime};
 #[cfg(target_os = "macos")]
 use tauri::Manager;
 
+use crate::locale::{self, Msg};
 use crate::site;
 use crate::windows;
 
@@ -46,6 +51,14 @@ pub fn build<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Menu<R>> {
     let menu = menu.item(&help_menu);
 
     menu.build()
+}
+
+/// 按当前语言重建应用菜单（壳 UI 同步系统语言时调用）。
+pub fn refresh<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<()> {
+    // set_menu 返回被替换掉的旧菜单，这里不需要，显式丢弃。
+    let _ = app.set_menu(build(app)?)?;
+
+    Ok(())
 }
 
 pub fn handle_event<R: Runtime>(app: &AppHandle<R>, id: &str) {
@@ -84,16 +97,21 @@ fn app_submenu<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Submenu<R>> {
         ..AboutMetadata::default()
     };
 
+    let about_label = locale::tr(Msg::MenuAbout);
+    let check_updates_label = locale::tr(Msg::MenuCheckUpdates);
+    let settings_label = locale::tr(Msg::MenuSettings);
+    let quit_label = locale::tr(Msg::MenuQuit);
+
     SubmenuBuilder::new(app, "AAIGC")
         .item(&PredefinedMenuItem::about(
             app,
-            Some("关于 AAIGC"),
+            Some(about_label.as_str()),
             Some(about_metadata),
         )?)
-        .item(&MenuItemBuilder::with_id(CHECK_UPDATES, "检查更新…").build(app)?)
+        .item(&MenuItemBuilder::with_id(CHECK_UPDATES, check_updates_label).build(app)?)
         .separator()
         .item(
-            &MenuItemBuilder::with_id(SETTINGS, "设置…")
+            &MenuItemBuilder::with_id(SETTINGS, settings_label)
                 .accelerator("CmdOrCtrl+,")
                 .build(app)?,
         )
@@ -104,13 +122,13 @@ fn app_submenu<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Submenu<R>> {
         .item(&PredefinedMenuItem::hide_others(app, None)?)
         .item(&PredefinedMenuItem::show_all(app, None)?)
         .separator()
-        .item(&PredefinedMenuItem::quit(app, Some("退出 AAIGC"))?)
+        .item(&PredefinedMenuItem::quit(app, Some(quit_label.as_str()))?)
         .build()
 }
 
 #[cfg(target_os = "macos")]
 fn edit_submenu<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Submenu<R>> {
-    SubmenuBuilder::new(app, "编辑")
+    SubmenuBuilder::new(app, locale::tr(Msg::MenuEdit))
         .item(&PredefinedMenuItem::undo(app, None)?)
         .item(&PredefinedMenuItem::redo(app, None)?)
         .separator()
@@ -122,19 +140,23 @@ fn edit_submenu<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Submenu<R>> {
 }
 
 fn file_submenu<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Submenu<R>> {
-    let submenu = SubmenuBuilder::new(app, "文件")
+    let open_main_label = locale::tr(Msg::MenuOpenMain);
+    let open_in_browser_label = locale::tr(Msg::MenuOpenInBrowser);
+    let quit_label = locale::tr(Msg::MenuQuit);
+
+    let submenu = SubmenuBuilder::new(app, locale::tr(Msg::MenuFile))
         .item(
-            &MenuItemBuilder::with_id(OPEN_MAIN, "打开主界面")
+            &MenuItemBuilder::with_id(OPEN_MAIN, open_main_label)
                 .accelerator("CmdOrCtrl+1")
                 .build(app)?,
         )
-        .item(&MenuItemBuilder::with_id(OPEN_IN_BROWSER, "在浏览器中打开当前页").build(app)?)
+        .item(&MenuItemBuilder::with_id(OPEN_IN_BROWSER, open_in_browser_label).build(app)?)
         .separator();
 
     // macOS 的「设置…」按惯例放在 App 菜单里，不重复出现。
     #[cfg(not(target_os = "macos"))]
     let submenu = submenu.item(
-        &MenuItemBuilder::with_id(SETTINGS, "设置…")
+        &MenuItemBuilder::with_id(SETTINGS, locale::tr(Msg::MenuSettings))
             .accelerator("CmdOrCtrl+,")
             .build(app)?,
     );
@@ -142,14 +164,16 @@ fn file_submenu<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Submenu<R>> {
     let submenu = submenu.separator();
 
     submenu
-        .item(&PredefinedMenuItem::quit(app, Some("退出 AAIGC"))?)
+        .item(&PredefinedMenuItem::quit(app, Some(quit_label.as_str()))?)
         .build()
 }
 
 #[cfg(not(target_os = "macos"))]
 fn help_submenu<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Submenu<R>> {
-    SubmenuBuilder::new(app, "帮助")
-        .item(&MenuItemBuilder::with_id(ABOUT, "关于 AAIGC").build(app)?)
-        .item(&MenuItemBuilder::with_id(CHECK_UPDATES, "检查更新…").build(app)?)
+    SubmenuBuilder::new(app, locale::tr(Msg::MenuHelp))
+        .item(&MenuItemBuilder::with_id(ABOUT, locale::tr(Msg::MenuAbout)).build(app)?)
+        .item(
+            &MenuItemBuilder::with_id(CHECK_UPDATES, locale::tr(Msg::MenuCheckUpdates)).build(app)?,
+        )
         .build()
 }

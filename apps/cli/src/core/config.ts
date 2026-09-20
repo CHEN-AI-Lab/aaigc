@@ -111,7 +111,7 @@ export function resolveConfig(
     const parsed = parseLocale(rawLang)
     if (!parsed) {
       // 语言非法时还不知道用哪种语言报错，用默认语言渲染提示
-      const hint = createTranslator(defaultLocale).c('hintLang', {
+      const hint = createTranslator(defaultLocale).t('cli.hintLang', {
         locales: supportedLocales().join(' | '),
       })
       throw usageError(undefined, `${hint} (got: ${rawLang})`)
@@ -160,7 +160,7 @@ export function requireApiBaseUrl(config: CliConfig, translator: Translator): st
   if (config.apiBaseUrl.length === 0) {
     throw configMissingError(
       undefined,
-      translator.c('hintApiBaseUrl', { env: API_BASE_URL_ENV }),
+      translator.t('cli.hintApiBaseUrl', { env: API_BASE_URL_ENV }),
     )
   }
   return config.apiBaseUrl

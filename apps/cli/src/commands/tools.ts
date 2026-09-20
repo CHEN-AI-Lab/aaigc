@@ -110,7 +110,7 @@ export async function toolsListCommand(ctx: CommandContext, values: CliArgValues
   }
 
   if (summaries.length === 0) {
-    ctx.io.write(ctx.translator.c('toolsEmpty'))
+    ctx.io.write(ctx.translator.t('tools.noResults'))
     return
   }
 
@@ -123,7 +123,12 @@ export async function toolsListCommand(ctx: CommandContext, values: CliArgValues
   ])
   ctx.io.write(
     renderTable(
-      [translator.c('toolsColId'), translator.c('toolsColTier'), translator.c('toolsColCaps'), translator.c('toolsColName')],
+      [
+        translator.t('cli.toolsColId'),
+        translator.t('cli.toolsColTier'),
+        translator.t('cli.toolsColCaps'),
+        translator.t('cli.toolsColName'),
+      ],
       rows,
       { borders: ctx.io.stdoutIsTty },
     ),
@@ -152,12 +157,12 @@ async function resolveToolInput(
   let text: string
   if (raw === undefined) {
     if (process.stdin.isTTY === true) {
-      throw usageError(undefined, ctx.translator.c('errInputRequired'))
+      throw usageError(undefined, ctx.translator.t('cli.errInputRequired'))
     }
-    ctx.io.diag(ctx.translator.c('toolsReadingStdin'))
+    ctx.io.diag(ctx.translator.t('cli.toolsReadingStdin'))
     text = await readStdin()
   } else if (raw === '-') {
-    ctx.io.diag(ctx.translator.c('toolsReadingStdin'))
+    ctx.io.diag(ctx.translator.t('cli.toolsReadingStdin'))
     text = await readStdin()
   } else {
     text = raw
@@ -167,11 +172,11 @@ async function resolveToolInput(
   try {
     parsed = JSON.parse(text)
   } catch {
-    throw usageErrorFor('invalidJson', undefined, ctx.translator.c('errInputNotObject'))
+    throw usageErrorFor('invalidJson', undefined, ctx.translator.t('cli.errInputNotObject'))
   }
 
   if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
-    throw usageErrorFor('invalidParams', undefined, ctx.translator.c('errInputNotObject'))
+    throw usageErrorFor('invalidParams', undefined, ctx.translator.t('cli.errInputNotObject'))
   }
   return parsed as Record<string, unknown>
 }

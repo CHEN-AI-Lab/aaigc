@@ -1747,6 +1747,90 @@
     "toolsColTier": "层级",
     "toolsReadingStdin": "正在从 stdin 读取工具入参…",
     "usageLine": "用法：aaigc <命令> [选项]",
-    "warnPrefix": "警告："
+    "warnPrefix": "警告：",
+    "exitCodeInterrupted": "已中断（Ctrl+C）"
+  },
+  "desktop": {
+    "about": {
+      "title": "关于 AAIGC",
+      "subtitle": "桌面端 = 原生外壳 + 线上站点，不重新实现 Web 应用。",
+      "version": {
+        "title": "版本",
+        "shell": "外壳版本",
+        "readFailed": "读取版本失败：{error}"
+      },
+      "site": {
+        "title": "站点",
+        "open": "在浏览器中打开官网",
+        "openFailed": "打开浏览器失败：{error}"
+      }
+    },
+    "boot": {
+      "mountMissing": "找不到 #root 挂载点，index.html 与入口脚本不匹配"
+    },
+    "common": {
+      "close": "关闭",
+      "loading": "读取中…",
+      "siteOrigin": "站点地址",
+      "updates": "更新"
+    },
+    "connect": {
+      "connecting": "正在连接线上站点…",
+      "offlineTitle": "无法连接",
+      "offlineBody": "AAIGC 桌面端需要连上线上站点才能使用。请检查网络或代理设置后重试。",
+      "retry": "重试",
+      "openInBrowser": "在浏览器中打开",
+      "readOriginFailed": "读取外壳注入的站点地址失败：{error}",
+      "originMismatch": "构建期站点地址不一致：外壳侧为 {shell}，界面侧为 {ui}。请用同一个 NEXT_PUBLIC_APP_URL 重新构建桌面端。"
+    },
+    "diagnostics": {
+      "report": {
+        "title": "# AAIGC 桌面端诊断报告",
+        "generatedAt": "生成时间：{value}",
+        "shellVersion": "外壳版本：{value}",
+        "siteOriginUi": "站点地址（界面侧注入）：{value}",
+        "siteOriginShell": "站点地址（外壳侧注入）：{value}",
+        "connectivity": "站点连通性探测：{value}",
+        "environment": "运行环境：{value}",
+        "reachable": "可达",
+        "unavailable": "不可用（{error}）"
+      }
+    },
+    "notify": {
+      "permissionDenied": "系统通知权限未授予，请在系统设置里允许 AAIGC 发送通知"
+    },
+    "settings": {
+      "title": "设置",
+      "subtitle": "桌面端外壳的本地设置。站点本身的功能请到线上界面里操作。",
+      "connection": {
+        "title": "连接",
+        "description": "站点地址在构建期注入，运行期不可更改。"
+      },
+      "diagnostics": {
+        "title": "诊断",
+        "description": "导出内容只包含版本、站点地址与连通性结果，不含账号或凭据信息。",
+        "export": "导出诊断报告…",
+        "generating": "正在生成诊断报告…",
+        "cancelled": "已取消保存。",
+        "saved": "诊断报告已保存到 {path}",
+        "failed": "导出失败：{error}"
+      },
+      "notifications": {
+        "title": "通知",
+        "description": "用于验证系统通知通道是否可用。",
+        "test": "发送测试通知",
+        "sending": "正在发送测试通知…",
+        "sent": "测试通知已发送。",
+        "failed": "发送通知失败：{error}",
+        "testTitle": "AAIGC 桌面端",
+        "testBody": "这是一条测试通知，说明系统通知通道可用。"
+      }
+    },
+    "updates": {
+      "check": "检查更新",
+      "reading": "正在读取版本…",
+      "placeholder": "当前版本 v{version}。桌面端自动更新通道尚未接入，此入口目前只是占位。",
+      "failed": "读取版本失败：{error}"
+    }
   }
 }

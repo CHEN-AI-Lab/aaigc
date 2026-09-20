@@ -12,6 +12,8 @@ use std::fs;
 use tauri::AppHandle;
 use tauri_plugin_dialog::DialogExt;
 
+use crate::locale::{self, Msg};
+
 /// 弹出原生保存对话框并写入诊断报告。
 /// 返回落盘路径；用户取消时返回 `null`。
 #[tauri::command]
@@ -24,7 +26,7 @@ pub async fn export_diagnostics(
     let picked = app
         .dialog()
         .file()
-        .set_title("保存诊断报告")
+        .set_title(locale::tr(Msg::DialogSaveDiagnostics))
         .set_file_name("aaigc-desktop-diagnostics.md")
         .add_filter("Markdown", &["md"])
         .blocking_save_file();
@@ -33,11 +35,18 @@ pub async fn export_diagnostics(
         return Ok(None);
     };
 
-    let path = file_path
-        .into_path()
-        .map_err(|error| format!("无法解析保存路径：{error}"))?;
+    let path = file_path.into_path().map_err(|error| {
+        locale::tr_args(Msg::ErrResolveSavePath, &[("error", &error.to_string())])
+    })?;
 
-    fs::write(&path, content).map_err(|error| format!("写入 {} 失败：{error}", path.display()))?;
+    let display = path.display().to_string();
 
-    Ok(Some(path.display().to_string()))
+    fs::write(&path, content).map_err(|error| {
+        locale::tr_args(
+            Msg::ErrWriteFile,
+            &[("path", &display), ("error", &error.to_string())],
+        )
+    })?;
+
+    Ok(Some(display))
 }

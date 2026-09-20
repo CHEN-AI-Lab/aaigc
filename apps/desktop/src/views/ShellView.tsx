@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { connectToSite } from '../shell/connect'
+import { t } from '../shell/i18n'
 import { OfflineView } from './OfflineView'
 
 type Phase = 'connecting' | 'offline'
@@ -69,7 +70,7 @@ function ConnectingView() {
         aria-hidden="true"
         className="h-6 w-6 animate-spin rounded-full border-2 border-neutral-300 border-t-transparent dark:border-neutral-700 dark:border-t-transparent"
       />
-      <p className="text-sm">正在连接线上站点…</p>
+      <p className="text-sm">{t('desktop.connect.connecting')}</p>
     </main>
   )
 }

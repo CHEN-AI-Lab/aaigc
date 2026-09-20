@@ -1,0 +1,13 @@
+:root {
+  --aaigc-color-bg: #ffffff;
+  --aaigc-color-text: #1a1a1a;
+}
+
+/* 小程序用 page，H5 用 body —— 必须同时挂载，只写 page 在 H5 下取不到值 */
+page,
+body {
+  --aaigc-color-bg: #ffffff;
+  --aaigc-color-text: #1a1a1a;
+  background-color: var(--aaigc-color-bg);
+  color: var(--aaigc-color-text);
+}

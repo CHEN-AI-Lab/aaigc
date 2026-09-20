@@ -27,7 +27,7 @@ async function buildApi(ctx: CommandContext) {
   const baseUrl = requireApiBaseUrl(ctx.config, ctx.translator)
   const store = createFileTokenStore(ctx.config.configDir, (message) => ctx.io.diag(message))
   if ((await store.read()) === null) {
-    throw failureError('loginRequired', undefined, ctx.translator.c('hintLoginRequired'))
+    throw failureError('loginRequired', undefined, ctx.translator.t('cli.hintLoginRequired'))
   }
   return createCliApi({ ...ctx.config, apiBaseUrl: baseUrl }, store, ctx.io, ctx.translator)
 }
@@ -50,7 +50,7 @@ export async function favoritesListCommand(ctx: CommandContext, values: CliArgVa
   }
 
   if (snapshot.favorites.length === 0) {
-    ctx.io.write(ctx.translator.c('favoritesEmpty'))
+    ctx.io.write(ctx.translator.t('tools.noFavorites'))
     return
   }
 
@@ -62,7 +62,11 @@ export async function favoritesListCommand(ctx: CommandContext, values: CliArgVa
   ])
   ctx.io.write(
     renderTable(
-      [translator.c('favoritesColTool'), translator.c('favoritesColType'), translator.c('favoritesColCreated')],
+      [
+        translator.t('tools.tool'),
+        translator.t('cli.favoritesColType'),
+        translator.t('cli.favoritesColCreated'),
+      ],
       rows,
       { borders: ctx.io.stdoutIsTty },
     ),
@@ -99,7 +103,7 @@ async function mutate(
     return
   }
   ctx.io.write(
-    ctx.translator.c(action === 'add' ? 'favoritesAdded' : 'favoritesRemoved', {
+    ctx.translator.t(action === 'add' ? 'cli.favoritesAdded' : 'cli.favoritesRemoved', {
       toolId: parsed.data.toolId,
     }),
   )

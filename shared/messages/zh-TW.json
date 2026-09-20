@@ -1747,6 +1747,90 @@
     "toolsColTier": "層級",
     "toolsReadingStdin": "正在從 stdin 讀取工具入參…",
     "usageLine": "用法：aaigc <指令> [選項]",
-    "warnPrefix": "警告："
+    "warnPrefix": "警告：",
+    "exitCodeInterrupted": "已中斷（Ctrl+C）"
+  },
+  "desktop": {
+    "about": {
+      "title": "關於 AAIGC",
+      "subtitle": "桌面端 = 原生外殼 + 線上站點，不重新實作 Web 應用程式。",
+      "version": {
+        "title": "版本",
+        "shell": "外殼版本",
+        "readFailed": "讀取版本失敗：{error}"
+      },
+      "site": {
+        "title": "站點",
+        "open": "在瀏覽器中開啟官網",
+        "openFailed": "開啟瀏覽器失敗：{error}"
+      }
+    },
+    "boot": {
+      "mountMissing": "找不到 #root 掛載點，index.html 與入口腳本不相符"
+    },
+    "common": {
+      "close": "關閉",
+      "loading": "讀取中…",
+      "siteOrigin": "站點位址",
+      "updates": "更新"
+    },
+    "connect": {
+      "connecting": "正在連線線上站點…",
+      "offlineTitle": "無法連線",
+      "offlineBody": "AAIGC 桌面端需要連上線上站點才能使用。請檢查網路或代理設定後重試。",
+      "retry": "重試",
+      "openInBrowser": "在瀏覽器中開啟",
+      "readOriginFailed": "讀取外殼注入的站點位址失敗：{error}",
+      "originMismatch": "建置期站點位址不一致：外殼側為 {shell}，介面側為 {ui}。請用同一個 NEXT_PUBLIC_APP_URL 重新建置桌面端。"
+    },
+    "diagnostics": {
+      "report": {
+        "title": "# AAIGC 桌面端診斷報告",
+        "generatedAt": "產生時間：{value}",
+        "shellVersion": "外殼版本：{value}",
+        "siteOriginUi": "站點位址（介面側注入）：{value}",
+        "siteOriginShell": "站點位址（外殼側注入）：{value}",
+        "connectivity": "站點連線性探測：{value}",
+        "environment": "執行環境：{value}",
+        "reachable": "可達",
+        "unavailable": "不可用（{error}）"
+      }
+    },
+    "notify": {
+      "permissionDenied": "系統通知權限未授予，請在系統設定裡允許 AAIGC 傳送通知"
+    },
+    "settings": {
+      "title": "設定",
+      "subtitle": "桌面端外殼的本機設定。站點本身的功能請到線上介面裡操作。",
+      "connection": {
+        "title": "連線",
+        "description": "站點位址在建置期注入，執行期不可變更。"
+      },
+      "diagnostics": {
+        "title": "診斷",
+        "description": "匯出內容只包含版本、站點位址與連線性結果，不含帳號或憑證資訊。",
+        "export": "匯出診斷報告…",
+        "generating": "正在產生診斷報告…",
+        "cancelled": "已取消儲存。",
+        "saved": "診斷報告已儲存到 {path}",
+        "failed": "匯出失敗：{error}"
+      },
+      "notifications": {
+        "title": "通知",
+        "description": "用於驗證系統通知通道是否可用。",
+        "test": "傳送測試通知",
+        "sending": "正在傳送測試通知…",
+        "sent": "測試通知已傳送。",
+        "failed": "傳送通知失敗：{error}",
+        "testTitle": "AAIGC 桌面端",
+        "testBody": "這是一則測試通知，說明系統通知通道可用。"
+      }
+    },
+    "updates": {
+      "check": "檢查更新",
+      "reading": "正在讀取版本…",
+      "placeholder": "目前版本 v{version}。桌面端自動更新通道尚未接入，此入口目前只是佔位。",
+      "failed": "讀取版本失敗：{error}"
+    }
   }
 }

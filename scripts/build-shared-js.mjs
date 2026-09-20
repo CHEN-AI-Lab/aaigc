@@ -65,9 +65,37 @@ async function buildBundle(esbuild, outfile) {
   return result
 }
 
+/**
+ * 预检 esbuild 是否真的可用。
+ *
+ * 为什么需要这段：当平台二进制缺失时（node_modules 被跨 OS 安装污染过会发生），
+ * `import('esbuild')` 会成功、`transform()` 抛出的错误也能被 catch，
+ * 但 esbuild 内部随后会**以退出码 0 结束进程** —— 于是调用方（含 check-shared-js.sh）
+ * 看到的是「命令成功」，门禁长期报绿却什么都没检查。
+ * 所以这里主动探一次，失败就明确 exit 1，把假绿掐死在源头。
+ */
+async function assertEsbuildUsable(esbuild) {
+  try {
+    await esbuild.transform('export const __aaigcProbe = 1', { loader: 'js' })
+  } catch (error) {
+    const detail = error?.message ?? String(error)
+    throw new Error(
+      [
+        'esbuild 不可用（多半是平台二进制缺失）。',
+        '',
+        detail,
+        '',
+        '修复：pnpm install；若仍失败可显式指定二进制——',
+        "  export ESBUILD_BINARY_PATH=<repo>/node_modules/.pnpm/@esbuild+<platform>@<ver>/node_modules/@esbuild/<platform>/bin/esbuild",
+      ].join('\n'),
+    )
+  }
+}
+
 async function main() {
   const args = parseArgs(process.argv.slice(2))
   const esbuild = await loadEsbuild()
+  await assertEsbuildUsable(esbuild)
 
   if (args.check) {
     const tmpDir = mkdtempSync(path.join(tmpdir(), 'aaigc-shared-js-'))

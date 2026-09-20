@@ -5,6 +5,7 @@ import { ActionButton } from '../components/ActionButton'
 import { CheckUpdatesButton } from '../components/CheckUpdatesButton'
 import { PanelField, PanelFrame, PanelSection } from '../components/PanelFrame'
 import { errorText } from '../shell/error-text'
+import { t } from '../shell/i18n'
 import { openExternal } from '../shell/native'
 
 /** 关于面板（`?view=about`）。 */
@@ -23,7 +24,7 @@ export function AboutView() {
       })
       .catch((cause: unknown) => {
         if (!cancelled) {
-          setError(`读取版本失败：${errorText(cause)}`)
+          setError(t('desktop.about.version.readFailed', { error: errorText(cause) }))
         }
       })
 
@@ -33,25 +34,28 @@ export function AboutView() {
   }, [])
 
   return (
-    <PanelFrame title="关于 AAIGC" subtitle="桌面端 = 原生外壳 + 线上站点，不重新实现 Web 应用。">
-      <PanelSection title="版本">
-        <PanelField label="外壳版本" value={version === '' ? '读取中…' : `v${version}`} />
-        <PanelField label="站点地址" value={__SITE_ORIGIN__} />
+    <PanelFrame title={t('desktop.about.title')} subtitle={t('desktop.about.subtitle')}>
+      <PanelSection title={t('desktop.about.version.title')}>
+        <PanelField
+          label={t('desktop.about.version.shell')}
+          value={version === '' ? t('desktop.common.loading') : `v${version}`}
+        />
+        <PanelField label={t('desktop.common.siteOrigin')} value={__SITE_ORIGIN__} />
       </PanelSection>
 
-      <PanelSection title="站点">
+      <PanelSection title={t('desktop.about.site.title')}>
         <ActionButton
           onClick={() => {
             void openExternal(__SITE_ORIGIN__).catch((cause: unknown) => {
-              setError(`打开浏览器失败：${errorText(cause)}`)
+              setError(t('desktop.about.site.openFailed', { error: errorText(cause) }))
             })
           }}
         >
-          在浏览器中打开官网
+          {t('desktop.about.site.open')}
         </ActionButton>
       </PanelSection>
 
-      <PanelSection title="更新">
+      <PanelSection title={t('desktop.common.updates')}>
         <CheckUpdatesButton />
       </PanelSection>
 

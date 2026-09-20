@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import { ActionButton } from '../components/ActionButton'
 import { errorText } from '../shell/error-text'
+import { t } from '../shell/i18n'
 import { openExternal } from '../shell/native'
 
 type OfflineViewProps = {
@@ -26,9 +27,9 @@ export function OfflineView({ detail, onRetry }: OfflineViewProps) {
   return (
     <main className="flex h-full flex-col items-center justify-center gap-5 bg-white px-8 text-center text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100">
       <div className="max-w-lg space-y-2">
-        <h1 className="text-xl font-semibold">无法连接</h1>
+        <h1 className="text-xl font-semibold">{t('desktop.connect.offlineTitle')}</h1>
         <p className="text-sm text-neutral-500 dark:text-neutral-400">
-          AAIGC 桌面端需要连上线上站点才能使用。请检查网络或代理设置后重试。
+          {t('desktop.connect.offlineBody')}
         </p>
       </div>
 
@@ -38,14 +39,14 @@ export function OfflineView({ detail, onRetry }: OfflineViewProps) {
 
       <div className="flex flex-wrap items-center justify-center gap-3">
         <ActionButton variant="primary" onClick={onRetry}>
-          重试
+          {t('desktop.connect.retry')}
         </ActionButton>
         <ActionButton
           onClick={() => {
             void openInBrowser()
           }}
         >
-          在浏览器中打开
+          {t('desktop.connect.openInBrowser')}
         </ActionButton>
       </div>
 

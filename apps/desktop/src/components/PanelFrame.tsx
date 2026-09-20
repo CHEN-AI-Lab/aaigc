@@ -2,6 +2,7 @@ import { getCurrentWindow } from '@tauri-apps/api/window'
 import type { ReactNode } from 'react'
 
 import { ActionButton } from './ActionButton'
+import { t } from '../shell/i18n'
 
 type PanelFrameProps = {
   readonly title: string
@@ -26,7 +27,7 @@ export function PanelFrame({ title, subtitle, children }: PanelFrameProps) {
             void getCurrentWindow().close()
           }}
         >
-          关闭
+          {t('desktop.common.close')}
         </ActionButton>
       </footer>
     </main>

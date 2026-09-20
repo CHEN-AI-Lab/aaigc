@@ -34,13 +34,13 @@ export function createCliApi(
     platform: CLI_PLATFORM,
     locale: config.lang,
     onTokenRefreshed: () => {
-      if (!io.json) io.diag(translator.c('tokenRefreshed'))
+      if (!io.json) io.diag(translator.t('cli.tokenRefreshed'))
     },
     onUnauthorized: () => {
       if (unauthorizedReported) return
       unauthorizedReported = true
       // 这条即使 --json 也要出：它解释了本次失败的原因
-      io.diag(translator.c('sessionExpired'))
+      io.diag(translator.t('cli.sessionExpired'))
     },
   })
 

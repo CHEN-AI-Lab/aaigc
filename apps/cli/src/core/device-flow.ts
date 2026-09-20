@@ -69,8 +69,8 @@ function defaultSleep(ms: number): Promise<void> {
 function emitPrompt(deps: DeviceFlowDeps, device: DeviceCodeResponse): void {
   const { io, translator } = deps
   const hasUri = device.verificationUri.length > 0
-  const uriLine = hasUri ? translator.c('loginOpenUrl') : translator.c('loginNoVerificationUri')
-  const codeLine = `${translator.c('loginUserCodeLabel')}: ${device.userCode}`
+  const uriLine = hasUri ? translator.t('cli.loginOpenUrl') : translator.t('cli.loginNoVerificationUri')
+  const codeLine = `${translator.t('cli.loginUserCodeLabel')}: ${device.userCode}`
 
   if (io.json) {
     io.diag(uriLine)
@@ -81,7 +81,7 @@ function emitPrompt(deps: DeviceFlowDeps, device: DeviceCodeResponse): void {
 
   const lines = [uriLine]
   if (hasUri) lines.push(`  ${io.accent(device.verificationUri)}`)
-  lines.push('', `${translator.c('loginUserCodeLabel')}: ${io.accent(device.userCode)}`)
+  lines.push('', `${translator.t('cli.loginUserCodeLabel')}: ${io.accent(device.userCode)}`)
   io.write(lines.join('\n'))
 }
 
@@ -96,7 +96,7 @@ export async function runDeviceFlow(deps: DeviceFlowDeps): Promise<DeviceFlowRes
     throw failureError('invalidParams', undefined, 'clientId rejected by shared validator')
   }
 
-  io.diag(translator.c('loginRequesting'))
+  io.diag(translator.t('cli.loginRequesting'))
   const device = await client.post<DeviceCodeResponse>('/api/auth/device/code', request.data)
   emitPrompt(deps, device)
 
@@ -108,7 +108,7 @@ export async function runDeviceFlow(deps: DeviceFlowDeps): Promise<DeviceFlowRes
   const deadline = now() + Math.min(device.expiresIn * 1000, MAX_WAIT_MS)
   let intervalMs = Math.max(1, device.interval) * 1000
   const startedAt = now()
-  const waiting = (): string => translator.c('loginWaiting')
+  const waiting = (): string => translator.t('cli.loginWaiting')
 
   if (io.stderrIsTty) {
     io.progress(waiting())
@@ -120,14 +120,14 @@ export async function runDeviceFlow(deps: DeviceFlowDeps): Promise<DeviceFlowRes
   for (;;) {
     if (now() >= deadline) {
       io.clearProgress()
-      throw failureError('deviceCodeExpired', undefined, translator.c('loginRetryHint'))
+      throw failureError('deviceCodeExpired', undefined, translator.t('cli.hintLoginRequired'))
     }
 
     await sleep(intervalMs)
 
     if (now() >= deadline) {
       io.clearProgress()
-      throw failureError('deviceCodeExpired', undefined, translator.c('loginRetryHint'))
+      throw failureError('deviceCodeExpired', undefined, translator.t('cli.hintLoginRequired'))
     }
 
     io.progress(`${waiting()} ${Math.floor((now() - startedAt) / 1000)}s`)

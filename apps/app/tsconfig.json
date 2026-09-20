@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    // 关掉未使用变量检查：本端 import 了 shared/**（工具纯函数等），
+    // 而 TS 的编译选项是整程序生效的 —— 打开会把 shared 里既有的死导入
+    // （shared/tools/date-calculator.ts、image-to-base64.ts）算成本端错误。
+    // shared 归共享层维护，本端不替它改代码，也不因此把自己门禁弄红。
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "types": ["react"],
+    "paths": {
+      "@/*": ["./src/*"],
+      "shared/*": ["../../shared/*"]
+    }
+  },
+  "include": [
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "app.config.ts",
+    "expo-env.d.ts"
+  ],
+  "exclude": ["node_modules", ".expo", "dist"]
+}

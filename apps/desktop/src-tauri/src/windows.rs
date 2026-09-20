@@ -7,11 +7,15 @@
 //!
 //! 导航策略统一走导航守卫：只放行本地壳资源与站点同源地址，其余一律交给
 //! 系统默认浏览器 —— 这样用户在壳里不会「迷路」到一个没有后退按钮的陌生页面。
+//!
+//! 面板窗口标题是用户可见的，走 `locale` 表；主窗口标题来自 `tauri.conf.json`
+//! 的产品名，不需要翻译。
 
 use tauri::webview::{NewWindowFeatures, NewWindowResponse};
 use tauri::{AppHandle, Manager, Runtime, WebviewUrl, WebviewWindow, WebviewWindowBuilder};
 use url::Url;
 
+use crate::locale::{self, Msg};
 use crate::site;
 
 pub const MAIN: &str = "main";
@@ -63,12 +67,12 @@ pub fn show_main<R: Runtime>(app: &AppHandle<R>) {
 /// 打开（或前置）一个本地面板窗口。
 pub fn show_panel<R: Runtime>(app: &AppHandle<R>, view: &str) -> Result<(), String> {
     let (label, title, width, height) = match view {
-        SETTINGS => (SETTINGS, "AAIGC 设置", 620.0, 560.0),
-        ABOUT => (ABOUT, "关于 AAIGC", 520.0, 460.0),
-        other => return Err(format!("未知面板：{other}")),
+        SETTINGS => (SETTINGS, locale::tr(Msg::WindowSettings), 620.0, 560.0),
+        ABOUT => (ABOUT, locale::tr(Msg::WindowAbout), 520.0, 460.0),
+        other => return Err(locale::tr_args(Msg::ErrUnknownPanel, &[("view", other)])),
     };
 
-    focus_or_create(app, label, title, width, height).map_err(|error| error.to_string())
+    focus_or_create(app, label, &title, width, height).map_err(|error| error.to_string())
 }
 
 /// 面板窗口的 IPC 入口（壳 UI 里互相跳转用）。

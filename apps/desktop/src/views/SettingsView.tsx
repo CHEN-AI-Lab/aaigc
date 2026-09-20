@@ -5,6 +5,7 @@ import { CheckUpdatesButton } from '../components/CheckUpdatesButton'
 import { PanelField, PanelFrame, PanelSection } from '../components/PanelFrame'
 import { buildDiagnostics } from '../shell/diagnostics'
 import { errorText } from '../shell/error-text'
+import { t } from '../shell/i18n'
 import { exportDiagnostics } from '../shell/native'
 import { notify } from '../shell/notify'
 
@@ -13,57 +14,73 @@ export function SettingsView() {
   const [status, setStatus] = useState('')
 
   async function onExportDiagnostics() {
-    setStatus('正在生成诊断报告…')
+    setStatus(t('desktop.settings.diagnostics.generating'))
 
     try {
       const savedTo = await exportDiagnostics(await buildDiagnostics())
-      setStatus(savedTo === null ? '已取消保存。' : `诊断报告已保存到 ${savedTo}`)
+      setStatus(
+        savedTo === null
+          ? t('desktop.settings.diagnostics.cancelled')
+          : t('desktop.settings.diagnostics.saved', { path: savedTo }),
+      )
     } catch (error) {
-      setStatus(`导出失败：${errorText(error)}`)
+      setStatus(t('desktop.settings.diagnostics.failed', { error: errorText(error) }))
     }
   }
 
   async function onTestNotification() {
-    setStatus('正在发送测试通知…')
+    setStatus(t('desktop.settings.notifications.sending'))
 
     try {
-      await notify('AAIGC 桌面端', '这是一条测试通知，说明系统通知通道可用。')
-      setStatus('测试通知已发送。')
+      await notify(
+        t('desktop.settings.notifications.testTitle'),
+        t('desktop.settings.notifications.testBody'),
+      )
+      setStatus(t('desktop.settings.notifications.sent'))
     } catch (error) {
-      setStatus(`发送通知失败：${errorText(error)}`)
+      setStatus(t('desktop.settings.notifications.failed', { error: errorText(error) }))
     }
   }
 
   return (
-    <PanelFrame title="设置" subtitle="桌面端外壳的本地设置。站点本身的功能请到线上界面里操作。">
-      <PanelSection title="连接" description="站点地址在构建期注入，运行期不可更改。">
-        <PanelField label="站点地址" value={__SITE_ORIGIN__} />
+    <PanelFrame
+      title={t('desktop.settings.title')}
+      subtitle={t('desktop.settings.subtitle')}
+    >
+      <PanelSection
+        title={t('desktop.settings.connection.title')}
+        description={t('desktop.settings.connection.description')}
+      >
+        <PanelField label={t('desktop.common.siteOrigin')} value={__SITE_ORIGIN__} />
       </PanelSection>
 
       <PanelSection
-        title="诊断"
-        description="导出内容只包含版本、站点地址与连通性结果，不含账号或凭据信息。"
+        title={t('desktop.settings.diagnostics.title')}
+        description={t('desktop.settings.diagnostics.description')}
       >
         <ActionButton
           onClick={() => {
             void onExportDiagnostics()
           }}
         >
-          导出诊断报告…
+          {t('desktop.settings.diagnostics.export')}
         </ActionButton>
       </PanelSection>
 
-      <PanelSection title="通知" description="用于验证系统通知通道是否可用。">
+      <PanelSection
+        title={t('desktop.settings.notifications.title')}
+        description={t('desktop.settings.notifications.description')}
+      >
         <ActionButton
           onClick={() => {
             void onTestNotification()
           }}
         >
-          发送测试通知
+          {t('desktop.settings.notifications.test')}
         </ActionButton>
       </PanelSection>
 
-      <PanelSection title="更新">
+      <PanelSection title={t('desktop.common.updates')}>
         <CheckUpdatesButton />
       </PanelSection>
 

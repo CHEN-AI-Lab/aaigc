@@ -1,0 +1,85 @@
+{
+  "desktop": {
+    "about": {
+      "title": "AAIGC について",
+      "subtitle": "デスクトップ版 = ネイティブシェル + オンラインサイト。Web アプリを再実装するものではありません。",
+      "version": {
+        "title": "バージョン",
+        "shell": "シェルのバージョン",
+        "readFailed": "バージョンを読み取れませんでした：{error}"
+      },
+      "site": {
+        "title": "サイト",
+        "open": "ブラウザで公式サイトを開く",
+        "openFailed": "ブラウザを開けませんでした：{error}"
+      }
+    },
+    "boot": {
+      "mountMissing": "#root のマウントポイントが見つかりません。index.html とエントリースクリプトが一致していません。"
+    },
+    "common": {
+      "close": "閉じる",
+      "loading": "読み込み中…",
+      "siteOrigin": "サイトアドレス",
+      "updates": "アップデート"
+    },
+    "connect": {
+      "connecting": "オンラインサイトに接続しています…",
+      "offlineTitle": "接続できません",
+      "offlineBody": "AAIGC デスクトップ版はオンラインサイトに接続する必要があります。ネットワークまたはプロキシ設定を確認して再試行してください。",
+      "retry": "再試行",
+      "openInBrowser": "ブラウザで開く",
+      "readOriginFailed": "シェルが注入したサイトアドレスを読み取れませんでした：{error}",
+      "originMismatch": "ビルド時のサイトアドレスが一致しません：シェル側は {shell}、UI 側は {ui}。同じ NEXT_PUBLIC_APP_URL でデスクトップ版を再ビルドしてください。"
+    },
+    "diagnostics": {
+      "report": {
+        "title": "# AAIGC デスクトップ診断レポート",
+        "generatedAt": "生成日時：{value}",
+        "shellVersion": "シェルのバージョン：{value}",
+        "siteOriginUi": "サイトアドレス（UI 側の注入）：{value}",
+        "siteOriginShell": "サイトアドレス（シェル側の注入）：{value}",
+        "connectivity": "サイト接続性の確認：{value}",
+        "environment": "実行環境：{value}",
+        "reachable": "到達可能",
+        "unavailable": "利用不可（{error}）"
+      }
+    },
+    "notify": {
+      "permissionDenied": "通知の権限が許可されていません。システム設定で AAIGC の通知を許可してください。"
+    },
+    "settings": {
+      "title": "設定",
+      "subtitle": "デスクトップシェルのローカル設定です。サイト自体の機能はオンライン画面で操作してください。",
+      "connection": {
+        "title": "接続",
+        "description": "サイトアドレスはビルド時に注入され、実行時には変更できません。"
+      },
+      "diagnostics": {
+        "title": "診断",
+        "description": "書き出し内容にはバージョン、サイトアドレス、接続性の結果のみが含まれます。アカウントや認証情報は含まれません。",
+        "export": "診断レポートを書き出す…",
+        "generating": "診断レポートを生成しています…",
+        "cancelled": "保存をキャンセルしました。",
+        "saved": "診断レポートを {path} に保存しました",
+        "failed": "書き出しに失敗しました：{error}"
+      },
+      "notifications": {
+        "title": "通知",
+        "description": "システム通知チャンネルが利用できるかを確認します。",
+        "test": "テスト通知を送信",
+        "sending": "テスト通知を送信しています…",
+        "sent": "テスト通知を送信しました。",
+        "failed": "通知の送信に失敗しました：{error}",
+        "testTitle": "AAIGC デスクトップ",
+        "testBody": "これはテスト通知です。システム通知チャンネルが利用できることを示しています。"
+      }
+    },
+    "updates": {
+      "check": "アップデートを確認",
+      "reading": "バージョンを読み取っています…",
+      "placeholder": "現在のバージョンは v{version} です。デスクトップ版の自動更新チャンネルは未接続で、この項目は現時点ではプレースホルダーです。",
+      "failed": "バージョンを読み取れませんでした：{error}"
+    }
+  }
+}

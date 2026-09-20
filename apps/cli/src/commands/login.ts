@@ -48,5 +48,5 @@ export async function loginCommand(ctx: CommandContext): Promise<void> {
     })
     return
   }
-  ctx.io.write(ctx.translator.c('loginApproved', { name: displayName(pair.user) }))
+  ctx.io.write(ctx.translator.t('cli.loginApproved', { name: displayName(pair.user) }))
 }

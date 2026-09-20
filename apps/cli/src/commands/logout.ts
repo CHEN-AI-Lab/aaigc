@@ -18,13 +18,13 @@ export async function logoutCommand(ctx: CommandContext): Promise<void> {
 
   if (!pair) {
     if (ctx.io.json) ctx.io.writeJson({ loggedOut: true })
-    else ctx.io.write(ctx.translator.c('logoutNotSignedIn'))
+    else ctx.io.write(ctx.translator.t('cli.logoutNotSignedIn'))
     return
   }
 
   if (ctx.config.apiBaseUrl.length === 0) {
     ctx.io.warn(
-      `${ctx.translator.c('logoutRevokeFailed')} ${ctx.translator.c('hintApiBaseUrl', { env: API_BASE_URL_ENV })}`,
+      `${ctx.translator.t('cli.logoutRevokeFailed')} ${ctx.translator.t('cli.hintApiBaseUrl', { env: API_BASE_URL_ENV })}`,
     )
   } else {
     try {
@@ -36,12 +36,12 @@ export async function logoutCommand(ctx: CommandContext): Promise<void> {
       })
       await client.post('/api/auth/token/revoke', { refreshToken: pair.refreshToken })
     } catch (error) {
-      ctx.io.warn(`${ctx.translator.c('logoutRevokeFailed')} (${errorMessage(error)})`)
+      ctx.io.warn(`${ctx.translator.t('cli.logoutRevokeFailed')} (${errorMessage(error)})`)
     }
   }
 
   await store.clear()
 
   if (ctx.io.json) ctx.io.writeJson({ loggedOut: true })
-  else ctx.io.write(ctx.translator.c('logoutDone'))
+  else ctx.io.write(ctx.translator.t('cli.logoutDone'))
 }

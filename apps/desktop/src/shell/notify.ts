@@ -4,6 +4,8 @@ import {
   sendNotification,
 } from '@tauri-apps/plugin-notification'
 
+import { t } from './i18n'
+
 /**
  * 发一条系统通知。
  *
@@ -19,7 +21,7 @@ export async function notify(title: string, body: string): Promise<void> {
   }
 
   if (!granted) {
-    throw new Error('系统通知权限未授予，请在系统设置里允许 AAIGC 发送通知')
+    throw new Error(t('desktop.notify.permissionDenied'))
   }
 
   sendNotification({ title, body })

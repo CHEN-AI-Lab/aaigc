@@ -2,6 +2,7 @@ import { getVersion } from '@tauri-apps/api/app'
 import { useState } from 'react'
 
 import { errorText } from '../shell/error-text'
+import { t } from '../shell/i18n'
 import { ActionButton } from './ActionButton'
 
 /**
@@ -15,13 +16,13 @@ export function CheckUpdatesButton() {
   const [message, setMessage] = useState('')
 
   async function check() {
-    setMessage('正在读取版本…')
+    setMessage(t('desktop.updates.reading'))
 
     try {
       const version = await getVersion()
-      setMessage(`当前版本 v${version}。桌面端自动更新通道尚未接入，此入口目前只是占位。`)
+      setMessage(t('desktop.updates.placeholder', { version }))
     } catch (error) {
-      setMessage(`读取版本失败：${errorText(error)}`)
+      setMessage(t('desktop.updates.failed', { error: errorText(error) }))
     }
   }
 
@@ -32,7 +33,7 @@ export function CheckUpdatesButton() {
           void check()
         }}
       >
-        检查更新
+        {t('desktop.updates.check')}
       </ActionButton>
       {message !== '' && (
         <p className="text-xs text-neutral-500 dark:text-neutral-400">{message}</p>

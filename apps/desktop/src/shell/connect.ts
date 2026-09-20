@@ -1,4 +1,5 @@
 import { errorText } from './error-text'
+import { t } from './i18n'
 import { getSiteOrigin, probeSite } from './native'
 
 export type ConnectResult =
@@ -12,6 +13,8 @@ export type ConnectResult =
  * 和 Rust `build.rs` 给外壳的 `AAIGC_SITE_ORIGIN`。二者都来自
  * `NEXT_PUBLIC_APP_URL`，但不一致就说明两次构建用了不同的值；
  * 这种情况直接判为配置错误，而不是「随便挑一个」继续跑。
+ *
+ * `detail` 会显示在本地「无法连接」页上，所以文案走壳 UI 的 i18n。
  */
 export async function connectToSite(): Promise<ConnectResult> {
   let shellOrigin: string
@@ -19,16 +22,13 @@ export async function connectToSite(): Promise<ConnectResult> {
   try {
     shellOrigin = await getSiteOrigin()
   } catch (error) {
-    return { ok: false, detail: `读取外壳注入的站点地址失败：${errorText(error)}` }
+    return { ok: false, detail: t('desktop.connect.readOriginFailed', { error: errorText(error) }) }
   }
 
   if (shellOrigin !== __SITE_ORIGIN__) {
     return {
       ok: false,
-      detail:
-        '构建期站点地址不一致：外壳侧为 ' +
-        `${shellOrigin}，界面侧为 ${__SITE_ORIGIN__}。` +
-        '请用同一个 NEXT_PUBLIC_APP_URL 重新构建桌面端。',
+      detail: t('desktop.connect.originMismatch', { shell: shellOrigin, ui: __SITE_ORIGIN__ }),
     }
   }
 
