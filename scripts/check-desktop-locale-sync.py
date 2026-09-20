@@ -27,6 +27,7 @@ i18n 运行时可用，所以 Rust 侧必须自持一份四语文案（src-tauri
 from __future__ import annotations
 
 import io
+import os
 import re
 import sys
 
@@ -51,6 +52,14 @@ def extract(path: str, pattern: re.Pattern) -> list[str]:
     return [x for x in items if x]
 
 
+def extract_slices() -> list[str]:
+    """messages 切片目录名（构建产物）。"""
+    base = "shared/js/messages"
+    if not os.path.isdir(base):
+        return []
+    return sorted(d for d in os.listdir(base) if os.path.isdir(os.path.join(base, d)))
+
+
 def main() -> int:
     try:
         ts = extract(TS_FILE, TS_PATTERN)
@@ -59,11 +68,30 @@ def main() -> int:
         print(e)
         return 1
 
+    slices = extract_slices()
+
     print("=== Desktop locale sync check ===")
     print("  locales.ts : %s" % ", ".join(ts))
     print("  locale.rs  : %s" % ", ".join(rs))
+    print("  slices     : %s" % (", ".join(slices) if slices else "(缺失)"))
 
     ok = True
+
+    if not slices:
+        print("❌ 缺少 messages 切片目录 shared/js/messages")
+        print("   先执行：pnpm --filter shared build:messages")
+        ok = False
+    elif set(ts) != set(slices):
+        only_ts = sorted(set(ts) - set(slices))
+        only_sl = sorted(set(slices) - set(ts))
+        print("❌ 切片目录与 locales.ts 不一致（需重新生成切片）")
+        if only_ts:
+            print("   仅存在于 locales.ts：%s" % ", ".join(only_ts))
+        if only_sl:
+            print("   仅存在于切片目录 ：%s" % ", ".join(only_sl))
+        print("   修复：pnpm --filter shared build:messages")
+        ok = False
+
     if set(ts) != set(rs):
         only_ts = sorted(set(ts) - set(rs))
         only_rs = sorted(set(rs) - set(ts))

@@ -41,11 +41,16 @@ apps/desktop/
 **语言清单只有两处**：`shared/constants/locales.ts` 的 `locales`（真源）与
 `src-tauri/src/locale.rs` 的 `SUPPORTED`。壳 UI 侧**不写死数组** —— `src/shell/i18n.ts`
 的 `DESKTOP_LOCALES` 是 `Object.keys(__DESKTOP_MESSAGES__)` 推出来的，不存在第三份副本。
-两处的一致性由 `scripts/check-desktop-locale-sync.sh` 兜住：`locale.rs` 的 `match`
+三处的一致性由 `scripts/check-desktop-locale-sync.py` 兜住（对齐 `locales.ts`、
+`locale.rs` 的 `SUPPORTED`、以及 `shared/js/messages` 切片目录）：`locale.rs` 的 `match`
 负责「表内不缺项」（漏一条编译不过），脚本负责「语言集合不脱节」。
+**该门禁只有这一个实现**，历史上一度存在同名 `.sh` 版本且更强，但接线接的是 `.py`，
+导致切片目录那一项从未真正生效——不要再把 `.sh` 加回来。
 
-`desktop.*` 命名空间的 key 以**一次性 payload 文件**（`_desktop_messages_payload.json`）
-提交、由维护者合并进 `shared/messages/*.json` 后即删除 —— **该文件不在仓库里，别去找它。**
+`desktop.*` 命名空间的 key 由端侧以**一次性 payload 文件**的形式提交，维护者合并进
+`shared/messages/*.json` 后即删除该文件 —— 所以 **payload 文件不会长期留在仓库里**，
+看到有人提 `_desktop_messages_payload.json` 不必意外，但合并完要删掉。
+合并前还需执行 `pnpm --filter shared build:messages` 同步切片，否则语言集合门禁会红。
 合并之前 `vite build` 会因「缺 `desktop` 命名空间」直接失败，这是刻意的，
 避免壳 UI 悄悄退回硬编码文案。
 
