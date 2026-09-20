@@ -17,8 +17,10 @@ bash scripts/check-structure.sh || exit 1
 echo "✅ Structure check passed"
 
 # Step 2: TypeScript type check
+# ⚠️ 不要写成 `cd apps/web && tsc`：那只会检查 web 一个包，shared / cli /
+#    desktop / app 的类型错误会被放过。必须用根 typecheck（覆盖全部 workspace 包）。
 echo "🔍 Running TypeScript type check..."
-(cd apps/web && npx tsc --noEmit) > /tmp/tsc.log 2>&1
+pnpm typecheck > /tmp/tsc.log 2>&1
 TSC_EXIT=$?
 tail -20 /tmp/tsc.log
 [ $TSC_EXIT -eq 0 ] || exit 1
@@ -39,6 +41,20 @@ VITEST_EXIT=$?
 tail -10 /tmp/vitest.log
 [ $VITEST_EXIT -eq 0 ] || exit 1
 echo "✅ Tests passed"
+
+# Step 4.5: i18n 硬编码检查（用户可见文案不得硬编码，注释豁免）
+echo "🌐 Running i18n hardcode check..."
+python3 scripts/check-i18n-hardcode.py || exit 1
+
+# Step 4.6: 桌面端语言集合一致性（防止出现第二份语言清单）
+echo "🌐 Running desktop locale sync check..."
+python3 scripts/check-desktop-locale-sync.py || exit 1
+
+# Step 4.7: J-8 —— shared/tools/ 保持 0 第三方依赖
+# 它会被五端复用（小程序受 2MB 主包限制、CLI 有冷启动开销），
+# 加一个 js-yaml 在评审里看着合理，代价却由所有端承担。
+echo "📦 Running shared/tools dependency check (J-8)..."
+python3 scripts/check-shared-tools-deps.py || exit 1
 
 # Step 5: 检查迁移文件是否有危险操作
 MIG_FILES=$(echo "$STAGED_FILES" | grep '^prisma/migrations/' | grep 'migration.sql$' || true)
