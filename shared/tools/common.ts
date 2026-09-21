@@ -1,5 +1,8 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// shared/tools 公共纯函数 —— 不含任何平台 API，可被 esbuild 打成 shared.mjs
+// shared/tools 公共纯函数 —— 不含任何平台 API，可被各端直接编译使用（小程序端由 Taro 直接编译）
+//
+// 注：此前这里写「可被 esbuild 打成 shared.mjs」。shared.mjs 已于 2026-09-21 删除（T01.3 取消）——Taro 实测能直接编译 shared/ 的 TS 源码。
+
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { ToolContext, ToolError, ToolErrorCode, ToolOutcome } from '../types/tool'

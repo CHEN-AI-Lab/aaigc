@@ -20,7 +20,6 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
-    "build:js": "node ../scripts/build-shared-js.mjs",
     "build:messages": "node ../scripts/build-shared-messages.mjs"
   },
   "peerDependencies": {

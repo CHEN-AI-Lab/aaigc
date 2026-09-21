@@ -1,6 +1,15 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// 第三方服务端点 —— 一律从环境变量读取，禁止硬编码域名（SK-8 / P1-08）
-// 未配置时返回空数组（不做非空 fallback），调用方据此返回「服务未配置」错误。
+// 第三方服务端点 —— 集中在本文件，业务代码一律从这里取，不得自己写域名。
+//
+// ⚠️ 为什么是**常量**而不是环境变量（2026-09-21 修正，此前判断有误）：
+//   这些是**固定的公共服务端点**（DNS 解析、IP 归属查询），不像 API 基址那样随部署环境
+//   变化。此前把它们做成环境变量且禁止非空 fallback，结果：
+//     · 没配 → dns-lookup / ip-lookup 一律 503
+//     · 凭空制造了一个部署依赖，且**连 Web 端线上也一起挂**
+//   集中到常量后：换服务商只改这一处并重新部署，不会再因为"忘记配环境变量"而失效。
+//
+//   真正随环境变化、因此**仍走环境变量**的只有下面这三个（见本文件后半部分）：
+//   OAUTH_REVOKE_ENDPOINTS_JSON / NATIVE_APP_DOWNLOAD_URLS_JSON / PRODUCT_URL_MAP_JSON。
 //
 // CORS 白名单不属于「第三方端点」，其唯一实现在 ./domains（连同本站 origin），
 // 这里只做 re-export，避免两处各写一套。
@@ -12,36 +21,37 @@ function readEnv(name: string): string {
   return typeof process !== 'undefined' && process.env ? (process.env[name] ?? '') : ''
 }
 
-/** 逗号分隔 → 去空白 → 过滤空串 */
-function parseList(raw: string): string[] {
-  return raw
-    .split(',')
-    .map((part) => part.trim())
-    .filter((part) => part.length > 0)
-}
+/**
+ * DNS-over-HTTPS 端点（按顺序 failover）。
+ * 调用方自行拼 `?name=<domain>&type=<TYPE>`，故这里只存前缀、不含 query。
+ */
+export const DNS_DOH_ENDPOINTS: readonly string[] = [
+  'https://dns.alidns.com/resolve',
+  'https://dns.google/resolve',
+]
 
 /**
- * DNS-over-HTTPS 端点列表（`?name=<domain>&type=<TYPE>` 形式的前缀）。
- * 环境变量：DNS_DOH_ENDPOINTS（逗号分隔）
+ * IP 归属查询端点（按顺序 failover），支持 `{ip}` 与 `{lang}` 占位符（值会被 URL encode）。
  */
+export const IP_GEO_ENDPOINTS: readonly string[] = [
+  'https://ipinfo.io/{ip}/json',
+  'https://api.ip.sb/geoip/{ip}',
+  'https://ip-api.com/json/{ip}?fields=query,city,regionName,country,isp,org,as,hosting,mobile,proxy&lang={lang}',
+]
+
+/** 本机公网 IP 回显端点（当无法从请求头取得可信 IP 时使用）。 */
+export const IP_ECHO_ENDPOINT = 'https://api.ipify.org?format=json'
+
 export function dnsDohEndpoints(): string[] {
-  return parseList(readEnv('DNS_DOH_ENDPOINTS'))
+  return [...DNS_DOH_ENDPOINTS]
 }
 
-/**
- * IP 归属查询端点列表，支持 `{ip}` 与 `{lang}` 占位符。
- * 环境变量：IP_GEO_ENDPOINTS（逗号分隔）
- */
 export function ipGeoEndpoints(): string[] {
-  return parseList(readEnv('IP_GEO_ENDPOINTS'))
+  return [...IP_GEO_ENDPOINTS]
 }
 
-/**
- * 本机公网 IP 回显端点（当无法从请求头取得可信 IP 时使用）。
- * 环境变量：IP_ECHO_ENDPOINT
- */
 export function ipEchoEndpoint(): string {
-  return readEnv('IP_ECHO_ENDPOINT')
+  return IP_ECHO_ENDPOINT
 }
 
 /**

@@ -26,7 +26,8 @@ const PLATFORM = `${process.platform}-${process.arch}`
  * esbuild 的可执行文件来自平台子包 `@esbuild/<platform>`。
  * pnpm 正常安装时该子包会链接到顶层 node_modules；若顶层链接缺失（仓库曾出现
  * 该状态），从 pnpm store 里把二进制路径直接喂给 esbuild（等价于
- * `scripts/build-shared-js.mjs` 的 ESBUILD_MODULE_PATH 兜底思路）。
+ * 原先 `scripts/build-shared-js.mjs` 用的同一套 ESBUILD_BINARY_PATH 兜底 —— 该脚本已随
+ * T01.3 取消于 2026-09-21 删除，兜底思路保留在这里）。
  */
 function resolveEsbuildBinary() {
   if (process.env.ESBUILD_BINARY_PATH) return

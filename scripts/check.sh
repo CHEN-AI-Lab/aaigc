@@ -25,8 +25,8 @@ echo "Step 1.8: shared/tools 依赖检查（J-8：0 第三方依赖）..."
 python3 scripts/check-shared-tools-deps.py
 
 echo ""
-echo "Step 1.9: 双源防漂移检查（shared.mjs / messages 切片）..."
-bash scripts/check-shared-js.sh
+echo "Step 1.9: messages 切片防漂移检查..."
+bash scripts/check-message-slices.sh
 
 echo ""
 echo "Step 2: Translation key check..."

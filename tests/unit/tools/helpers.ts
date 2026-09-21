@@ -32,7 +32,10 @@ export function loadAllFixtures(): ToolFixture[] {
 
 /**
  * 由 fixture 构造确定性的 ToolContext。
- * 随机源使用 fixture 提供的字节序列（循环取用），因此 TS 源与 shared.mjs 必须逐字节一致。
+ * 随机源使用 fixture 提供的字节序列（循环取用），因此跨端、跨运行时的结果必须逐字节一致。
+ *
+ * 注：此前这里写「TS 源与 shared.mjs 必须一致」。shared.mjs 已于 2026-09-21 删除（T01.3 取消），
+ * 现在的一致性由 purity.test.ts（不碰平台 API）与各端共用同一份 TS 源码来保证。
  */
 export function contextFromFixture(fixture: ToolFixture): ToolContext {
   const seed = fixture.context.randomBytes ?? defaultSeed()

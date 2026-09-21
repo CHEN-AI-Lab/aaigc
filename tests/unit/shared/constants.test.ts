@@ -19,6 +19,9 @@ import {
   ipGeoEndpoints,
   nativeAppDownloadUrls,
   productUrlMap,
+  DNS_DOH_ENDPOINTS,
+  IP_GEO_ENDPOINTS,
+  IP_ECHO_ENDPOINT,
 } from 'shared/constants/endpoints'
 import { isSameOrigin, isTrustedRequest, readBearerToken } from 'shared/utils/csrf'
 
@@ -105,22 +108,36 @@ describe('endpoint configuration', () => {
     saved.clear()
   })
 
-  it('returns empty results when nothing is configured (no non-empty fallback)', () => {
+  it('第三方端点来自常量：不配置也能用（固定的公共服务端点，不是环境相关配置)', () => {
+    // 这三个是 DNS 解析 / IP 归属查询 / IP 回显的公共服务端点，
+    // 不像 API 基址那样随部署环境变化 —— 2026-09-21 从「读 env 且无 fallback」改回常量，
+    // 原因是 env 化后没配就 503，连 Web 端线上也一起挂。
+    expect(dnsDohEndpoints()).toEqual([...DNS_DOH_ENDPOINTS])
+    expect(ipGeoEndpoints()).toEqual([...IP_GEO_ENDPOINTS])
+    expect(ipEchoEndpoint()).toBe(IP_ECHO_ENDPOINT)
+    expect(dnsDohEndpoints().length).toBeGreaterThan(0)
+    expect(ipGeoEndpoints().length).toBeGreaterThan(0)
+  })
+
+  it('环境相关的配置项未配置时仍为空（不做非空 fallback）', () => {
     for (const key of keys) {
       saved.set(key, process.env[key])
       delete process.env[key]
     }
-    expect(dnsDohEndpoints()).toEqual([])
-    expect(ipGeoEndpoints()).toEqual([])
-    expect(ipEchoEndpoint()).toBe('')
+    // CORS 白名单 / 下载链接 / 产品 URL 会随部署环境变化，仍走环境变量：
+    // 未配置 → 空，绝不偷偷用内置值。
     expect(corsOrigins()).toEqual([])
     expect(nativeAppDownloadUrls()).toEqual({})
     expect(productUrlMap()).toEqual({})
   })
 
-  it('parses comma separated lists and trims blanks', () => {
-    process.env.DNS_DOH_ENDPOINTS = 'https://a.test/dns , , https://b.test/dns,'
-    expect(dnsDohEndpoints()).toEqual(['https://a.test/dns', 'https://b.test/dns'])
+  it('parses the product url map and drops invalid entries', () => {
+    process.env.PRODUCT_URL_MAP_JSON = JSON.stringify({
+      p1: { url: 'https://p1.test', previewUrl: 'https://prev.test' },
+      bad: 42,
+      nothing: null,
+    })
+    expect(productUrlMap()).toEqual({ p1: { url: 'https://p1.test', previewUrl: 'https://prev.test' } })
   })
 
   it('parses the download url map and drops non-string values', () => {
@@ -143,14 +160,32 @@ describe('endpoint configuration', () => {
     })
   })
 
-  it('contains no hardcoded domains in executable code (comments may document env samples)', () => {
-    const source = fs.readFileSync(path.resolve(__dirname, '../../../shared/constants/endpoints.ts'), 'utf8')
-    const code = source
-      .replace(/\/\*[\s\S]*?\*\//g, '')
-      .split('\n')
-      .filter((line) => !line.trimStart().startsWith('//'))
-      .join('\n')
-    expect(code).not.toMatch(/https?:\/\/[a-z0-9.-]+\.[a-z]{2,}/i)
+  it('第三方端点集中定义在常量文件，业务代码不得重复写死域名', () => {
+    // 策略（2026-09-21 修正）：固定的公共服务端点集中定义在 shared/constants/endpoints.ts。
+    // 因此这个文件**是唯一允许出现这些域名的地方**；业务代码必须从这里取，不许自己写。
+    const repoRoot = path.resolve(__dirname, '../../..')
+    const hosts = /https?:\/\/[a-z0-9.-]*(?:ipinfo\.io|ip-api\.com|ip\.sb|alidns\.com|dns\.google|ipify\.org)/i
+
+    const strip = (src: string) =>
+      src
+        .replace(/\/\*[\s\S]*?\*\//g, '')
+        .split('\n')
+        .filter((line) => !line.trimStart().startsWith('//'))
+        .join('\n')
+
+    // 1) 常量文件里确实定义了这些端点（防止有人把常量清空后工具静默失效）
+    const constantsFile = path.join(repoRoot, 'shared/constants/endpoints.ts')
+    expect(strip(fs.readFileSync(constantsFile, 'utf8')).match(hosts)).not.toBeNull()
+
+    // 2) 业务侧不得再写死端点
+    for (const rel of [
+      'apps/web/src/app/api/tools/ip-lookup/route.ts',
+      'apps/web/src/app/api/tools/dns-lookup/route.ts',
+    ]) {
+      const p = path.join(repoRoot, rel)
+      if (!fs.existsSync(p)) continue
+      expect(strip(fs.readFileSync(p, 'utf8'))).not.toMatch(hosts)
+    }
   })
 })
 

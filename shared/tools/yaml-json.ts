@@ -1,4 +1,4 @@
-// yaml-json —— T1 纯计算：YAML ⇄ JSON（自带子集解析器，零 npm 依赖，保证 shared.mjs 体积）
+// yaml-json —— T1 纯计算：YAML ⇄ JSON（自带子集解析器，零 npm 依赖，保证小程序主包体积）
 
 import type { ToolContext, ToolDefinition, ToolOutcome } from '../types/tool'
 import { toolFail, toolOk, readEnum, readString } from './common'
