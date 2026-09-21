@@ -100,7 +100,10 @@ model RateLimit {
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 多端 Bearer 通道（架构 §4.2.1 / Q-A5）
-// additive：仅新增表，不改动任何既有表，可过 check-migration-safety.sh
+// ⚠️ 注意：生成出来的迁移**并不纯 additive —— 还会附带
+//   ALTER TABLE "RateLimit" ALTER COLUMN "updatedAt" DROP DEFAULT
+//   （@updatedAt 由 Prisma 客户端管理，DROP DEFAULT 是 Prisma 的正常行为，但仍会改现有表。
+//   别把本段理解成"只新增、绝不碰现有表"。执行前请先看生成的 migration.sql 全文。
 // ─────────────────────────────────────────────────────────────────────────────
 
 /// refresh token —— 只存 SHA-256 hash，原文不落库（库泄露也无法冒用）。
