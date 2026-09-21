@@ -53,7 +53,11 @@ pnpm build 2>&1
 # 小程序主包上限 2MB（架构 R-H）。必须先构建再量，否则门禁量不到东西。
 echo ""
 echo "Step 6.5: Weapp build + bundle size check (2MB limit)..."
-pnpm --filter weapp build 2>&1
+# ⚠️ 必须写 `run build:weapp` 这个**真实存在的**脚本名。
+#    写 `pnpm --filter weapp build` 会输出
+#    "None of the selected packages has a 'build' script" 然后**退出码 0** ——
+#    后果是这一步根本没构建，却拿旧 dist 去量体积并报绿，是彻头彻尾的假绿。
+pnpm --filter weapp run build:weapp 2>&1
 python3 scripts/check-weapp-bundle-size.py
 
 echo ""
