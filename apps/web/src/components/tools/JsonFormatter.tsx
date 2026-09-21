@@ -60,7 +60,8 @@ export default function JsonFormatter() {
     }
     setOutput(outcome.data.text)
     generateDownloadUrl(outcome.data.text)
-  }, [input, t, generateDownloadUrl, downloadUrl, revokeUrl])
+    // t 不在此处直接使用（错误文案走 invalidJsonError，它自己已依赖 t），故不列入依赖
+  }, [input, generateDownloadUrl, downloadUrl, revokeUrl, invalidJsonError])
 
   const validate = useCallback(() => {
     setError('')
@@ -75,7 +76,7 @@ export default function JsonFormatter() {
       revokeUrl(downloadUrl)
       setDownloadUrl('')
     }
-  }, [input, t, downloadUrl, revokeUrl])
+  }, [input, t, downloadUrl, revokeUrl, invalidJsonError])
 
   const minify = useCallback(() => {
     setError('')
@@ -87,7 +88,8 @@ export default function JsonFormatter() {
     }
     setOutput(outcome.data.text)
     generateDownloadUrl(outcome.data.text)
-  }, [input, t, generateDownloadUrl, clearState])
+    // 同上：t 未被直接使用
+  }, [input, generateDownloadUrl, clearState, invalidJsonError])
 
   const handleCopy = useCallback(async () => {
     try {

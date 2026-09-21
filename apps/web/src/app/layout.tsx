@@ -17,7 +17,8 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     siteName: 'AAIGC',
-    url: process.env.NEXT_PUBLIC_APP_URL || '',
+    // 站点地址统一走 shared/constants/domains 的 siteOrigin()，不在页面里直接读 process.env。
+    url: siteOrigin(),
   },
   twitter: {
     card: 'summary_large_image',

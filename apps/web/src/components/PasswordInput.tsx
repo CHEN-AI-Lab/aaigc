@@ -22,7 +22,8 @@ export default function PasswordInput({ value, onChange, placeholder, className 
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         disabled={disabled}
-        autoComplete={'off' as React.HTMLInputAutoCompleteAttribute}
+        /* ⚠️ 不要写死 'off' —— 那会让 autocomplete prop 被静默忽略（调用方传了值却不生效）。 */
+        autoComplete={autocomplete as React.HTMLInputAutoCompleteAttribute}
         className={`${className} pr-10`}
       />
       <button
