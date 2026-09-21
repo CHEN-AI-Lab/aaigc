@@ -2,6 +2,7 @@
 // 用于 POST/PUT/PATCH/DELETE 等 mutating API 路由。
 // NextAuth 的 /api/auth/* 路由有内置 CSRF token 机制，无需此校验。
 
+import { nativeClientIds, requestClientId } from '../constants/clients'
 import type { AuthMode } from '../types/api'
 
 type LikeRequest = { headers: Headers }
@@ -54,6 +55,24 @@ export function isSameOrigin(req: LikeRequest): boolean {
 export function isTrustedRequest(req: LikeRequest, mode: AuthMode): boolean {
   if (mode === 'bearer') return true
   return isSameOrigin(req)
+}
+
+/**
+ * 「未登录端点」的可信判定 —— 用于发邮箱验证码 / 注册 / 校验邮箱。
+ *
+ * 为什么不能简单地"无 Origin 就放行"：这些端点会**向外发邮件。放宽后任何网站都能触发给你发信（邮件轰炸）。
+ *
+ * 放行条件（二者之一）：
+ *   1. 浏览器同源请求（Origin/Referer 匹配 host）→ Web 行为 100% 不变。
+ *   2. 原生端携带**白名单内** clientId（App/CLI/桌面端在请求 token 时本就带 clientId。未配置白名单 → 一律不放行（安全默认）。
+ *
+ * ⚠️ 必须配合**按邮箱限流**使用：即便 clientId 被伪造，针对单个邮箱的发信量仍受限。
+ */
+export function isTrustedPreAuthRequest(req: LikeRequest): boolean {
+  if (isSameOrigin(req)) return true
+  const clientId = requestClientId(req.headers)
+  if (!clientId) return false
+  return nativeClientIds().includes(clientId)
 }
 
 /** 从 Authorization 头提取 Bearer token；缺失或格式错误返回 null */

@@ -5,7 +5,7 @@ import { consumeVerificationCode } from "shared/utils/verification-code"
 import { checkRateLimit } from "shared/utils/rate-limit"
 import { getTrustedClientIp } from "shared/utils/ip"
 import { checkLoginRateLimit, recordLoginAttempt } from "shared/utils/login-rate-limit"
-import { isSameOrigin } from "shared/utils/csrf"
+import { isTrustedPreAuthRequest } from "shared/utils/csrf"
 
 // 与 set-password 一致的密码强度校验，避免注册路径弱于改密路径
 function validatePassword(password: string): string | null {
@@ -28,8 +28,10 @@ function validatePassword(password: string): string | null {
 
 export async function POST(req: NextRequest) {
   try {
-    // CSRF 防护：校验同源
-    if (!isSameOrigin(req)) {
+    // 防护：浏览器校验同源；原生端无 Origin，须携带白名单内 clientId。
+    // 不能改成"无 Origin 就放行 —— 注册会触发发信，放宽等于任何网站都能触发给你发信。
+    // 已有限流：按 IP 5/60s。
+    if (!isTrustedPreAuthRequest(req)) {
       return NextResponse.json({ error: "forbidden" }, { status: 403 })
     }
     const { email: rawEmail, password, name: rawName, code, agreeTerms } = await req.json()

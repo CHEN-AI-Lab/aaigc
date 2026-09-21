@@ -17,9 +17,7 @@
 
 export { corsOrigins, apiCorsOrigins } from './domains'
 
-function readEnv(name: string): string {
-  return typeof process !== 'undefined' && process.env ? (process.env[name] ?? '') : ''
-}
+import { readEnv } from './env'
 
 /**
  * DNS-over-HTTPS 端点（按顺序 failover）。

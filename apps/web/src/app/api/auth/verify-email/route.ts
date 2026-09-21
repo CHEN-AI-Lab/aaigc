@@ -4,12 +4,15 @@ import { normalizeEmail } from "shared/utils/verification"
 import { checkRateLimit } from "shared/utils/rate-limit"
 import { getTrustedClientIp } from "shared/utils/ip"
 import { checkLoginRateLimit, recordLoginAttempt } from "shared/utils/login-rate-limit"
-import { isSameOrigin } from "shared/utils/csrf"
+import { isTrustedPreAuthRequest } from "shared/utils/csrf"
 
 export async function POST(req: NextRequest) {
   try {
     // CSRF 防护：校验同源
-    if (!isSameOrigin(req)) {
+    // 防护：浏览器校验同源；原生端无 Origin，须携带白名单内 clientId。
+    // 不能改成"无 Origin 就放行 —— 本端点触发发信流程。
+    // 已有限流：按 IP 3/60s + 按邮箱 120s 冷却。
+    if (!isTrustedPreAuthRequest(req)) {
       return NextResponse.json({ error: "forbidden" }, { status: 403 })
     }
     const { email: rawEmail, code } = await req.json()

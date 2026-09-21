@@ -4,11 +4,13 @@
 //   通道 A：密码授权   POST /api/auth/token  { grantType:'password', email, password, clientId }
 //   通道 B：设备码授权 POST /api/auth/device/code + /api/auth/device/token（RFC 8628 风格）
 //
-// 为什么不实现"邮箱验证码登录"：服务端 /api/auth/send-verification 走的是裸
-// `isSameOrigin(req)`（apps/web/src/app/api/auth/send-verification/route.ts:16），
-// 原生端既无 Origin 也无 Referer → 恒 403 forbidden。这是服务端缺口，App 无法绕过。
-// 修法是把它换成 shared/utils/csrf.ts 的 `isTrustedRequest(req, mode)`。
-// 在那之前，没有密码的账号请走设备码通道（在浏览器里用任意方式登录后确认）。
+// 关于"邮箱验证码登录"（通道 C）：
+// 服务端 /api/auth/send-verification 原先走裸 `isSameOrigin(req)`，原生端既无 Origin 也无
+// Referer → 恒 403。已于 2026-09-21 修好：改用 `isTrustedPreAuthRequest(req)`——
+//   浏览器：仍校验同源（Web 行为不变）；
+//   原生端：须在请求头带 `x-aaigc-client-id`，且该 clientId 在服务端 `AAIGC_CLIENT_IDS` 白名单内。
+// 若服务端未配置该白名单，原生端仍无法调用（安全默认值：未配置即不放行）。
+// 此时没有密码的账号请走设备码通道（在浏览器里用任意方式登录后确认）。
 //
 // 设备码通道还有一个好处：App 全程不接触用户密码，也不必内嵌 WebView 做 OAuth。
 // ─────────────────────────────────────────────────────────────────────────────
