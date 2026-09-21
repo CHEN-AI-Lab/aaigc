@@ -101,10 +101,27 @@ h5:   { compile: { include: [SHARED_DIR] } },   // mini 与 h5 是两套 module�
 
 后果：小程序无 `process` 对象，且 SK-8 禁止非空 fallback → 拿到 `undefined`，**不报错、不兜底、静默失效**。
 
-### 采用方案
+### 采用方案（已实测有效）
 
-**weapp 专属 constants 模块 + alias 覆盖**，**不改 `shared/` 的 `readEnv` 写法**。
-理由：`readEnv` 的动态下标是"禁硬编码 + 禁非空 fallback"统一约束的一部分，为小程序开例外会让约束出现裂缝。
+**weapp 专属的构建期全局常量 `__AAIGC_WEAPP_ENV__`**，由 `src/runtime/env.ts` 作为唯一出口消费。
+**不改 `shared/` 的 `readEnv` 写法** —— 它的动态下标是"禁硬编码 + 禁非空 fallback"统一约束的一部分，
+为小程序开例外会让约束出现裂缝。
+
+环境变量：`WEAPP_API_BASE_URL` / `WEAPP_CLIENT_ID` / `NODE_ENV`。
+
+### 实测证据（双向验证）
+
+| 场景 | 构建命令 | 产物结果 |
+|---|---|---|
+| **已配置** | `WEAPP_API_BASE_URL=https://env-probe.example WEAPP_CLIENT_ID=probe-client-9f3a npx taro build --type weapp` | `dist/common.js` 中出现 `env-probe.example` ✅ |
+| **未配置** | `npx taro build --type weapp` | 替换成 `{apiBaseUrl:"",clientId:"",env:"production"}` —— **空串，不是兜底域名**，符合 SK-8 ✅ |
+
+产物中 `typeof __AAIGC_WEAPP_ENV__` 变为 `typeof{apiBaseUrl:"",clientId:"",env:"production"}`，
+即标识符确实被 `defineConstants` 替换成了字面量对象。
+（产物里仍能搜到 `__AAIGC_WEAPP_ENV__` 字样，**只是报错文案里的字符串**，不代表未替换。）
+
+> ⚠️ 这个方案之所以有效，是因为 `__AAIGC_WEAPP_ENV__` 是**静态标识符**；
+> 而 `process.env[name]` 这种动态下标依然替换不到 —— 两者不矛盾。
 
 ### 安全约束
 
