@@ -4,8 +4,9 @@
   "private": true,
   "description": "AAIGC WeChat mini-program (Taro v4 + React) — reuses shared/ TS source",
   "scripts": {
-    "build:weapp": "taro build --type weapp",
-    "dev:weapp": "taro build --type weapp --watch",
+    "gen:theme": "node scripts/gen-theme.mjs",
+    "build:weapp": "node scripts/gen-theme.mjs && taro build --type weapp",
+    "dev:weapp": "node scripts/gen-theme.mjs && taro build --type weapp --watch",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

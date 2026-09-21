@@ -15,7 +15,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "shared/*": ["../../shared/*"]
+      "shared/*": ["../../shared/*"],
+      "@aaigc/messages/*": ["../../shared/js/messages/*"]
     },
     "types": ["@tarojs/taro", "@types/webpack-env", "@types/react"]
   },

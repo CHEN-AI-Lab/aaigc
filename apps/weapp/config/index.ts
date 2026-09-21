@@ -1,7 +1,30 @@
 import path from 'node:path'
+
 import { defineConfig, type UserConfigExport } from '@tarojs/cli'
 
-const SHARED_DIR = path.resolve(__dirname, '..', '..', '..', 'shared')
+const APP_DIR = path.resolve(__dirname, '..')
+const SHARED_DIR = path.resolve(APP_DIR, '..', '..', 'shared')
+/** 切片文案目录（scripts/build-shared-messages.mjs 的产物） */
+const SHARED_MESSAGES_DIR = path.join(SHARED_DIR, 'js', 'messages')
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 构建期 env：小程序没有 process 对象，env 必须在构建期被**替换成字面量**。
+//
+// ⚠️ 实测结论（spike）：`defineConstants` 是字面量文本替换，只对静态写死的
+// `process.env.FOO` 生效；shared/constants/{domains,endpoints}.ts 用的是
+// `process.env[name]`（动态下标），替换不到。
+// 所以这里**不依赖** defineConstants 去修 shared，而是注入一个 weapp 专属的
+// 全局常量对象，由 src/runtime/env.ts 作为**唯一出口**消费。
+// 小程序产物是公开的 —— 这里只放公开配置，不放任何密钥。
+// ─────────────────────────────────────────────────────────────────────────────
+const WEAPP_ENV = {
+  /** API 基址（末尾无斜杠）。未配置时运行期明确失败，不做非空 fallback（SK-8） */
+  apiBaseUrl: (process.env.WEAPP_API_BASE_URL ?? '').trim().replace(/\/+$/, ''),
+  /** Bearer 通道的 clientId（服务端 /api/auth/token 必填） */
+  clientId: (process.env.WEAPP_CLIENT_ID ?? '').trim(),
+  /** 埋点用环境标识 */
+  env: process.env.NODE_ENV ?? 'production',
+} as const
 
 const baseConfig: UserConfigExport<'webpack5'> = {
   projectName: 'aaigc-weapp',
@@ -16,17 +39,13 @@ const baseConfig: UserConfigExport<'webpack5'> = {
   sourceRoot: 'src',
   outputRoot: 'dist',
   plugins: [],
+  alias: {
+    // shared/package.json 的 exports 没有 `./js/*`，切片文案无法用包名说明符导入，
+    // 且不允许改 shared/ —— 用 weapp 侧 alias 指到真实目录。
+    '@aaigc/messages': SHARED_MESSAGES_DIR,
+  },
   defineConstants: {
-    // ⚠️ 实测结论：defineConstants 是**字面量文本替换**，只对源码里静态写死的
-    // `process.env.FOO` 生效。shared/constants/domains.ts 与 endpoints.ts 用的是
-    // `readEnv(name) { process.env[name] }`（动态下标），defineConstants **替换不到**，
-    // 产物里会原样残留 `process.env[e]`。
-    // 好在这些 readEnv 都带 `typeof process !== 'undefined' && process.env` 守卫，
-    // 小程序里安全退化为 ''（siteOrigin() 回落到第一方常量 aaigc.online），不会抛错。
-    // 若要真正注入 env，需另想办法（alias / 改 shared 写法），不能只靠这一行。
-    'process.env.NEXT_PUBLIC_APP_URL': JSON.stringify(
-      process.env.NEXT_PUBLIC_APP_URL ?? '',
-    ),
+    __AAIGC_WEAPP_ENV__: JSON.stringify(WEAPP_ENV),
   },
   copy: {
     patterns: [],

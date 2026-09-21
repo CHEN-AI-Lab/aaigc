@@ -12,6 +12,28 @@
       "markdownPreview": "Markdown",
       "colorPicker": "颜色选择",
       "textDiff": "文本对比"
-    }
+    },
+    "toolCount": "可用工具 {count} 个",
+    "degraded": "降级版",
+    "toolNotFound": "工具不存在",
+    "unsupportedInput": "该工具需要本平台不具备的能力",
+    "selectPlaceholder": "请选择",
+    "run": "运行",
+    "result": "结果",
+    "copy": "复制",
+    "language": "语言",
+    "followingSystem": "跟随系统",
+    "manuallySet": "手动选择",
+    "apiBaseMissing": "未配置 API 基址",
+    "deviceCodeHint": "复制此码，在站点上输入即可授权本设备",
+    "requestingCode": "正在申请设备码…",
+    "waitingApproval": "等待授权中…",
+    "loginSuccess": "已登录",
+    "toolUnsupported": "此字段需要本平台不具备的能力",
+    "login": "登录",
+    "requesting": "正在申请设备码…",
+    "waiting": "等待授权…",
+    "polling": "正在查询…",
+    "unauthorizedHint": "登录后可跨设备同步收藏"
   }
 }

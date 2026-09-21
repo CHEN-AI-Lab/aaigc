@@ -1,13 +1,110 @@
-:root {
-  --aaigc-color-bg: #ffffff;
-  --aaigc-color-text: #1a1a1a;
-}
+/* ─────────────────────────────────────────────────────────────────────────────
+ * 小程序全局样式
+ *
+ * 主题 CSS 变量在 theme.generated.css（构建期从 shared/constants/theme.ts 生成，
+ * 选择器同时含 page 与 body —— 只写 page 在 H5 下取不到值）。
+ * ───────────────────────────────────────────────────────────────────────────── */
+@import './theme.generated.css';
 
-/* 小程序用 page，H5 用 body —— 必须同时挂载，只写 page 在 H5 下取不到值 */
 page,
 body {
-  --aaigc-color-bg: #ffffff;
-  --aaigc-color-text: #1a1a1a;
-  background-color: var(--aaigc-color-bg);
-  color: var(--aaigc-color-text);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-size: 28px;
+  line-height: 1.5;
+}
+
+.aaigc-page {
+  min-height: 100vh;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.aaigc-title {
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 16px;
+}
+
+.aaigc-muted {
+  color: var(--color-text-secondary);
+  font-size: 24px;
+}
+
+.aaigc-card {
+  background-color: var(--color-surface);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.aaigc-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.aaigc-accent {
+  color: var(--color-accent);
+}
+
+.aaigc-btn {
+  background-color: var(--color-accent);
+  color: #ffffff;
+  border-radius: 12px;
+  padding: 20px 32px;
+  text-align: center;
+  font-size: 30px;
+}
+
+.aaigc-btn--ghost {
+  background-color: transparent;
+  color: var(--color-accent);
+  border: 2px solid var(--color-accent);
+}
+
+.aaigc-btn--disabled {
+  opacity: 0.5;
+}
+
+.aaigc-input {
+  background-color: #ffffff;
+  border: 2px solid var(--color-surface);
+  border-radius: 12px;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 28px;
+}
+
+.aaigc-textarea {
+  min-height: 220px;
+}
+
+.aaigc-pre {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  font-size: 26px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.aaigc-badge {
+  display: inline-block;
+  font-size: 22px;
+  padding: 4px 12px;
+  border-radius: 8px;
+  background-color: var(--color-accent-light);
+  color: #ffffff;
+}
+
+.aaigc-notice {
+  border-left: 6px solid var(--color-accent-light);
+  background-color: #ffffff;
+  padding: 16px 20px;
+  border-radius: 8px;
+  font-size: 24px;
+  color: var(--color-text-secondary);
 }
