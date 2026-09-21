@@ -14,7 +14,7 @@
 // ============================================================================
 
 import Taro, { useRouter } from '@tarojs/taro'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { View, Text, Input, Textarea, Button, Switch, Picker } from '@tarojs/components'
 
 import { getTool, runToolById } from 'shared/tools/registry'
@@ -22,6 +22,8 @@ import type { ToolInputField } from 'shared/types/tool'
 
 import { toolLabel, useI18n } from '../../runtime/i18n'
 import { createWeappToolContext } from '../../runtime/tool-context'
+import { favoriteSet } from 'shared/api/favorites'
+import { getApi } from '../../runtime/api'
 
 /**
  * 小程序端**不支持**的输入类型。
@@ -57,6 +59,23 @@ export default function ToolScreen() {
   const [output, setOutput] = useState<string>('')
   const [errorText, setErrorText] = useState<string>('')
   const [running, setRunning] = useState(false)
+  const [isFavorited, setIsFavorited] = useState(false)
+
+  // 进入页面时查一次收藏态。未登录 / 未配置基址就保持 false ——
+  // 收藏是登录态功能，没登录不显示错误，只是按钮不可用。
+  useEffect(() => {
+    if (!id) return
+    const api = getApi()
+    if (api === null) return
+    void (async () => {
+      try {
+        const snapshot = await api.favorites.list()
+        setIsFavorited(favoriteSet(snapshot).has(`tool:${id}`))
+      } catch {
+        setIsFavorited(false)
+      }
+    })()
+  }, [id])
 
   if (tool === undefined) {
     return (
@@ -99,6 +118,35 @@ export default function ToolScreen() {
   const onCopy = () => {
     if (output.length === 0) return
     void Taro.setClipboardData({ data: output })
+  }
+
+  /**
+   * 收藏开关。
+   *
+   * 用 add / remove 而不是 toggle —— toggle 非幂等，离线队列重放会把已删除的
+   * 收藏重新加回来（架构 R-1：mutation 必须幂等）。
+   */
+  const onToggleFavorite = async () => {
+    const api = getApi()
+    if (api === null) {
+      void Taro.showToast({ title: t('ui.apiBaseMissing'), icon: 'none' })
+      return
+    }
+    const next = !isFavorited
+    try {
+      const result = await api.favorites.mutate(tool.id, next ? 'add' : 'remove')
+      setIsFavorited(result.isFavorited)
+      void Taro.showToast({
+        title: result.isFavorited ? t('ui.favoriteAdded') : t('ui.favoriteRemoved'),
+        icon: 'none',
+      })
+    } catch (error) {
+      const code = (error as { code?: string }).code
+      void Taro.showToast({
+        title: code ? t(`errors.${code}`) : t('ui.syncFailed'),
+        icon: 'none',
+      })
+    }
   }
 
   return (
@@ -181,6 +229,10 @@ export default function ToolScreen() {
 
       <Button className='run-button' loading={running} onClick={() => void onRun()}>
         {t('ui.run')}
+      </Button>
+
+      <Button className='fav-button' onClick={() => void onToggleFavorite()}>
+        {isFavorited ? t('ui.unfavorite') : t('ui.favorite')}
       </Button>
 
       {errorText.length > 0 ? (

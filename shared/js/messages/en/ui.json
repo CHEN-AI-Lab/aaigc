@@ -34,6 +34,13 @@
     "requesting": "Requesting device code…",
     "waiting": "Waiting for authorization…",
     "polling": "Checking…",
-    "unauthorizedHint": "Sign in to sync favorites across devices"
+    "unauthorizedHint": "Sign in to sync favorites across devices",
+    "favorites": "Favorites",
+    "emptyFavorites": "No favorites yet",
+    "syncFailed": "Sync failed",
+    "favorite": "Add to favorites",
+    "unfavorite": "Remove from favorites",
+    "favoriteAdded": "Added",
+    "favoriteRemoved": "Removed"
   }
 }

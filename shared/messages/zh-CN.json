@@ -1300,7 +1300,14 @@
     "requesting": "正在申请设备码…",
     "waiting": "等待授权…",
     "polling": "正在查询…",
-    "unauthorizedHint": "登录后可跨设备同步收藏"
+    "unauthorizedHint": "登录后可跨设备同步收藏",
+    "favorites": "收藏",
+    "emptyFavorites": "还没有收藏",
+    "syncFailed": "同步失败",
+    "favorite": "加入收藏",
+    "unfavorite": "取消收藏",
+    "favoriteAdded": "已收藏",
+    "favoriteRemoved": "已取消"
   },
   "about": {
     "title": "关于 AAIGC",

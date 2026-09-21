@@ -34,6 +34,13 @@
     "requesting": "正在申請裝置碼…",
     "waiting": "等待授權…",
     "polling": "正在查詢…",
-    "unauthorizedHint": "登入後可跨裝置同步收藏"
+    "unauthorizedHint": "登入後可跨裝置同步收藏",
+    "favorites": "收藏",
+    "emptyFavorites": "還沒有收藏",
+    "syncFailed": "同步失敗",
+    "favorite": "加入收藏",
+    "unfavorite": "取消收藏",
+    "favoriteAdded": "已收藏",
+    "favoriteRemoved": "已取消"
   }
 }

@@ -34,6 +34,13 @@
     "requesting": "デバイスコードを要求中…",
     "waiting": "認証を待っています…",
     "polling": "確認中…",
-    "unauthorizedHint": "ログインするとお気に入りを端末間で同期できます"
+    "unauthorizedHint": "ログインするとお気に入りを端末間で同期できます",
+    "favorites": "お気に入り",
+    "emptyFavorites": "お気に入りはまだありません",
+    "syncFailed": "同期に失敗しました",
+    "favorite": "お気に入りに追加",
+    "unfavorite": "お気に入りから削除",
+    "favoriteAdded": "追加しました",
+    "favoriteRemoved": "削除しました"
   }
 }
