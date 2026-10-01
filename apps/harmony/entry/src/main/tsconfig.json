@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es2021",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false,
+    "noEmit": true,
+    "types": [],
+    "lib": ["es2021"]
+  },
+  "include": ["src/main/ets/**/*.ets"],
+  "exclude": ["src/main/ets/**/*.spec.ets", "src/ohosTest/**/*.ets", "src/test/**/*.ts"]
+}

@@ -1,0 +1,30 @@
+{
+  "name": "harmony",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AAIGC HarmonyOS NEXT App (ArkTS / ArkUI) — shares types/constants/utils/api/validators/data/tools/messages with all other ends. NOT compatible with apps/app/ (React Native Expo).",
+  "scripts": {
+    "ohpm:install": "ohpm install",
+    "build": "hvigorw assembleHap --mode module -p product=default",
+    "build:debug": "hvigorw assembleHap --mode module -p product=debug",
+    "build:release": "hvigorw assembleHap --mode module -p product=release",
+    "test": "hvigorw test",
+    "clean": "hvigorw clean",
+    "typecheck": "tsc --noEmit -p entry/src/main/tsconfig.json",
+    "lint": "eslint entry/src/main/ets --ext .ets"
+  },
+  "dependencies": {
+    "@ohos/hypium": "^1.0.21",
+    "@ohos/hvigor-ohos-plugin": "^5.0.4",
+    "@ohos/security.cryptoFramework": "^1.0.0",
+    "@ohos/data.preferences": "^1.0.0",
+    "shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.0",
+    "typescript": "^5.4.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "modelVersion": "5.0.0",
+  "description": "AAIGC HarmonyOS NEXT app entry module",
+  "dependencies": {},
+  "devDependencies": {
+    "harmonyos": "5.0.0(12)"
+  },
+  "buildOption": {
+    "arkOptions": {
+      "runtimeOnly": {
+        "sources": [],
+        "packages": []
+      }
+    }
+  }
+}

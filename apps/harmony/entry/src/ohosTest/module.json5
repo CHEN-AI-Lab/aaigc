@@ -1,0 +1,25 @@
+{
+  "module": {
+    "packageName": "entry_test",
+    "name": "entry_test",
+    "mainAbility": "TestAbility",
+    "description": "$string:test_main_title",
+    "srcEntry": "./ets/TestAbility.ets",
+    "abilities": [
+      {
+        "name": "TestAbility",
+        "srcEntry": "./ets/TestAbility.ets",
+        "description": "$string:test_main_title",
+        "icon": "$media:app_icon",
+        "label": "$string:test_main_title",
+        "exported": false,
+        "skills": [
+          {
+            "entities": ["entity.system.home"],
+            "actions": ["action.system.home"]
+          }
+        ]
+      }
+    ]
+  }
+}
