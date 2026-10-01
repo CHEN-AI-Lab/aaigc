@@ -57,12 +57,14 @@ const baseConfig: UserConfigExport<'webpack5'> = {
     prebundle: { enable: false },
   },
   cache: { enable: false },
+
+  // ── 多小程序端通用配置 ──────────────────────────────────────
+  // 把承重配置（compile.include 等）抽出来，Taro 的 defineConfig 会展开
+  // ...devConfig / ...prodConfig，那些后期展开的键会覆盖手写的平台块。
+  // 必须把通用配置放在前面，再在每个平台块里 spread 一次
+  //（参考 nextjs-multi-end-addition skill 的相关 Pitfall）。
   mini: {
-    // ── 承重配置（已实测）：让 Taro 的 babel-loader 处理 src 之外的 shared/ TS 源码 ──
-    // 默认 rule.include = [sourceDir, taro 自身的 node_modules]，不含 shared/，
-    // 不加这行会直接 ModuleParseError（Unexpected token，import type）。
-    // 注意：数组元素必须是合法的 webpack condition（绝对路径字符串 / RegExp / 函数），
-    // 不能写成 { path, type: 'folder' } —— 那会被 Taro 配置校验直接拒绝。
+    // 默认主端 = 微信
     compile: {
       include: [SHARED_DIR],
     },
@@ -71,9 +73,65 @@ const baseConfig: UserConfigExport<'webpack5'> = {
       cssModules: { enable: false },
     },
   },
+
+  // 支付宝小程序 —— 一码编译产物由支付宝 IDE 打开
+  alipay: {
+    compile: {
+      include: [SHARED_DIR],
+    },
+    postcss: {
+      pxtransform: { enable: true, config: {} },
+      cssModules: { enable: false },
+    },
+  },
+
+  // 抖音小程序
+  tt: {
+    compile: {
+      include: [SHARED_DIR],
+    },
+    postcss: {
+      pxtransform: { enable: true, config: {} },
+      cssModules: { enable: false },
+    },
+  },
+
+  // 百度智能小程序
+  swan: {
+    compile: {
+      include: [SHARED_DIR],
+    },
+    postcss: {
+      pxtransform: { enable: true, config: {} },
+      cssModules: { enable: false },
+    },
+  },
+
+  // QQ 小程序
+  qq: {
+    compile: {
+      include: [SHARED_DIR],
+    },
+    postcss: {
+      pxtransform: { enable: true, config: {} },
+      cssModules: { enable: false },
+    },
+  },
+
+  // 快手小程序 —— plugin-platform-kwai 由社区维护，与官方 plugin 同版号
+  kwai: {
+    compile: {
+      include: [SHARED_DIR],
+    },
+    postcss: {
+      pxtransform: { enable: true, config: {} },
+      cssModules: { enable: false },
+    },
+  },
+
+  // H5 走的是 H5WebpackModule，同一份逻辑（H5WebpackModule.js 里也是
+  // rule.include.unshift(...compile.include)），所以这里必须再配一次。
   h5: {
-    // H5 走的是 H5WebpackModule，同一份逻辑（H5WebpackModule.js 里也是
-    // rule.include.unshift(...compile.include)），所以这里必须再配一次。
     compile: {
       include: [SHARED_DIR],
     },

@@ -18,7 +18,11 @@ export default function EmojiPicker() {
   const emojiName = (item: EmojiEntry) => {
     if (locale !== 'en') {
       const localized = t(localKey(item.nameKey))
-      if (localized && !localized.startsWith('emojiName')) return localized
+      // next-intl 对缺失 key 会原样返回 key，且可能带 tools. 前缀；两种形式都要挡掉，
+      // 否则缺 key 时 tooltip 会把 "tools.emojiName1F600" 直接显示给用户
+      const looksLikeKey =
+        localized.startsWith('emojiName') || localized.startsWith('tools.emojiName')
+      if (localized && !looksLikeKey) return localized
     }
     return item.name
   }
