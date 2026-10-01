@@ -14,3 +14,19 @@ next-env.d.ts
 test-results/
 playwright-report/
 coverage/
+# Hard Rule 1.3: 临时测试页/草稿 HTML 演示（不进 git）
+test-pages/
+
+# HarmonyOS — DevEco Studio / hvigor
+oh_modules/
+.hvigor/
+local.properties
+apps/harmony/**/build/
+apps/harmony/.preview/
+
+# Cocos Creator（小游戏端，按需建端后才会有）
+library/
+temp/
+local/
+profiles/
+apps/minigame/**/build/
