@@ -1,6 +1,6 @@
 'use client'
 
-import { useVisitTracking } from 'shared/hooks/useVisitTracking'
+import { useVisitTracking } from '@/hooks/useVisitTracking'
 import { lazy, Suspense } from 'react'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'

@@ -1,7 +1,10 @@
 'use client'
 
 import { useEffect } from 'react'
-import { WORKER_URL, FALLBACK_URL } from '../constants'
+// 仅 web 端使用的埋点 hook —— 依赖 web 侧的 NEXT_PUBLIC_VERCEL_ENV 与
+// localStorage/crypto/navigator 等浏览器 API，故放在 apps/web/src/hooks/
+// 而非 shared/hooks/。其他端的埋点接入各自端内置的实现。
+import { WORKER_URL, FALLBACK_URL } from 'shared/constants'
 
 // Environment is exposed via next.config.ts env (maps VERCEL_ENV → NEXT_PUBLIC_VERCEL_ENV)
 const ENV =

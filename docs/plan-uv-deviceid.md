@@ -15,7 +15,7 @@
 
 ### 第一步：前端（aaigc 项目）
 
-**文件**：`shared/hooks/useVisitTracking.ts`
+**文件**：`apps/web/src/hooks/useVisitTracking.ts`
 
 改动：
 1. 加 `getDeviceId()` 函数——localStorage 存一个 UUID，存一次永远不变
@@ -120,7 +120,7 @@ SELECT COUNT(*) FROM login_uv WHERE project=? AND date=?
 
 | 项目 | 路径 | 改动量 |
 |------|------|--------|
-| aaigc | `shared/hooks/useVisitTracking.ts` | 加 10 行 |
+| aaigc | `apps/web/src/hooks/useVisitTracking.ts` | 加 10 行 |
 | stats-worker | `worker.js` | 改 8 行 |
 | Turso 测试库 | 删表重建 | 3 张表 |
 | stats-dashboard | 统计面板加一栏 | 加 1 个查询 + 显示 |

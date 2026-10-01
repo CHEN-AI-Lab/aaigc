@@ -2,7 +2,7 @@
 
 import { usePathname } from '@/i18n/navigation'
 import { useSession } from '@/auth-client'
-import { useVisitTracking } from 'shared/hooks/useVisitTracking'
+import { useVisitTracking } from '@/hooks/useVisitTracking'
 
 export default function VisitTracker() {
   const pathname = usePathname()
