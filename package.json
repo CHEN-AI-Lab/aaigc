@@ -21,6 +21,8 @@
     "check:json": "python3 scripts/check-json.py",
     "check:type": "pnpm --filter shared exec -- tsc --noEmit && pnpm --filter web exec -- tsc --noEmit",
     "setup": "pnpm install",
+    "setup:harmony": "bash scripts/setup-harmony.sh",
+    "setup:minigame": "bash scripts/setup-minigame.sh",
     "prepare": "husky"
   },
   "devDependencies": {

@@ -40,6 +40,8 @@ ALLOWLIST_PATH = ".i18n-hardcode-allowlist.json"
 SCAN_ROOTS = ["apps"]
 SCAN_EXTS = (".ts", ".tsx")
 EXCLUDE_DIRS = {"node_modules", ".next", "target", "dist", "build", ".turbo", ".vercel"}
+# 测试文件里的期望值是断言（toBe('工具'）），不是 i18n 输出，必须排除
+EXCLUDE_FILE_SUFFIXES = (".test.ts", ".test.tsx", ".spec.ts", ".spec.tsx", ".generated.ts")
 
 # 只扫已暂存文件（pre-commit 场景）。默认 False = 扫全仓。
 ONLY_STAGED = False
@@ -71,7 +73,12 @@ def staged_files() -> list[str]:
     except Exception:
         return []
     paths = [p.strip() for p in out.splitlines() if p.strip()]
-    return [p for p in paths if p.startswith("apps/") and p.endswith(SCAN_EXTS)]
+    return [
+        p for p in paths
+        if p.startswith("apps/")
+        and p.endswith(SCAN_EXTS)
+        and not any(p.endswith(suf) for suf in EXCLUDE_FILE_SUFFIXES)
+    ]
 
 
 def iter_files():
@@ -84,8 +91,11 @@ def iter_files():
         for dirpath, dirnames, filenames in os.walk(root):
             dirnames[:] = [d for d in dirnames if d not in EXCLUDE_DIRS]
             for name in filenames:
-                if name.endswith(SCAN_EXTS):
-                    yield os.path.join(dirpath, name)
+                if not name.endswith(SCAN_EXTS):
+                    continue
+                if any(name.endswith(suf) for suf in EXCLUDE_FILE_SUFFIXES):
+                    continue
+                yield os.path.join(dirpath, name)
 
 
 # 行尾注释：匹配 // 但排除 URL 里的 ://
