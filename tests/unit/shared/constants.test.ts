@@ -18,11 +18,11 @@ import {
   ipEchoEndpoint,
   ipGeoEndpoints,
   nativeAppDownloadUrls,
-  productUrlMap,
   DNS_DOH_ENDPOINTS,
   IP_GEO_ENDPOINTS,
   IP_ECHO_ENDPOINT,
 } from 'shared/constants/endpoints'
+import { PRODUCT_URLS } from 'shared/constants/products'
 import { isSameOrigin, isTrustedRequest, readBearerToken } from 'shared/utils/csrf'
 
 const MESSAGES_DIR = path.resolve(__dirname, '../../../shared/messages')
@@ -95,7 +95,6 @@ describe('endpoint configuration', () => {
     'IP_ECHO_ENDPOINT',
     'API_CORS_ORIGINS',
     'NATIVE_APP_DOWNLOAD_URLS_JSON',
-    'PRODUCT_URL_MAP_JSON',
   ]
   const saved = new Map<string, string | undefined>()
 
@@ -124,20 +123,10 @@ describe('endpoint configuration', () => {
       saved.set(key, process.env[key])
       delete process.env[key]
     }
-    // CORS 白名单 / 下载链接 / 产品 URL 会随部署环境变化，仍走环境变量：
-    // 未配置 → 空，绝不偷偷用内置值。
+    // CORS 白名单 / 下载链接会随部署环境变化，仍走环境变量：
+    // 未配置 → 空，绝不偷偷用内置值。（产品 URL 已改为常量，见下方用例）
     expect(corsOrigins()).toEqual([])
     expect(nativeAppDownloadUrls()).toEqual({})
-    expect(productUrlMap()).toEqual({})
-  })
-
-  it('parses the product url map and drops invalid entries', () => {
-    process.env.PRODUCT_URL_MAP_JSON = JSON.stringify({
-      p1: { url: 'https://p1.test', previewUrl: 'https://prev.test' },
-      bad: 42,
-      nothing: null,
-    })
-    expect(productUrlMap()).toEqual({ p1: { url: 'https://p1.test', previewUrl: 'https://prev.test' } })
   })
 
   it('parses the download url map and drops non-string values', () => {
@@ -145,19 +134,21 @@ describe('endpoint configuration', () => {
     expect(nativeAppDownloadUrls()).toEqual({ desktop: 'https://d.test/app' })
   })
 
-  it('survives malformed JSON', () => {
-    process.env.PRODUCT_URL_MAP_JSON = '{not json'
-    expect(productUrlMap()).toEqual({})
-  })
-
-  it('keeps only string url fields in the product map', () => {
-    process.env.PRODUCT_URL_MAP_JSON = JSON.stringify({
-      aaigc: { url: 'https://p.test/aaigc', previewUrl: 'https://p.test/preview', bad: 1 },
-      broken: 'not-an-object',
-    })
-    expect(productUrlMap()).toEqual({
-      aaigc: { url: 'https://p.test/aaigc', previewUrl: 'https://p.test/preview' },
-    })
+  it('产品跳转地址走常量（不走环境变量），11 个产品齐全', () => {
+    // 回归防护：这些地址曾被改成从 PRODUCT_URL_MAP_JSON 环境变量读取，
+    // 线上从未配置该变量 → 所有产品链接为空、详情页点不动。
+    // 现固定为 shared/constants/products.ts 的常量。
+    const ids = [
+      'cookmate', 'aihub', 'short-drama', 'resume-optimizer', 'copycraft',
+      'contentforge', 'postforge', 'maestro', 'ai-portfolio-studio',
+      'ai-toolbox', 'content-ai-site',
+    ]
+    expect(Object.keys(PRODUCT_URLS).sort()).toEqual([...ids].sort())
+    for (const id of ids) {
+      const entry = PRODUCT_URLS[id]
+      // 每个产品至少要有一个可用地址，否则详情页无法跳转
+      expect(entry.productionUrl || entry.previewUrl || entry.url).toBeTruthy()
+    }
   })
 
   it('第三方端点集中定义在常量文件，业务代码不得重复写死域名', () => {

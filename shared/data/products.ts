@@ -1,12 +1,12 @@
 import type { Product, ProductStatus } from '../types'
-import { productUrlMap } from '../constants/endpoints'
+import { PRODUCT_URLS } from '../constants/products'
+import type { ProductUrlEntry } from '../constants/products'
 
 /**
  * 11 个产品的静态元数据（图标 / 状态）。
- * URL 一律来自 PRODUCT_URL_MAP_JSON 环境变量（P1-08 / Q-A12），
- * 缺失时 url 为空 → UI 显示「即将上线」，不做非空 fallback。
+ * URL 来自 shared/constants/products 常量（不随环境变化，不走环境变量）。
  */
-const urlMap = productUrlMap()
+const urlMap: Readonly<Record<string, ProductUrlEntry>> = PRODUCT_URLS
 
 function build(id: string, icon: string, status: ProductStatus): Product {
   const urls = urlMap[id] ?? {}

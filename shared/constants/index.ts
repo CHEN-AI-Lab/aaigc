@@ -40,9 +40,11 @@ export {
   corsOrigins,
   apiCorsOrigins,
   nativeAppDownloadUrls,
-  productUrlMap,
 } from './endpoints'
-export type { ProductUrlEntry } from './endpoints'
+
+// ── 产品跳转地址（常量，不走环境变量）── 见 shared/constants/products.ts ──
+export { PRODUCT_URLS } from './products'
+export type { ProductUrlEntry } from './products'
 
 // ── 本站域名（唯一真源）── 见 shared/constants/domains.ts ──
 // 任何地方都不要再写死本站域名，一律从这里取。

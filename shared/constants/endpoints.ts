@@ -96,34 +96,7 @@ export function nativeAppDownloadUrls(): Record<string, string> {
   }
 }
 
-/**
- * 11 个产品的 URL 映射 JSON：{ "<productId>": { url?, previewUrl?, productionUrl? } }
- * 环境变量：PRODUCT_URL_MAP_JSON
- */
-export interface ProductUrlEntry {
-  url?: string
-  previewUrl?: string
-  productionUrl?: string
-}
+// 产品 URL 映射已移出本文件 → shared/constants/products.ts（PRODUCT_URLS）。
+// 原 productUrlMap() 从 PRODUCT_URL_MAP_JSON 环境变量读取，线上从未配置该变量，
+// 导致 11 个产品链接全为空、详情页点不动（真实回归 bug）。已改回常量，勿再 env 化。
 
-export function productUrlMap(): Record<string, ProductUrlEntry> {
-  const raw = readEnv('PRODUCT_URL_MAP_JSON')
-  if (!raw) return {}
-  try {
-    const parsed: unknown = JSON.parse(raw)
-    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return {}
-    const out: Record<string, ProductUrlEntry> = {}
-    for (const [key, value] of Object.entries(parsed as Record<string, unknown>)) {
-      if (!value || typeof value !== 'object' || Array.isArray(value)) continue
-      const entry = value as Record<string, unknown>
-      const item: ProductUrlEntry = {}
-      if (typeof entry.url === 'string') item.url = entry.url
-      if (typeof entry.previewUrl === 'string') item.previewUrl = entry.previewUrl
-      if (typeof entry.productionUrl === 'string') item.productionUrl = entry.productionUrl
-      out[key] = item
-    }
-    return out
-  } catch {
-    return {}
-  }
-}
