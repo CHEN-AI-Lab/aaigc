@@ -216,3 +216,59 @@ describe('compactQueue', () => {
     expect(compacted.map((entry) => entry.opId)).toEqual(['a1', 'b2'])
   })
 })
+
+// ─── 补充覆盖（跨端契约边界）─────────────────────────────────────────
+describe('sortMutations (edge cases)', () => {
+  it('treats an unparseable clientTs as epoch 0 so it replays first', () => {
+    const ordered = sortMutations([
+      op('ok', 'add', 'x', '2025-01-01T00:00:00.000Z'),
+      op('bad', 'add', 'y', 'not-a-date'),
+    ])
+    expect(ordered.map((entry) => entry.opId)).toEqual(['bad', 'ok'])
+  })
+})
+
+describe('applyMutations (ordering edge cases)', () => {
+  it('lets a later add win when the remove came first', () => {
+    const result = applyMutations(
+      [],
+      [op('r', 'remove', 'x', '2025-01-01T00:00:00.000Z'), op('a', 'add', 'x', '2025-01-02T00:00:00.000Z')],
+      { serverTime: '2025-02-01T00:00:00.000Z' },
+    )
+    expect(result.favorites.map((entry) => entry.toolId)).toEqual(['x'])
+  })
+
+  it('breaks createdAt ties on key so snapshot order is deterministic across clients', () => {
+    const result = applyMutations(
+      [item('b', 'tool', '2025-01-01T00:00:00.000Z'), item('a', 'tool', '2025-01-01T00:00:00.000Z')],
+      [],
+      { serverTime: '2025-02-01T00:00:00.000Z' },
+    )
+    expect(result.favorites.map((entry) => entry.toolId)).toEqual(['a', 'b'])
+  })
+})
+
+describe('mergeFavorites (optimistic delete)', () => {
+  it('lets a pending remove mask a server-side favorite', () => {
+    const merged = mergeFavorites(
+      { favorites: [item('x')], serverTime: '2025-02-01T00:00:00.000Z' },
+      [op('r', 'remove', 'x', '2025-02-02T00:00:00.000Z')],
+      '2025-02-01T00:00:00.000Z',
+    )
+    expect(merged.favorites).toEqual([])
+  })
+})
+
+describe('compactQueue (cross-type keys)', () => {
+  it('treats the same toolId under tool and product as two distinct keys', () => {
+    const compacted = compactQueue([
+      op('t', 'add', 'x', '2025-01-01T00:00:00.000Z', 'tool'),
+      op('p', 'remove', 'x', '2025-01-02T00:00:00.000Z', 'product'),
+    ])
+    expect(compacted).toHaveLength(2)
+  })
+
+  it('returns an empty array for an empty queue', () => {
+    expect(compactQueue([])).toEqual([])
+  })
+})
