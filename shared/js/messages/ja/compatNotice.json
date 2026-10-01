@@ -1,0 +1,16 @@
+{
+  "compatNotice": {
+    "compatNotice": {
+      "title": "ページが正しく表示できません",
+      "desc": "ブラウザのバージョンが古いため、このページのスタイルを正しく読み込めません。下に表示されているスタイルなしの画面は、古いブラウザで見た場合の実際の表示です。",
+      "reqTitle": "要件：",
+      "reqIOS": "iPad / iPhone：iOS 16.4 以降にアップデート",
+      "reqAndroid": "Android：Chrome または Edge を 111 以上に更新",
+      "reqDesktop": "パソコン：Windows 10/11 + Chrome 111、Safari 16.4、Firefox 128 のいずれか",
+      "howTitle": "アップデートの方法：",
+      "how": "iPad / iPhone：設定 → 一般 → ソフトウェア・アップデート。Android：Play ストアで Chrome を更新。",
+      "details": "詳細を見る",
+      "dismiss": "了解"
+    }
+  }
+}

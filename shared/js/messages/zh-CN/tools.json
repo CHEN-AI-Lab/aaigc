@@ -242,7 +242,10 @@
       "name": "列表排序",
       "description": "排序、去重和打乱列表"
     },
-    "timestamp": "时间戳",
+    "timestamp": {
+      "name": "时间戳",
+      "description": "Unix 时间戳与可读日期相互转换"
+    },
     "date-calculator": {
       "name": "日期计算器",
       "description": "日期间隔计算与日期加减"
@@ -975,6 +978,21 @@
     "emojiName2049": "感叹问号",
     "emojiName1F505": "调暗",
     "emojiName1F506": "调亮",
+    "emojiName1F47B": "鬼魂",
+    "emojiName1F916": "机器人",
+    "emojiName1F389": "庆祝彩带",
+    "emojiName2728": "闪光",
+    "emojiName1F4AA": "肌肉",
+    "emojiName1FAE1": "敬礼",
+    "emojiName2615": "热饮",
+    "emojiName1F37A": "啤酒",
+    "emojiName1F4AF": "满分",
+    "emojiName1F525": "火焰",
+    "emojiName2B50": "星星",
+    "emojiName26A0": "警告",
+    "emojiName26A1": "高压电",
+    "emojiName1F4A1": "灯泡",
+    "emojiName1F680": "火箭",
     "cronExplain": "Cron 是 Linux 服务器上的定时任务调度工具。它按设定的时间自动执行命令或脚本，常用于：",
     "cronUse1": "定时备份数据库（每天凌晨 3 点）",
     "cronUse2": "定时发送邮件或报表（每周一早上 9 点）",

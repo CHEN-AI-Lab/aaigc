@@ -364,7 +364,10 @@
       "name": "List Sorter",
       "description": "Sort, deduplicate and shuffle lists"
     },
-    "timestamp": "Timestamp",
+    "timestamp": {
+      "name": "Timestamp",
+      "description": "Convert between Unix timestamps and human-readable dates"
+    },
     "date-calculator": {
       "name": "Date Calculator",
       "description": "Calculate date differences and add/subtract days"
@@ -1147,6 +1150,21 @@
     "emojiName27B0": "Curly Loop",
     "emojiName2B55": "Heavy Large Circle",
     "emojiName3030": "Wavy Dash",
+    "emojiName1F47B": "Ghost",
+    "emojiName1F916": "Robot",
+    "emojiName1F389": "Party Popper",
+    "emojiName2728": "Sparkles",
+    "emojiName1F4AA": "Flexed Biceps",
+    "emojiName1FAE1": "Saluting Face",
+    "emojiName2615": "Hot Beverage",
+    "emojiName1F37A": "Beer Mug",
+    "emojiName1F4AF": "Hundred Points",
+    "emojiName1F525": "Fire",
+    "emojiName2B50": "Star",
+    "emojiName26A0": "Warning",
+    "emojiName26A1": "High Voltage",
+    "emojiName1F4A1": "Light Bulb",
+    "emojiName1F680": "Rocket",
     "cronWarning": "Warning: minute/hour set to Every with a specific day — this runs every minute on that day (1440 times)!",
     "cronFix": "Set to 0:00",
     "cronDescEveryMin": "Every minute",
@@ -1307,7 +1325,8 @@
     "favorite": "Add to favorites",
     "unfavorite": "Remove from favorites",
     "favoriteAdded": "Added",
-    "favoriteRemoved": "Removed"
+    "favoriteRemoved": "Removed",
+    "themeToggle": "Switch theme"
   },
   "about": {
     "title": "About AAIGC",
@@ -1871,5 +1890,25 @@
     "version": "Version",
     "noFavorites": "No favorites yet",
     "pendingSync": "{count} change(s) waiting to sync"
+  },
+  "compatNotice": {
+    "compatNotice": {
+      "title": "This page can't display properly",
+      "desc": "Your browser is too old to load this page's styles correctly. The page below is unstyled on purpose — it is showing you what users on outdated browsers see.",
+      "reqTitle": "Requirements:",
+      "reqIOS": "iPad / iPhone: update to iOS 16.4 or later",
+      "reqAndroid": "Android: update Chrome or Edge to 111+",
+      "reqDesktop": "Desktop: Windows 10/11 + Chrome 111, Safari 16.4, or Firefox 128",
+      "howTitle": "How to update:",
+      "how": "iPad / iPhone: Settings → General → Software Update. Android: update Chrome in Play Store.",
+      "details": "View details",
+      "dismiss": "Got it"
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "tools": "Tools",
+    "products": "Products",
+    "about": "About"
   }
 }

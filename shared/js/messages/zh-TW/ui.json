@@ -41,6 +41,7 @@
     "favorite": "加入收藏",
     "unfavorite": "取消收藏",
     "favoriteAdded": "已收藏",
-    "favoriteRemoved": "已取消"
+    "favoriteRemoved": "已取消",
+    "themeToggle": "切換主題"
   }
 }

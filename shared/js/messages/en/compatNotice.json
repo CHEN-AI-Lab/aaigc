@@ -1,0 +1,16 @@
+{
+  "compatNotice": {
+    "compatNotice": {
+      "title": "This page can't display properly",
+      "desc": "Your browser is too old to load this page's styles correctly. The page below is unstyled on purpose — it is showing you what users on outdated browsers see.",
+      "reqTitle": "Requirements:",
+      "reqIOS": "iPad / iPhone: update to iOS 16.4 or later",
+      "reqAndroid": "Android: update Chrome or Edge to 111+",
+      "reqDesktop": "Desktop: Windows 10/11 + Chrome 111, Safari 16.4, or Firefox 128",
+      "howTitle": "How to update:",
+      "how": "iPad / iPhone: Settings → General → Software Update. Android: update Chrome in Play Store.",
+      "details": "View details",
+      "dismiss": "Got it"
+    }
+  }
+}

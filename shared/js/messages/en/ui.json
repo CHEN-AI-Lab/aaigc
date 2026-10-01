@@ -41,6 +41,7 @@
     "favorite": "Add to favorites",
     "unfavorite": "Remove from favorites",
     "favoriteAdded": "Added",
-    "favoriteRemoved": "Removed"
+    "favoriteRemoved": "Removed",
+    "themeToggle": "Switch theme"
   }
 }

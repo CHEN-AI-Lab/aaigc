@@ -241,7 +241,10 @@
       "name": "リストソーター",
       "description": "リストの並べ替え、重複削除、シャッフル"
     },
-    "timestamp": "タイムスタンプ",
+    "timestamp": {
+      "name": "タイムスタンプ",
+      "description": "Unix タイムスタンプと日時の相互変換"
+    },
     "date-calculator": {
       "name": "日付計算機",
       "description": "日付の差の計算と加算/減算"
@@ -1044,6 +1047,21 @@
     "emojiName27B0": "环",
     "emojiName2B55": "空心圆",
     "emojiName3030": "波浪",
+    "emojiName1F47B": "お化け",
+    "emojiName1F916": "ロボット",
+    "emojiName1F389": "パーティークラッカー",
+    "emojiName2728": "キラキラ",
+    "emojiName1F4AA": "力こぶ",
+    "emojiName1FAE1": "敬礼",
+    "emojiName2615": "温かい飲み物",
+    "emojiName1F37A": "ビール",
+    "emojiName1F4AF": "100点満点",
+    "emojiName1F525": "炎",
+    "emojiName2B50": "星",
+    "emojiName26A0": "警告",
+    "emojiName26A1": "高電圧",
+    "emojiName1F4A1": "電球",
+    "emojiName1F680": "ロケット",
     "favorite": "お気に入り",
     "favorited": "お気に入り済み",
     "like": "いいね",

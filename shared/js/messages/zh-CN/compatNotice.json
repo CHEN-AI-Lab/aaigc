@@ -1,0 +1,16 @@
+{
+  "compatNotice": {
+    "compatNotice": {
+      "title": "页面无法正常显示",
+      "desc": "您的浏览器版本过低，无法正确加载本页样式。下方未加样式的页面正是旧浏览器用户看到的效果。",
+      "reqTitle": "需要：",
+      "reqIOS": "iPad / iPhone：升级到 iOS 16.4 以上",
+      "reqAndroid": "安卓：Chrome 或 Edge 升级到 111 以上",
+      "reqDesktop": "电脑：Windows 10/11 + Chrome 111、Safari 16.4 或 Firefox 128",
+      "howTitle": "怎么升级：",
+      "how": "iPad / iPhone：设置 → 通用 → 软件更新。安卓：在应用商店更新 Chrome。",
+      "details": "查看详情",
+      "dismiss": "我知道了"
+    }
+  }
+}

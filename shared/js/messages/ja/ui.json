@@ -41,6 +41,7 @@
     "favorite": "お気に入りに追加",
     "unfavorite": "お気に入りから削除",
     "favoriteAdded": "追加しました",
-    "favoriteRemoved": "削除しました"
+    "favoriteRemoved": "削除しました",
+    "themeToggle": "テーマ切替"
   }
 }

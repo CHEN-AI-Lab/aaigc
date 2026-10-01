@@ -1,0 +1,16 @@
+{
+  "compatNotice": {
+    "compatNotice": {
+      "title": "頁面無法正常顯示",
+      "desc": "您的瀏覽器版本過舊，無法正確載入本頁樣式。下方未套用樣式的頁面正是舊版瀏覽器使用者看到的效果。",
+      "reqTitle": "需求：",
+      "reqIOS": "iPad / iPhone：升級至 iOS 16.4 以上",
+      "reqAndroid": "Android：將 Chrome 或 Edge 升級至 111 以上",
+      "reqDesktop": "電腦：Windows 10/11 + Chrome 111、Safari 16.4 或 Firefox 128",
+      "howTitle": "如何升級：",
+      "how": "iPad / iPhone：設定 → 一般 → 軟體更新。Android：在 Play 商店更新 Chrome。",
+      "details": "查看詳情",
+      "dismiss": "我知道了"
+    }
+  }
+}

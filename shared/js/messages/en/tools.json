@@ -242,7 +242,10 @@
       "name": "List Sorter",
       "description": "Sort, deduplicate and shuffle lists"
     },
-    "timestamp": "Timestamp",
+    "timestamp": {
+      "name": "Timestamp",
+      "description": "Convert between Unix timestamps and human-readable dates"
+    },
     "date-calculator": {
       "name": "Date Calculator",
       "description": "Calculate date differences and add/subtract days"
@@ -1025,6 +1028,21 @@
     "emojiName27B0": "Curly Loop",
     "emojiName2B55": "Heavy Large Circle",
     "emojiName3030": "Wavy Dash",
+    "emojiName1F47B": "Ghost",
+    "emojiName1F916": "Robot",
+    "emojiName1F389": "Party Popper",
+    "emojiName2728": "Sparkles",
+    "emojiName1F4AA": "Flexed Biceps",
+    "emojiName1FAE1": "Saluting Face",
+    "emojiName2615": "Hot Beverage",
+    "emojiName1F37A": "Beer Mug",
+    "emojiName1F4AF": "Hundred Points",
+    "emojiName1F525": "Fire",
+    "emojiName2B50": "Star",
+    "emojiName26A0": "Warning",
+    "emojiName26A1": "High Voltage",
+    "emojiName1F4A1": "Light Bulb",
+    "emojiName1F680": "Rocket",
     "cronWarning": "Warning: minute/hour set to Every with a specific day — this runs every minute on that day (1440 times)!",
     "cronFix": "Set to 0:00",
     "cronDescEveryMin": "Every minute",
