@@ -1,6 +1,6 @@
 import { headers } from 'next/headers'
 import { NextIntlClientProvider } from 'next-intl'
-import { getMessages, setRequestLocale } from 'next-intl/server'
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
 import { routing } from '../../i18n/routing'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
@@ -8,6 +8,7 @@ import VisitTracker from '../../components/VisitTracker'
 import AuthProvider from '../../components/AuthProvider'
 import { FavoritesProvider } from '../../components/FavoritesProvider'
 import { ToastProvider } from '../../components/ui/Toast'
+import BrowserCompatGate from '../../components/BrowserCompatGate'
 
 type Props = {
   children: React.ReactNode
@@ -22,6 +23,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params
   setRequestLocale(locale)
   const messages = await getMessages({ locale })
+  const compat = await getTranslations({ locale, namespace: 'compatNotice' })
 
   // 防护开关：与 proxy.ts 的 CSP_STRICT 保持一致。
   // 仅在强防护模式下才读取 headers() 获取 nonce——该调用会使本路由树转为动态渲染；
@@ -46,6 +48,21 @@ export default async function LocaleLayout({ children, params }: Props) {
         />
       </head>
       <body className="min-h-screen antialiased">
+        {/* Hard Rule 1.4：旧浏览器全屏遮罩提示。SSR 注入 <script>，特性检测，不达标才显示遮罩。组件本身零 Tailwind 类名（防止提示自己也失效）。 */}
+        <BrowserCompatGate
+          texts={{
+            title: compat('title'),
+            desc: compat('desc'),
+            reqTitle: compat('reqTitle'),
+            reqIOS: compat('reqIOS'),
+            reqAndroid: compat('reqAndroid'),
+            reqDesktop: compat('reqDesktop'),
+            howTitle: compat('howTitle'),
+            how: compat('how'),
+            details: compat('details'),
+            dismiss: compat('dismiss'),
+          }}
+        />
         <NextIntlClientProvider key={locale} locale={locale} messages={messages}>
           <ToastProvider>
             <AuthProvider>
