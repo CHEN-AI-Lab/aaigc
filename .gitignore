@@ -30,3 +30,6 @@ temp/
 local/
 profiles/
 apps/minigame/**/build/
+
+# AI 一次性调试探查脚本（临时产物，不进版本库）
+_probe_*
