@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { applyRules, type FileWithPath, type RenameRule } from '../../shared/utils/fileRename'
+import { applyRules, type FileWithPath, type RenameRule } from 'shared/utils/fileRename'
 
 const files: FileWithPath[] = [
   { name: 'IMG_1234.jpg', path: 'photos/IMG_1234.jpg' },

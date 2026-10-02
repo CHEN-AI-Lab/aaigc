@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { FavoriteItem } from '../../shared/types/index'
+import { FavoriteItem } from 'shared/types'
 
 describe('FavoriteItem type', () => {
   it('should accept valid favorite item with type', () => {

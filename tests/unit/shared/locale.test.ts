@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { dt, dateLocale } from '../../shared/utils/locale'
+import { dt, dateLocale } from 'shared/utils/locale'
 
 describe('shared/utils/locale dt()', () => {
   it('returns English for en locale', () => {

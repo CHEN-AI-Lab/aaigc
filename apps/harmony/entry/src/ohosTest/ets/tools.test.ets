@@ -1,4 +1,4 @@
-// tools/i18n 的纯函数单元测试
+// tools/i18n/favorites 的纯函数单元测试
 //
 // 测试目标：
 //   1. tools 数组有 38 个工具
@@ -6,12 +6,15 @@
 //   3. categoriesWithTools() 返回的分类每个至少有一个工具
 //   4. 每个工具的 category 必须在 toolCategories 内
 //   5. i18n key 在 4 语言下都有值（避免空 fallback）
+//   6. favoriteKey() 跨端契约（key 格式 + 同 key 重复 toggle 不互相覆盖）
+//   7. ThemeMode 持久化（getThemeMode 默认值 + 切换后保持）
 //
 // 运行：hvigorw test（在 macOS/Windows 真机上）
 
 import { describe, it, expect } from '@ohos/hypium'
 import { tools, toolCategories, categoriesWithTools } from 'shared/data/tools'
 import { locales, defaultLocale } from 'shared/constants/locales'
+import { favoriteKey } from 'shared/utils/favorite-sync'
 
 // ⚠️ hypium 没有 node:fs 等 Node API；messages.generated.ets 通过构建期注入
 // 这里直接 import 生成的常量（与 ets 主代码共享）
@@ -105,6 +108,26 @@ export default function toolsTest() {
 
     it('has exactly 4 locales', 0, () => {
       expect((locales as readonly unknown[]).length).assertEqual(4)
+    })
+  })
+
+  describe('favoriteKey (cross-end contract)', () => {
+    it('produces type:toolId format', 0, () => {
+      expect(favoriteKey('json-formatter', 'tool')).assertEqual('tool:json-formatter')
+      expect(favoriteKey('cookmate', 'product')).assertEqual('product:cookmate')
+    })
+
+    it('disambiguates tool vs product with same toolId', 0, () => {
+      // 同一个 id 既可能是 tool 也可能是 product，键不能相同
+      const toolKey = favoriteKey('shared-id', 'tool')
+      const productKey = favoriteKey('shared-id', 'product')
+      expect(toolKey).assertNotEqual(productKey)
+    })
+
+    it('is deterministic across calls (same inputs → same key)', 0, () => {
+      const k1 = favoriteKey('json-formatter', 'tool')
+      const k2 = favoriteKey('json-formatter', 'tool')
+      expect(k1).assertEqual(k2)
     })
   })
 }

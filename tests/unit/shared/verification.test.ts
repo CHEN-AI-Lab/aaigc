@@ -7,7 +7,7 @@ import {
   VERIFICATION_CODE_TTL,
   RATE_LIMIT_WINDOW,
   MAX_REQUESTS_PER_WINDOW,
-} from '../../shared/utils/verification'
+} from 'shared/utils/verification'
 
 describe('verification utils', () => {
   it('isValidEmail accepts normal emails', () => {
