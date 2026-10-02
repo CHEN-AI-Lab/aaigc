@@ -1,0 +1,6 @@
+{
+  "name": "@ohos/hvigor-ohos-plugin",
+  "version": "5.0.4",
+  "private": true,
+  "description": "Local stub for pnpm install. Real package comes from ohpm."
+}

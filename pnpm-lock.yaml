@@ -181,6 +181,31 @@ importers:
         specifier: ^7.3.6
         version: 7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(sass@1.104.1)(stylus@0.64.0)(terser@5.51.2)(yaml@2.9.1)
 
+  apps/harmony:
+    dependencies:
+      '@ohos/data.preferences':
+        specifier: file:./local-stubs/data-preferences
+        version: file:apps/harmony/local-stubs/data-preferences
+      '@ohos/hvigor-ohos-plugin':
+        specifier: file:./local-stubs/hvigor-ohos-plugin
+        version: file:apps/harmony/local-stubs/hvigor-ohos-plugin
+      '@ohos/hypium':
+        specifier: file:./local-stubs/hypium
+        version: file:apps/harmony/local-stubs/hypium
+      '@ohos/security.cryptoFramework':
+        specifier: file:./local-stubs/security-cryptoFramework
+        version: file:apps/harmony/local-stubs/security-cryptoFramework
+      shared:
+        specifier: workspace:*
+        version: link:../../shared
+    devDependencies:
+      '@types/node':
+        specifier: ^18.19.0
+        version: 18.19.130
+      typescript:
+        specifier: ^5.4.5
+        version: 5.9.3
+
   apps/weapp:
     dependencies:
       '@babel/runtime':
@@ -195,6 +220,21 @@ importers:
       '@tarojs/plugin-framework-react':
         specifier: 4.2.1
         version: 4.2.1(@tarojs/helper@4.2.1(@swc/helpers@0.5.23))(@tarojs/runtime@4.2.1)(@tarojs/shared@4.2.1)(preact@10.24.3)(react@18.3.1)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(sass@1.104.1)(stylus@0.64.0)(terser@5.51.2)(yaml@2.9.1))(webpack@5.91.0(@swc/core@1.3.96(@swc/helpers@0.5.23))(lightningcss@1.32.0)(postcss@8.5.26))
+      '@tarojs/plugin-platform-alipay':
+        specifier: 4.2.1
+        version: 4.2.1(@tarojs/service@4.2.1(@swc/helpers@0.5.23))(@tarojs/shared@4.2.1)
+      '@tarojs/plugin-platform-kwai':
+        specifier: file:./local-stubs/tarojs-plugin-platform-kwai
+        version: file:apps/weapp/local-stubs/tarojs-plugin-platform-kwai
+      '@tarojs/plugin-platform-qq':
+        specifier: 4.2.1
+        version: 4.2.1(@tarojs/plugin-platform-weapp@4.2.1(@tarojs/service@4.2.1(@swc/helpers@0.5.23))(@tarojs/shared@4.2.1))(@tarojs/shared@4.2.1)
+      '@tarojs/plugin-platform-swan':
+        specifier: 4.2.1
+        version: 4.2.1(@tarojs/service@4.2.1(@swc/helpers@0.5.23))(@tarojs/shared@4.2.1)
+      '@tarojs/plugin-platform-tt':
+        specifier: 4.2.1
+        version: 4.2.1(@tarojs/service@4.2.1(@swc/helpers@0.5.23))(@tarojs/shared@4.2.1)
       '@tarojs/plugin-platform-weapp':
         specifier: 4.2.1
         version: 4.2.1(@tarojs/service@4.2.1(@swc/helpers@0.5.23))(@tarojs/shared@4.2.1)
@@ -2043,6 +2083,18 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
+  '@ohos/data.preferences@file:apps/harmony/local-stubs/data-preferences':
+    resolution: {directory: apps/harmony/local-stubs/data-preferences, type: directory}
+
+  '@ohos/hvigor-ohos-plugin@file:apps/harmony/local-stubs/hvigor-ohos-plugin':
+    resolution: {directory: apps/harmony/local-stubs/hvigor-ohos-plugin, type: directory}
+
+  '@ohos/hypium@file:apps/harmony/local-stubs/hypium':
+    resolution: {directory: apps/harmony/local-stubs/hypium, type: directory}
+
+  '@ohos/security.cryptoFramework@file:apps/harmony/local-stubs/security-cryptoFramework':
+    resolution: {directory: apps/harmony/local-stubs/security-cryptoFramework, type: directory}
+
   '@panva/hkdf@1.2.1':
     resolution: {integrity: sha512-6oclG6Y3PiDFcoyk8srjLfVKyMfVCKJ27JwNPViuXziFpmdz+MZnZN/aKY0JGXgYuO/VghU0jcOAZgWXZ1Dmrw==}
 
@@ -3201,6 +3253,37 @@ packages:
       webpack:
         optional: true
 
+  '@tarojs/plugin-platform-alipay@4.2.1':
+    resolution: {integrity: sha512-/+AWN8uCaC8btkx7sD5ByoH8YpWWS1r0TkowQGkp+UEhO+xh2Fi42ujucFFDt2zsP5OxPN9WnN57exu2joogGg==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      '@tarojs/service': 4.2.1
+      '@tarojs/shared': 4.2.1
+
+  '@tarojs/plugin-platform-kwai@file:apps/weapp/local-stubs/tarojs-plugin-platform-kwai':
+    resolution: {directory: apps/weapp/local-stubs/tarojs-plugin-platform-kwai, type: directory}
+
+  '@tarojs/plugin-platform-qq@4.2.1':
+    resolution: {integrity: sha512-pb8Ye0jOpwYbtzoSaYptR08+m+8EaVWv7Imd7xPlFnthsAWdcguUN010/R+ZG7vlLD4QC7AqniCo226guevgSg==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      '@tarojs/plugin-platform-weapp': 4.2.1
+      '@tarojs/shared': 4.2.1
+
+  '@tarojs/plugin-platform-swan@4.2.1':
+    resolution: {integrity: sha512-mOC/9qrD5i4AM2OwxN1sugrDBoaIAJOAwtt37Av+zhvShuJiUANYLLyFB8UEiEHfmC2/DPcIeJtZ3W0Z/DznFw==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      '@tarojs/service': 4.2.1
+      '@tarojs/shared': 4.2.1
+
+  '@tarojs/plugin-platform-tt@4.2.1':
+    resolution: {integrity: sha512-Q09Tu8R1T8BF2j5XwFRehh9JAoWLLSwPFDApqanjIsNAv6VpUzw3jGyxxKxRSonUaAP95jneqbZYbScmYy1O6g==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      '@tarojs/service': 4.2.1
+      '@tarojs/shared': 4.2.1
+
   '@tarojs/plugin-platform-weapp@4.2.1':
     resolution: {integrity: sha512-5XKHqGAQLqd7JQJcM3OVZXOJJXo0IX8O4CZpQ0U1cuTTkfamQU+GEV/XmYNJ8kNxO/KASNQ/rDVkcMGMX2LqEQ==}
     engines: {node: '>= 18'}
@@ -3558,6 +3641,9 @@ packages:
 
   '@types/node-forge@1.3.14':
     resolution: {integrity: sha512-mhVF2BnD4BO+jtOp7z1CdzaK4mbuK0LLQYAvdOLqHTavxFNq4zA1EmYkpnFjP8HOUzedfQkRnp0E2ulSAYSzAw==}
+
+  '@types/node@18.19.130':
+    resolution: {integrity: sha512-GRaXQx6jGfL8sKfaIDD6OupbIHBr9jv7Jnaml9tB7l4v068PAOXqfcujMMo5PhbIs6ggR1XODELqahT2R8v0fg==}
 
   '@types/node@22.20.1':
     resolution: {integrity: sha512-EANqOCF9QFyra+4pfxUcX9STKJpCLjMbObVzljIJomAWSnuSIEAvyzEU53GaajbXJEgdh0iEcPL+DGvpUd4k1Q==}
@@ -8975,6 +9061,9 @@ packages:
   unbzip2-stream@1.4.3:
     resolution: {integrity: sha512-mlExGW4w71ebDJviH16lQLtZS32VKqsSfk80GCfUlwT/4/hNRFsoscrF/c++9xinkMzECL1uL9DDwXqFWkruPg==}
 
+  undici-types@5.26.5:
+    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
+
   undici-types@6.21.0:
     resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
 
@@ -11300,6 +11389,14 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.20.3
 
+  '@ohos/data.preferences@file:apps/harmony/local-stubs/data-preferences': {}
+
+  '@ohos/hvigor-ohos-plugin@file:apps/harmony/local-stubs/hvigor-ohos-plugin': {}
+
+  '@ohos/hypium@file:apps/harmony/local-stubs/hypium': {}
+
+  '@ohos/security.cryptoFramework@file:apps/harmony/local-stubs/security-cryptoFramework': {}
+
   '@panva/hkdf@1.2.1': {}
 
   '@parcel/watcher-android-arm64@2.6.0':
@@ -12394,6 +12491,29 @@ snapshots:
       vite: 7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(sass@1.104.1)(stylus@0.64.0)(terser@5.51.2)(yaml@2.9.1)
       webpack: 5.91.0(@swc/core@1.3.96(@swc/helpers@0.5.23))(lightningcss@1.32.0)(postcss@8.5.26)
 
+  '@tarojs/plugin-platform-alipay@4.2.1(@tarojs/service@4.2.1(@swc/helpers@0.5.23))(@tarojs/shared@4.2.1)':
+    dependencies:
+      '@tarojs/service': 4.2.1(@swc/helpers@0.5.23)
+      '@tarojs/shared': 4.2.1
+
+  '@tarojs/plugin-platform-kwai@file:apps/weapp/local-stubs/tarojs-plugin-platform-kwai': {}
+
+  '@tarojs/plugin-platform-qq@4.2.1(@tarojs/plugin-platform-weapp@4.2.1(@tarojs/service@4.2.1(@swc/helpers@0.5.23))(@tarojs/shared@4.2.1))(@tarojs/shared@4.2.1)':
+    dependencies:
+      '@tarojs/plugin-platform-weapp': 4.2.1(@tarojs/service@4.2.1(@swc/helpers@0.5.23))(@tarojs/shared@4.2.1)
+      '@tarojs/shared': 4.2.1
+
+  '@tarojs/plugin-platform-swan@4.2.1(@tarojs/service@4.2.1(@swc/helpers@0.5.23))(@tarojs/shared@4.2.1)':
+    dependencies:
+      '@tarojs/service': 4.2.1(@swc/helpers@0.5.23)
+      '@tarojs/shared': 4.2.1
+
+  '@tarojs/plugin-platform-tt@4.2.1(@tarojs/service@4.2.1(@swc/helpers@0.5.23))(@tarojs/shared@4.2.1)':
+    dependencies:
+      '@tarojs/service': 4.2.1(@swc/helpers@0.5.23)
+      '@tarojs/shared': 4.2.1
+      webpack-sources: 3.5.1
+
   '@tarojs/plugin-platform-weapp@4.2.1(@tarojs/service@4.2.1(@swc/helpers@0.5.23))(@tarojs/shared@4.2.1)':
     dependencies:
       '@tarojs/service': 4.2.1(@swc/helpers@0.5.23)
@@ -12830,6 +12950,10 @@ snapshots:
   '@types/node-forge@1.3.14':
     dependencies:
       '@types/node': 22.20.1
+
+  '@types/node@18.19.130':
+    dependencies:
+      undici-types: 5.26.5
 
   '@types/node@22.20.1':
     dependencies:
@@ -19280,6 +19404,8 @@ snapshots:
     dependencies:
       buffer: 5.7.1
       through: 2.3.8
+
+  undici-types@5.26.5: {}
 
   undici-types@6.21.0: {}
 

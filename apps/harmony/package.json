@@ -14,10 +14,10 @@
     "lint": "eslint entry/src/main/ets --ext .ets"
   },
   "dependencies": {
-    "@ohos/hypium": "^1.0.21",
-    "@ohos/hvigor-ohos-plugin": "^5.0.4",
-    "@ohos/security.cryptoFramework": "^1.0.0",
-    "@ohos/data.preferences": "^1.0.0",
+    "@ohos/data.preferences": "file:./local-stubs/data-preferences",
+    "@ohos/hvigor-ohos-plugin": "file:./local-stubs/hvigor-ohos-plugin",
+    "@ohos/hypium": "file:./local-stubs/hypium",
+    "@ohos/security.cryptoFramework": "file:./local-stubs/security-cryptoFramework",
     "shared": "workspace:*"
   },
   "devDependencies": {

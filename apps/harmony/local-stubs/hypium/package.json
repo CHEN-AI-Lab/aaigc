@@ -1,0 +1,6 @@
+{
+  "name": "@ohos/hypium",
+  "version": "1.0.21",
+  "private": true,
+  "description": "Local stub for pnpm install. Real package comes from ohpm (华为鸿蒙生态私有包管理器). See apps/harmony/docs/README.md."
+}

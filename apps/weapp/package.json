@@ -27,7 +27,7 @@
     "@tarojs/helper": "4.2.1",
     "@tarojs/plugin-framework-react": "4.2.1",
     "@tarojs/plugin-platform-alipay": "4.2.1",
-    "@tarojs/plugin-platform-kwai": "4.2.1",
+    "@tarojs/plugin-platform-kwai": "file:./local-stubs/tarojs-plugin-platform-kwai",
     "@tarojs/plugin-platform-qq": "4.2.1",
     "@tarojs/plugin-platform-swan": "4.2.1",
     "@tarojs/plugin-platform-tt": "4.2.1",

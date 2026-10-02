@@ -1,0 +1,6 @@
+{
+  "name": "@tarojs/plugin-platform-kwai",
+  "version": "4.2.1",
+  "private": true,
+  "description": "Local stub for pnpm install. Real @tarojs/plugin-platform-kwai 4.x does not exist on npm (kwai plugin's 4.x release was skipped; only 3.x and 6.x exist). Taro 4.x 多平台编译会跳过 kwai 目标，build:kwai 脚本在本项目是 no-op。"
+}
